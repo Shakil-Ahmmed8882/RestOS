@@ -14,9 +14,39 @@ import { Link, NavLink } from "react-router-dom";
 import ThemeSwitcher from "./ThemeSwitcher";
 import { useTheme } from "next-themes";
 
+// import home_light_icon from '../../../assets/img/homeIcon.png'
+// import home_dark_icon from '../../../assets/img/home-dark-icon.png'
+import { useAuth } from "../../../Utils/useAuthHelper";
+import { useState } from "react";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
+
 export default function NavBar() {
   const { theme } = useTheme();
   // const themeColor = theme == 'dark'?' text-white':''
+  const {user,logOut}= useAuth()
+  const [isLoggedOut,setIsLoggedOut]= useState(!user)
+
+
+
+  
+
+  useEffect(() => {
+    if (!user) {
+      setIsLoggedOut(true);
+    } else {
+      setIsLoggedOut(false);
+    }
+  }, [user]);
+  // handling logout here
+  const handleSignOut = () => {
+    logOut()
+      .then(() => {
+        toast.success('Signed out')
+        setIsLoggedOut(true);
+      })
+      .catch((err) => toast.error(err.toString()));
+  };
 
   return (
     <Navbar>
@@ -37,8 +67,8 @@ export default function NavBar() {
           theme === "dark" ? "text-[white]" : ""
         }`}
         justify="center">
-        <NavLink exact to="/" activeClassName="active">
-          Home
+        <NavLink exact to="/" activeClassName="active" className='flex items-center '>
+          <span>Home</span>
         </NavLink>
 
         <NavLink to="/food" activeClassName="active">
@@ -48,12 +78,18 @@ export default function NavBar() {
         <NavLink to="/blog" activeClassName="active">
           Blog
         </NavLink>
+        {
+          user && !isLoggedOut ?'':
         <NavLink to="/sign-in" activeClassName="active">
           Sign in
         </NavLink>
+        }
       </NavbarContent>
       <ThemeSwitcher></ThemeSwitcher>
 
+
+      {
+        user && !isLoggedOut &&
       <NavbarContent as="div" justify="end">
         <Dropdown placement="bottom-end">
           <DropdownTrigger>
@@ -90,11 +126,13 @@ export default function NavBar() {
             <DropdownItem key="configurations">Configurations</DropdownItem>
             <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
             <DropdownItem key="logout" color="danger">
-              Log Out
+            <button onClick={handleSignOut}> Sign out </button>
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </NavbarContent>
+
+      }
     </Navbar>
   );
 }

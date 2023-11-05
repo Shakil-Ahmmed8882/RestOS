@@ -12,9 +12,9 @@ const Page404 = () => {
           Page Not Found
         </p>
             <Link to='/' className="px-4 py-2 font-medium text-white bg-indigo-500 rounded-md hover:bg-indigo-600 transition-all duration-200 ease-in-out flex items-center btn h-full bg-bgBabyBlue">
-          <img className="w-16" src={home} alt="" /><span className="text-2xl ">Go home</span></Link>
+          <img className="w-9 md:w-11" src={home} alt="" /><span className="text-2xl ">Go home</span></Link>
       </div>
-      <img className="absolute w-6/12 top-0 right-[295px] -z-10" src={search} alt="" />
+      <img className="absolute md:w-6/12 md:top-0 right-6 md:right-[295px] -z-10" src={search} alt="" />
     </div>
   );
 };

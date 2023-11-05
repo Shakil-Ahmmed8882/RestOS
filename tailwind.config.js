@@ -15,6 +15,7 @@ module.exports = {
       "bgLightPink":"#FFDFDF",
       "bgMistyRose":"#FFF6F6",
       "bgBabyBlue":"#AEDEFC",
+      accentColor:"#20C997",
       "bgDark":"#4C4C4C",
     },//https://colorhunt.co/palette/f875aaffdfdffff6f6aedefc
     extend: {},

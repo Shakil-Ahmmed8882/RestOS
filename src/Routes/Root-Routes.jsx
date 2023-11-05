@@ -10,6 +10,7 @@ import OrderFood from "../Pages/SingleFood/OrderFood";
 import Profile from "../Pages/PersonalInfo/Profile";
 import Added_Food from "../Pages/PersonalInfo/Added_Food";
 import Page404 from "../Components/Shared/404/Page404";
+import Guard from "../Components/Shared/Private/Guard";
 
 const router = createBrowserRouter([
   {
@@ -45,7 +46,7 @@ const router = createBrowserRouter([
       // User's personal info
       {
         path: "/order-food",
-        element: <OrderFood/>
+        element: <Guard><OrderFood></OrderFood></Guard>
       },
       {
         path: "/profile",

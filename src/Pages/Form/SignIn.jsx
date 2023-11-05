@@ -1,27 +1,40 @@
 import { useTheme } from "next-themes";
 import google_icon from "../../assets/img/icons8-google-48.png";
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from "../../Utils/useAuthHelper";
+import toast from "react-hot-toast";
 
 const SignIn = () => {
       const {theme} = useTheme()
-      const {googleSignIn} = useAuth()
+      const goTo = useNavigate()
+      const location = useLocation();
+      const {login,googleSignIn} = useAuth()
 
 
       const handleSignin = (e) => {
             e.preventDefault()
             const form = new FormData(e.target)
             const data = Object.fromEntries(form)
-            e.target.reset()
-            console.log(data)
-            
+          
+
+            login(data.email,data.password)
+            .then(()=> {
+              e.target.reset()
+              toast.success("Successfully Signed in");
+              goTo(location.state ? location.state : "/");
+            })
+            .catch((err) => toast.error(err.toString()));
+     
       }
 
 
       const handleGoogleSignIn = () => {
         
         googleSignIn()
-        .then(() => alert('signed in with google'))
+        .then(() => {
+          toast.success("Signed in with google");
+          goTo(location.state ? location.state : "/");
+        })
         .catch(err => console.log(err))
       }
    
