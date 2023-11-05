@@ -1,9 +1,11 @@
 import { useTheme } from "next-themes";
 import google_icon from "../../assets/img/icons8-google-48.png";
 import { Link } from 'react-router-dom';
+import { useAuth } from "../../Utils/useAuthHelper";
 
 const SignIn = () => {
       const {theme} = useTheme()
+      const {googleSignIn} = useAuth()
 
 
       const handleSignin = (e) => {
@@ -16,7 +18,13 @@ const SignIn = () => {
       }
 
 
-
+      const handleGoogleSignIn = () => {
+        
+        googleSignIn()
+        .then(() => alert('signed in with google'))
+        .catch(err => console.log(err))
+      }
+   
 
   return (
     <div className={`  md:flex ${theme == 'dark'?'bg-[black]':'light-[white]'}`}>
@@ -56,7 +64,7 @@ const SignIn = () => {
             </div>
 
 
-        <button className={`flex justify-center items-center gap-2 ${theme == 'dark'?'text-[white]':''} py-9`}>
+        <button onClick={handleGoogleSignIn} className={`flex justify-center items-center gap-2 ${theme == 'dark'?'text-[white]':''} py-9`}>
           <img className="w-8" src={google_icon} alt="" />
           Sign in with google
         </button>

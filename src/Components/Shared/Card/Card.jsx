@@ -3,16 +3,19 @@ import PropTypes from 'prop-types';
 import details_icon from '../../../assets/img/details.gif'
 import { useTheme } from 'next-themes';
 import darkDetail from '../../../assets/img/darkDetail.gif'
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Card({ food }) {
       const {theme} = useTheme()
+      const goTo = useNavigate()
   const {
     foodName,
     foodImage,
     foodCategory,
     price,
     quantity,
+    _id
 
   } = food;
 
@@ -34,7 +37,7 @@ export default function Card({ food }) {
             <img className='w-5' src={details_icon} alt="" />
 
       }
-      <button className="text-primaryColor text-[17px] py-2">Details</button>
+      <button className="text-primaryColor text-[17px] py-2" onClick={()=> goTo(`/food-details/${_id}`)}>Details</button>
     </div>
   </div>
 </div>)

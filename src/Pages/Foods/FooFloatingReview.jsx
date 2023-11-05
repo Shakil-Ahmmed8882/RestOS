@@ -4,7 +4,7 @@ const FooFloatingReview = ({review}) => {
 
       const {theme} = useTheme()
       const {foodImg,profile,name,comment,date} = review
-      console.log(review)
+    
 
   return (
     <div>

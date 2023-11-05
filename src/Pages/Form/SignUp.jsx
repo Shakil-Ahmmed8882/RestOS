@@ -6,20 +6,26 @@ import { useAuth } from "../../Utils/useAuthHelper";
 
 const SignUp = () => {
       const {theme} = useTheme()
-      const {createUser} = useAuth()
+      const {createUser,updateUserInfo} = useAuth()
       // console.log(createUser)
 
       const handleSignUp = (e) => {
             e.preventDefault()
             const form = new FormData(e.target)
             const data = Object.fromEntries(form)
+            const email = data.email
+            const name = data.name
+            const photo = data.photo
+            const password = data.password
             e.target.reset()
 
 
             // create user here
                   // console.log(data.eamil,data.password)
-            createUser(data.email,data.password)
-            .then(res => console.log(res))
+            createUser(email,password)
+            .then(() => 
+              updateUserInfo(name,photo)
+              )
             .catch(err => console.log(err))
      
             
