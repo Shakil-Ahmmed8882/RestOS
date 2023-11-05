@@ -1,9 +1,12 @@
 import PropTypes from 'prop-types';
 
 import details_icon from '../../../assets/img/details.gif'
+import { useTheme } from 'next-themes';
+import darkDetail from '../../../assets/img/darkDetail.gif'
 
 
 export default function Card({ food }) {
+      const {theme} = useTheme()
   const {
     foodName,
     foodImage,
@@ -13,11 +16,11 @@ export default function Card({ food }) {
 
   } = food;
 
-  return (<div className="card card-compact rounded-lg  bg-base-100 shadow-lg">
+  return (<div className={`card card-compact rounded-lg shadow-lg`}>
   <figure><img src={foodImage} alt="Shoes" /></figure>
-  <div className="card-body">
-    <h2 className="font-semibold mb-1 text-[22px]">{foodName}</h2>
-    <div className=" space-y-2 text-[#5e5e5e] text-[16px]  items-center">
+  <div className={`${theme == "dark"?"bg-[#262526aa]":''} card-body`}>
+    <h2 className={`font-semibold mb-1 text-[22px] ${theme == 'dark'?'text-[#4bd6fdc0]':''} pt-3`}>{foodName}</h2>
+    <div className={` space-y-2  text-[16px]  items-center ${theme == 'dark'?'text-[#c6c5c5]':'text-[#5e5e5e]'}`}>
     <p>category: {foodCategory}</p>
     <p>Price: ${price}</p>
     <p>Quantity: {quantity}</p>
@@ -25,7 +28,12 @@ export default function Card({ food }) {
 
     </div>
     <div className="flex gap-2 items-center">
-      <img className='w-5' src={details_icon} alt="" />
+      {
+            theme == 'dark'? 
+            <img className='w-5' src={darkDetail} alt="" />:
+            <img className='w-5' src={details_icon} alt="" />
+
+      }
       <button className="text-primaryColor text-[17px] py-2">Details</button>
     </div>
   </div>

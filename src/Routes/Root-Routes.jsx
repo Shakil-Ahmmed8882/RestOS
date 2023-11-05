@@ -5,6 +5,8 @@ import Main from "../Layout/Main";
 import Home from "../Pages/Home/Home/Home"
 import Foods from "../Pages/Foods/Foods";
 import Blog from "../Pages/Blog/Blog";
+import SignIn from "../Pages/Form/SignIn";
+import SignUp from "../Pages/Form/SignUp";
 
 
     const router = createBrowserRouter([
@@ -24,7 +26,15 @@ import Blog from "../Pages/Blog/Blog";
             {
                   path:'Blog',
                   element:<Blog></Blog>
-            }
+            },
+            {
+              path:'/sign-in',
+              element:<SignIn></SignIn>
+        },
+            {
+              path:'/sign-up',
+              element:<SignUp></SignUp>
+        }
         ]
       },
     ]);

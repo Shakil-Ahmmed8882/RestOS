@@ -16,6 +16,8 @@ import { useTheme } from "next-themes";
 
 export default function NavBar() {
   const {theme} = useTheme()
+  // const themeColor = theme == 'dark'?' text-white':''
+
 
 
 
@@ -25,8 +27,8 @@ export default function NavBar() {
       <NavbarBrand>
         <div className="flex gap-1 items-center">
           <img className="w-[42px]" src={logo} alt="" />
-          <p className="font-bold text-inherit text-[18px]">
-            Rest<span className="text-primaryColor text-[18px]">OS</span>
+          <p className="flex font-bold  items-center text-[19px]">
+            <span  className={` ${theme === 'dark'?'text-[white]':''}`}>Rest</span><span className="text-primaryColor text-[18px]">OS</span>
           </p>
         </div>
       </NavbarBrand>
@@ -43,8 +45,11 @@ export default function NavBar() {
         <NavLink to="/blog" activeClassName="active">
           Blog
         </NavLink>
-        <ThemeSwitcher></ThemeSwitcher>
+        <NavLink to="/sign-in" activeClassName="active">
+          Sign in
+        </NavLink>
       </NavbarContent>
+        <ThemeSwitcher></ThemeSwitcher>
 
       <NavbarContent as="div" justify="end">
         <Dropdown placement="bottom-end">
@@ -59,7 +64,7 @@ export default function NavBar() {
               src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
             />
           </DropdownTrigger>
-          <DropdownMenu aria-label="Profile Actions" variant="flat">
+          <DropdownMenu aria-label="Profile Actions"className={`${theme == 'dark'?'bg-[black] text-[white]':''} py-3`} variant="flat">
             <DropdownItem key="profile" className="h-14 gap-2">
               <p className="font-semibold">Signed in as</p>
               <p className="font-semibold">zoey@example.com</p>

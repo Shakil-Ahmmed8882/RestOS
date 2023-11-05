@@ -10,3 +10,15 @@ body {
   font-family: "Poppins", sans-serif;
   background:linear-gradient(to bottom, #fff5faa0,#feffff);
 }
+
+
+.dark-bg{
+      background:linear-gradient(to right,#012929fd, rgb(30, 0, 15));
+      background-blend-mode: darken;
+}
+
+.light-bg{
+      background:linear-gradient(to right, rgba(255, 246, 251, 0.781),rgba(255, 255, 255, 0.406));
+      filter: blur(-100px);
+      background-blend-mode: color-darken;
+}
