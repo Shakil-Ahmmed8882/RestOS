@@ -3,6 +3,8 @@ import {
     } from "react-router-dom";
 import Main from "../Layout/Main";
 import Home from "../Pages/Home/Home/Home"
+import Foods from "../Pages/Foods/Foods";
+import Blog from "../Pages/Blog/Blog";
 
 
     const router = createBrowserRouter([
@@ -12,8 +14,16 @@ import Home from "../Pages/Home/Home/Home"
         errorElement:<div>Error</div>,
         children:[
             {
-                  path:'/',
+                  index:true,
                   element:<Home></Home>
+            },
+            {
+                  path:'food',
+                  element:<Foods></Foods>
+            },
+            {
+                  path:'Blog',
+                  element:<Blog></Blog>
             }
         ]
       },

@@ -2,41 +2,48 @@ import {
   Navbar,
   NavbarBrand,
   NavbarContent,
-  NavbarItem,
-  Link,
   DropdownItem,
   DropdownTrigger,
   Dropdown,
   DropdownMenu,
   Avatar,
 } from "@nextui-org/react";
-import { AcmeLogo } from "./AcmeLogo.jsx";
 import "./Navbar.css";
+import logo from "../../../assets/img/restOSLogo.png";
+import { NavLink } from "react-router-dom";
+import ThemeSwitcher from "./ThemeSwitcher";
+import { useTheme } from "next-themes";
 
 export default function NavBar() {
+  const {theme} = useTheme()
+
+
+
+
   return (
     <Navbar>
       <NavbarBrand>
-        <AcmeLogo />
-        <p className="font-bold text-inherit">ACME</p>
+        <div className="flex gap-1 items-center">
+          <img className="w-[42px]" src={logo} alt="" />
+          <p className="font-bold text-inherit text-[18px]">
+            Rest<span className="text-primaryColor text-[18px]">OS</span>
+          </p>
+        </div>
       </NavbarBrand>
 
-      <NavbarContent className="displayFlex  hidden gap-4" justify="center">
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Features
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive>
-          <Link href="#" aria-current="page" color="secondary">
-            Customers
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Integrations
-          </Link>
-        </NavbarItem>
+      <NavbarContent className={`displayFlex  hidden gap-4 ${theme === 'dark'?'text-[white]':''}`} justify="center">
+        <NavLink exact to="/" activeClassName="active">
+          Home
+        </NavLink>
+
+        <NavLink to="/food" activeClassName="active">
+          Food
+        </NavLink>
+
+        <NavLink to="/blog" activeClassName="active">
+          Blog
+        </NavLink>
+        <ThemeSwitcher></ThemeSwitcher>
       </NavbarContent>
 
       <NavbarContent as="div" justify="end">

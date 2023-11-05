@@ -4,9 +4,13 @@ import Footer from "../Pages/Home/Home/Footer";
 const Main = () => {
   return (
     <>
+    <div>
       <NavBar></NavBar>
+      <div className="px-3">
       <Outlet></Outlet>
+      </div>
       <Footer></Footer>
+    </div>
     </>
   );
 };

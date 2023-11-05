@@ -1,0 +1,13 @@
+.responsive-grid{
+      display: grid;
+      width: 100%;
+      gap: 30px;
+            grid-template-columns: repeat(auto-fit,minmax(266px,1fr));
+}
+
+
+.bg-food{
+      background:linear-gradient(to right, #fbc4dfc4,#b5ffff8e),url('https://th.bing.com/th/id/OIP.fTZuwXzb7pqbOXmix4kOSQHaE7?pid=ImgDet&rs=1') no-repeat fixed;
+      background-size: cover;
+      background-blend-mode: darken;
+}
