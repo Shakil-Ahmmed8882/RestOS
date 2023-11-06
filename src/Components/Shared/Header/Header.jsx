@@ -122,7 +122,9 @@ export default function NavBar() {
             <DropdownItem key="add-food">
               <Link to='/add-food'>Add Food</Link>
             </DropdownItem>
-            <DropdownItem key="system">System</DropdownItem>
+            <DropdownItem key="system">
+            <Link to='/orderlist'>Order list</Link>=
+            </DropdownItem>
             <DropdownItem key="configurations">Configurations</DropdownItem>
             <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
             <DropdownItem key="logout" color="danger">

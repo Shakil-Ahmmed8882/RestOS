@@ -28,12 +28,8 @@ const SingleFoodPage = () => {
     foodImage,
     foodCategory,
     price,
-    orders,
-    quantity,
-    made_by,
     food_origin,
     description,
-    reviews,
   } = data;
 
   return (
@@ -63,7 +59,7 @@ const SingleFoodPage = () => {
               <p className=" font-normal ">Made by: Vorolina </p>
               <p className=" font-normal pb-5 w-2/3">{description}</p>
               <button
-                onClick={() => goTo("/order-food")}
+                onClick={() => goTo(`/order-food/${_id}`)}
                 className="flex bg-primaryColor w-[200px] text-[white] py-2 items-center px-4 rounded ">
                 <img className="w-11" src={order_now} alt="" />
                 Order Now

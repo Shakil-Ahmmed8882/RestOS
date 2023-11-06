@@ -12,6 +12,13 @@ import Added_Food from "../Pages/PersonalInfo/Added_Food";
 import Page404 from "../Components/Shared/404/Page404";
 import Guard from "../Components/Shared/Private/Guard";
 import Add_Food from "../Pages/PersonalInfo/Add_Food";
+import OrderList from "../Pages/Order-list/OrderList";
+import { useAxios } from "../🔗Hook/useAxios";
+
+
+// axios
+const xios = useAxios()
+
 
 const router = createBrowserRouter([
   {
@@ -46,7 +53,7 @@ const router = createBrowserRouter([
 
       // User's personal info
       {
-        path: "/order-food",
+        path: "/order-food/:id",
         element: <Guard><OrderFood></OrderFood></Guard>
       },
       {
@@ -60,6 +67,10 @@ const router = createBrowserRouter([
       {
         path: "/add-food",
         element: <Add_Food/>
+      },
+      {
+        path: "/orderlist",
+        element: <OrderList/>
       },
 ],
 },
