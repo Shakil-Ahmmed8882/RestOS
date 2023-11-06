@@ -5,6 +5,22 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@layer utilities {
+      .animation-delay-2000{
+            animation-delay: 2s;
+      }
+      .animation-delay-4000{
+            animation-delay: 4s;
+      }
+}
+
+
+
+
+
+
+
 body {
   font-family: "Lato", sans-serif;
   font-family: "Poppins", sans-serif;

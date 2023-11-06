@@ -17,8 +17,8 @@ const FooFloatingReview = ({review}) => {
                 className="rounded-full h-8 w-8 mr-2 object-cover"
               />
               <span className="font-bold tracking-wide text-sm text-pink-400 pt-2   space-y-1">
-                <span className='pb-4'>{name}</span>
-              <p className={`text-[13px] font-normal  ${theme === 'dark'?'text-[#dfdfdf]':'text-[#575757]'}`}>{comment} </p>
+                <span className={`pb-4 ${theme === 'dark'?'text-primaryColor':'text-[#41bbd6]'}`}>{name}</span>
+              <p className={`text-[13px] font-normal  ${theme === 'dark'?'text-[#e0dfdf]':'text-[#575757]'}`}>{comment} </p>
           <div className={`text-sm ${theme == 'dark'?'text-[#b3b0b0]':'text-[black]'} font-normal text-text2 tracking-wider`}>
             {date}
           </div>

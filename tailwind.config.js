@@ -18,7 +18,27 @@ module.exports = {
       accentColor:"#20C997",
       "bgDark":"#4C4C4C",
     },//https://colorhunt.co/palette/f875aaffdfdffff6f6aedefc
-    extend: {},
+    extend: {
+      animation:{
+        blob:"blob 4s infinite"
+      },
+      keyframes:{
+        blob:{
+          '0%':{
+            transform:"translate(0px ,0px) scale(1)"
+          },
+          '33%':{
+            transform:"translate(60px ,-50px)scale(1.1)"
+          },
+          '66%':{
+            transform:"translate(-20px, 20px ) scale(0.9)"
+          },
+          '100%':{
+            transform:" translate(0px, 0px) scale(1)"
+          }
+        }
+      }
+    },
   },
   darkMode: "class",
   plugins: [nextui(
