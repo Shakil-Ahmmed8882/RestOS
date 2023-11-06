@@ -11,6 +11,7 @@ import Profile from "../Pages/PersonalInfo/Profile";
 import Added_Food from "../Pages/PersonalInfo/Added_Food";
 import Page404 from "../Components/Shared/404/Page404";
 import Guard from "../Components/Shared/Private/Guard";
+import Add_Food from "../Pages/PersonalInfo/Add_Food";
 
 const router = createBrowserRouter([
   {
@@ -58,7 +59,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/add-food",
-        element: <Added_Food/>
+        element: <Add_Food/>
       },
 ],
 },

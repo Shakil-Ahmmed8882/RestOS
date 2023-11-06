@@ -3,11 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../Utils/useAuthHelper";
 // import {NotificationManager} from 'react-notifications';
 import toast from "react-hot-toast";
+import { useAxios } from "../../🔗Hook/useAxios";
+import { validate } from "../../Utils/Validate";
 
 const SignUp = () => {
   const { theme } = useTheme();
   const { createUser, updateUserInfo } = useAuth();
   const goTo = useNavigate();
+  const xios = useAxios()
   // console.log(createUser)
 
   const handleSignUp = (e) => {
@@ -19,40 +22,14 @@ const SignUp = () => {
     const photo = data.photo;
     const password = data.password;
 
+    // data for storing in database
+    const user = {name,email,photo}
+
     // input validation
-    if (name === "") {
-      toast.error("Plase input your name");
-      return;
-    }
+    const hasError = validate(name, email, photo, password);
+    if (hasError) return; 
 
-    if (email === "") {
-      toast.error("Plase input your email");
-      return;
-    }
-
-    if (photo === "") {
-      toast.error("Plase input your photo url");
-      return;
-    }
-
-    if (password === "") {
-      toast.error("Plase input your password");
-      return;
-    }
-    if (password.length < 6) {
-      toast.error("Password must be at least 6 characters long.");
-      return;
-    }
-
-    if (!/^(?=.*[A-Z]).*$/.test(password)) {
-      toast.error("Password must contain at least one capital letter.");
-      return;
-    }
-    if (!/^[a-zA-Z0-9]*$/.test(password)) {
-      toast.error("Password must contain at least one special character.");
-      return;
-    }
-
+    
     e.target.reset();
 
     // create user here
@@ -61,6 +38,10 @@ const SignUp = () => {
         toast.success("Successfully created an account");
         goTo(location.state ? location.state : "/");
         updateUserInfo(name, photo);
+        xios.post('user',user)
+        .then(res => console.log(res.data))
+        .catch(err => console.log(err))
+        
       })
       .catch((err) => toast.error(err.toString()));
   };
