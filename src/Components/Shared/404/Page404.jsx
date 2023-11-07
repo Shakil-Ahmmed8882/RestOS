@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import home from '../../../assets/img/home.gif'
 import search from '../../../assets/img/search.gif'
 
-
 const Page404 = () => {
   return (
     <div className="flex h-screen w-full justify-center items-center">
