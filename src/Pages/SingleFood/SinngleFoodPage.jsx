@@ -30,6 +30,7 @@ const SingleFoodPage = () => {
     price,
     food_origin,
     description,
+    made_by
   } = data;
 
   return (
@@ -56,7 +57,7 @@ const SingleFoodPage = () => {
               <p className=" font-normal ">category: {foodCategory}</p>
               <p className=" font-bold">price: ${price}</p>
               <p className=" font-normal ">Origin: {food_origin}</p>
-              <p className=" font-normal ">Made by: Vorolina </p>
+              <p className=" font-normal ">Made by: {made_by} </p>
               <p className=" font-normal pb-5 w-2/3">{description}</p>
               <button
                 onClick={() => goTo(`/order-food/${_id}`)}

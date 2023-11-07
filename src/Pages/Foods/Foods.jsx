@@ -83,7 +83,7 @@ const Foods = () => {
       </div>
 
         <div className="flex flex-wrap justify-center pt-9 gap-3 items-center">
-        { pages&&
+        { pages.length &&
           pages?.map(page => <button key={page} className={`btn  ${activePage == page?'bg-primaryColor focus-within:outline-none border-none text-[white]':''}`} onClick={()=> setActivePage(page)}>{page}</button>)
         } 
         <select value={itemsPerPage} onChange={(e)=>handleItemPerPage(e)} className="px-3">

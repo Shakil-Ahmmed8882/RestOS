@@ -5,8 +5,13 @@ import { useState } from "react";
 import getCurrentDate from "../../Utils/Date/currentDate";
 import { useAxios } from "../../🔗Hook/useAxios";
 import Swal from "sweetalert2";
+import { useContext } from "react";
+import { useAuth } from "../../Utils/useAuthHelper";
 
 const OrderFood = () => {
+  
+  const {user} = useAuth()
+
   const xios = useAxios();
   const { id } = useParams();
   //fetching data using hook
@@ -31,7 +36,7 @@ const OrderFood = () => {
     //     reviews,
   } = data;
 
-  const { orderedData } = getCurrentDate(data);
+  const { orderedData } = getCurrentDate(data,user);
 
   const handleOrder = async() => {
     // Making a request to duplicate orders

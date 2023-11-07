@@ -1,4 +1,4 @@
-const getCurrentDate = (data) => {
+const getCurrentDate = (data,user) => {
       
   const orderDate = new Date();
   const formattedOrderDate = orderDate.toLocaleDateString("en-US", {
@@ -10,6 +10,7 @@ const getCurrentDate = (data) => {
   });
 
   data.orderedDate = formattedOrderDate
+  data.email = user?.email
   const orderedData = data
   return {orderedData}
 }
