@@ -6,6 +6,7 @@
 }
 
 
+
 .bg-light-food{
       background:linear-gradient(to right, #fbc4dfc4,#0079798e),url('https://th.bing.com/th/id/OIP.fTZuwXzb7pqbOXmix4kOSQHaE7?pid=ImgDet&rs=1') no-repeat fixed;
       background-size: cover;
@@ -32,4 +33,18 @@
       background:linear-gradient(to right, #3e001ec6,#005757fd),url('https://th.bing.com/th/id/OIP.2-VVN_UYAHu_-_OzPLNC_wAAAA?pid=ImgDet&w=402&h=380&rs=1') no-repeat fixed;
       background-size: cover;
       background-blend-mode: multiply;
+}
+
+
+
+@media only screen and (min-width:500px) {
+      .responsive-grid-search{
+            padding-inline:20px ;
+            justify-content: center;
+            display: grid;
+            width: 100%;
+            gap: 30px;
+                  grid-template-columns: repeat(auto-fit,minmax(266px,350px));
+      }
+      
 }
