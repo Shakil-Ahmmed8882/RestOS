@@ -8,6 +8,7 @@ export const PagesCount = (totalPages,isCountLoading,currentPage,contentsPerPage
 
 
       const numberOfPages = Math.ceil(totalPages / contentsPerPage)
+      
       const pages = [...Array(numberOfPages).keys()];
 
       return pages

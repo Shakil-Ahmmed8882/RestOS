@@ -1,3 +1,30 @@
 .single-food-bg{
       background:linear-gradient(to top, #ffeff6c4,#f5ffff);      background-blend-mode: multiply;
 }
+
+/* custom.css */
+@keyframes gradientAnimation {
+      0% {
+        background-position: 0% 50%;
+      }
+      100% {
+        background-position: 100% 50%;
+      }
+    }
+    
+    .text-gradient {
+      background-clip: text;
+      color: transparent;
+      background-image: linear-gradient(to right, #ee8ee2, #e52e71, #ff92d9);
+      background-size: 200% 100%;
+      animation: gradientAnimation 4s linear infinite;
+    }
+    
+    
+    
+.text-gradient-light {
+      background-clip: text;
+      color: transparent;
+      background-image: linear-gradient(to right,#e52e71,  #9e05e554);
+    }
+    
