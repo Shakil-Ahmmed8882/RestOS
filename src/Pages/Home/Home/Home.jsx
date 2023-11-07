@@ -10,7 +10,7 @@ const Home = () => {
 
 
   return (
-    <div className={`h-[60vh] ${theme == "light" ? "bg-[blue]" : "bg-bgDark"}`}>
+    <div className={`h-[80vh ${theme == "light" ? "" : "bg-bgDark"}`}>
       <Banner></Banner>
     </div>
   );

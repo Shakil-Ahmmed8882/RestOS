@@ -13,6 +13,7 @@ import Page404 from "../Components/Shared/404/Page404";
 import Guard from "../Components/Shared/Private/Guard";
 import Add_Food from "../Pages/PersonalInfo/Add_Food";
 import OrderList from "../Pages/Order-list/OrderList";
+import AllMenu from "../Pages/Home/Home/AllMenu";
 
 
 const router = createBrowserRouter([
@@ -67,6 +68,11 @@ const router = createBrowserRouter([
         path: "/orderlist",
         element: <OrderList/>
       },
+      {
+        path:'/all-menu',
+        element:<AllMenu></AllMenu>
+      }
+      ,
 ],
 },
 // Catch-all route for 404

@@ -1,0 +1,12 @@
+.custom-rotate{
+            transform: rotate(140deg);
+            top: 0;
+            right:0;
+            overflow-x: hidden;
+}
+.custom-rotate-portion{
+            transform: rotate(150deg);
+            top: -100PX;
+            left: -500PX;
+            overflow-x: hidden;
+}

@@ -4,7 +4,7 @@ import { useTheme } from "next-themes";
 const Footer = () => {
   const {theme} = useTheme()
   return (
-    <div className={`h-[50vh] py-11 ${theme == "light" ? "bg-[#ffffff] " : "bg-[black] text-[white]"}`}>
+    <div className={`h-[50vh] py-11  ${theme == "light" ? "bg-[#ffffff] " : "bg-[black] text-[white]"}`}>
     <footer className="footer flex justify-between max-w-5xl mx-auto">
       <div className="">
         <header className="footer-title">Services</header>

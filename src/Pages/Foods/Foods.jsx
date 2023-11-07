@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+
 import { useTheme } from "next-themes";
 import { useGetData } from "../../🔗Hook/httpRequests";
 import Card from "../../Components/Shared/Card/Card";
@@ -7,6 +7,7 @@ import { PagesCount } from "../../Utils/Pagination/Pagination";
 import reviews from "./FloatingContent";
 import FooFloatingReview from "./FooFloatingReview";
 import "./food.css";
+import { useEffect, useState } from "react";
 
 const Foods = () => {
   const { data: count, isLoading: isCountLoading } = useGetData({
