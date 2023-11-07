@@ -5,6 +5,15 @@
             grid-template-columns: repeat(auto-fit,minmax(266px,1fr));
 }
 
+.responsive-grid-top-selling-food{
+      display: grid;
+      gap: 40px;
+            grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+}
+
+
+
+
 
 
 .bg-light-food{
