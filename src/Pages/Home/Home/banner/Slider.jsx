@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -25,15 +25,33 @@ export default function Slider() {
         modules={[Pagination]}
         className="mySwiper"
       >
-        <SwiperSlide>Slide 1</SwiperSlide>
-        <SwiperSlide>Slide 2</SwiperSlide>
-        <SwiperSlide>Slide 3</SwiperSlide>
-        <SwiperSlide>Slide 4</SwiperSlide>
-        <SwiperSlide>Slide 5</SwiperSlide>
-        <SwiperSlide>Slide 6</SwiperSlide>
-        <SwiperSlide>Slide 7</SwiperSlide>
-        <SwiperSlide>Slide 8</SwiperSlide>
-        <SwiperSlide>Slide 9</SwiperSlide>
+        <SwiperSlide><img className='w-32 h-32' src="https://www.themealdb.com/images/category/lamb.png
+
+" alt="" /></SwiperSlide>
+        <SwiperSlide><img className='w-32 h-32' src="https://www.themealdb.com/images/category/miscellaneous.png
+
+" alt="" /></SwiperSlide>
+        <SwiperSlide><img className='w-32 h-32' src="https://www.themealdb.com/images/category/pasta.png
+
+" alt="" /></SwiperSlide>
+        <SwiperSlide><img className='w-32 h-32' src="https://www.themealdb.com/images/category/pork.png
+
+" alt="" /></SwiperSlide>
+        <SwiperSlide><img className='w-32 h-32' src="https://www.themealdb.com/images/category/seafood.png
+
+" alt="" /></SwiperSlide>
+        <SwiperSlide><img className='w-32 h-32' src="https://www.themealdb.com/images/category/side.png
+
+" alt="" /></SwiperSlide>
+        <SwiperSlide><img className='w-32 h-32' src="https://www.themealdb.com/images/category/vegetarian.png
+
+" alt="" /></SwiperSlide>
+        <SwiperSlide><img src="https://www.themealdb.com/images/category/breakfast.png
+
+" alt="" /></SwiperSlide>
+        <SwiperSlide><img src="https://www.themealdb.com/images/category/goat.png
+
+" alt="" /></SwiperSlide>
       </Swiper>
     </>
   );

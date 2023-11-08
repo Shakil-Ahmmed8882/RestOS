@@ -6,11 +6,11 @@ import toast from "react-hot-toast";
 import { useAxios } from "../../🔗Hook/useAxios";
 
 const SignIn = () => {
-  const xios = useAxios()
+  const xios = useAxios();
   const { theme } = useTheme();
   const goTo = useNavigate();
   const location = useLocation();
-  const { login, googleSignIn,user } = useAuth();
+  const { login, googleSignIn, user } = useAuth();
 
   const handleSignin = (e) => {
     e.preventDefault();
@@ -25,9 +25,9 @@ const SignIn = () => {
 
         // creating a token
         xios
-          .post("jwt", { email: user.Eam })
+          .post("jwt", { email: user?.email })
           .then((res) => console.log(res.data))
-          .catch(err => console.log(err))
+          .catch((err) => console.log(err));
       })
       .catch((err) => toast.error(err.toString()));
   };
@@ -37,6 +37,12 @@ const SignIn = () => {
       .then(() => {
         toast.success("Signed in with google");
         goTo(location.state ? location.state : "/");
+
+        // creating a token
+        xios
+          .post("jwt", { email: user?.email })
+          .then((res) => console.log(res.data))
+          .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
   };

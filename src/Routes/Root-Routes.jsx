@@ -45,7 +45,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/food-details/:id",
-        element: <SinngleFoodPage/>
+        element: <Guard><SinngleFoodPage/></Guard>
       },
 
       // User's personal info

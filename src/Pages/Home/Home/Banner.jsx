@@ -22,10 +22,7 @@ const Banner = () => {
             Hello world
           </h1>
           <p className={`${theme == "dark" ? "text-[#e3e3e3]" : ""} space-y-2`}>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt
-            quibusdam ipsa, sapiente facere pariatur excepturi mollitia aliquid
-            laboriosam illum rerum voluptas molestias quae enim esse
-            voluptatibus maxime ab commodi labore!
+          A trendy burger joint with a twist! Our mouthwatering burgers are made with locally sourced ingredients and served with a side of crispy, golden fries. From classic cheeseburgers to unique gourmet creation
           </p>
           <Link to='/all-menu'>
           <button className="btn mt-5 border-none bg-primaryColor text-[white]">All menues</button>         

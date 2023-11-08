@@ -25,7 +25,6 @@ const SignUp = () => {
   
 
     // data for storing in database
-    const userInfo = {name,email,photo}
 
     // input validation
     const hasError = validate(name, email, photo, password);
@@ -48,7 +47,7 @@ const SignUp = () => {
 
     
         // creating a token
-         xios.post('jwt',{email:user.Eam})
+         xios.post('jwt',{email:user?.email})
          .then(res => console.log(res.data))
       })
       .catch((err) => toast.error(err.toString()));

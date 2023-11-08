@@ -24,12 +24,8 @@ import toast from "react-hot-toast";
 export default function NavBar() {
   const { theme } = useTheme();
   // const themeColor = theme == 'dark'?' text-white':''
-  const {user,logOut}= useAuth()
-  const [isLoggedOut,setIsLoggedOut]= useState(!user)
-
-
-
-  
+  const { user, logOut } = useAuth();
+  const [isLoggedOut, setIsLoggedOut] = useState(!user);
 
   useEffect(() => {
     if (!user) {
@@ -42,7 +38,7 @@ export default function NavBar() {
   const handleSignOut = () => {
     logOut()
       .then(() => {
-        toast.success('Signed out')
+        toast.success("Signed out");
         setIsLoggedOut(true);
       })
       .catch((err) => toast.error(err.toString()));
@@ -67,7 +63,11 @@ export default function NavBar() {
           theme === "dark" ? "text-[white]" : ""
         }`}
         justify="center">
-        <NavLink exact to="/" activeClassName="active" className='flex items-center '>
+        <NavLink
+          exact
+          to="/"
+          activeClassName="active"
+          className="flex items-center ">
           <span>Home</span>
         </NavLink>
 
@@ -78,63 +78,69 @@ export default function NavBar() {
         <NavLink to="/blog" activeClassName="active">
           Blog
         </NavLink>
-        {
-          user && !isLoggedOut ?'':
-        <NavLink to="/sign-in" activeClassName="active">
-          Sign in
-        </NavLink>
-        }
+        {user && !isLoggedOut ? (
+          ""
+        ) : (
+          <NavLink to="/sign-in" activeClassName="active">
+            Sign in
+          </NavLink>
+        )}
       </NavbarContent>
       <ThemeSwitcher></ThemeSwitcher>
 
-
-      {
-        user && !isLoggedOut &&
-      <NavbarContent as="div" justify="end">
-        <Dropdown placement="bottom-end">
-          <DropdownTrigger>
-            <Avatar
-              isBordered
-              as="button"
-              className="transition-transform"
-              color="secondary"
-              name="Jason Hughes"
-              size="sm"
-              src={user.photoURL?user.photoURL:'https://winaero.com/blog/wp-content/uploads/2018/08/Windows-10-user-icon-big.png'}
-            />
-          </DropdownTrigger>
-          <DropdownMenu
-            aria-label="Profile Actions"
-            className={`${
-              theme == "dark" ? "bg-[black] text-[white]" : ""
-            } py-3`}
-            variant="flat">
-            <DropdownItem key="profile" className="h-14 gap-2">
-              <p className="font-semibold">Signed in as</p>
-              <p className="font-semibold">zoey@example.com</p>
-            </DropdownItem>
-            <DropdownItem key="my-profile">
-              <Link to="/profile">Profile</Link>
-            </DropdownItem>
-            <DropdownItem key="added-food">
-              <Link to='/added-food'>Added Food</Link>
-            </DropdownItem>
-            <DropdownItem key="add-food">
-              <Link to='/add-food'>Add Food</Link>
-            </DropdownItem>
-            <DropdownItem key="system">
-            <Link to='/orderlist'>Order list</Link>=
-            </DropdownItem>
-            <DropdownItem key="configurations">Configurations</DropdownItem>
-            <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-            <DropdownItem key="logout" color="danger">
-            <button onClick={handleSignOut}> Sign out </button>
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
-      </NavbarContent>
-
-      }
+      {user && !isLoggedOut && (
+        <NavbarContent as="div" justify="end">
+          <Dropdown placement="bottom-end">
+            <DropdownTrigger>
+              <Avatar
+                isBordered
+                as="button"
+                className="transition-transform"
+                color="secondary"
+                name="Jason Hughes"
+                size="sm"
+                src={
+                  user.photoURL
+                    ? user.photoURL
+                    : "https://winaero.com/blog/wp-content/uploads/2018/08/Windows-10-user-icon-big.png"
+                }
+              />
+            </DropdownTrigger>
+            <DropdownMenu
+              aria-label="Profile Actions"
+              className={`${
+                theme == "dark" ? "bg-[black] text-[white]" : ""
+              } py-3`}
+              variant="flat">
+              <DropdownItem key="profile" className="h-14 gap-2">
+                <p className="font-semibold">Signed in as</p>
+                <p className="font-semibold">zoey@example.com</p>
+              </DropdownItem>
+              <DropdownItem key="my-profile">
+                <Link to="/profile">Profile</Link>
+              </DropdownItem>
+              <DropdownItem key="added-food">
+                <Link to="/added-food">Added Food</Link>
+              </DropdownItem>
+              <DropdownItem key="add-food">
+                <Link to="/add-food">Add Food</Link>
+              </DropdownItem>
+              <DropdownItem key="system">
+                <Link to="/orderlist">Order list</Link>=
+              </DropdownItem>
+              <DropdownItem key="configurations">Configurations</DropdownItem>
+              <DropdownItem key="help_and_feedback">
+                Help & Feedback
+              </DropdownItem>
+              <DropdownItem key="logout" color="danger">
+                <Link to="/">
+                  <button onClick={handleSignOut}> Sign out </button>
+                </Link>
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        </NavbarContent>
+      )}
     </Navbar>
   );
 }

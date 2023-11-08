@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetData } from "../../🔗Hook/httpRequests";
-import Spinner from "../../Components/Shared/Spinner/Spinner";
 
 import "./food.css";
 import AnimatedBlub from "../../Components/Shared/animatedBlub/AnimatedBlub";
@@ -12,11 +11,12 @@ import green_leaf from "../../assets/img/greenloaf.png";
 import BackgroundWithImage from "../../Utils/dynamic-style/BackgroundImage";
 import Swal from "sweetalert2";
 import { useState } from "react";
-import getCurrentDate from "../../Utils/Date/currentDate";
+
 import { useAuth } from "../../Utils/useAuthHelper";
 import { useAxios } from "../../🔗Hook/useAxios";
 import PurchasePage from "./PurchasePage";
-import Guard from "../../Components/Shared/Private/Guard";
+import Spinner from "../../Components/Shared/Spinner/Spinner";
+import getCurrentDate from "../../Utils/Date/currentDate";
 
 const SingleFoodPage = () => {
   const { id } = useParams();
@@ -24,20 +24,26 @@ const SingleFoodPage = () => {
   const { user } = useAuth();
   const xios = useAxios();
 
-  const { data, isLoading } = useGetData({
+
+  const { data,isLoading } = useGetData({
     endpoint: `food/${id}`,
     key: "food",
   });
 
+  
+
   const goTo = useNavigate();
   const [totalOrders, setTotalOrders] = useState(0);
   // adding order date nad email to food data
-  const orderedData = getCurrentDate(isLoading, data, user);
-
-  console.log(orderedData)
   
 
-  if (isLoading) return <Spinner />;
+
+
+  if(isLoading) return <Spinner></Spinner>
+
+
+  const orderedData = getCurrentDate(isLoading,data,user)
+
 
   const {
     foodName,
@@ -49,7 +55,7 @@ const SingleFoodPage = () => {
     made_by,
     quantity,
     orders,
-  } = data;
+  } = data || {};
 
   // Drawer
   const handleOrderPurchase = async () => {
@@ -126,7 +132,7 @@ const SingleFoodPage = () => {
               <p className=" font-normal ">Made by: {made_by} </p>
               <p className=" font-normal pb-5 w-2/3">{description}</p>
 
-            <Guard>
+
 
 
               {/* Drawer to purchase */}
@@ -167,7 +173,7 @@ const SingleFoodPage = () => {
                 </div>
               </div>
               {/* ============ */}
-            </Guard>
+          
 
             </div>
           </div>
