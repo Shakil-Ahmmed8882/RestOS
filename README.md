@@ -1,4 +1,4 @@
-# RestOS
+# Restaurant Oparating System
 
 Welcome to the README for my Restaurant Management Website project. This project is designed to help users manage and explore restaurant-related information. Below are the main features of this project:
 
@@ -26,3 +26,6 @@ These are the core features that allow users to explore, add, edit, and manage f
 You can access the live version of this website by clicking [here](https://restos-748ac.web.app/).
 
 Feel free to customize the link and text as per your actual live link.
+
+
+## Thank you

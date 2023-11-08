@@ -41,7 +41,10 @@ import { Link } from "react-router-dom";
             <Typography variant="h4" color="blue-gray" className="mb-2">
               {foodName}
             </Typography>
-            <Typography variant="h4" color="blue-gray" className="mb-2">
+            <Typography  color="blue-gray" className="mb-2">
+              <p>Orders: {orders}</p>
+            </Typography>
+            <Typography color="blue-gray" className="mb-2">
               {foodCategory}
             </Typography>
             <Typography color="gray" className="mb-8 font-normal">

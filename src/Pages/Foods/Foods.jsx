@@ -63,7 +63,7 @@ const Foods = () => {
   return (
     <div className={`pb-9 ${themeColor}`}>
       <div className={`h-[70vh] flex justify-center relative items-center ${theme === "dark" ? "bg-dark-food" : "bg-light-food"}`}>
-        <div className="relative">
+        <div className="relative md:w-[300px]">
         <input
           onChange={handleSearchFood}
           type="text"

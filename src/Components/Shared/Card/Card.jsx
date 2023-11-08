@@ -4,6 +4,7 @@ import details_icon from '../../../assets/img/details.gif'
 import { useTheme } from 'next-themes';
 import darkDetail from '../../../assets/img/darkDetail.gif'
 import { useNavigate } from 'react-router-dom';
+import { data } from 'autoprefixer';
 
 
 export default function Card({ food }) {
@@ -27,6 +28,7 @@ export default function Card({ food }) {
     <p>category: {foodCategory}</p>
     <p>Price: ${price}</p>
     <p>Quantity: {quantity}</p>
+    <p>Orders: {food.orders}</p>
     <p>Get RestOS new food collection and high qulity food with delicious flavour</p>
 
     </div>

@@ -8,8 +8,9 @@ const PurchasePage = ({ handleOrderPurchase, data }) => {
       const {user} = useAuth()
       const {theme} = useTheme()
 
-      console.log(Object.keys(data).join(','))
-      const {_id,foodName,foodImage,foodCategory,price,orders,quantity,made_by,food_origin,description,reviews,orderedDate,email} = data
+      // console.log(Object.keys(data).join(','))
+      // const {_id,foodName,foodImage,foodCategory,price,orders,quantity,made_by,food_origin,description,reviews,orderedDate,email} = data
+      const {foodName,foodImage,price} = data
 
 
   return (
