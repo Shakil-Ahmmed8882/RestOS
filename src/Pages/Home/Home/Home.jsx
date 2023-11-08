@@ -5,6 +5,8 @@ import TopSellingFood from "./Top-selling-food/TopSellingFood";
 const Home = () => {
   const { theme } = useTheme();
 
+
+
   return (
     <div className={`h-[80vh ${theme == "light" ? "" : "bg-bgDark"}`}>
       <Banner></Banner>

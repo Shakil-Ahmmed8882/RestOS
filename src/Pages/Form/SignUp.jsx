@@ -8,6 +8,7 @@ import { validate } from "../../Utils/Validate";
 
 const SignUp = () => {
   const { theme } = useTheme();
+  const {user} = useAuth()
   const { createUser, updateUserInfo } = useAuth();
   const goTo = useNavigate();
   const xios = useAxios()
@@ -21,9 +22,10 @@ const SignUp = () => {
     const name = data.name;
     const photo = data.photo;
     const password = data.password;
+  
 
     // data for storing in database
-    const user = {name,email,photo}
+    const userInfo = {name,email,photo}
 
     // input validation
     const hasError = validate(name, email, photo, password);
@@ -38,13 +40,20 @@ const SignUp = () => {
         toast.success("Successfully created an account");
         goTo(location.state ? location.state : "/");
         updateUserInfo(name, photo);
+
+        // storing user here
         xios.post('user',user)
         .then(res => console.log(res.data))
         .catch(err => console.log(err))
-        
+
+    
+        // creating a token
+         xios.post('jwt',{email:user.Eam})
+         .then(res => console.log(res.data))
       })
       .catch((err) => toast.error(err.toString()));
   };
+
 
   return (
     <div

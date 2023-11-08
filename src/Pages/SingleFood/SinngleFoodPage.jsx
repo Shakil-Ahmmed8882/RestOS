@@ -16,6 +16,7 @@ import getCurrentDate from "../../Utils/Date/currentDate";
 import { useAuth } from "../../Utils/useAuthHelper";
 import { useAxios } from "../../🔗Hook/useAxios";
 import PurchasePage from "./PurchasePage";
+import Guard from "../../Components/Shared/Private/Guard";
 
 const SingleFoodPage = () => {
   const { id } = useParams();
@@ -125,6 +126,9 @@ const SingleFoodPage = () => {
               <p className=" font-normal ">Made by: {made_by} </p>
               <p className=" font-normal pb-5 w-2/3">{description}</p>
 
+            <Guard>
+
+
               {/* Drawer to purchase */}
               <div className="drawer drawer-end z-10">
                 <input
@@ -152,6 +156,7 @@ const SingleFoodPage = () => {
                       theme == "dark" ? "" : ""
                     }  text-base-content`}>
                     {/* Sidebar content here */}
+                    L
 
                     <div className=" bg-[white] min-h-[150vh] md:min-h-screen pt-20 overflow-hidden justify-center items-center text-center w-full">
                       <PurchasePage
@@ -162,6 +167,8 @@ const SingleFoodPage = () => {
                 </div>
               </div>
               {/* ============ */}
+            </Guard>
+
             </div>
           </div>
           <img

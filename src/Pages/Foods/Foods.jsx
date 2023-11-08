@@ -25,15 +25,9 @@ const Foods = () => {
   const pages = PagesCount(count?.count, isCountLoading, activePage, itemsPerPage);
   const [searchResult, setSearchResult] = useState([]);
   const [isFiledEmpty,setIsFieldEmpty] = useState(true)
-  // auto foucs input
-  // const inputRef = useRef();
-
-  // useEffect(() => {
-  //   inputRef.current.focus();
-  // }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/foods?page=${activePage}&size=${itemsPerPage}`)
+    fetch(`http://localhost:5000/foods?page=${activePage}&size=${itemsPerPage}`,{credentials:'include'})
       .then((res) => res.json())
       .then((data) => {
         setData(data);
