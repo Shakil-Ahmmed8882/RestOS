@@ -1,36 +1,85 @@
 import Spinner from "../../Components/Shared/Spinner/Spinner";
+import UserTable from "../../Components/Shared/Table/Table";
 import { useAuth } from "../../Utils/useAuthHelper";
 import { useGetData } from "../../🔗Hook/httpRequests";
-
+import { columns} from "../../Components/Shared/Table/data";
+import { useAxios } from "../../🔗Hook/useAxios";
+import { useEffect, useState } from "react";
 
 const Added_Food = () => {
-      const {user} = useAuth()
-      const {data,isLoading} = useGetData({endpoint:`added-food?email=${user?.email}`,key:'added-food'})
-      // console.log(data)
-      
-      if(isLoading) return <Spinner></Spinner>
+  const { user,loading} = useAuth();
+  const xios = useAxios()
+  const [data,setData] = useState([])
+//   const { data, isLoading } = useGetData({
+//     endpoint: `added-food?email=${user?.email}`,
+//     key: "added-food",
+//   });
 
 
-      return (
-            <div className="relative">
-                <h1 className="text-7xl font-bold">Added food</h1>
-                <div className="flex gap-3 flex-wrap justify-center">
-                  {
-                        data?.map(food => <div key={food._id} className="card card-compact w-96 bg-base-100 shadow-xl">
-                        <figure><img src={food.img} alt="Shoes" /></figure>
-                        <div className="card-body">
-                          <h2 className="card-title">{food.name}</h2>
-                          <p>{food.description}</p>
-                          <div className="card-actions justify-end">
-                            <button className="btn btn-primary">Buy Now</button>
-                          </div>
-                        </div>
-                      </div>)
-                  }
 
-                </div>
-            </div>
-      );
+useEffect(()=> {
+      xios.get(`added-food?email=${user?.email}`)
+      .then(res => setData(res.data))   
+
+},[user?.email,xios])
+
+  if (loading) return <Spinner></Spinner>;
+
+
+
+  // const users = [
+  //       {
+  //         id: 1,
+  //         name: "Tony Reichert",
+  //         role: "CEO",
+  //         team: "Management",
+  //         status: "active",
+  //         age: "29",
+  //         avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
+  //         email: "tony.reichert@example.com",
+  //       },
+
+  //     ];
+
+
+
+  const users = [];
+
+
+//   Food
+// Added Time
+// Age
+// Avatar
+// Email
+// ACTIONS
+
+  for (let i = 0; i < data.length; i++) {
+      console.log(data[i])
+    users.push({
+      id: data[i]?._id,
+      name: data[i]?.name,
+      "Added Time": data[i]?.orderedDate,
+      status: "active",
+      age: "29",
+      avatar: data[i]?.img,
+      email: data[i]?.add_by
+    });
+  }
+
+
+
+  return (
+    <div className="relative">
+      <h1 className="text-7xl font-bold">Added food</h1>
+      <div className="flex gap-3 flex-wrap justify-center">
+        <div>
+          <h1>{data?.length == 0?'loading':data.length}</h1>
+        </div>
+
+        <UserTable columns={columns} users={users} />
+      </div>
+    </div>
+  );
 };
 
 export default Added_Food;

@@ -7,9 +7,11 @@ import { useAxios } from "../../🔗Hook/useAxios";
 const OrderList = () => {
       
       const xios = useAxios()
-      const {user} = useAuth()
+      const {user,loading} = useAuth()
+      const {data,isLoading,refetch} = useGetData({endpoint:`ordered-list?email=${user?.email}`,key:'/ordered-list'})
 
-      const {data,isLoading,refetch} = useGetData({endpoint:`ordered-list?email=${user.email}`,key:'/ordered-list'})
+      if(loading) return
+
 
       if(isLoading) return <Spinner></Spinner>
 

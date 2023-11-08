@@ -16,7 +16,7 @@ const getCurrentDate = (isLoading,data,user) => {
   data.orderedDate = formattedOrderDate
   data.email = user?.email
   const orderedData = data
-
+  delete data._id;
   return orderedData
 }
 

@@ -82,6 +82,7 @@ const PurchasePage = ({ handleOrderPurchase, data }) => {
 // Define the PropTypes for handleOrderPurchase
 PurchasePage.propTypes = {
   handleOrderPurchase: PropTypes.func.isRequired,
+  data: PropTypes.array.isRequired,
 };
 
 export default PurchasePage;

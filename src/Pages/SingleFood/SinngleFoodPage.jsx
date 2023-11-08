@@ -33,6 +33,9 @@ const SingleFoodPage = () => {
   // adding order date nad email to food data
   const orderedData = getCurrentDate(isLoading, data, user);
 
+  console.log(orderedData)
+  
+
   if (isLoading) return <Spinner />;
 
   const {

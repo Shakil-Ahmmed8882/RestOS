@@ -3,6 +3,7 @@ import {useNavigate } from "react-router-dom";
 import { useAuth } from "../../Utils/useAuthHelper";
 import { useAxios } from "../../🔗Hook/useAxios";
 import Swal from "sweetalert2";
+import getCurrentDate from "../../Utils/Date/currentDate";
 // import {NotificationManager} from 'react-notifications';
 // import toast from "react-hot-toast";
 // import { useAxios } from "../../🔗Hook/useAxios";
@@ -20,6 +21,10 @@ const Added_Food = () => {
         const form = new FormData(e.target);
         const data = Object.fromEntries(form);
 
+        console.log(data)
+          
+        const addedData = getCurrentDate('',data,user,'added_date')
+        console.log(addedData)
 
         xios.post('add-food',data)
         .then(res => {
@@ -30,7 +35,7 @@ const Added_Food = () => {
                         icon: "success"
                       });
                       e.target.reset()
-                      goTo('/')
+                      // goTo('/')
             }
         })
         .catch(err => console.log(err))
@@ -59,7 +64,7 @@ const Added_Food = () => {
             type="text"
             placeholder="Name"
             name="name"
-            required // Marked as required
+            // required // Marked as required
             className={`input input-bordered ${
               theme === "dark" ? "bg-[#3c3c3c] text-[white]" : ""
             }`}
@@ -80,7 +85,7 @@ const Added_Food = () => {
             type="text"
             placeholder="Food image URL"
             name="img"
-            required // Marked as required
+            // // required // Marked as required
             className={`input input-bordered ${
               theme === "dark" ? "bg-[#3c3c3c] text-[white]" : ""
             }`}
@@ -101,7 +106,7 @@ const Added_Food = () => {
             type="text"
             placeholder="Food Category"
             name="category"
-            required // Marked as required
+            // // required // Marked as required
             className={`input input-bordered ${
               theme === "dark" ? "bg-[#3c3c3c] text-[white]" : ""
             }`}
@@ -123,7 +128,7 @@ const Added_Food = () => {
             type="number"
             placeholder="Quantity"
             name="price"
-            required // Marked as required
+            // // required // Marked as required
             className={`input input-bordered ${
               theme === "dark" ? "bg-[#3c3c3c] text-[white]" : ""
             }`}
@@ -144,7 +149,7 @@ const Added_Food = () => {
             type="number"
             placeholder="Quantity"
             name="quantity"
-            required // Marked as required
+            // // required // Marked as required
             className={`input input-bordered ${
               theme === "dark" ? "bg-[#3c3c3c] text-[white]" : ""
             }`}
@@ -166,7 +171,7 @@ const Added_Food = () => {
             name="add_by"
             defaultValue={user?.email}
             readOnly
-            required // Marked as required
+            // // required // Marked as required
             className={`input input-bordered ${
               theme === "dark" ? "bg-[#3c3c3c] text-[white]" : ""
             }`}
@@ -188,7 +193,7 @@ const Added_Food = () => {
             type="text"
             placeholder="origin"
             name="origin"
-            required // Marked as required
+            // // required // Marked as required
             className={`input input-bordered ${
               theme === "dark" ? "bg-[#3c3c3c] text-[white]" : ""
             }`}
@@ -212,7 +217,7 @@ const Added_Food = () => {
             placeholder="Description"
             type="text"
             name="description"
-            required // Marked as required
+            // // required // Marked as required
           ></textarea>
         </div>
         <div className={`form-control mt-6`}>

@@ -3,7 +3,7 @@ import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, C
 import {EditIcon} from "./EditIcon";
 import { DeleteIcon } from "./deleteIcon";
 import {EyeIcon} from "./EyeIcon";
-import {columns, users} from "./data";
+
 
 const statusColorMap = {
   active: "success",
@@ -11,7 +11,7 @@ const statusColorMap = {
   vacation: "warning",
 };
 
-export default function UserTable() {
+export default function UserTable({columns,users}) {
   const renderCell = React.useCallback((user, columnKey) => {
     const cellValue = user[columnKey];
 
