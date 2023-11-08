@@ -1,44 +1,67 @@
 import { useTheme } from "next-themes";
-import {useNavigate } from "react-router-dom";
-import { useAuth } from "../../Utils/useAuthHelper";
-import { useAxios } from "../../🔗Hook/useAxios";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../../../Utils/useAuthHelper";
+import { useAxios } from "../../../🔗Hook/useAxios";
 import Swal from "sweetalert2";
-import getCurrentDate from "../../Utils/Date/currentDate";
+import getCurrentDate from "../../../Utils/Date/currentDate";
+import { useGetData } from "../../../🔗Hook/httpRequests";
+import InfiniteSpinner from "../../../Components/Shared/Spinner/InfiniteSpinner";
 // import {NotificationManager} from 'react-notifications';
 // import toast from "react-hot-toast";
 // import { useAxios } from "../../🔗Hook/useAxios";
 
-const Added_Food = () => {
+const AddedFoodUpdate = () => {
   const { theme } = useTheme();
   const { user } = useAuth();
 
-    const goTo = useNavigate();
-    const xios = useAxios()
+  const goTo = useNavigate();
+  const { id } = useParams();
+
+  const xios = useAxios();
+  const { data, isLoading } = useGetData({
+    endpoint: `added-food?id=${id}`,
+    key: "get-single-food",
+  });
+
+  if (isLoading) return <InfiniteSpinner></InfiniteSpinner>;
+
+  const {
+    _id,
+    name,
+    img,
+    category,
+    price,
+    quantity,
+    origin,
+    description,
+  } = data[0]
 
 
-  const handleAddFood = (e) => {
-        e.preventDefault();
-        const form = new FormData(e.target);
-        const data = Object.fromEntries(form);
+  const handleUpdate = (e) => {
 
-        console.log(data)
-          
-        const addedData = getCurrentDate('',data,user,'added_date')
-        console.log(addedData)
 
-        xios.post('add-food',data)
-        .then(res => {
-            if(res.data.insertedId){
-                  Swal.fire({
-                        title: "Added!",
-                        text: "Press ok to go home!",
-                        icon: "success"
-                      });
-                      e.target.reset()
-                      goTo('/added-food')
-            }
-        })
-        .catch(err => console.log(err))
+    e.preventDefault();
+    const form = new FormData(e.target);
+    const data = Object.fromEntries(form);
+
+
+    const updatedFoodWithDate = getCurrentDate("", data, user, "added_date");
+
+    console.log(updatedFoodWithDate)
+    xios.put(`update-food/${_id}`, updatedFoodWithDate)
+      .then((res)=> {
+        if (res.data.modifiedCount > 0) {
+          console.log(res.data)
+          Swal.fire({
+            title: "Updated!",
+            text: "Press ok to go home!",
+            icon: "success",
+          });
+          e.target.reset();
+          goTo('/added-food')
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -49,7 +72,7 @@ const Added_Food = () => {
 >
   <div className="card flex-shrink-0  w-full flex-1 min-h-screen  justify-center ">
     <div className="flex flex-col justify-center">
-      <form onSubmit={handleAddFood} className={``}>
+      <form onSubmit={handleUpdate} className={``}>
         <div className="md:flex md:w-[800px] mx-3 md:mx-auto gap-8 justify-center " >
         <div className="flex-1">
         <div className="form-control w-full">
@@ -65,6 +88,7 @@ const Added_Food = () => {
           <input
             type="text"
             placeholder="Name"
+            defaultValue={name}
             name="name"
             // required // Marked as required
             className={`input input-bordered ${
@@ -86,6 +110,7 @@ const Added_Food = () => {
           <input
             type="text"
             placeholder="Food image URL"
+            defaultValue={img}
             name="img"
             // // required // Marked as required
             className={`input input-bordered ${
@@ -108,6 +133,7 @@ const Added_Food = () => {
             type="text"
             placeholder="Food Category"
             name="category"
+            defaultValue={category}
             // // required // Marked as required
             className={`input input-bordered ${
               theme === "dark" ? "bg-[#3c3c3c20] text-[white]" : ""
@@ -130,6 +156,7 @@ const Added_Food = () => {
             type="number"
             placeholder="price"
             name="price"
+            defaultValue={price}
             // // required // Marked as required
             className={`input input-bordered ${
               theme === "dark" ? "bg-[#3c3c3c20] text-[white]" : ""
@@ -176,6 +203,7 @@ const Added_Food = () => {
           <input
             type="text"
             placeholder="origin"
+            defaultValue={origin}
             name="origin"
             // // required // Marked as required
             className={`input input-bordered ${
@@ -200,6 +228,7 @@ const Added_Food = () => {
             }`}
             placeholder="Description"
             type="text"
+            defaultValue={description}
             name="description"
             // // required // Marked as required
           ></textarea>
@@ -219,6 +248,7 @@ const Added_Food = () => {
             type="number"
             placeholder="Quantity"
             name="quantity"
+            defaultValue={quantity}
             // // required // Marked as required
             className={`input input-bordered ${
               theme === "dark" ? "bg-[#3c3c3c20] text-[white]" : ""
@@ -247,4 +277,4 @@ const Added_Food = () => {
   );
 };
 
-export default Added_Food;
+export default AddedFoodUpdate;

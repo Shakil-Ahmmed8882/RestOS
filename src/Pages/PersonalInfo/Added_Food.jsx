@@ -1,81 +1,62 @@
 import Spinner from "../../Components/Shared/Spinner/Spinner";
 import UserTable from "../../Components/Shared/Table/Table";
-import { useAuth } from "../../Utils/useAuthHelper";
-import { useGetData } from "../../🔗Hook/httpRequests";
-import { columns} from "../../Components/Shared/Table/data";
+
+import { BiSolidPencil } from "react-icons/bi";
+
+import { columns } from "../../Components/Shared/Table/data";
 import { useAxios } from "../../🔗Hook/useAxios";
 import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
+import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../Providers/🛡️AuthProvider";
 
 const Added_Food = () => {
-  const { user,loading} = useAuth();
-  const xios = useAxios()
-  const [data,setData] = useState([])
-//   const { data, isLoading } = useGetData({
-//     endpoint: `added-food?email=${user?.email}`,
-//     key: "added-food",
-//   });
+  const { user, loading } = useContext(AuthContext);
+  const xios = useAxios();
+  const [data, setData] = useState([]);
+  const { theme } = useTheme();
 
-
-
-useEffect(()=> {
-      xios.get(`added-food?email=${user?.email}`)
-      .then(res => setData(res.data))   
-
-},[user?.email,xios])
+  useEffect(() => {
+    xios
+      .get(`added-food?email=${user?.email}`)
+      .then((res) => setData(res.data));
+  }, [user?.email, xios]);
 
   if (loading) return <Spinner></Spinner>;
 
-
-
-  // const users = [
-  //       {
-  //         id: 1,
-  //         name: "Tony Reichert",
-  //         role: "CEO",
-  //         team: "Management",
-  //         status: "active",
-  //         age: "29",
-  //         avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-  //         email: "tony.reichert@example.com",
-  //       },
-
-  //     ];
-
-
-
+  //create an array of object using nextui table
   const users = [];
 
-
-//   Food
-// Added Time
-// Age
-// Avatar
-// Email
-// ACTIONS
-
   for (let i = 0; i < data.length; i++) {
-      console.log(data[i])
+    console.log(data[i]);
     users.push({
       id: data[i]?._id,
       name: data[i]?.name,
       "Added Time": data[i]?.orderedDate,
       status: "active",
-      age: "29",
+      price: "$" + data[i]?.price,
       avatar: data[i]?.img,
-      email: data[i]?.add_by
+      email: data[i]?.add_by,
+      delete: (
+        <Link
+          to={`/food-update/${data[i]._id}`}
+          className={` text-[rgb(5,19,20)] ${
+            theme == "dark"
+              ? "bg-[#ffffff13] btn border-none hover:bg-[#000000a0]"
+              : "btn"
+          }`}>
+          <BiSolidPencil className="text-xl text-[#00e1ff]">
+            Update
+          </BiSolidPencil>
+        </Link>
+      ),
     });
   }
 
-
-
   return (
     <div className="relative">
-      <h1 className="text-7xl font-bold">Added food</h1>
       <div className="flex gap-3 flex-wrap justify-center">
-        <div>
-          <h1>{data?.length == 0?'loading':data.length}</h1>
-        </div>
-
         <UserTable columns={columns} users={users} />
       </div>
     </div>

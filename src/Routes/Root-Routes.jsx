@@ -14,6 +14,7 @@ import Guard from "../Components/Shared/Private/Guard";
 import Add_Food from "../Pages/PersonalInfo/Add_Food";
 import OrderList from "../Pages/Order-list/OrderList";
 import AllMenu from "../Pages/Home/Home/AllMenu";
+import AddedFoodUpdate from "../Pages/PersonalInfo/AddedFoodUpdate/AddedFoodUpdate";
 
 
 const router = createBrowserRouter([
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
       {
         path: "/added-food",
         element: <Added_Food/>
+      },
+      {
+        path: "/food-update/:id",
+        element: <AddedFoodUpdate/>
       },
       {
         path: "/add-food",
