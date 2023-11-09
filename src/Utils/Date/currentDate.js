@@ -1,6 +1,6 @@
 const getCurrentDate = (isLoading,data,user) => {
 
-  if(data.length <= 0){
+  if(!data){
     return 'loading'
   } 
   

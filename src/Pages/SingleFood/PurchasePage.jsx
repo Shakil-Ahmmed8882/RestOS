@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import './food.css'
 import AnimatedBlub from "../../Components/Shared/animatedBlub/AnimatedBlub";
 import { useAuth } from "../../Utils/useAuthHelper";
+import { Spinner } from "@nextui-org/react";
 
 const PurchasePage = ({ handleOrderPurchase, data }) => {
       const {user} = useAuth()
@@ -10,6 +11,7 @@ const PurchasePage = ({ handleOrderPurchase, data }) => {
 
       // console.log(Object.keys(data).join(','))
       // const {_id,foodName,foodImage,foodCategory,price,orders,quantity,made_by,food_origin,description,reviews,orderedDate,email} = data
+      if(!data) return <Spinner></Spinner>
       const {foodName,foodImage,price} = data
 
 

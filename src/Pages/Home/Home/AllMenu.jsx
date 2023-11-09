@@ -50,9 +50,9 @@ const AllMenu = [
 function MenuList() {
 const {theme} = useTheme()
   return (
-    <div className={`md:flex flex-col md:justify-center items-center min-h-screen  ${theme == 'dark'?'bg-[#212121] text-[white]':''}`}>
+    <div className={`lg:flex flex-col md:justify-center items-center min-h-screen  ${theme == 'dark'?'bg-[#212121] text-[white]':''}`}>
       <h1 className="text-3xl py-8 md:text-4xl text-center font-bold p-2">Menu Items Taken Before Ordering</h1>
-      <ul className="grid grid-cols-2 md:flex justify-center  items-center  md:gap-20">
+      <ul className="grid grid-cols-2 px-3 bg-blend-multiply lg:flex justify-center  items-center  md:gap-20">
         {AllMenu.map((item) => (
           <li key={item._id} className={`${theme == 'dark'?'md:bg-[#0000005e] p-6 rounded-lg text-[white]':''} p-2`}>
             <h2 className={`${theme == 'dark'?'text-primaryColor':''} font-bold text-[18px] pb-2`}>{item.foodName}</h2>

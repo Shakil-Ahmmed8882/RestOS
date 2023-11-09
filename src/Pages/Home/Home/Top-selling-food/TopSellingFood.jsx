@@ -15,7 +15,9 @@ const TopSellingFood = () => {
   if (isLoading) return <Spinner></Spinner>;
 
   return (
-    <div className={` max-w-6xl mx-auto ${theme == 'dark'?'bg-[#1b1b1b]':'bg-[white]'} md:flex pt-8   gap-3 mt-24 text-center`}>
+
+    <div className={`${theme == 'dark'?'bg-[#1b1b1b]':'bg-[white]'} w-full`}>
+    <div className={` max-w-6xl mx-auto md:flex pt-8   gap-3 mt-24 text-center`}>
       <div className=" flex-1 w-[500px]">
         <img src="https://www.themealdb.com/images/media/meals/xxyupu1468262513.jpg" className="w-full flex-1 h-full object-cover" alt="" />
       </div>
@@ -31,6 +33,8 @@ const TopSellingFood = () => {
 
     </div>
     </div>
+    </div>
+    
   );
 };
 
