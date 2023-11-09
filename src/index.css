@@ -1,6 +1,7 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Poppins:ital,wght@0,400;0,600;0,700;1,700&display=swap");
 
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -14,9 +15,6 @@
             animation-delay: 4s;
       }
 }
-
-
-
 
 
 
@@ -38,3 +36,4 @@ body {
       filter: blur(-100px);
       background-blend-mode: color-darken;
 }
+

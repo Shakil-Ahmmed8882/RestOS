@@ -15,7 +15,7 @@ const TopSellingFood = () => {
   if (isLoading) return <Spinner></Spinner>;
 
   return (
-    <div className={`${theme == 'dark'?'bg-[#4C4C4C]':'bg-[white]'} pt-8  mt-24 text-center`}>
+    <div className={` ${theme == 'dark'?'bg-[#1b1b1b]':'bg-[white]'} pt-8  mt-24 text-center`}>
         <h1 className={`text-3xl md:text-5xl lg:text-6xl font-bold pb-1 text-center`}>Top selling foods</h1>
         <p className="w-[60%] my-2 pb-8 mx-auto">A diverse restaurant serving delicious cuisine from around the world, offering a variety of dishes to satisfy every palate. Whether you're a fan of spicy Mexican, savory Italian, or exotic Asian  of global cuisine at its finest!" </p>
       <div className="text-center min-h-screen  max-w-6xl mx-auto responsive-grid-top-selling-food gap-8 z-10">

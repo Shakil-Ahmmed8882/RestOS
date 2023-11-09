@@ -9,8 +9,10 @@ import "./slider.css";
 
 // import required modules
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import { useTheme } from "next-themes";
 
 export default function Slider() {
+  const {theme} = useTheme()
   return (
     <>
       <Swiper
@@ -23,7 +25,7 @@ export default function Slider() {
 
 
         modules={[Autoplay, Pagination, Navigation]}
-        className="mySwiper">
+        className={`mySwiper ${theme == 'dark'?'swiper-dark':''}`}>
         <SwiperSlide  className="w-11">
           <img 
             src="https://themealdb.com/images/ingredients/Lime.png"

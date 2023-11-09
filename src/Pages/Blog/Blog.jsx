@@ -1,12 +1,15 @@
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import light_gif from "../../assets/img/light-gift.gif";
 import dark_gif from "../../assets/img/darkfift.gif";
-import { useTheme } from "@material-tailwind/react";
 import './blog.css'
+import { useTheme } from "next-themes";
 
 
 export default function App() {
-  const { theme } = useTheme();
+  const { theme } = useTheme()
+  const color = theme == 'dark'?'gray' : 'gray';
+
+  console.log(color)
   const ansOne = "One-way data binding is a data flow where data updates from a source to a target (view/UI), but changes in the target don't affect React Props: In React, you can pass data from a parent component to a child component using props. The parent component serves as the source of data, and the child component is the target. Changes in the parent component's data are automatically reflected in the child component. However, if the child component modifies the prop, it won't affect the parent component's original data. This is a classic example of one-way data binding in React"
 
 
@@ -18,23 +21,23 @@ export default function App() {
   return (
       <div className={`h-screen flex flex-col-reverse md:flex-row justify-center ${theme == 'dark'?'text-[white]':''} items-center `}>
       <Accordion variant="splitted">
-        <AccordionItem key="1" aria-label="Accordion 1"  title="What is one way data binding?
+        <AccordionItem key="1" style={{color: color}}  aria-label="Accordion 1"  title="What is one way data binding?
 
 ">
-      <div className={`${theme == 'dark' ? 'text-white bg-primaryColor' : 'text-black bg-customColor'}`}>
-      {ansOne}
-    </div>
+  {
+    ansOne
+  }
         </AccordionItem>
-        <AccordionItem key="2" aria-label="Accordion 2" title="what is npm in node js?">
+        <AccordionItem key="2" style={{color: color}} aria-label="Accordion 2" title="what is npm in node js?">
           {ansTwo}
         </AccordionItem>
-        <AccordionItem key="3" aria-label="Accordion 3" title="what is the difference betweeen mongoddb data base vs MySQL?
+        <AccordionItem key="3" style={{color: color}} aria-label="Accordion 3" title="what is the difference betweeen mongoddb data base vs MySQL?
 
 ">
           {ansTheree}
         </AccordionItem>
       </Accordion>
-      <div className="w-2/3">
+      <div className="w-1/3">
         {theme == "light" ? (
           <img src={light_gif} alt="" />
         ) : (

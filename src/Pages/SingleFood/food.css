@@ -13,11 +13,11 @@
     }
     
     .text-gradient {
-      background-clip: text;
-      color: transparent;
-      background-image: linear-gradient(to right, #ee8ee2, #e52e71, #ff92d9);
-      background-size: 200% 100%;
-      animation: gradientAnimation 4s linear infinite;
+      background-clip: text !important; 
+      color: transparent !important; 
+      background-image: linear-gradient(to right, #ee8ee2, #e52e71, #ff92d9) !important; 
+      background-size: 200% 100% !important; 
+      animation: gradientAnimation 4s linear infinite !important; 
     }
     
     

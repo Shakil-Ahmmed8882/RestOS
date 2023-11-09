@@ -8,11 +8,14 @@ const Main = () => {
   return (
     <>
     <div className={`${themeColor}`}>
+      <div className="px-3">
       <NavBar></NavBar>
       <div className="px-0 md:px-0">
       <Outlet></Outlet>
       </div>
       <Footer></Footer>
+
+      </div>
     </div>
     </>
   );
