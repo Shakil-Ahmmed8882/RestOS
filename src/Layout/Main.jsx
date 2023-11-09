@@ -9,7 +9,7 @@ const Main = () => {
     <>
     <div className={`${themeColor}`}>
       <NavBar></NavBar>
-      <div className="px-3 md:px-0">
+      <div className="px-0 md:px-0">
       <Outlet></Outlet>
       </div>
       <Footer></Footer>

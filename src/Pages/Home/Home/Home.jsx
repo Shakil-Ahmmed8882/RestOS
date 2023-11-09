@@ -8,7 +8,7 @@ const Home = () => {
 
 
   return (
-    <div className={`h-[80vh ${theme == "light" ? "" : "bg-bgDark"}`}>
+    <div className={`h-[80vh ${theme == "light" ? "" : "bg-[black]"}`}>
       <Banner></Banner>
       <TopSellingFood></TopSellingFood>
       <MealsCategory></MealsCategory>

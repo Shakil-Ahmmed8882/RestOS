@@ -93,9 +93,9 @@ const SingleFoodPage = () => {
               return;
             }
           });
-      // Letting the user know order been added 
+      // Letting the user know order been added .. 
         Swal.fire({
-          title: "item has been added",
+          title: "item has been booked",
           text: "Have a delicious food",
           icon: "success",
         });
@@ -178,7 +178,7 @@ const SingleFoodPage = () => {
             </div>
           </div>
           <img
-            className="absolute top-80 md:top-32 md:-right-9 -right-20 rotate-6 w-96 -z-10 bg-blend-multiply"
+            className="absolute top-80 md:top-32 md:-right-9 -right-20 rotate-6 w-96  -z-20 filter blur-3xl bg-blend-multiply"
             src={green_leaf}
             alt=""
           />

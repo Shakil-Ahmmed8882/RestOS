@@ -3,7 +3,6 @@ import { useTheme } from "next-themes";
 import { useGetData } from "../../🔗Hook/httpRequests";
 import Card from "../../Components/Shared/Card/Card";
 import Spinner from "../../Components/Shared/Spinner/Spinner";
-import { PagesCount } from "../../Utils/Pagination/Pagination";
 import reviews from "./FloatingContent";
 import FooFloatingReview from "./FooFloatingReview";
 import "./food.css";
@@ -22,12 +21,22 @@ const Foods = () => {
   const [activePage, setActivePage] = useState(2);
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
-  const pages = PagesCount(count?.count, isCountLoading, activePage, itemsPerPage);
+
   const [searchResult, setSearchResult] = useState([]);
   const [isFiledEmpty,setIsFieldEmpty] = useState(true)
+  // pagination
+  const numberOfPages = Math.ceil(count?.count / itemsPerPage)
+  
+  const pages = [0,1]
+  for(let i = 0; i < numberOfPages.length;i++){
+    pages.push(i)
+  }
+  console.log(numberOfPages)
+
+
 
   useEffect(() => {
-    fetch(`http://localhost:5000/foods?page=${activePage}&size=${itemsPerPage}`,{credentials:'include'})
+    fetch(`https://rest-os-server.vercel.app/foods?page=${activePage}&size=${itemsPerPage}`,{credentials:'include'})
       .then((res) => res.json())
       .then((data) => {
         setData(data);

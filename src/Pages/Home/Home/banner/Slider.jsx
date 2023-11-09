@@ -1,57 +1,83 @@
-
-// Import Swiper React components
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/pagination';
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
-import './slider.css';
+import "./slider.css";
 
 // import required modules
-import { Pagination } from 'swiper/modules';
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
 
 export default function Slider() {
   return (
     <>
       <Swiper
-        slidesPerView={4}
-        centeredSlides={true}
         spaceBetween={30}
-        grabCursor={true}
-        pagination={{
-          clickable: true,
+        centeredSlides={true}
+        autoplay={{
+          delay: 2500,
+          disableOnInteraction: false,
         }}
-        modules={[Pagination]}
-        className="mySwiper"
-      >
-        <SwiperSlide><img className='w-32 h-32' src="https://www.themealdb.com/images/category/lamb.png
 
-" alt="" /></SwiperSlide>
-        <SwiperSlide><img className='w-32 h-32' src="https://www.themealdb.com/images/category/miscellaneous.png
 
-" alt="" /></SwiperSlide>
-        <SwiperSlide><img className='w-32 h-32' src="https://www.themealdb.com/images/category/pasta.png
-
-" alt="" /></SwiperSlide>
-        <SwiperSlide><img className='w-32 h-32' src="https://www.themealdb.com/images/category/pork.png
-
-" alt="" /></SwiperSlide>
-        <SwiperSlide><img className='w-32 h-32' src="https://www.themealdb.com/images/category/seafood.png
-
-" alt="" /></SwiperSlide>
-        <SwiperSlide><img className='w-32 h-32' src="https://www.themealdb.com/images/category/side.png
-
-" alt="" /></SwiperSlide>
-        <SwiperSlide><img className='w-32 h-32' src="https://www.themealdb.com/images/category/vegetarian.png
-
-" alt="" /></SwiperSlide>
-        <SwiperSlide><img src="https://www.themealdb.com/images/category/breakfast.png
-
-" alt="" /></SwiperSlide>
-        <SwiperSlide><img src="https://www.themealdb.com/images/category/goat.png
-
-" alt="" /></SwiperSlide>
+        modules={[Autoplay, Pagination, Navigation]}
+        className="mySwiper">
+        <SwiperSlide  className="w-11">
+          <img 
+            src="https://themealdb.com/images/ingredients/Lime.png"
+            alt=""
+          />
+        </SwiperSlide>
+        <SwiperSlide  className="w-11">
+          <img 
+            src="https://themealdb.com/images/ingredients/Chicken.png"
+            alt=""
+          />
+        </SwiperSlide>
+        <SwiperSlide  className="w-11">
+          <img 
+            src="https://themealdb.com/images/ingredients/Raspberries.png"
+            alt=""
+          />
+        </SwiperSlide>
+        <SwiperSlide  className="w-11">
+          <img 
+            src="https://themealdb.com/images/ingredients/Turmeric.png"
+            alt=""
+          />
+        </SwiperSlide>
+        <SwiperSlide  className="w-11">
+          <img 
+            src="https://themealdb.com/images/ingredients/Smoked%20Haddock.png"
+            alt=""
+          />
+        </SwiperSlide>
+        <SwiperSlide  className="w-11">
+          <img 
+            src="https://themealdb.com/images/ingredients/Red%20Chilli.png"
+            alt=""
+          />
+        </SwiperSlide>
+        <SwiperSlide  className="w-11">
+          <img 
+            src="https://themealdb.com/images/ingredients/Lettuce.png"
+            alt=""
+          />
+        </SwiperSlide>
+        <SwiperSlide  className="w-11">
+          <img 
+            src="https://themealdb.com/images/ingredients/Egg%20Yolks.png"
+            alt=""
+          />
+        </SwiperSlide>
+        <SwiperSlide  className="w-11">
+          <img 
+            src="https://themealdb.com/images/ingredients/Turmeric.png"
+            alt=""
+          />
+        </SwiperSlide>
       </Swiper>
     </>
   );

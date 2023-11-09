@@ -47,7 +47,6 @@ const AddedFoodUpdate = () => {
 
     const updatedFoodWithDate = getCurrentDate("", data, user, "added_date");
 
-    console.log(updatedFoodWithDate)
     xios.put(`update-food/${_id}`, updatedFoodWithDate)
       .then((res)=> {
         if (res.data.modifiedCount > 0) {

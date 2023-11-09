@@ -5,17 +5,18 @@ import {
       Typography,
       Button,
     } from "@material-tailwind/react";
+import { useTheme } from "next-themes";
 import { Link } from "react-router-dom";
 
 
      
     export function HorizontalCard({food}) {
-      
+        const {theme} = useTheme()
       const  {_id,foodName,foodImage,foodCategory,price,orders,quantity,made_by,food_origin,description,reviews,orderedDate,email} = food
       
 
       return (
-        <Card className="w-full gap-3 items-center max-w-[48rem] flex-row">
+        <Card className={` w-full text-left gap-5 items-center max-w-[48rem] flex-row ${theme == 'dark'?'bg-[black] text-[white]':''}`}>
           <CardHeader 
             shadow={false}
             floated={false}
@@ -42,13 +43,13 @@ import { Link } from "react-router-dom";
               {foodName}
             </Typography>
             <Typography  color="blue-gray" className="mb-2">
-              <p>Orders: {orders}</p>
+              <p>available Orders: {orders}</p>
             </Typography>
             <Typography color="blue-gray" className="mb-2">
-              {foodCategory}
+              Category: {foodCategory}
             </Typography>
             <Typography color="gray" className="mb-8 font-normal">
-         ${price}
+         Price: ${price}
             </Typography>
             <Link to={`food-details/${_id}`} className="inline-block">
               <Button variant="text" className="flex items-center gap-2">

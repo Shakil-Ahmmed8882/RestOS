@@ -16,12 +16,14 @@ export default function App() {
   const ansTheree = "Data ModelMongoDB uses a flexible, document-based data model where data is stored in BSON format, and documents have variable structures.MySQL employs a structured, table-based data model with a fixed schema, where data is organized into rows and columns in a tabular format.Schema Flexibility MongoDB is schema-less, allowing changes to the structure of documents without affecting existing data. This flexibility is well-suited for applications with evolving data requirements.MySQL enforces a rigid schema, and any changes to the schema require altering tables, which can be more cumbersome and may not accommodate rapidly changing data needs."
 
   return (
-      <div className={`h-screen flex flex-col-reverse md:flex-row justify-center ${theme == 'dark'?'w-[':'dark_mode'} items-center `}>
+      <div className={`h-screen flex flex-col-reverse md:flex-row justify-center ${theme == 'dark'?'text-[white]':''} items-center `}>
       <Accordion variant="splitted">
-        <AccordionItem key="1" aria-label="Accordion 1" title="What is one way data binding?
+        <AccordionItem key="1" aria-label="Accordion 1"  title="What is one way data binding?
 
 ">
-          {ansOne}
+      <div className={`${theme == 'dark' ? 'text-white bg-primaryColor' : 'text-black bg-customColor'}`}>
+      {ansOne}
+    </div>
         </AccordionItem>
         <AccordionItem key="2" aria-label="Accordion 2" title="what is npm in node js?">
           {ansTwo}
@@ -32,7 +34,7 @@ export default function App() {
           {ansTheree}
         </AccordionItem>
       </Accordion>
-      <div className="w-1/2">
+      <div className="w-2/3">
         {theme == "light" ? (
           <img src={light_gif} alt="" />
         ) : (

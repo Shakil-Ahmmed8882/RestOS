@@ -51,7 +51,7 @@ const OrderFood = () => {
 
           if (res.data.insertedId) {
             Swal.fire({
-                  title: "item has been added",
+                  title: "Item has been ordered",
                   text: "Have a delicious food",
                   icon: "success"
                 });
@@ -60,7 +60,7 @@ const OrderFood = () => {
 
           if(res.data.isExist){
                  Swal.fire({
-                  title: "This item already exists!",
+                  title: "Already exists!",
                   text: "Pleasy try another",
                   icon: "error"
           });
