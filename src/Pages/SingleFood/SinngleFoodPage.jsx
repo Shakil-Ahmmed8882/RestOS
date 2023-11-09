@@ -35,7 +35,9 @@ const SingleFoodPage = () => {
   const goTo = useNavigate();
   const [totalOrders, setTotalOrders] = useState(0);
   // adding order date nad email to food data
-  
+  if(!user){
+    return '/'
+  }
 
 
 

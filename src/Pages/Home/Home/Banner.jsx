@@ -12,7 +12,7 @@ import { BiSolidFoodMenu } from "react-icons/bi";
 const Banner = () => {
   const {theme} = useTheme()
   return (
-    <div className="">
+    <div className="max-w-7xl mx-auto">
       <Curve></Curve>
       <div className="z-10 mr-8 sm:mt-11 md:mt-24 gap-16 md:flex justify-center items-center">
 

@@ -25,7 +25,7 @@ const MealsCategory = () => {
 
  
       return (
-            <div className={`md:px-32 text-center md:text-left ${theme == 'dark'?'bg-[#131313] text-[white]':'bg-[white]'}`}>
+            <div className={`md:px-32  text-center md:text-left ${theme == 'dark'?'bg-[#131313] text-[white]':'bg-[white]'}`}>
                   <div>
                   <h1 className="text-4xl font-bold text-center pt-20 py-11">Our Meals Collection</h1>
                   <p className="italic text-[#62e7ff] pb-9 text-center">RestOs</p>
