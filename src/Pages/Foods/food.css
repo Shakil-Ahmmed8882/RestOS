@@ -39,6 +39,30 @@
       background-size: cover;
       background-blend-mode: multiply;
 }
+
+/* .bg-light-allmenu{
+      background:linear-gradient(to right, #ffe0efe5,#d5ffffea),url('https://th.bing.com/th/id/OIP.2-VVN_UYAHu_-_OzPLNC_wAAAA?pid=ImgDet&w=402&h=380&rs=1') no-repeat fixed;
+      background-size: cover;
+      
+
+} */
+.bg-dark-allmenu{
+      background:linear-gradient(to right, #14000ae3,#013737ea),url('https://th.bing.com/th/id/OIP.2-VVN_UYAHu_-_OzPLNC_wAAAA?pid=ImgDet&w=402&h=380&rs=1') no-repeat fixed;
+      background-size: cover;
+      color: #fff;
+}
+
+.bg-light-allmenu{
+      background:linear-gradient(to right, #fff4f9e3,#f1f9f9ea),url('https://th.bing.com/th/id/OIP.2-VVN_UYAHu_-_OzPLNC_wAAAA?pid=ImgDet&w=402&h=380&rs=1') no-repeat fixed;
+      background-size: cover;
+      color: #fff;
+}
+
+.bg-light-allmenu p{
+      color: rgb(165, 165, 165);
+
+}
+
 .bg-dark-sign-up{
       background:linear-gradient(to right, #3e001ec6,#005757fd),url('https://th.bing.com/th/id/OIP.2-VVN_UYAHu_-_OzPLNC_wAAAA?pid=ImgDet&w=402&h=380&rs=1') no-repeat fixed;
       background-size: cover;
@@ -46,12 +70,13 @@
 }
 
 
+
 /* card hover effect */
 .card-hover{
       position: relative;
       transition: all .3s linear;
       border-radius: 10px;
-      background-color: #f5f5f5;
+      border:1px solid rgba(255, 0, 140, 0.275);
 }
 
 .card-hover:hover {
@@ -62,6 +87,15 @@
       border-radius: 10px;
       background-color: rgb(255, 96, 146);
 }
+.card-dark-hover:hover {
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      color: #ffff;
+      border-radius: 10px;
+      background-color: rgba(9, 0, 3, 0.304);
+}
+
 
 
 @media only screen and (min-width:500px) {

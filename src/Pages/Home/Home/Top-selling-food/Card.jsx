@@ -30,8 +30,8 @@ export function HorizontalCard({ food }) {
 
   return (
     <div
-      className={` p-3 space-y-3 text-left card-hover gap-5  relative items-center  ${
-        theme == "dark" ? "bg-[#222222] text-[white]" : ""
+      className={` p-3 space-y-3 text-left  gap-5  relative items-center  ${
+        theme == "dark" ? "bg-[#222222] card-dark-hover text-[white]" : "card-hover"
       }`}>
       <div className="flex gap-3 pt-2">
         <img 

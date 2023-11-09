@@ -6,10 +6,10 @@ import darkClock from '../../../assets/img/dark-clock.gif'
 const Footer = () => {
   const {theme} = useTheme()
   return (
-    <div className={`min-h-[50vh] relative py-11 my-11  ${theme == "light" ? "bg-[#e9e9e9]" : "bg-[#000000] text-[white]"}`}>
+    <div className={` relative py-11 mt-11  ${theme == "light" ? "bg-[#e9e9e9]" : "bg-[#000000]  text-[white]"}`}>
     <footer className="footer pl-4 flex-wrap flex md:justify-between max-w-5xl mx-auto">
       <div className="w-[190px]">
-        <div className="flex gap-1 items-center">
+        <div className="flex gap-1 pb-2 items-center">
           {
             theme == 'light'?
             <img className="w-[42px]" src={lightClock} alt="" />:

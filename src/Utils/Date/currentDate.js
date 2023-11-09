@@ -1,6 +1,8 @@
 const getCurrentDate = (isLoading,data,user) => {
 
-  if(isLoading) return
+  if(data.length <= 0){
+    return 'loading'
+  } 
   
       
   const orderDate = new Date();

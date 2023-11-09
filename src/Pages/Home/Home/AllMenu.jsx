@@ -1,6 +1,9 @@
+import { useTheme } from "next-themes";
+
 
 
 const AllMenu = [
+
   {
     "_id": "6547c7272be3bd30058a4f0a",
     "foodName": "Spaghetti",
@@ -43,26 +46,28 @@ const AllMenu = [
   },
 ];
 
+
 function MenuList() {
+const {theme} = useTheme()
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen">
-      <h1 className="text-3xl py-8 md:text-5xl font-bold">Menu Items Taken Before Ordering</h1>
-      <ul className="md:flex justify-center  items-center  md:gap-20">
+    <div className={`md:flex flex-col md:justify-center items-center min-h-screen  ${theme == 'dark'?'bg-[#212121] text-[white]':''}`}>
+      <h1 className="text-3xl py-8 md:text-4xl text-center font-bold p-2">Menu Items Taken Before Ordering</h1>
+      <ul className="grid grid-cols-2 md:flex justify-center  items-center  md:gap-20">
         {AllMenu.map((item) => (
-          <li key={item._id} className="space-y-2 ">
-            <h2>{item.foodName}</h2>
+          <li key={item._id} className={`${theme == 'dark'?'md:bg-[#0000005e] p-6 rounded-lg text-[white]':''} p-2`}>
+            <h2 className={`${theme == 'dark'?'text-primaryColor':''} font-bold text-[18px] pb-2`}>{item.foodName}</h2>
             <p>
-              <strong>Category:</strong> {item.foodCategory}
+              <span>Category:</span> {item.foodCategory}
             </p>
             <p>
-              <strong>Price:</strong> ${item.price}
+              <span>Price:</span> ${item.price}
             </p>
             <p>
-              <strong>Made by:</strong> {item.made_by}
+              <span>Made by:</span> {item.made_by}
             </p>
             {item.orders !== null && (
               <p>
-                <strong>Orders:</strong> {item.orders}
+                <span>Orders:</span> {item.orders}
               </p>
             )}
           </li>

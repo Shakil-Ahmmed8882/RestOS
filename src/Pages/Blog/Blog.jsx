@@ -9,7 +9,6 @@ export default function App() {
   const { theme } = useTheme()
   const color = theme == 'dark'?'gray' : 'gray';
 
-  console.log(color)
   const ansOne = "One-way data binding is a data flow where data updates from a source to a target (view/UI), but changes in the target don't affect React Props: In React, you can pass data from a parent component to a child component using props. The parent component serves as the source of data, and the child component is the target. Changes in the parent component's data are automatically reflected in the child component. However, if the child component modifies the prop, it won't affect the parent component's original data. This is a classic example of one-way data binding in React"
 
 
@@ -37,7 +36,7 @@ export default function App() {
           {ansTheree}
         </AccordionItem>
       </Accordion>
-      <div className="w-1/3">
+      <div className="w-2/3">
         {theme == "light" ? (
           <img src={light_gif} alt="" />
         ) : (
