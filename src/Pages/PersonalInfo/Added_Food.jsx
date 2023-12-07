@@ -1,4 +1,5 @@
 import Spinner from "../../Components/Shared/Spinner/Spinner";
+import { Helmet } from "react-helmet";
 import UserTable from "../../Components/Shared/Table/Table";
 
 import { BiSolidPencil } from "react-icons/bi";
@@ -12,6 +13,7 @@ import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../Providers/🛡️AuthProvider";
 import AnimatedBlub from "../../Components/Shared/animatedBlub/AnimatedBlub";
+import Loading from "../../Components/Shared/Loading";
 
 const Added_Food = () => {
   const { user, loading } = useContext(AuthContext);
@@ -25,14 +27,12 @@ const Added_Food = () => {
       .then((res) => setData(res.data));
   }, [user?.email, xios]);
 
-  if (loading) return <Spinner></Spinner>;
+  if (loading || data.length == 0) return <Loading></Loading>
 
   //create an array of object using nextui table
   const users = [];
 
   for (let i = 0; i < data.length; i++) {
-
-    
     users.push({
       id: data[i]?._id,
       name: data[i]?.name,
@@ -58,20 +58,30 @@ const Added_Food = () => {
   }
 
   return (
-    <div className={``}>
-                  { data.length == 0 &&
-      <div className={`${theme == 'dark'?'bg-[#0d0d0d] text-[#c6c6c6]':''} flex h-screen gap-3 justify-center items-center`}>
-
-      <h1> <span className="text-5xl font-bold">No data found</span>
-      </h1>
-      <BiSearchAlt className="text-6xl text-primaryColor"></BiSearchAlt>
-      <div className={`${theme == 'light'?'block':'hidden'}`}>
-      <AnimatedBlub></AnimatedBlub>
-      </div>
-      </div>
-
-      }
-      <div className={` gap-3 ${theme == 'dark'?'text-[#c6c6c6]':''} flex-wrap justify-center`}>
+    <div className={` max-w-6xl mx-auto h-screen`}>
+      {data.length == 0 && (
+        <div
+          className={`${
+            theme == "dark" ? "bg-[#0d0d0d] text-[#c6c6c6]" : "bg-[#F6F4F4]"
+          } flex h-screen gap-3 justify-center items-center`}>
+          <Helmet>
+            <title>RestOs || Added-food</title>
+          </Helmet>
+          ;
+          <h1>
+            {" "}
+            <span className="text-5xl font-bold">No data found</span>
+          </h1>
+          <BiSearchAlt className="text-6xl text-primaryColor"></BiSearchAlt>
+          <div className={`${theme == "light" ? "block" : "hidden"}`}>
+            <AnimatedBlub></AnimatedBlub>
+          </div>
+        </div>
+      )}
+      <div
+        className={` gap-3 ${
+          theme == "dark" ? "text-[#c6c6c6]" : ""
+        } flex-wrap justify-center`}>
         <UserTable columns={columns} users={users} />
       </div>
     </div>

@@ -37,3 +37,25 @@ body {
       background-blend-mode: color-darken;
 }
 
+.light_overlay{
+      position: relative;
+}
+
+.light_overlay::before{
+      content: "";
+      position: absolute;
+      width: 100%;
+      height:100%;
+      background-color: rgba(243, 239, 239, 0.839);
+      mix-blend-mode: luminosity;
+     
+}
+.dark_overlay::before{
+      content: "";
+      position: absolute;
+      width: 100%;
+      height:100%;
+      background-color: rgba(243, 239, 239, 0.839);
+      mix-blend-mode: color-burn;
+     
+}

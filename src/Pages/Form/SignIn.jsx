@@ -98,7 +98,7 @@ const SignIn = () => {
                 className={`btn ${
                   theme == "dark"
                     ? "bg-[white]"
-                    : "bg-primaryColor hover:bg-[#cb3890] text-[white]"
+                    : "bg-[#2CA58D] hover:bg-[#0FA564] text-[white]"
                 }`}
                 type="submit">
                 Sign in

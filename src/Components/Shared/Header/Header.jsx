@@ -44,9 +44,15 @@ export default function NavBar() {
       .catch((err) => toast.error(err.toString()));
   };
 
+  const dropDownItems = {
+    width: "200px",
+    paddingRight: "140px",
+    paddingBlock: "60px",
+  };
+
   return (
-    <Navbar>
-      <NavbarBrand>
+    <Navbar maxWidth="full" isBlurred="true">
+      <NavbarBrand className="pl-20">
         <div className="flex gap-1 items-center">
           <img className="w-[42px]" src={logo} alt="" />
           <p className="flex font-bold  items-center text-[19px]">
@@ -59,7 +65,7 @@ export default function NavBar() {
       </NavbarBrand>
 
       <NavbarContent
-        className={`displayFlex  hidden gap-4 ${
+        className={`displayFlex hidden gap-4 ${
           theme === "dark" ? "text-[white]" : ""
         }`}
         justify="center">
@@ -89,7 +95,7 @@ export default function NavBar() {
       <ThemeSwitcher></ThemeSwitcher>
 
       {user && !isLoggedOut && (
-        <NavbarContent as="div" justify="end">
+        <NavbarContent as="div" className="pr-20" justify="end">
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
               <Avatar
@@ -117,24 +123,38 @@ export default function NavBar() {
                 <p className="font-semibold">zoey@example.com</p>
               </DropdownItem>
               <DropdownItem key="my-profile">
-                <Link to="/profile">Profile</Link>
+                <Link style={dropDownItems} to="/profile">
+                  Profile
+                </Link>
               </DropdownItem>
               <DropdownItem key="added-food">
-                <Link to="/added-food">Added Food</Link>
+                <Link style={dropDownItems} to="/added-food">
+                  Added Food
+                </Link>
               </DropdownItem>
               <DropdownItem key="add-food">
-                <Link to="/add-food">Add Food</Link>
+                <Link style={dropDownItems} to="/add-food">
+                  Add Food
+                </Link>
               </DropdownItem>
               <DropdownItem key="system">
-                <Link to="/orderlist">Order list</Link>=
+                <Link style={dropDownItems} to="/orderlist">
+                  Order list
+                </Link>
+                =
               </DropdownItem>
-              <DropdownItem key="configurations">Configurations</DropdownItem>
+              <DropdownItem key="configurations">
+                {" "}
+                <Link style={dropDownItems} to="/mobile-bradcrump">
+                  More routes
+                </Link>
+              </DropdownItem>
               <DropdownItem key="help_and_feedback">
                 Help & Feedback
               </DropdownItem>
               <DropdownItem key="logout" color="danger">
-                <Link to="/">
-                  <button onClick={handleSignOut}> Sign out </button>
+                <Link style={dropDownItems} onClick={handleSignOut} to="/">
+                  Sign out
                 </Link>
               </DropdownItem>
             </DropdownMenu>

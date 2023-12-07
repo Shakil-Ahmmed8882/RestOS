@@ -1,43 +1,47 @@
-.responsive-grid{
-      display: grid;
-      width: 100%;
-      gap: 30px;
-            grid-template-columns: repeat(auto-fit,minmax(266px,1fr));
+.responsive-grid {
+  display: grid;
+  width: 100%;
+  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(266px, 1fr));
 }
 
-.responsive-grid-top-selling-food{
-      display: grid;
-      height: max-content;
-      gap: 9px;
-            grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+.responsive-grid-top-selling-food {
+  display: grid;
+  height: max-content;
+  gap: 20px;
+  margin-top: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
 
-
-
-
-
-
-.bg-light-food{
-      background:linear-gradient(to right, #fbc4dfc4,#0079798e),url('https://th.bing.com/th/id/OIP.fTZuwXzb7pqbOXmix4kOSQHaE7?pid=ImgDet&rs=1') no-repeat fixed;
-      background-size: cover;
-      background-blend-mode: darken;
+.bg-light-food {
+  background: linear-gradient(to right, #fbc4dfc4, #0079798e),
+    url("https://th.bing.com/th/id/OIP.fTZuwXzb7pqbOXmix4kOSQHaE7?pid=ImgDet&rs=1")
+      no-repeat fixed;
+  background-size: cover;
+  background-blend-mode: darken;
 }
 
-.bg-dark-food{
-      background:linear-gradient(to right, #3e001ec6,#005757fd),url('https://th.bing.com/th/id/OIP.fTZuwXzb7pqbOXmix4kOSQHaE7?pid=ImgDet&rs=1') no-repeat fixed;
-      background-size: cover;
-      background-blend-mode: multiply;
+.bg-dark-food {
+  background: linear-gradient(to right, #3e001ec6, #005757fd),
+    url("https://th.bing.com/th/id/OIP.fTZuwXzb7pqbOXmix4kOSQHaE7?pid=ImgDet&rs=1")
+      no-repeat fixed;
+  background-size: cover;
+  background-blend-mode: multiply;
 }
 
-.bg-dark-sign-in{
-      background:linear-gradient(to right, #3e001ec6,#005757fd),url('https://i.pinimg.com/originals/ca/38/64/ca38642f9dd57a59f0467d0a71196b35.jpg') no-repeat fixed;
-      background-size: cover;
-      background-blend-mode: multiply;
+.bg-dark-sign-in {
+  background: linear-gradient(to right, #3e001ec6, #005757fd),
+    url("https://i.pinimg.com/originals/ca/38/64/ca38642f9dd57a59f0467d0a71196b35.jpg")
+      no-repeat fixed;
+  background-size: cover;
+  background-blend-mode: multiply;
 }
-.bg-light-sign-up{
-      background:linear-gradient(to right, #fbc4dfc4,#0079798e),url('https://th.bing.com/th/id/OIP.2-VVN_UYAHu_-_OzPLNC_wAAAA?pid=ImgDet&w=402&h=380&rs=1') no-repeat fixed;
-      background-size: cover;
-      background-blend-mode: multiply;
+.bg-light-sign-up {
+  background: linear-gradient(to right, #fbc4dfc4, #0079798e),
+    url("https://th.bing.com/th/id/OIP.2-VVN_UYAHu_-_OzPLNC_wAAAA?pid=ImgDet&w=402&h=380&rs=1")
+      no-repeat fixed;
+  background-size: cover;
+  background-blend-mode: multiply;
 }
 
 /* .bg-light-allmenu{
@@ -46,66 +50,56 @@
       
 
 } */
-.bg-dark-allmenu{
-      background:linear-gradient(to right, #14000ae3,#013737ea),url('https://th.bing.com/th/id/OIP.2-VVN_UYAHu_-_OzPLNC_wAAAA?pid=ImgDet&w=402&h=380&rs=1') no-repeat fixed;
-      background-size: cover;
-      color: #fff;
+.bg-dark-allmenu {
+  background: linear-gradient(to right, #14000ae3, #013737ea),
+    url("https://th.bing.com/th/id/OIP.2-VVN_UYAHu_-_OzPLNC_wAAAA?pid=ImgDet&w=402&h=380&rs=1")
+      no-repeat fixed;
+  background-size: cover;
+  color: #fff;
 }
 
-.bg-light-allmenu{
-      background:linear-gradient(to right, #fff4f9e3,#f1f9f9ea),url('https://th.bing.com/th/id/OIP.2-VVN_UYAHu_-_OzPLNC_wAAAA?pid=ImgDet&w=402&h=380&rs=1') no-repeat fixed;
-      background-size: cover;
-      color: #fff;
+.bg-light-allmenu {
+  background: linear-gradient(to right, #fff4f9e3, #f1f9f9ea),
+    url("https://th.bing.com/th/id/OIP.2-VVN_UYAHu_-_OzPLNC_wAAAA?pid=ImgDet&w=402&h=380&rs=1")
+      no-repeat fixed;
+  background-size: cover;
+  color: #fff;
 }
 
-.bg-light-allmenu p{
-      color: rgb(165, 165, 165);
-
+.bg-light-allmenu p {
+  color: rgb(165, 165, 165);
 }
 
-.bg-dark-sign-up{
-      background:linear-gradient(to right, #3e001ec6,#005757fd),url('https://th.bing.com/th/id/OIP.2-VVN_UYAHu_-_OzPLNC_wAAAA?pid=ImgDet&w=402&h=380&rs=1') no-repeat fixed;
-      background-size: cover;
-      background-blend-mode: multiply;
+.bg-dark-sign-up {
+  background: linear-gradient(to right, #3e001ec6, #005757fd),
+    url("https://th.bing.com/th/id/OIP.2-VVN_UYAHu_-_OzPLNC_wAAAA?pid=ImgDet&w=402&h=380&rs=1")
+      no-repeat fixed;
+  background-size: cover;
+  background-blend-mode: multiply;
 }
-
-
 
 /* card hover effect */
-.card-hover{
-      position: relative;
-      transition: all .3s linear;
-      border-radius: 10px;
-      border:1px solid rgba(255, 0, 140, 0.275);
-}
 
-.card-hover:hover {
-      width: 100%;
-      height: 100%;
-      cursor: pointer;
-      color: #ffff;
-      border-radius: 10px;
-      background-color: rgb(255, 96, 146);
-}
+
+
+
+
 .card-dark-hover:hover {
-      width: 100%;
-      height: 100%;
-      cursor: pointer;
-      color: #ffff;
-      border-radius: 10px;
-      background-color: rgba(9, 0, 3, 0.304);
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  color: #ffff;
+  border-radius: 10px;
+  background-color: rgba(9, 0, 3, 0.304);
 }
 
-
-
-@media only screen and (min-width:500px) {
-      .responsive-grid-search{
-            padding-inline:20px ;
-            justify-content: center;
-            display: grid;
-            width: 100%;
-            gap: 30px;
-                  grid-template-columns: repeat(auto-fit,minmax(266px,350px));
-      }
-      
+@media only screen and (min-width: 500px) {
+  .responsive-grid-search {
+    padding-inline: 20px;
+    justify-content: center;
+    display: grid;
+    width: 100%;
+    gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(266px, 350px));
+  }
 }

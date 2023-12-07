@@ -8,10 +8,10 @@ a.active {
       content: '';
       position: absolute;
       width: 30px;
-      height: 4px;
+      height: 6px;
       bottom: -5px;
       left: 0;
-      background-color: #EA1179;
+      background-color: #08a88b45;
     }
     
 

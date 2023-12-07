@@ -15,6 +15,7 @@ import Add_Food from "../Pages/PersonalInfo/Add_Food";
 import OrderList from "../Pages/Order-list/OrderList";
 import AllMenu from "../Pages/Home/Home/AllMenu";
 import AddedFoodUpdate from "../Pages/PersonalInfo/AddedFoodUpdate/AddedFoodUpdate";
+import MobileBreadCrump from "../Components/Shared/Header/MobileBreadCrump";
 
 
 const router = createBrowserRouter([
@@ -76,6 +77,10 @@ const router = createBrowserRouter([
       {
         path:'/all-menu',
         element:<AllMenu></AllMenu>
+      },
+      {
+        path:'/mobile-bradcrump',
+        element:<MobileBreadCrump></MobileBreadCrump>
       }
       ,
 ],

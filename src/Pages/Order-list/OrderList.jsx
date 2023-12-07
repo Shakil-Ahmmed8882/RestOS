@@ -8,18 +8,25 @@ import { useAuth } from "../../Utils/useAuthHelper";
 import { useAxios } from "../../🔗Hook/useAxios";
 import { useTheme } from "next-themes";
 import { columns } from "./TableHeading";
+import { Helmet } from "react-helmet";
 
 import { useGetData } from "../../🔗Hook/httpRequests";
 import AnimatedBlub from "../../Components/Shared/animatedBlub/AnimatedBlub";
+import Loading from "../../Components/Shared/Loading";
 
 const OrderList = () => {
   const { theme } = useTheme();
   const xios = useAxios();
   const { user } = useAuth();
 
-const {data,isLoading,refetch} = useGetData({endpoint:`ordered-list?email=${user?.email}`,key:'orderlist'})
+  const { data, isLoading, refetch } = useGetData({
+    endpoint: `ordered-list?email=${user?.email}`,
+    key: "orderlist",
+  });
 
-  if (isLoading) return <Spinner></Spinner>;
+
+  if (isLoading || !data) return <Loading></Loading>
+  if (data.length == 0) return <Loading></Loading>
 
   //create an array of object using nextui table
 
@@ -28,7 +35,9 @@ const {data,isLoading,refetch} = useGetData({endpoint:`ordered-list?email=${user
     const res = await xios.delete(`cancel-ordered-food/${_id}`);
     if (res.data.deletedCount > 0) {
       console.log("deleted");
-      refetch()
+      refetch();
+    } else{
+      <Loading></Loading>
     }
   };
 
@@ -63,21 +72,24 @@ const {data,isLoading,refetch} = useGetData({endpoint:`ordered-list?email=${user
 
   console.log(data.length);
   return (
-    <div>
-            { data.length == 0 &&
-      <div className="flex h-screen gap-3 justify-center items-center">
-
-      <h1> <span className="text-5xl font-bold">No data found</span>
-      </h1>
-      <BiSearchAlt className="text-6xl text-primaryColor"></BiSearchAlt>
-      <div>
-      <AnimatedBlub></AnimatedBlub>
-      </div>
-      </div>
-
-      }
+    <div className="max-w-6xl mx-auto">
+      <Helmet>
+        <title>RestOs || Order-list</title>
+      </Helmet>
+      ;
+      {data.length == 0 && (
+        <div className="flex h-screen gap-3 justify-center items-center">
+          <h1>
+            {" "}
+            <span className="text-5xl font-bold">No data found</span>
+          </h1>
+          <BiSearchAlt className="text-6xl text-primaryColor"></BiSearchAlt>
+          <div>
+            <AnimatedBlub></AnimatedBlub>
+          </div>
+        </div>
+      )}
       {/* <button onClick={()=>handleOrderedFood()} className="btn bg-primaryColor">Delete</button> */}
-
       <UserTable columns={columns} users={users}></UserTable>
     </div>
   );

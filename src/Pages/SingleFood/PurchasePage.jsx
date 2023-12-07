@@ -12,15 +12,15 @@ const PurchasePage = ({ handleOrderPurchase, data }) => {
       // console.log(Object.keys(data).join(','))
       // const {_id,foodName,foodImage,foodCategory,price,orders,quantity,made_by,food_origin,description,reviews,orderedDate,email} = data
       if(!data) return <Spinner></Spinner>
-      const {foodName,foodImage,price} = data
+      const {foodName,foodImage,price,description} = data
 
 
   return (
     <div className={`md:flex gap-8 items-center ${theme == 'dark'?'bg-[#000000e9]':'bg-[white]'} absolute top-0 right-0 bottom-0 p-8 min-h-screen pt-11 md:pt-0`}>
       <div className=" justify-center bg-transparent">
-        <div className="shadow-lg p-3">
+        <div className="shadow-lg p-3 w-[400px] mx-auto top-0 h-[300px]">
           <img
-            className="w-full h-full"
+            className="w-full h-full object-cover"
             src={foodImage}
             alt=""
           />
@@ -59,10 +59,7 @@ const PurchasePage = ({ handleOrderPurchase, data }) => {
             </div>
         <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold pb-1">{foodName}</h1>
         <p className={`${theme == 'dark'?'text-[#e3e3e3]':''} space-y-2`} >
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt
-          quibusdam ipsa, sapiente facere pariatur excepturi mollitia aliquid
-          laboriosam illum rerum voluptas molestias quae enim esse voluptatibus
-          maxime ab commodi labore!
+        {description} Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maiores enim molestias impedit fugit modi omnis possimus a cum explicabo est, blanditiis neque aperiam? Sequi omnis vitae, dolorem optio rerum quod.
    
         <p>Buyer Name: {user?.displayName}</p>
             <p>Buyer Email: {user?.email}</p>
@@ -72,8 +69,10 @@ const PurchasePage = ({ handleOrderPurchase, data }) => {
            </p>
         <button
         
-          className="h-11 text-center   font-bold  drawer-button order-none outline-none flex bg-primaryColor w-[200px] text-[white] py-2 items-center gap-2 px-4 rounded  cursor-pointer "
+          className="h-11 text-center bg-primaryColor  font-bold  drawer-button order-none outline-none flex 
+         w-[200px] text-[white] py-2 items-center  gap-2 px-4 rounded  cursor-pointer "
           onClick={handleOrderPurchase}>
+          
           Purchase
         </button>
       </div>

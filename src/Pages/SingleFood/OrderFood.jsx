@@ -73,7 +73,7 @@ const OrderFood = () => {
   };
 
   return (
-    <div>
+    <div className="">
       <div>
         <h1 className="text-7xl font-bold">Order now</h1>
         <img className="w-full h-[40vh]  object-cover" src={foodImage} alt="" />

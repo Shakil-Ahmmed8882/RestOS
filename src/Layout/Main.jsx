@@ -8,8 +8,9 @@ const Main = () => {
   return (
     <>
     <div className={`${themeColor}`}>
-      <div className="px-3">
+      <div className="px-3 md:px-0">
       <NavBar></NavBar>
+     
       <div className="px-0 md:px-0">
       <Outlet></Outlet>
       </div>

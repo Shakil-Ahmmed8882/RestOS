@@ -21,13 +21,13 @@ const Banner = () => {
         </div>
         <div className="space-y-1  relative  ">
           <h1 className={`text-3xl ${theme == 'dark' ? 'text-[white] ' : ''} md:text-5xl lg:text-5xl font-bold pb-1`}>
-            Welcome to RestOS
+            Welcome to Rest<span>OS</span>
           </h1>
           <p className={`${theme == "dark" ? "text-[#e3e3e3]" : ""} space-y-2`}>
             A trendy burger joint with a twist! Our mouthwatering burgers are made with locally sourced ingredients and served with a side of crispy, golden fries. From classic cheeseburgers to unique gourmet creations.
           </p>
           <Link to='/all-menu'>
-            <button className="mt-5 flex items-center gap-3 border-none text-primaryColor text-2xl">All Menus <BiSolidFoodMenu></BiSolidFoodMenu></button>
+            <button className="mt-5 flex items-center gap-3 border-none text-accent text-2xl">All Menus <BiSolidFoodMenu></BiSolidFoodMenu></button>
           </Link>
           {
             theme == 'light' &&
@@ -38,7 +38,7 @@ const Banner = () => {
         </div>
       </div>
 
-        <img className="absolute w-80 -bottom-11 right-0 filter blur-3xl md:blur-sm -z-10 bg-blend-multiply " src="https://i.ibb.co/3hNBP6b/bg-leaf.png" alt="" />
+        <img className="absolute w-80  -bottom-11 right-0 filter blur-3xl md:blur-sm -z-10 bg-blend-multiply " src="https://i.ibb.co/3hNBP6b/bg-leaf.png" alt="" />
     </div>
   );
 };

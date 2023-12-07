@@ -3,6 +3,7 @@ import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, C
 import {EditIcon} from "./EditIcon";
 import { DeleteIcon } from "./deleteIcon";
 import {EyeIcon} from "./EyeIcon";
+import { useTheme } from "next-themes";
 
 
 const statusColorMap = {
@@ -12,6 +13,7 @@ const statusColorMap = {
 };
 
 export default function UserTable({columns,users}) {
+  const {theme} = useTheme()
   const renderCell = React.useCallback((user, columnKey) => {
     const cellValue = user[columnKey];
 
@@ -75,7 +77,7 @@ export default function UserTable({columns,users}) {
       </TableHeader>
       <TableBody items={users} >
         {(item) => (
-          <TableRow key={item.id}>
+          <TableRow key={item.id} className={`${theme == 'dark'?"text-[white]":"text-[black]"}`}>
             {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
           </TableRow>
         )}
