@@ -25,7 +25,7 @@ These are the core features that allow users to explore, add, edit, and manage f
 
 You can access the live version of this website by clicking [here](https://restos-748ac.web.app/).
 
-Feel free to customize the link and text as per your actual live link.
+Server github link https://github.com/Shakil-Ahmmed8882/RestOS-server-11
 
 
 ## Thank you
