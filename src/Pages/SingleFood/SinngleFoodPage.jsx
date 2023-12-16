@@ -25,7 +25,7 @@ import { BsFillGeoAltFill } from "react-icons/bs";
 
 import { useAuth } from "../../Utils/useAuthHelper";
 import { useAxios } from "../../🔗Hook/useAxios";
-import PurchasePage from "./PurchasePage";
+import PurchasePage from "./PurchasedPage";
 import getCurrentDate from "../../Utils/Date/currentDate";
 import Loading from "../../Components/Shared/Loading";
 
@@ -63,8 +63,9 @@ const SingleFoodPage = () => {
     orders,
   } = data || {};
 
+  console.log(data);
   // Drawer
-  const handleOrderPurchase = async () => {
+  const handleOrderPurchase = async (name) => {
     if (isNaN(orders)) {
       return alert("orders is not a number");
     }
@@ -101,7 +102,7 @@ const SingleFoodPage = () => {
           });
         // Letting the user know order been added ..
         Swal.fire({
-          title: "item has been booked",
+          title: "item has been ordered",
           text: "Have a delicious food",
           icon: "success",
         });
@@ -168,22 +169,32 @@ const SingleFoodPage = () => {
                     </div>
                     <div className="flex gap-3">
                       <div className="  rounded-lg flex items-center gap-2">
-                        <BsFillGeoAltFill className="text-deepPink"/>
+                        <BsFillGeoAltFill className="text-deepPink" />
                         <p className=" font-normal ">Origin: {food_origin}</p>
                       </div>
 
                       <div className=" rounded-lg flex items-center gap-2">
-                        <BsCone className="text-[#7afb7a] text-[22px]"/>
+                        <BsCone className="text-[#7afb7a] text-[22px]" />
                         <p className=" font-normal ">Made by: {made_by} </p>
                       </div>
                     </div>
                   </div>
-                    <div className={`space-y-1 ${theme == 'dark'?"bg-[#37373786] text-white":"bg-[#f5daa435]"} mt-4 p-3 rounded-lg flex-1 text-[20px]`}>
-                      <div className="flex items-center gap-2 mt-2">
-
-                    <img src={foodImage} className="w-[70px] h-[70px]  rounded-full" alt="" />
-                    <p className={` font-normal pb-5 w-full  text-[17px]`}>{description}</p>
-                      </div>
+                  <div
+                    className={`space-y-1 ${
+                      theme == "dark"
+                        ? "bg-[#37373786] text-white"
+                        : "bg-[#f5daa435]"
+                    } mt-4 p-3 rounded-lg flex-1 text-[20px]`}>
+                    <div className="flex items-center gap-2 mt-2">
+                      <img
+                        src={foodImage}
+                        className="w-[70px] h-[70px]  rounded-full"
+                        alt=""
+                      />
+                      <p className={` font-normal pb-5 w-full  text-[17px]`}>
+                        {description}
+                      </p>
+                    </div>
                   </div>
                 </div>
 
@@ -200,28 +211,13 @@ const SingleFoodPage = () => {
                       htmlFor="my-drawer-4"
                       className="drawer-button hover:bg-transparent border-none outline-none flex bg-transparent w-[200px] text-[white] rounded-full items-center gap-2   cursor-pointer btn-primary">
                       {/* <img className="w-11" src={order_now} alt="" /> */}
-                      <div className="bg-primaryColor ml-auto mr-5 mt-6 p-5 rounded-full">
+                      <div
+                        onClick={handleOrderPurchase}
+                        className="bg-primaryColor ml-auto mr-5 mt-6 p-5 flex gap-3 rounded-lg items-center text-[21px]">
+                          Order
                         <BsFillArrowRightCircleFill className="text-3xl" />
                       </div>
                     </label>
-                  </div>
-                  <div className="drawer-side">
-                    <label
-                      htmlFor="my-drawer-4"
-                      aria-label="close sidebar"
-                      className="drawer-overlay"></label>
-
-                    <ul
-                      className={`menu p-4 w-[90%]  md:w-[80%] ${
-                        theme == "dark" ? "" : ""
-                      }  text-base-content`}>
-                      {/* Sidebar content here */}L
-                      <div className=" bg-[white] min-h-[150vh] md:min-h-screen pt-20 overflow-hidden justify-center items-center text-center w-full">
-                        <PurchasePage
-                          handleOrderPurchase={handleOrderPurchase}
-                          data={data}></PurchasePage>
-                      </div>
-                    </ul>
                   </div>
                 </div>
                 {/* ============ */}

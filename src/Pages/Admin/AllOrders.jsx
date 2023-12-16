@@ -3,29 +3,28 @@ import { AiTwotoneDelete } from "react-icons/ai";
 import { BiSearchAlt } from "react-icons/bi";
 import UserTable from "../../Components/Shared/Table/Table";
 
-import { useAuth } from "../../Utils/useAuthHelper";
 import { useAxios } from "../../🔗Hook/useAxios";
 import { useTheme } from "next-themes";
-import { columns } from "./TableHeading";
+import { columns } from "../Order-list/TableHeading";
 import { Helmet } from "react-helmet";
 
 import { useGetData } from "../../🔗Hook/httpRequests";
 import AnimatedBlub from "../../Components/Shared/animatedBlub/AnimatedBlub";
 import Loading from "../../Components/Shared/Loading";
-import NoDataFound from "../../Components/Shared/NoDataFound";
+import toast from "react-hot-toast";
 
-const OrderList = () => {
+
+const AllOrders = () => {
   const { theme } = useTheme();
   const xios = useAxios();
-  const { user } = useAuth();
 
   const { data, isLoading, refetch } = useGetData({
-    endpoint: `ordered-list?email=${user?.email}&status=pending`,
+    endpoint: `All-orders`,
     key: "orderlist",
   });
 
   if (isLoading) return <Loading></Loading>;
-  if (data.length == 0) return <Loading></Loading>;
+
 
   //create an array of object using nextui table
 
@@ -39,7 +38,15 @@ const OrderList = () => {
       <Loading></Loading>;
     }
   };
-  refetch()
+
+  const handleConfirm = async(_id) => {
+    const res = await xios.patch(`confirm-order?id=${_id}`)
+    if(res.data.modifiedCount > 0) {
+          refetch();
+          toast.success("Confirmed")
+    }
+
+  };
 
   const users = [];
 
@@ -54,19 +61,24 @@ const OrderList = () => {
       made_by: data[i]?.made_by,
       active: data[i]?.made_by,
       delete: (
-        <button
-          onClick={() => handleOrderedFood(data[i]._id)}
-          className={` text-[rgb(5,19,20)] ${
-            theme == "dark"
-              ? "bg-[#ffffff13] btn border-none hover:bg-[#000000a0]"
-              : "btn"
-          }`}>
-          {theme == "light" ? (
-            <AiTwotoneDelete className="text-xl text-primaryColor" />
-          ) : (
-            <AiOutlineDelete className="text-xl text-primaryColor"></AiOutlineDelete>
-          )}
-        </button>
+        <div className="flex items-center gap-3">
+          <button onClick={()=>handleConfirm(data[i]._id)}>Confirm</button>
+          <button
+            onClick={() => handleOrderedFood(data[i]._id)}
+            className={` text-[rgb(5,19,20)] ${
+              theme == "dark"
+                ? "bg-[#ffffff13] btn border-none hover:bg-[#000000a0]"
+                : "btn"
+            }`}>
+            {theme == "light" ? (
+              <>
+                <AiTwotoneDelete className="text-xl text-primaryColor" />
+              </>
+            ) : (
+              <AiOutlineDelete className="text-xl text-primaryColor"></AiOutlineDelete>
+            )}
+          </button>
+        </div>
       ),
     });
   }
@@ -78,16 +90,28 @@ const OrderList = () => {
       </Helmet>
       ;
       {data.length == 0 && (
-       <NoDataFound></NoDataFound>
+        <div className="flex h-screen gap-3 justify-center items-center">
+          <h1>
+            {" "}
+            <span
+              className={`text-5xl font-bold ${
+                theme == "dark" ? "text-[white]" : ""
+              }`}>
+              No data found
+            </span>
+          </h1>
+          <BiSearchAlt className="text-6xl text-primaryColor"></BiSearchAlt>
+          <div>
+            <AnimatedBlub></AnimatedBlub>
+          </div>
+        </div>
       )}
       {/* <button onClick={()=>handleOrderedFood()} className="btn bg-primaryColor">Delete</button> */}
-      {
-        data.length !== 0 &&
+      {data.length !== 0 && (
         <UserTable columns={columns} users={users}></UserTable>
-
-      }
+      )}
     </div>
   );
 };
 
-export default OrderList;
+export default AllOrders;

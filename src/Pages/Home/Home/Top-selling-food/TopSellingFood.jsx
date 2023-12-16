@@ -18,10 +18,12 @@ const TopSellingFood = () => {
 
   if (isLoading) return <Loading></Loading>
 
+  
+
   return (
     <div
       className={`pb-20 ${
-        theme == "dark" ? "bg-[#111111]" : "bg-[#FAFAFB]"
+        theme == "dark" ? "bg-[#111111]" : "bg-[#f6fffdde]"
       } w-full`}>
       <div className={`  max-w-6xl mx-auto md:flex pt-8   gap-3 mt-24 `}>
         <div className="flex-1 w-full md:w-0/3 md:ml-3">

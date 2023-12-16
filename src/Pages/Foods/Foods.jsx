@@ -31,6 +31,7 @@ const Foods = () => {
 
   useEffect(() => {
     fetch(
+      // `https://rest-os-server.vercel.app/foods?page=${activePage}&size=${itemsPerPage}`,
       `https://rest-os-server.vercel.app/foods?page=${activePage}&size=${itemsPerPage}`,
       { credentials: "include" }
     )
@@ -128,7 +129,7 @@ const Foods = () => {
         <h2 className="text-3xl mt-6 font-bold">MOST POPULAR ITEMS</h2>
       </div>
       <div
-        className={`${
+        className={` ${
           isFiledEmpty ? "responsive-grid" : "responsive-grid-search"
         } max-w-6xl mx-auto`}>
         {searchResult.length

@@ -1,4 +1,4 @@
-import Spinner from "../../Components/Shared/Spinner/Spinner";
+
 import { Helmet } from "react-helmet";
 import UserTable from "../../Components/Shared/Table/Table";
 
@@ -27,7 +27,7 @@ const Added_Food = () => {
       .then((res) => setData(res.data));
   }, [user?.email, xios]);
 
-  if (loading || data.length == 0) return <Loading></Loading>
+  if (loading) return <Loading></Loading>
 
   //create an array of object using nextui table
   const users = [];

@@ -12,13 +12,22 @@ export default function Card({ food }) {
   const { foodName, foodImage, foodCategory, price, quantity, _id } = food;
 
   return (
-    <div className={`card card-compact  rounded-lg `}>
-      <figure className="w-full h-[150px]">
-        <img src={foodImage} alt="Shoes" className="w-full h-full object-cover" />
+    <div className={`overflow-hidden card-compact  ${theme == 'dark'?"bg-[#00000052]":"bg-[#fff] card"} rounded-lg items-start `}>
+      <figure className="">
+        <img
+          src={foodImage}
+          alt="Shoes"
+          className={`mb-4   h-[100px]  object-cover ${
+            theme === "dark" ? "w-[200%] ml-0 mt-0  " : "w-[100px] mt-4 bg-[white] ml-4"
+          }`}
+        />
       </figure>
-      <div className={`${theme == "dark" ? "bg-[#262526aa]" : "bg-[white]"} card-body`}>
+      <div
+        className={`w-full ${
+          theme == "dark" ? "bg-[#262526aa]" : "bg-[white]"
+        } card-body`}>
         <h2
-          className={`font-semibold mb-1 mt-2 text-[22px] ${
+          className={`font-semibold mb-1  text-[22px] ${
             theme == "dark" ? "text-[#4bd6fdc0]" : ""
           } pt-3`}>
           {foodName}
@@ -27,20 +36,18 @@ export default function Card({ food }) {
           className={` space-y-2  text-[16px]  items-center ${
             theme == "dark" ? "text-[#d7d6d6]" : "text-[#7a7979]"
           }`}>
-            <div className="flex  gap-4">
-              <div>
-          <p>category: {foodCategory}</p>
-          <p>Price: ${price}</p>
-
-              </div>
-              <div>
-          <p>Quantity: {quantity}</p>
-          <p>Orders: {food.orders}</p>
-
-              </div>
+          <div className="flex  gap-4">
+            <div>
+              <p>category: {foodCategory}</p>
+              <p>Price: ${price}</p>
             </div>
+            <div>
+              <p>Quantity: {quantity}</p>
+              <p>Orders: {food.orders}</p>
+            </div>
+          </div>
         </div>
-          <div className="flex gap-2 items-center  mr-3 text-accent">
+        <div className="flex gap-2 items-center  mr-3 text-accent">
           {theme == "dark" ? (
             <img className="w-5" src={darkDetail} alt="" />
           ) : (

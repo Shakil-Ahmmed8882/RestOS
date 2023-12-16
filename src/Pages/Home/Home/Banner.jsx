@@ -14,7 +14,7 @@ const Banner = () => {
   return (
     <div className="max-w-7xl mx-auto">
       <Curve></Curve>
-      <div className="z-10 mr-8 sm:mt-11 md:mt-24 gap-16 md:flex justify-center items-center">
+      <div className="z-10 mr-8 sm:mt-11 md:mt-20 gap-16 md:flex justify-center items-center">
 
         <div className="flex-1 w-1/2">
           <Slider></Slider>

@@ -34,13 +34,25 @@ const SignIn = () => {
 
   const handleGoogleSignIn = () => {
     googleSignIn()
-      .then(() => {
+      .then((result) => {
         toast.success("Signed in with google");
         goTo(location.state ? location.state : "/");
 
         // creating a token
         xios
           .post("jwt", { email: user?.email })
+          .then((res) => console.log(res.data))
+          .catch((err) => console.log(err));
+
+        // storing user here
+        const currentUser = {
+          name: result?.user?.displayName,
+          email: result?.user?.email,
+          photo: result?.user?.photoURL,
+          role:"user"
+        };
+        xios
+          .post("user", currentUser)
           .then((res) => console.log(res.data))
           .catch((err) => console.log(err));
       })

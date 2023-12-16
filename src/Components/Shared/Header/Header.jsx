@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   Navbar,
   NavbarBrand,
@@ -13,18 +14,13 @@ import logo from "../../../assets/img/restOSLogo.png";
 import { Link, NavLink } from "react-router-dom";
 import ThemeSwitcher from "./ThemeSwitcher";
 import { useTheme } from "next-themes";
-
-// import home_light_icon from '../../../assets/img/homeIcon.png'
-// import home_dark_icon from '../../../assets/img/home-dark-icon.png'
 import { useAuth } from "../../../Utils/useAuthHelper";
-import { useState } from "react";
-import { useEffect } from "react";
 import toast from "react-hot-toast";
+import { useGetData } from "../../../🔗Hook/httpRequests";
 
 export default function NavBar() {
-  const { theme } = useTheme();
-  // const themeColor = theme == 'dark'?' text-white':''
   const { user, logOut } = useAuth();
+  const { theme } = useTheme();
   const [isLoggedOut, setIsLoggedOut] = useState(!user);
 
   useEffect(() => {
@@ -34,7 +30,7 @@ export default function NavBar() {
       setIsLoggedOut(false);
     }
   }, [user]);
-  // handling logout here
+
   const handleSignOut = () => {
     logOut()
       .then(() => {
@@ -43,6 +39,35 @@ export default function NavBar() {
       })
       .catch((err) => toast.error(err.toString()));
   };
+
+  const adminRoutes = [
+    { key: "added-food", label: "Added Food", to: "/added-food" },
+    { key: "add-food", label: "Add Food", to: "/add-food" },
+    { key: "Allorderlist", label: "All orders", to: "/Allorderlist" },
+    {
+      key: "all-purchasedlist",
+      label: "All purchased list",
+      to: "/all-purchased-list",
+    },
+    { key: "mobile-bradcrump", label: "More Routes", to: "/mobile-bradcrump" },
+  ];
+
+  const userRoutes = [
+    { key: "my-profile", label: "Profile", to: "/profile" },
+    { key: "orderlist", label: "Order List", to: "/orderlist" },
+    { key: "purchasedList", label: "Purchased List", to: "/purchasedList" },
+    { key: "mobile-bradcrump", label: "More Routes", to: "/mobile-bradcrump" },
+  ];
+
+  const { data } = useGetData({
+    endpoint: `/isAdmin?email=${user?.email}`,
+    key: user?.email,
+  });
+  // const isAdmin = true
+  const isAdmin = data?.isAdmin;
+  console.log(isAdmin);
+
+  const routesToShow = !isAdmin ? userRoutes : adminRoutes;
 
   const dropDownItems = {
     width: "200px",
@@ -73,7 +98,7 @@ export default function NavBar() {
           exact
           to="/"
           activeClassName="active"
-          className="flex items-center ">
+          className="flex items-center">
           <span>Home</span>
         </NavLink>
 
@@ -119,36 +144,23 @@ export default function NavBar() {
               } py-3`}
               variant="flat">
               <DropdownItem key="profile" className="h-14 gap-2">
-                <p className="font-semibold">Signed in as</p>
-                <p className="font-semibold">zoey@example.com</p>
+                <p className="font-semibold my-1">Signed in as</p>
+                <p className="font-semibold mb-2">
+                  {user.email}{" "}
+                  <span className="text-accent">
+                    ({isAdmin ? "Admin" : "User"})
+                  </span>
+                </p>
               </DropdownItem>
-              <DropdownItem key="my-profile">
-                <Link style={dropDownItems} to="/profile">
-                  Profile
-                </Link>
-              </DropdownItem>
-              <DropdownItem key="added-food">
-                <Link style={dropDownItems} to="/added-food">
-                  Added Food
-                </Link>
-              </DropdownItem>
-              <DropdownItem key="add-food">
-                <Link style={dropDownItems} to="/add-food">
-                  Add Food
-                </Link>
-              </DropdownItem>
-              <DropdownItem key="system">
-                <Link style={dropDownItems} to="/orderlist">
-                  Order list
-                </Link>
-                =
-              </DropdownItem>
-              <DropdownItem key="configurations">
-                {" "}
-                <Link style={dropDownItems} to="/mobile-bradcrump">
-                  More routes
-                </Link>
-              </DropdownItem>
+
+              {routesToShow.map((route) => (
+                <DropdownItem key={route.key}>
+                  <Link style={dropDownItems} to={route.to}>
+                    {route.label}
+                  </Link>
+                </DropdownItem>
+              ))}
+
               <DropdownItem key="help_and_feedback">
                 Help & Feedback
               </DropdownItem>

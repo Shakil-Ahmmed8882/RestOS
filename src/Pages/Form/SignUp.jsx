@@ -8,10 +8,10 @@ import { validate } from "../../Utils/Validate";
 
 const SignUp = () => {
   const { theme } = useTheme();
-  const {user} = useAuth()
+  const { user } = useAuth();
   const { createUser, updateUserInfo } = useAuth();
   const goTo = useNavigate();
-  const xios = useAxios()
+  const xios = useAxios();
   // console.log(createUser)
 
   const handleSignUp = (e) => {
@@ -22,37 +22,42 @@ const SignUp = () => {
     const name = data.name;
     const photo = data.photo;
     const password = data.password;
-  
 
     // data for storing in database
 
     // input validation
     const hasError = validate(name, email, photo, password);
-    if (hasError) return; 
+    if (hasError) return;
 
-    
     e.target.reset();
 
     // create user here
     createUser(email, password)
-      .then(() => {
+      .then((result) => {
         toast.success("Successfully created an account");
         goTo(location.state ? location.state : "/");
         updateUserInfo(name, photo);
 
         // storing user here
-        xios.post('user',user)
-        .then(res => console.log(res.data))
-        .catch(err => console.log(err))
-
-    
-        // creating a token
-         xios.post('jwt',{email:user?.email})
-         .then(res => console.log(res.data))
+        const currentUser = {
+          name,
+          email,
+          photo,
+          role:"user" 
+        };
+        xios
+          .post("user", currentUser)
+          .then((res) => console.log(res.data))
+          .catch((err) => console.log(err));
       })
+      .catch((err) => console.log(err));
+
+    // creating a token
+    xios
+      .post("jwt", { email: user?.email })
+      .then((res) => console.log(res.data))
       .catch((err) => toast.error(err.toString()));
   };
-
 
   return (
     <div

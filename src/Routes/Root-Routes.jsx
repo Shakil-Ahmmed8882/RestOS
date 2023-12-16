@@ -16,6 +16,9 @@ import OrderList from "../Pages/Order-list/OrderList";
 import AllMenu from "../Pages/Home/Home/AllMenu";
 import AddedFoodUpdate from "../Pages/PersonalInfo/AddedFoodUpdate/AddedFoodUpdate";
 import MobileBreadCrump from "../Components/Shared/Header/MobileBreadCrump";
+import PurchasedPage from "../Pages/SingleFood/PurchasedPage";
+import AllOrders from "../Pages/Admin/AllOrders";
+import AllPurchasedPage from "../Pages/Admin/AllPurchasedList";
 
 
 const router = createBrowserRouter([
@@ -75,14 +78,27 @@ const router = createBrowserRouter([
         element: <OrderList/>
       },
       {
+        path: "/purchasedList",
+        element: <PurchasedPage/>
+      },
+      {
         path:'/all-menu',
         element:<AllMenu></AllMenu>
       },
       {
         path:'/mobile-bradcrump',
         element:<MobileBreadCrump></MobileBreadCrump>
+      },
+      
+      //admin
+      {
+        path:'/Allorderlist',
+        element:<AllOrders></AllOrders>
+      },
+      {
+        path:'/all-purchased-list',
+        element:<AllPurchasedPage></AllPurchasedPage>
       }
-      ,
 ],
 },
 // Catch-all route for 404
