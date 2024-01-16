@@ -7,7 +7,7 @@ export const useGetData = ({ endpoint, key }) => {
   const axios = useAxios()
   
  return useQuery({
-    queryKey: [key],
+    queryKey: [key[0],key[1]],
     queryFn: () =>
       axios.get(endpoint).then((res) => res.data),
   });

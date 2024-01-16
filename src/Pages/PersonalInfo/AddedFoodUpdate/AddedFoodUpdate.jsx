@@ -20,7 +20,7 @@ const AddedFoodUpdate = () => {
   const xios = useAxios();
   const { data, isLoading } = useGetData({
     endpoint: `added-food?id=${id}`,
-    key: "get-single-food",
+    key: ["get-single-food"],
   });
 
   if (isLoading) return <InfiniteSpinner></InfiniteSpinner>;

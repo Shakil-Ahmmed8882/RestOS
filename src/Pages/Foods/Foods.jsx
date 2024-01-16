@@ -6,14 +6,13 @@ import reviews from "./FloatingContent";
 import FooFloatingReview from "./FooFloatingReview";
 import "./food.css";
 
-import { Helmet } from "react-helmet";
-import { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+
+import { useState } from "react";
 
 const Foods = () => {
-  const { data: count, isLoading: isCountLoading } = useGetData({
+  const { data: count } = useGetData({
     endpoint: "total-food-count",
-    key: "items-count",
+    key:[ "items-count"],
   });
 
   const { theme } = useTheme();
@@ -21,29 +20,17 @@ const Foods = () => {
 
   const [itemsPerPage, setItemsPerPage] = useState(9);
   const [activePage, setActivePage] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState([]);
 
   const [searchResult, setSearchResult] = useState([]);
   const [isFiledEmpty, setIsFieldEmpty] = useState(true);
   // pagination
   const numberOfPages = Math.ceil(count?.count / itemsPerPage);
 
-  useEffect(() => {
-    fetch(
-      // `https://rest-os-server.vercel.app/foods?page=${activePage}&size=${itemsPerPage}`,
-      `https://rest-os-server.vercel.app/foods?page=${activePage}&size=${itemsPerPage}`,
-      { credentials: "include" }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        setIsLoading(false);
-      })
-      .catch((err) => console.log(err));
-  }, [activePage, itemsPerPage]);
+  const {data,isLoading} = useGetData({endpoint:`foods`,key:[activePage,itemsPerPage]})
+
 
   if (isLoading) return <Spinner />;
+  
 
   const pages = [0];
   for (let i = 0; i < numberOfPages.length; i++) {
@@ -67,9 +54,7 @@ const Foods = () => {
 
   return (
     <div className={`pb-9 ${themeColor} bg-[#f6f6f6]`}>
-      <Helmet>
-        <title>RestOs || Food</title>
-      </Helmet>
+     
 
       <div
         className={`min-h-[70vh] flex justify-center relative items-center ${

@@ -46,10 +46,10 @@ const Ingredients = () => {
               <BsBookmark className="absolute text-[18px] right-5 top-4"></BsBookmark>
               <div className="card-body -ml-4 md:-ml-0  ">
                 <h2 className="text-[17px] ">{ing.strMeal?ing.strMeal.split(" ")[1]:""}</h2>
-                <p className="absolute bottom-1 text-[gray] ">
+                <div className="absolute bottom-1 text-[gray] ">
                   <p className="my-1">Lorem ipsu Lorem ipsum dolor  dolor, sit amet consectetur</p>
                   {getFutureDate(idx + 1, 4 + idx, 13 + idx + 1)}
-                </p>
+                </div>
               </div>
             </div>
           ))}

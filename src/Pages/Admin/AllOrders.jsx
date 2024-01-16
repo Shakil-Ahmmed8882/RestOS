@@ -20,7 +20,7 @@ const AllOrders = () => {
 
   const { data, isLoading, refetch } = useGetData({
     endpoint: `All-orders`,
-    key: "orderlist",
+    key: ["orderlist"],
   });
 
   if (isLoading) return <Loading></Loading>;

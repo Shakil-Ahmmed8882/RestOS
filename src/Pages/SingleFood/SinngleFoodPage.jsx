@@ -10,22 +10,18 @@ import { BiSolidBadgeCheck } from "react-icons/bi";
 import { BsCursorFill } from "react-icons/bs";
 
 import { BsCupStraw } from "react-icons/bs";
-import { BsCupHotFill } from "react-icons/bs";
 
 import { BsFillArrowRightCircleFill } from "react-icons/bs";
 
 import { useTheme } from "next-themes";
 
-import order_now from "../../assets/img/ordernfow.gif";
 import green_leaf from "../../assets/img/greenloaf.png";
-import BackgroundWithImage from "../../Utils/dynamic-style/BackgroundImage";
 import Swal from "sweetalert2";
 import { useState } from "react";
 import { BsFillGeoAltFill } from "react-icons/bs";
 
 import { useAuth } from "../../Utils/useAuthHelper";
 import { useAxios } from "../../🔗Hook/useAxios";
-import PurchasePage from "./PurchasedPage";
 import getCurrentDate from "../../Utils/Date/currentDate";
 import Loading from "../../Components/Shared/Loading";
 
@@ -37,7 +33,7 @@ const SingleFoodPage = () => {
 
   const { data, isLoading } = useGetData({
     endpoint: `food/${id}`,
-    key: "food",
+    key: ["food"],
   });
 
   const goTo = useNavigate();
@@ -214,7 +210,7 @@ const SingleFoodPage = () => {
                       <div
                         onClick={handleOrderPurchase}
                         className="bg-primaryColor ml-auto mr-5 mt-6 p-5 flex gap-3 rounded-lg items-center text-[21px]">
-                          Order
+                        Order
                         <BsFillArrowRightCircleFill className="text-3xl" />
                       </div>
                     </label>

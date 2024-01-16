@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Navbar,
   NavbarBrand,
@@ -61,11 +61,11 @@ export default function NavBar() {
 
   const { data } = useGetData({
     endpoint: `/isAdmin?email=${user?.email}`,
-    key: user?.email,
+    key: [user?.email],
   });
   // const isAdmin = true
   const isAdmin = data?.isAdmin;
-  console.log(isAdmin);
+  
 
   const routesToShow = !isAdmin ? userRoutes : adminRoutes;
 
@@ -95,24 +95,24 @@ export default function NavBar() {
         }`}
         justify="center">
         <NavLink
-          exact
+          //  exact
           to="/"
-          activeClassName="active"
+          activeclassname="active"
           className="flex items-center">
           <span>Home</span>
         </NavLink>
 
-        <NavLink to="/food" activeClassName="active">
+        <NavLink to="/food" activeclassname="active">
           Food
         </NavLink>
 
-        <NavLink to="/blog" activeClassName="active">
+        <NavLink to="/blog" activeclassname="active">
           Blog
         </NavLink>
         {user && !isLoggedOut ? (
           ""
         ) : (
-          <NavLink to="/sign-in" activeClassName="active">
+          <NavLink to="/sign-in" activeclassname="active">
             Sign in
           </NavLink>
         )}

@@ -1,6 +1,5 @@
 import { AiOutlineDelete } from "react-icons/ai";
 import { AiTwotoneDelete } from "react-icons/ai";
-import { BiSearchAlt } from "react-icons/bi";
 import UserTable from "../../Components/Shared/Table/Table";
 
 import { useAuth } from "../../Utils/useAuthHelper";
@@ -10,7 +9,6 @@ import { columns } from "./TableHeading";
 import { Helmet } from "react-helmet";
 
 import { useGetData } from "../../🔗Hook/httpRequests";
-import AnimatedBlub from "../../Components/Shared/animatedBlub/AnimatedBlub";
 import Loading from "../../Components/Shared/Loading";
 import NoDataFound from "../../Components/Shared/NoDataFound";
 
@@ -21,11 +19,11 @@ const OrderList = () => {
 
   const { data, isLoading, refetch } = useGetData({
     endpoint: `ordered-list?email=${user?.email}&status=pending`,
-    key: "orderlist",
+    key: ["orderlist"],
   });
 
   if (isLoading) return <Loading></Loading>;
-  if (data.length == 0) return <Loading></Loading>;
+  if (!data) return <Loading></Loading>;
 
   //create an array of object using nextui table
 
@@ -40,6 +38,7 @@ const OrderList = () => {
     }
   };
   refetch()
+  console.log(data)
 
   const users = [];
 
@@ -70,21 +69,17 @@ const OrderList = () => {
       ),
     });
   }
-
+console.log(data)
   return (
     <div className="max-w-6xl mx-auto">
       <Helmet>
         <title>RestOs || Order-list</title>
       </Helmet>
       ;
-      {data.length == 0 && (
-       <NoDataFound></NoDataFound>
-      )}
-      {/* <button onClick={()=>handleOrderedFood()} className="btn bg-primaryColor">Delete</button> */}
       {
-        data.length !== 0 &&
-        <UserTable columns={columns} users={users}></UserTable>
-
+        data? 
+        <UserTable columns={columns} users={users}></UserTable>:
+        <NoDataFound></NoDataFound>
       }
     </div>
   );

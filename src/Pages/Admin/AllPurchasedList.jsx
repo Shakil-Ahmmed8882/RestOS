@@ -8,7 +8,7 @@ const AllPurchasedPage = () => {
   const { user } = useAuth();
   const { data, isLoading, refetch } = useGetData({
     endpoint: `all-purchased-list`,
-    key: "all-purchased-list",
+    key: ["all-purchased-list"],
   });
 
   if (isLoading) return <Loading></Loading>;
