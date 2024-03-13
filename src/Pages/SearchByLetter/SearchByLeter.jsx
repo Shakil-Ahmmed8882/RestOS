@@ -26,7 +26,7 @@ const Ingredients = () => {
 
   return (
     <div
-      className={`${theme == "dark" ? "bg-[#08a88b45] " : "bg-[#f0ecec96]"}`}>
+      className={`py-8 ${theme == "dark" ? "bg-[#08a88b45] " : "bg-[#f5f5f5]"}`}>
       <div className="flex flex-col-reverse md:flex-row max-w-6xl py-11 mx-auto">
         <div className="grid grid-cols-1  sm:grid-cols-1 w-full px-2 md:grid-cols-2 gap-4">
           {data.meals?.slice(0, 4).map((ing, idx) => (
@@ -71,7 +71,7 @@ const Ingredients = () => {
             foundation of the treat lies in the crushed Digestive{" "}
           </p>
           <div className="flex md:justify-end -mt-2">
-            <button className="btn btn-accent text-[white]">Learn more</button>
+            <button className="btn bg-primaryColor text-[white]">Learn more</button>
           </div>
         </div>
       </div>

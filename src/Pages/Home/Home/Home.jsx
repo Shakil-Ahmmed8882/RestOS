@@ -8,9 +8,9 @@ const Home = () => {
   const { theme } = useTheme();
 
   return (
-    <div className={`${theme == "light" ? "" : "bg-[black]"}`}>
+    <div className={`${theme == "light" ? "bg-[#e9ffeb]" : "bg-[black]"}`}>
         <title>RestOs || Home</title>
-      ;<Banner></Banner>
+      <Banner></Banner>
       <div className="">
         <TopSellingFood></TopSellingFood>
       </div>

@@ -10,7 +10,7 @@ import {
   Avatar,
 } from "@nextui-org/react";
 import "./Navbar.css";
-import logo from "../../../assets/img/restOSLogo.png";
+import logo from "../../../assets/img/logo.png";
 import { Link, NavLink } from "react-router-dom";
 import ThemeSwitcher from "./ThemeSwitcher";
 import { useTheme } from "next-themes";
@@ -76,8 +76,8 @@ export default function NavBar() {
   };
 
   return (
-    <Navbar maxWidth="full" isBlurred="true">
-      <NavbarBrand className="pl-20">
+    <Navbar maxWidth="full" isBlurred="true" className="bg-transparent">
+      <NavbarBrand className="md:pl-20">
         <div className="flex gap-1 items-center">
           <img className="w-[42px]" src={logo} alt="" />
           <p className="flex font-bold  items-center text-[19px]">
@@ -109,6 +109,9 @@ export default function NavBar() {
         <NavLink to="/blog" activeclassname="active">
           Blog
         </NavLink>
+        <NavLink to="/dashboard" activeclassname="active">
+          Dashboard
+        </NavLink>
         {user && !isLoggedOut ? (
           ""
         ) : (
@@ -120,7 +123,7 @@ export default function NavBar() {
       <ThemeSwitcher></ThemeSwitcher>
 
       {user && !isLoggedOut && (
-        <NavbarContent as="div" className="pr-20" justify="end">
+        <NavbarContent as="div" className="md:pr-20" justify="end">
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
               <Avatar

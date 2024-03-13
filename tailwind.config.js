@@ -10,7 +10,7 @@ module.exports = {
   ],
   theme: {
     colors:{
-      "primaryColor":"#2CA58D",
+      "primaryColor":"#00D019",
       "primaryPink":"#F875AA",
       "bgLightPink":"#FFDFDF",
       "bgMistyRose":"#FFF6F6",
