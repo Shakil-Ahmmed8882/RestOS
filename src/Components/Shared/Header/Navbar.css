@@ -1,0 +1,26 @@
+a.active {
+      position: relative;
+            transition: width 0.6s ease-in-out; 
+
+    }
+    
+    a.active::before {
+      content: '';
+      position: absolute;
+      width: 30px;
+      height: 6px;
+      bottom: -5px;
+      left: 0;
+      background-color: #08a88b45;
+    }
+    
+
+
+
+@media screen and (min-width:600px) {
+      .displayFlex{
+            display: flex !important;
+      }
+      
+}
+

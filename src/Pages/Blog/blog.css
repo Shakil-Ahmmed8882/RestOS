@@ -1,0 +1,7 @@
+.dark_mode{
+      background: linear-gradient(to right, #ffeef6,rgb(213, 240, 255)) !important;
+}
+
+.text-dark{
+      color: #cdc5c9 !important;
+}
