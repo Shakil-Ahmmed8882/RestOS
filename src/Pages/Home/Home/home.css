@@ -1,0 +1,24 @@
+
+
+
+
+.custom-rotate{
+            transform: rotate(140deg);
+            top: 0;
+            right:0;
+            overflow-x: hidden;
+}
+.custom-rotate-portion{
+            transform: rotate(150deg);
+            top: -100PX;
+            left: -500PX;
+            overflow-x: hidden;
+}
+
+.food-bg{
+      background:linear-gradient(to right, rgba(rgba(0, 0, 255, 0.356) 0, 0, 0.099) ,blue),url('https://i.ibb.co/tJvVZm5/food-banner.png');
+      width: 100%;
+      height:100%;
+      z-index: 3;
+      background-size: cover;
+}
