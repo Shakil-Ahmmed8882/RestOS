@@ -19,7 +19,11 @@ const Banner = () => {
   const color = customTheme(theme, "#ffffffea", "black", "#00000097", "");
 
   return (
+<<<<<<< HEAD
     <div className="max-w-6xl flex lg:mt-20 px-3 flex-col-reverse md:flex-row items-center mx-auto md:overflow-hidden ">
+=======
+    <div className="max-w-6xl flex px-3 flex-col-reverse md:flex-row items-center mx-auto md:overflow-hidden ">
+>>>>>>> 1b1f3d8f7a228243baf398500d2ae620539a889d
       <div className="flex-1">
         <img
           className=" absolute w-full left-0 top-0 object-cover h-full"

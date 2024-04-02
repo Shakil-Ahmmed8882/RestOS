@@ -19,10 +19,14 @@ import MobileBreadCrump from "../Components/Shared/Header/MobileBreadCrump";
 import PurchasedPage from "../Pages/SingleFood/PurchasedPage";
 import AllOrders from "../Pages/Admin/AllOrders";
 import AllPurchasedPage from "../Pages/Admin/AllPurchasedList";
+<<<<<<< HEAD
 import DashboardLayout from "../Layout/DashboardLayout";
 import PrivateRoute from "./PrivateRoutes";
 import { Dashboard } from "../Pages/Dashboard/Dashboard";
 import { ManageUser } from "../Pages/Dashboard/Admin/Users/ManageUsers";
+=======
+import { Dashboard } from "../Layout/Dashboard";
+>>>>>>> 1b1f3d8f7a228243baf398500d2ae620539a889d
 
 
 const router = createBrowserRouter([
@@ -44,6 +48,17 @@ const router = createBrowserRouter([
         element: <Blog/>
       },
       {
+<<<<<<< HEAD
+=======
+        path: "/sign-in",
+        element: <SignIn/>
+      },
+      {
+        path: "/sign-up",
+        element: <SignUp/>
+      },
+      {
+>>>>>>> 1b1f3d8f7a228243baf398500d2ae620539a889d
         path: "/food-details/:id",
         element: <Guard><SinngleFoodPage/></Guard>
       },
@@ -100,6 +115,7 @@ const router = createBrowserRouter([
 
 // user dashboard 
 {
+<<<<<<< HEAD
   path:'/dashboard',
   element:<PrivateRoute><DashboardLayout/></PrivateRoute> ,
   children:[
@@ -122,6 +138,10 @@ const router = createBrowserRouter([
 {
   path: "/sign-up",
   element: <SignUp/>
+=======
+path:"/dashboard",
+element:<Dashboard/>
+>>>>>>> 1b1f3d8f7a228243baf398500d2ae620539a889d
 },
 // Catch-all route for 404
 {
