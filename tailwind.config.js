@@ -11,11 +11,8 @@ module.exports = {
   theme: {
     colors:{
       "primaryColor":"#00D019",
-<<<<<<< HEAD
       "primary-color": "#00D019",
       "description-text": "#4e4e4e",
-=======
->>>>>>> 1b1f3d8f7a228243baf398500d2ae620539a889d
       "primaryPink":"#F875AA",
       "bgLightPink":"#FFDFDF",
       "bgMistyRose":"#FFF6F6",

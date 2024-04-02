@@ -1,10 +1,15 @@
-// Components
-import Logo from "../../../Shared/Logo";
+
 // Icons
 
 import { AiOutlineMenu } from "react-icons/ai";
 import { useState } from "react";
 import { MySidebar } from "./MySidebar";
+import RestaurantLogo from "../../../Shared/X";
+
+
+
+
+
 
 const Sidebar = () => {
   const [isOpenSideBar, setIsOpenSidebar] = useState(false);
@@ -13,7 +18,7 @@ const Sidebar = () => {
     <>
       {/* Small Screen Navbar */}
       <div className=" text-gray-800 flex justify-between   px-3 p-2 md:hidden">
-        <Logo />
+        <RestaurantLogo/>
         <AiOutlineMenu
           onClick={() => setIsOpenSidebar(!isOpenSideBar)}
           className="text-2xl cursor-pointer"

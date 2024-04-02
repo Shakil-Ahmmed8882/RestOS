@@ -21,11 +21,7 @@ const SignIn = () => {
       .then(() => {
         e.target.reset();
         toast.success("Successfully Signed in");
-<<<<<<< HEAD
         goTo(from, { replace: true })
-=======
-        goTo(location.state ? location.state : "/");
->>>>>>> 1b1f3d8f7a228243baf398500d2ae620539a889d
 
         // creating a token
         xios
@@ -40,11 +36,7 @@ const SignIn = () => {
     googleSignIn()
       .then((result) => {
         toast.success("Signed in with google");
-<<<<<<< HEAD
         goTo(from, { replace: true })
-=======
-        goTo(location.state ? location.state : "/");
->>>>>>> 1b1f3d8f7a228243baf398500d2ae620539a889d
 
         // creating a token
         xios

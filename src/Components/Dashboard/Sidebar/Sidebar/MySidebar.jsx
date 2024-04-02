@@ -1,6 +1,6 @@
 import { HiOutlineUsers } from "react-icons/hi2";
 import { useState } from "react";
-import Logo from "../../../Shared/Logo";
+
 import { SidebarItem } from "./SidebarItem";
 
 
@@ -12,6 +12,9 @@ import {
 } from "./sidebarDropdownItems";
 import MenuItem from "../MenuItem";
 import { useNavigate } from "react-router-dom";
+import RestaurantLogo from "../../../Shared/X";
+
+
 
 
 export const MySidebar = () => {
@@ -45,7 +48,7 @@ export const MySidebar = () => {
         <div>
           <div className="flex">
             <div className="w-full flex justify-between  gap-3 items-end px-4 py-2">
-              <Logo />
+              <RestaurantLogo />
               <div>
                 <p className="text-[#a7a7a7]">inc</p>
                 <h3 className="font-semibold font-"> </h3>
