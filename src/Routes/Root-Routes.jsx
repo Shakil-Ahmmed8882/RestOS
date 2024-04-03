@@ -19,6 +19,7 @@ import MobileBreadCrump from "../Components/Shared/Header/MobileBreadCrump";
 import PurchasedPage from "../Pages/SingleFood/PurchasedPage";
 import AllOrders from "../Pages/Admin/AllOrders";
 import AllPurchasedPage from "../Pages/Admin/AllPurchasedList";
+import { Dashboard } from "../Layout/Dashboard";
 
 
 const router = createBrowserRouter([
@@ -100,6 +101,12 @@ const router = createBrowserRouter([
         element:<AllPurchasedPage></AllPurchasedPage>
       }
 ],
+},
+
+// user dashboard 
+{
+path:"/dashboard",
+element:<Dashboard/>
 },
 // Catch-all route for 404
 {
