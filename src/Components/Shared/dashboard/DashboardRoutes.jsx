@@ -18,11 +18,7 @@ export const DashboardRoutes = () => {
             <li className=" p-2 rounded-lg flex items-center gap-3"> <FaBorderNone/> Customer</li>
             <li className=" p-2 rounded-lg flex items-center gap-3"> <FaBorderNone/> Analytics</li>
             <li className=" p-2 rounded-lg flex items-center gap-3"> <FaBorderNone/> Reviews</li>
-<<<<<<< HEAD
           <li className=" p-2 rounded-lg flex items-center gap-3"> <FaBorderNone/> Foods</li>
-=======
-            <li className=" p-2 rounded-lg flex items-center gap-3"> <FaBorderNone/> Foods</li>
->>>>>>> 1b1f3d8f7a228243baf398500d2ae620539a889d
             <li className=" p-2 rounded-lg flex items-center gap-3"> <FaBorderNone/> Food details</li>
             <li className=" p-2 rounded-lg flex items-center gap-3">Chat</li>
             <li className=" p-2 rounded-lg flex items-center gap-3">Setting</li>

@@ -1,32 +1,20 @@
 import { HiOutlineUsers } from "react-icons/hi2";
 import { useState } from "react";
 
-import { SidebarItem } from "./SidebarItem";
-
-
-import {
-  designsItems,
-  legalItems,
-  officeItems,
-  salesItems,
-} from "./sidebarDropdownItems";
 import MenuItem from "../MenuItem";
 import { useNavigate } from "react-router-dom";
 import RestaurantLogo from "../../../Shared/X";
+import { UserRoutes } from "./UserRoutes";
+import { AdminRoutes } from "./AdminRoutes";
 
 
 
 
 export const MySidebar = () => {
-  const [isOpenSalesDropdown, setIsOpenSalesDropdown] = useState(false);
-  const [isOpenDesignsDropdown, setIsOpenDesignsDropdown] = useState(false);
-  const [isOpenOfficeDropdown, setIsOpenOfficeDropdown] = useState(false);
-  const [isOpenLegalDropdown, setIsOpenLegalDropdown] = useState(false);
+  
   const [activeRole,setActiveRole] = useState('user')
 
   const navigate = useNavigate()
-
-
 
   return (
     <>
@@ -45,7 +33,7 @@ export const MySidebar = () => {
         
         ease-in-out`}
       >
-        <div>
+         <div>
           <div className="flex">
             <div className="w-full flex justify-between  gap-3 items-end px-4 py-2">
               <RestaurantLogo />
@@ -63,6 +51,8 @@ export const MySidebar = () => {
         </div>
           <hr />
 
+         {
+          activeRole === 'admin' &&
           <div className="flex gap-3 ">
           <button onClick={()=> (
             setActiveRole('user') ,navigate('/dashboard')
@@ -72,6 +62,7 @@ export const MySidebar = () => {
             navigate('/dashboard/manage-user')
             )} className={`${activeRole === 'admin'?'bg-primary-color active:scale-90 text-[white]':'bg-[white]'} transition-all duration-200 hover:shadow-lg    shadow-md p-3 rounded-lg px-10`}>Admin</button>
          </div>
+         }
 
         {
           activeRole === 'admin'?
@@ -82,76 +73,19 @@ export const MySidebar = () => {
           <>
           <div>
             <ul>
-              {/* <MenuItem address={"/desing-team"} icon={BriefcaseIcon} label={"Design Team"}/> */}
-              <MenuItem
-                address={"/"}
-                icon={BriefcaseIcon}
-                label={"Design Team"}
-              />
-              <MenuItem
-                address={"/marketing-design"}
-                icon={MegaphoneIcon}
-                label={"Marketing Design"}
-              />
-              <MenuItem
-                address={"/development-team"}
-                icon={CogIcon}
-                label={"Development Team"}
-              />
-              <MenuItem
-                address={"/create-team"}
-                icon={PlusIcon}
-                label={"Create A Team"}
-              />
+            <UserRoutes/>
+           
             </ul>
-            <div className="mt-6 mb-2 px-4 font-semibold text-md">FOLDERS</div>
-            <ul>
-              {/* Designs */}
-              <SidebarItem
-                handleClick={setIsOpenDesignsDropdown}
-                FirstIcon={PencilIcon}
-                SecondIcon={ChevronDownIcon}
-                label={"Design"}
-                isOpen={isOpenDesignsDropdown}
-                sidebarDropdowns={designsItems}
-              />
-              {/* Office */}
-              <SidebarItem
-                handleClick={setIsOpenOfficeDropdown}
-                FirstIcon={BuildingIcon}
-                SecondIcon={ChevronDownIcon}
-                label={"Office"}
-                isOpen={isOpenOfficeDropdown}
-                sidebarDropdowns={officeItems}
-              />
-  
-              {/* Office */}
-              <SidebarItem
-                handleClick={setIsOpenLegalDropdown}
-                FirstIcon={ScaleIcon}
-                SecondIcon={ChevronDownIcon}
-                label={"Legal"}
-                isOpen={isOpenLegalDropdown}
-                sidebarDropdowns={legalItems}
-              />
-  
-              {/* Sales */}
-              <SidebarItem
-                handleClick={setIsOpenSalesDropdown}
-                FirstIcon={TagIcon}
-                SecondIcon={ChevronDownIcon}
-                label={"Sales"}
-                isOpen={isOpenSalesDropdown}
-                sidebarDropdowns={salesItems}
-              />
-            </ul>
+            {
+
+            activeRole === 'admin' && <AdminRoutes />
+            }
           </div>
           
           
           </>
         }
 
-       
       </div>
     </>
   );

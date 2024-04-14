@@ -28,24 +28,24 @@ import { ManageUser } from "../Pages/Dashboard/Admin/Users/ManageUsers";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Main/>,
+    element: <Main />,
     errorElement: <div>Error</div>,
     children: [
       {
         index: true,
-        element: <Home/>
+        element: <Home />
       },
       {
         path: "food",
-        element: <Foods/>
+        element: <Foods />
       },
       {
         path: "Blog",
-        element: <Blog/>
+        element: <Blog />
       },
       {
         path: "/food-details/:id",
-        element: <Guard><SinngleFoodPage/></Guard>
+        element: <Guard><SinngleFoodPage /></Guard>
       },
 
       // User's personal info
@@ -54,80 +54,83 @@ const router = createBrowserRouter([
         element: <Guard><OrderFood></OrderFood></Guard>
       },
       {
-        path: "/profile",
-        element: <Profile/>
-      },
-      {
         path: "/added-food",
-        element: <Added_Food/>
+        element: <Added_Food />
       },
       {
         path: "/food-update/:id",
-        element: <AddedFoodUpdate/>
+        element: <AddedFoodUpdate />
       },
       {
         path: "/add-food",
-        element: <Add_Food/>
+        element: <Add_Food />
       },
       {
-        path: "/orderlist",
-        element: <OrderList/>
+        path: '/all-menu',
+        element: <AllMenu></AllMenu>
       },
       {
-        path: "/purchasedList",
-        element: <PurchasedPage/>
+        path: '/mobile-bradcrump',
+        element: <MobileBreadCrump></MobileBreadCrump>
       },
-      {
-        path:'/all-menu',
-        element:<AllMenu></AllMenu>
-      },
-      {
-        path:'/mobile-bradcrump',
-        element:<MobileBreadCrump></MobileBreadCrump>
-      },
-      
+
       //admin
       {
-        path:'/Allorderlist',
-        element:<AllOrders></AllOrders>
+        path: '/Allorderlist',
+        element: <AllOrders></AllOrders>
       },
       {
-        path:'/all-purchased-list',
-        element:<AllPurchasedPage></AllPurchasedPage>
+        path: '/all-purchased-list',
+        element: <AllPurchasedPage></AllPurchasedPage>
       }
-],
-},
+    ],
+  },
 
-// user dashboard 
-{
-  path:'/dashboard',
-  element:<PrivateRoute><DashboardLayout/></PrivateRoute> ,
-  children:[
-    {
-      index:true,
-      element:<PrivateRoute><Dashboard/></PrivateRoute>
-    },
-    {
-      path:'manage-user',
-      element:<PrivateRoute><ManageUser/></PrivateRoute>
-    }
-  ]
-},
+  // user dashboard 
+  {
+    path: '/dashboard',
+    element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
+    children: [
+      {
+        index: true,
+        element: <PrivateRoute><Dashboard /></PrivateRoute>
+      },
+      {
+        path: "profile",
+        element: <Profile />
+      },
+      {
+        path: "orderlist",
+        element: <OrderList />
+      },
+      {
+        path: "purchasedList",
+        element: <PurchasedPage />
+      },
 
 
-{
-  path: "/sign-in",
-  element: <SignIn/>
-},
-{
-  path: "/sign-up",
-  element: <SignUp/>
-},
-// Catch-all route for 404
-{
-  path:'*',
-  element: <Page404/>
-},
+      // Admin routes
+      {
+        path: 'manage-user',
+        element: <PrivateRoute><ManageUser /></PrivateRoute>
+      }
+    ]
+  },
+
+
+  {
+    path: "/sign-in",
+    element: <SignIn />
+  },
+  {
+    path: "/sign-up",
+    element: <SignUp />
+  },
+  // Catch-all route for 404
+  {
+    path: '*',
+    element: <Page404 />
+  },
 ]);
 
 export default router;

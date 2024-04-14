@@ -6,7 +6,7 @@ export default function Tabs({ handleClick }) {
   const [openTabMenu, setOpenTabMenu] = useState(false);
 
   return (
-    <div className=" relative py-5 flex items-center justify-between px-4 bg-white border-r border-l border-gray-200">
+    <div className=" relative py-5 flex items-center justify-between px-4 bg-white border-r border-l border-[#e8e8e8f4]">
       {/* // Outer container for the tabs */}
       <div
         className={` ${

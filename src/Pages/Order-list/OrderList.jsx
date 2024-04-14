@@ -75,7 +75,6 @@ console.log(data)
       <Helmet>
         <title>RestOs || Order-list</title>
       </Helmet>
-      ;
       {
         data? 
         <UserTable columns={columns} users={users}></UserTable>:

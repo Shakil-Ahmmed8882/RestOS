@@ -15,8 +15,8 @@ const MenuItem = ({ label, address, icon: Icon }) => {
       <li className="flex items-center px-4 py-2">
         {Icon ? (
           <Icon
-            className={`font-bold text-[#b0b0b0] ${
-              isActive ? "font-bold text-black" : "text-[#c6c6c6] text-[100px]"
+            className={`font-bold text-[#b0b0b0] text-[26px] ${
+              isActive ? "font-bold text-black" : "text-[#c6c6c6]"
             } text-[100px]`}
           />
         ) : (
