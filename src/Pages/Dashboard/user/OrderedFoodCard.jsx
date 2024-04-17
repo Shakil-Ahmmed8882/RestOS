@@ -1,4 +1,4 @@
-export const OrderedFoodCard = () => {
+export const PopularDishesCard = () => {
     return (
         <>
             <div className="flex items-center justify-around text-[14px] mt-4 bg-[white] p-2 text-left gap-3 rounded-lg  shadow-sm">

@@ -6,7 +6,7 @@ const PurchaseChart = () => {
 
 
     return (
-        <div className="lg:col-span-3 bg-[white] p-3 rounded-lg">
+        <div className="lg:col-span-3 bg-[white] p-3 rounded-b-lg">
 
             <div className="flex-1 lg:grid grid-cols-2 gap-6">
 
