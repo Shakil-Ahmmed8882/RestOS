@@ -1,12 +1,8 @@
 import { FaStar } from "react-icons/fa6";
 
 import { useTheme } from "next-themes";
-import Curve from "./curve";
-import bannerImg from "../../../assets/img/food-banner.png";
 import "./home.css";
-import AnimatedBlub from "../../../Components/Shared/animatedBlub/AnimatedBlub";
 import { Link } from "react-router-dom";
-import Slider from "./banner/Slider";
 
 import { BiSolidFoodMenu } from "react-icons/bi";
 import customTheme from "../../../Utils/Theme/theme";
