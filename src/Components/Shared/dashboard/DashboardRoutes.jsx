@@ -4,9 +4,6 @@ import { FaBorderNone } from "react-icons/fa6";
 import { CiStickyNote } from "react-icons/ci";
 
 
-
-
-
 export const DashboardRoutes = () => {
   return (
     <div className="">

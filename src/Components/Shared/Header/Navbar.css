@@ -14,7 +14,9 @@ a.active {
       background-color: #08a88b45;
     }
     
-
+.no-underline a.active::before {
+      background-color: #08a88b00;
+    }
 
 
 @media screen and (min-width:600px) {

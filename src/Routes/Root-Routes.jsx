@@ -21,8 +21,9 @@ import AllOrders from "../Pages/Admin/AllOrders";
 import AllPurchasedPage from "../Pages/Admin/AllPurchasedList";
 import DashboardLayout from "../Layout/DashboardLayout";
 import PrivateRoute from "./PrivateRoutes";
-import { Dashboard } from "../Pages/Dashboard/Dashboard";
 import { ManageUser } from "../Pages/Dashboard/Admin/Users/ManageUsers";
+import { AdminDashboard } from "../Pages/Dashboard/Admin/Users/AdminDashboard";
+import UserDashboard from "../Pages/Dashboard/user/userDashboard";
 
 
 const router = createBrowserRouter([
@@ -93,7 +94,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <PrivateRoute><Dashboard /></PrivateRoute>
+        element: <PrivateRoute><UserDashboard/></PrivateRoute>
       },
       {
         path: "profile",

@@ -6,11 +6,6 @@ import { useState } from "react";
 import { MySidebar } from "./MySidebar";
 import RestaurantLogo from "../../../Shared/X";
 
-
-
-
-
-
 const Sidebar = () => {
   const [isOpenSideBar, setIsOpenSidebar] = useState(false);
 

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { useGetData } from '../🔗Hook/httpRequests'
 
 export const imageUpload = async image => {
   const formData = new FormData()
@@ -18,4 +19,24 @@ export function formatDate(timestamp) {
   const year = date.getFullYear();
 
   return `${day}/${month}/${year}`;
+}
+
+
+// Total ordered food price 
+export const TotalPriceOfOrderedFood = (user) => {
+
+  const { data, isLoading, refetch } = useGetData({
+    endpoint: `ordered-list?email=${user?.email}&status=pending`,
+    key: ["orderlist"],
+  });
+  
+  const totalPrice = data?.reduce((total, element) => {
+    return total + element.price;
+  }, 0);
+
+  console.log(isLoading)
+  console.log(totalPrice)
+
+  return {data,totalPrice, isLoading,refetch}
+
 }

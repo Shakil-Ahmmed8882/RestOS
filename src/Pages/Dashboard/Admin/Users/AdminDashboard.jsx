@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { ProjectTable } from "../../components/Dashboard/Sidebar/project-table/ProjectTable";
-import { DashboardNavbar } from "../../components/Navbar/DashboardNavbar";
-import Tabs from "../../components/Tabs/Tabs";
-import { FilterTags } from "../../components/Shared/Filter/FilterTags";
+import { ProjectTable } from "../../../../components/Dashboard/Sidebar/project-table/ProjectTable";
+import { DashboardNavbar } from "../../../../components/Navbar/DashboardNavbar";
+import Tabs from "../../../../components/Tabs/Tabs";
+import { FilterTags } from "../../../../components/Shared/Filter/FilterTags";
 
-export const Dashboard = () => {
+export const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState(false);
 
   const handleClick = (clickedItem) => {
