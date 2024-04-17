@@ -7,7 +7,7 @@ const DashboardLayout = () => {
       {/* Sidebar Component */}
       <Sidebar />
       
-      <div className='flex-1 bg-[#f8f8f8] md:ml-72'>
+      <div className='flex-1 bg-[#f5f5f5] md:ml-72'>
         <div className='p-5'>
           {/* Outlet for dynamic contents */}
           <Outlet />

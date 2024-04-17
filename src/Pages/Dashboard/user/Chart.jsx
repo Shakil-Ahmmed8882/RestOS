@@ -1,18 +1,16 @@
 import ApexCharts from 'apexcharts';
 import { useEffect, useRef } from "react";
-import { useAuth } from "../../../Utils/useAuthHelper";
-import { TotalPriceOfOrderedFood } from "../../../api/utils";
+
 import { orderCountOptions, purchaseCountOptions } from './data';
 
 const Chart = ({reference, CountOption}) => {
-    const { user } = useAuth()
     const PurchaOptionsRef = useRef(null)
     const OrderOptionsRef = useRef(null)
 
 
     useEffect(() => {
         // Function to create and render chart
-        const createChart = (ref, options) => {
+        const createChart = (ref , options) => {
           if (ref.current) {
             const chart = new ApexCharts(ref.current, options);
             chart.render();
