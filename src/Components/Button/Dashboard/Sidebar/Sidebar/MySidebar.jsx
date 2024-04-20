@@ -44,7 +44,7 @@ export const MySidebar = () => {
       >
         <div>
           <div className="flex">
-            <div className="w-full flex justify-between  gap-3 items-end px-4 py-2">
+            <div className="w-full flex  gap-3 items-end px-4 py-2">
               <Logo />
               <div>
                 <p className="text-[#a7a7a7]">inc</p>

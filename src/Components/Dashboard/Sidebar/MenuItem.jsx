@@ -16,7 +16,7 @@ const MenuItem = ({ label, address, icon: Icon }) => {
         {Icon ? (
           <Icon
             className={`font-bold text-[#b0b0b0] text-[26px] ${
-              isActive ? "font-bold text-black" : "text-[#c6c6c6]"
+              isActive ? "font-bold text-[black]" : "text-[#c6c6c6]"
             } text-[100px]`}
           />
         ) : (

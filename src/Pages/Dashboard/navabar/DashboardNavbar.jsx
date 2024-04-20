@@ -1,4 +1,3 @@
-import { Profile } from "../../../Components/Shared/Profile/Profile";
 import Search from "../../../Components/Shared/Search/Search";
 import UserAndNotification from "../../../Components/Shared/user&notification/UserAndNotification";
 import YearDropdown from "../user/YearDropdown";
@@ -13,7 +12,7 @@ const DashboardNavbar = () => {
                 <Search />
                 <UserAndNotification />
             </div>
-            <Profile/>
+            
 
         </>
     );

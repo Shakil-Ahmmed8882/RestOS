@@ -11,8 +11,8 @@ import { AdminRoutes } from "./AdminRoutes";
 
 
 export const MySidebar = () => {
-  
-  const [activeRole,setActiveRole] = useState('user')
+
+  const [activeRole, setActiveRole] = useState('user')
 
   const navigate = useNavigate()
 
@@ -33,7 +33,7 @@ export const MySidebar = () => {
         
         ease-in-out`}
       >
-         <div>
+        <div>
           <div className="flex">
             <div className="w-full flex justify-between  gap-3 items-end px-4 py-2">
               <RestaurantLogo />
@@ -49,39 +49,39 @@ export const MySidebar = () => {
             </div>
           </div>
         </div>
-          <hr />
-
-         {
-          activeRole === 'admin' &&
-          <div className="flex gap-3 ">
-          <button onClick={()=> (
-            setActiveRole('user') ,navigate('/dashboard')
-            )} className={` ${activeRole === 'user'?'bg-primary-color  active:scale-90 text-[white]':'bg-[white]'}  transition-all duration-200 hover:shadow-lg  shadow-md p-3 rounded-lg px-10`}>User</button>
-          <button onClick={()=> (
-            setActiveRole('admin'),
-            navigate('/dashboard/manage-user')
-            )} className={`${activeRole === 'admin'?'bg-primary-color active:scale-90 text-[white]':'bg-[white]'} transition-all duration-200 hover:shadow-lg    shadow-md p-3 rounded-lg px-10`}>Admin</button>
-         </div>
-         }
+        <hr />
 
         {
-          activeRole === 'admin'?
-          <>
-          <MenuItem label={'Manage user'} icon={HiOutlineUsers} address={'/dashboard/manage-user'}/>
-          </>
-          :
-          <>
-          <div>
-            <ul>
-            <UserRoutes/>
-            </ul>
-            {
-            activeRole === 'admin' && <AdminRoutes />
-            }
+          activeRole === 'admin' &&
+          <div className="flex gap-3 ">
+            <button onClick={() => (
+              setActiveRole('user'), navigate('/dashboard')
+            )} className={` ${activeRole === 'user' ? 'bg-primary-color  active:scale-90 text-[white]' : 'bg-[white]'}  transition-all duration-200 hover:shadow-lg  shadow-md p-3 rounded-lg px-10`}>User</button>
+            <button onClick={() => (
+              setActiveRole('admin'),
+              navigate('/dashboard/manage-user')
+            )} className={`${activeRole === 'admin' ? 'bg-primary-color active:scale-90 text-[white]' : 'bg-[white]'} transition-all duration-200 hover:shadow-lg    shadow-md p-3 rounded-lg px-10`}>Admin</button>
           </div>
-          
-          
-          </>
+        }
+
+        {
+          activeRole === 'admin' ?
+            <>
+              <MenuItem label={'Manage user'} icon={HiOutlineUsers} address={'/dashboard/manage-user'} />
+            </>
+            :
+            <>
+              <div>
+                <ul>
+                  <UserRoutes />
+                </ul>
+                {
+                  activeRole === 'admin' && <AdminRoutes />
+                }
+              </div>
+
+
+            </>
         }
 
       </div>

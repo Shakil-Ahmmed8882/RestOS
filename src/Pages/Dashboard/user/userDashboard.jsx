@@ -2,10 +2,11 @@ import PopularDishes from "./PopularDishes";
 import Banner from "./Banner";
 import Pizza from "./Pizza";
 import Categories from "./Categories/Categories";
+import OrderChart from "./OrderChart";
+import PurchaseChart from "./PurchaseChart";
 
 
 const UserDashboard = () => {
-
   return (
     <div>
       {/* navbar */}
@@ -14,9 +15,13 @@ const UserDashboard = () => {
         <Banner />
         {/* chart view */}
 
-        <div className=" mt-6 md:grid lg:grid md:grid-cols-2 lg:grid-cols-8 gap-3 w-full">
+        <div className=" mt-6 md:grid  md:grid-cols-2 lg:grid-cols-8 gap-3 w-full">
           <div className="col-span-6">
-            <Categories />
+            <div className="grid lg:grid-cols-6 gap-3 ">
+            <OrderChart />
+            <PurchaseChart />
+            </div>
+            <Categories/>
             <Pizza />
           </div>
           <PopularDishes />

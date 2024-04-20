@@ -4,9 +4,9 @@ const PopularDishes = () => {
     return (
         <>
         
-      <div className="lg:flex lg:col-span-2 w-full gap-6">
+      <div className="lg:flex col-span-2 mt-8 md:mt-0  w-full gap-6">
         
-        <div className="w-full text-center bg-[#ffffff] p-4 rounded-b-lg">
+        <div className="w-full  bg-[#ffffff] p-5 rounded-b-lg">
           {/* <Avatar /> */}
           <h1 className="text-[21px]">Most Popular 🍲🍲</h1>
           {
