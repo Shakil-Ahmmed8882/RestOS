@@ -1,5 +1,5 @@
 import PopularDishes from "./PopularDishes";
-import Banner from "./Banner";
+import Banner from "./banner/Banner";
 import Pizza from "./Pizza";
 import Categories from "./Categories/Categories";
 import OrderChart from "./OrderChart";

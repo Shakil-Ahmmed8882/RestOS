@@ -4,7 +4,7 @@ const PopularDishes = () => {
     return (
         <>
         
-      <div className="lg:flex col-span-2 mt-8 md:mt-0  w-full gap-6">
+      <div className="lg:flex col-span-2 h-screen mt-8 md:mt-0 sticky top-0  w-full gap-6">
         
         <div className="w-full  bg-[#ffffff] p-5 rounded-b-lg">
           {/* <Avatar /> */}
