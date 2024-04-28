@@ -7,7 +7,7 @@ import SignIn from "../Pages/Form/SignIn";
 import SignUp from "../Pages/Form/SignUp";
 import SinngleFoodPage from "../Pages/SingleFood/SinngleFoodPage";
 import OrderFood from "../Pages/SingleFood/OrderFood";
-import Profile from "../Pages/PersonalInfo/Profile";
+import Profile from "../Pages/PersonalInfo/Profile/Profile";
 import Added_Food from "../Pages/PersonalInfo/Added_Food";
 import Page404 from "../Components/Shared/404/Page404";
 import Guard from "../Components/Shared/Private/Guard";
@@ -22,7 +22,6 @@ import AllPurchasedPage from "../Pages/Admin/AllPurchasedList";
 import DashboardLayout from "../Layout/DashboardLayout";
 import PrivateRoute from "./PrivateRoutes";
 import { ManageUser } from "../Pages/Dashboard/Admin/Users/ManageUsers";
-import { AdminDashboard } from "../Pages/Dashboard/Admin/Users/AdminDashboard";
 import UserDashboard from "../Pages/Dashboard/user/userDashboard";
 
 

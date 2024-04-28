@@ -1,3 +1,5 @@
+import { propTypesValue } from "@material-tailwind/react/types/components/accordion";
+
 module.exports = {
   root: true,
   env: { browser: true,node:true, es2020: true },
@@ -16,5 +18,6 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    propTypesValue:'off'
   },
 }
