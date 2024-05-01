@@ -34,8 +34,7 @@ export const TotalPriceOfOrderedFood = (user) => {
     return total + element.price;
   }, 0);
 
-  console.log(isLoading)
-  console.log(totalPrice)
+
 
   return {data,totalPrice, isLoading,refetch}
 
