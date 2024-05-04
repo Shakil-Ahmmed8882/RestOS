@@ -1,0 +1,22 @@
+import { IoCloseOutline } from "react-icons/io5";
+import UpcomingEvent from "../../../../../Components/Shared/upcoming-event/UpcomingEvent";
+import { useState } from "react";
+import Event from "./event/Event";
+import QuickLinks from "../../../../../Components/Shared/quicklinks/QuickLinks";
+
+const EventAndLinks = () => {
+    const [showUpcomingEvent, SetshowUpcomingEvent] = useState(false)
+    const [showLink,setShowLink] = useState(false)
+    return (
+        <>
+            <aside className="-mt-16 w-[50%] flex  gap-3">
+                <button onClick={() => SetshowUpcomingEvent(true)} className="bg-[#f3f3f3] hover:bg-[#eeeeee] active:scale-95 transition-all duration-300 p-2 rounded-md ">upcoming events</button>
+                <button onClick={() => setShowLink(true)} className="bg-[#f3f3f3] hover:bg-[#eeeeee] active:scale-95 transition-all duration-300 p-2 rounded-md ">Quick links</button>
+            </aside>
+            <Event {...{ showUpcomingEvent, SetshowUpcomingEvent }} />
+            <QuickLinks {...{showLink,setShowLink}}/>
+        </>
+    );
+};
+
+export default EventAndLinks; 

@@ -1,4 +1,3 @@
-import { Profile } from "../../../Components/Shared/Profile/Profile";
 import { useAuth } from "../../../Utils/useAuthHelper";
 import UserInfo from "./Avatar";
 import ProfileForm from "./ProfileForm";
