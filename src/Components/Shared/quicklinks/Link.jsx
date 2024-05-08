@@ -6,9 +6,7 @@ const Link = ({ icon: Icon,text }) => {
             href="#"
         >
            <Icon/>
-            <span className="text-gray-700 dark:text-gray-300">
-                {text}
-            </span>
+            <span className="text-gray-700 dark:text-gray-300">{text}</span>
         </a>
     );
 };

@@ -10,7 +10,7 @@ const UpcomingEvent = () => {
             <div className="flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-[#f8fff8] to-[#fcfaff]">
                 <div className="w-full  space-y-8">
                     <div>
-                        <span className="relative flex shrink-0 overflow-hidden rounded-full mx-auto h-24 w-24">
+                        <span className={`relative flex shrink-0 overflow-hidden rounded-full mx-auto h-24 w-24`}>
                             <span className="flex h-full w-full items-center justify-center rounded-full bg-muted">
                                 JD
                             </span>

@@ -1,5 +1,4 @@
 import { IoCloseOutline } from "react-icons/io5";
-import Link from "./Link";
 import ParentLinks from "./ParentLinks";
 
 const QuickLinks = ({ showLink, setShowLink }) => {

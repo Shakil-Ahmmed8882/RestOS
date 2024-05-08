@@ -1,6 +1,5 @@
 import { useAuth } from "../../../Utils/useAuthHelper";
 import UserInfo from "./Avatar";
-import ProfileForm from "./ProfileForm";
 
 const MyProfile = () => {
 
@@ -15,9 +14,7 @@ const MyProfile = () => {
                 <UserInfo/>
                 </div>
             </div>
-            <div className="mt-20">
-                 <ProfileForm/>
-            </div>
+            
 
         </div>
     );
