@@ -4,17 +4,20 @@ import EditForm from "../../../Components/Shared/form/EditForm";
 import { useAuth } from "../../../Utils/useAuthHelper";
 import { profileContext } from "./Edit/Edit";
 import { handleUpdateProfile } from "../../../Utils/auth";
+import UserImage from "./ProfileDetails/user/UserImage";
 
 
 const ProfileForm = () => {
 
+    const image = UserImage()
     const {isReveal,setIsReveal} = useContext(profileContext)
     const { updateUserInfo } = useAuth()
 
 
+    // update profile 
     const UpdateUserProfile = (e) => {
         e.preventDefault()
-        handleUpdateProfile(e,updateUserInfo)
+        handleUpdateProfile(e,image,updateUserInfo)
         setIsReveal(false)
     }
 
