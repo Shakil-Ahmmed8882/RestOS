@@ -3,6 +3,7 @@ import UserImage from "./ProfileDetails/user/UserImage.jsx";
 import Edit from "./Edit/Edit";
 import { createContext } from "react";
 import { UserName } from "../../../Utils/user/index.jsx";
+import EventAndLinks from "./ProfileDetails/event&quicklinks/EventAndLinks.jsx";
 
 export const UserProfileContext = createContext(null)
 
@@ -10,7 +11,7 @@ const UserInfo = () => {
 
 
     const user = {
-        user:''
+        user: ''
     }
 
 
@@ -31,8 +32,15 @@ const UserInfo = () => {
                     </div>
 
                     <div className="ml-16">
-                        <h1 className="text-2xl text-[#353535]">{UserName()}</h1>
-                        <p className="text-[gray] text-[20px]">foundar/CEO</p>
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <h1 className="text-2xl text-[#353535]">{UserName()}</h1>
+                                <p className="text-[gray] text-[20px]">foundar/CEO</p>
+                            </div>
+                            <EventAndLinks />
+
+
+                        </div>
 
                         <ProfileDetails />
                     </div>

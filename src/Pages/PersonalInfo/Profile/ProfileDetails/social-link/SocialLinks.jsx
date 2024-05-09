@@ -7,41 +7,42 @@ import { FaPhoneAlt } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 import AddLinks from "../AddLink";
 import SocialLink from "./SocialLink";
+import { useState } from "react";
+import { linkArray } from "./data";
 
 
 
 
-const SocialLinks = (setIsReveal) => {
+const SocialLinks = () => {
 
+  const [addLink, setAddLink] = useState(false)
 
   const handleAddLink = e => {
     e.preventDefault()
 
     const form = e.target
-    const name = form.name
-    const link = form.link
-    
-    console.log(name)
-    console.log(link)
-    setIsReveal(false)
+    const name = form.name.value
+    const link = form.link.value
+
+    linkArray.push({name,link,icon:FaPhoneAlt,iconColor:'red'})
+    setAddLink(false)
     form.reset()
-    
 
-
-
-    
   }
+
+
+
   return (
     <>
-       <div className="flex gap-3 w-[50%] flex-wrap mt-6">
-            <SocialLink icon={CiInstagram} label={'@Insta'} iconColor={'red'} />
-            <SocialLink icon={CiMail} label={'Email'} />
-            <SocialLink icon={FaFacebookF} label={'Facebook'} iconColor={'#6666ff'} />
-            <SocialLink icon={FaTwitter} label={'Twitter'} iconColor={'#3acbff'} />
-            <SocialLink icon={FaPhoneAlt} label={'Phone: '} iconColor={'red'} />
-            <SocialLink icon={IoLocationSharp} label={'Location'} iconColor={'red'} />
-            <AddLinks {...{handleAddLink}}/>
-        </div>
+      <div className="flex gap-3 md:w-[100%] lg:w-[50%] flex-wrap mt-6">
+
+        {
+          linkArray?.map(media => (
+            <SocialLink icon={media.icon} label={media?.name} iconColor={media?.iconColor}/>
+          ))
+        }
+        <AddLinks {...{handleAddLink,addLink,setAddLink}}/>
+      </div>
     </>
   );
 };

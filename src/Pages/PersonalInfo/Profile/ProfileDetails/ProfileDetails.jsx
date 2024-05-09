@@ -6,8 +6,7 @@ const ProfileDetails = () => {
     return (
         <div className="flex items-start">
 
-            <SocialLinks />
-            <EventAndLinks />
+            <SocialLinks/>
         </div>
     )
 }
