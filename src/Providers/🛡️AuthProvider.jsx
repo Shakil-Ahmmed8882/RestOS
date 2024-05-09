@@ -57,17 +57,13 @@ const AuthProvider = ({ children }) => {
   // UPDATE USER INFORMATION
   const updateUserInfo = (name, photoURL) => {
     const user = auth.currentUser;
+
+
     if (user !== null) {
-      updateProfile(user, {
+      return updateProfile(user, {
         displayName: name,
         photoURL: photoURL,
       })
-        .then(() => {
-          console.log("successfull update information");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
     }
   };
 

@@ -37,4 +37,9 @@ export const validate = (name, email, photo, password) => {
     
       return false; 
     }
+
+  export const isEmpty = (name,image) => {
+    return name === '' && typeof image === 'undefined'
+  }
+
     
