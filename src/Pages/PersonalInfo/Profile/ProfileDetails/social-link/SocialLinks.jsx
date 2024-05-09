@@ -11,7 +11,26 @@ import SocialLink from "./SocialLink";
 
 
 
-const SocialLinks = () => {
+const SocialLinks = (setIsReveal) => {
+
+
+  const handleAddLink = e => {
+    e.preventDefault()
+
+    const form = e.target
+    const name = form.name
+    const link = form.link
+    
+    console.log(name)
+    console.log(link)
+    setIsReveal(false)
+    form.reset()
+    
+
+
+
+    
+  }
   return (
     <>
        <div className="flex gap-3 w-[50%] flex-wrap mt-6">
@@ -21,7 +40,7 @@ const SocialLinks = () => {
             <SocialLink icon={FaTwitter} label={'Twitter'} iconColor={'#3acbff'} />
             <SocialLink icon={FaPhoneAlt} label={'Phone: '} iconColor={'red'} />
             <SocialLink icon={IoLocationSharp} label={'Location'} iconColor={'red'} />
-            <AddLinks />
+            <AddLinks {...{handleAddLink}}/>
         </div>
     </>
   );
