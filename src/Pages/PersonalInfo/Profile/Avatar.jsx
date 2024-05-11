@@ -4,6 +4,10 @@ import Edit from "./Edit/Edit";
 import { createContext } from "react";
 import { UserName } from "../../../Utils/user/index.jsx";
 import EventAndLinks from "./ProfileDetails/event&quicklinks/EventAndLinks.jsx";
+import FavoriteRecipes from "../../Dashboard/user/favourite/favoriteRecipes.jsx";
+import ActivityFeed from "../../../Components/Dashboard/user/profile/activity-feed/ActivityFeed.jsx";
+import RewardPoint from "../../../Components/Dashboard/user/profile/reward-point/RewardPoint.jsx";
+import Tabs from "./Tabs/Tabs.jsx";
 
 export const UserProfileContext = createContext(null)
 
@@ -14,6 +18,7 @@ const UserInfo = () => {
         user: ''
     }
 
+    
 
     return (
         <UserProfileContext.Provider value={user}>
@@ -38,14 +43,10 @@ const UserInfo = () => {
                                 <p className="text-[gray] text-[20px]">foundar/CEO</p>
                             </div>
                             <EventAndLinks />
-
-
                         </div>
-
                         <ProfileDetails />
                     </div>
-
-
+                  <Tabs/>
 
                 </div>
 

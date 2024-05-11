@@ -19,7 +19,6 @@ const Edit = () => {
             <div  className="relative left-32">
                 <ProfileForm/>
             </div>
-
         </profileContext.Provider>
     );
 };
