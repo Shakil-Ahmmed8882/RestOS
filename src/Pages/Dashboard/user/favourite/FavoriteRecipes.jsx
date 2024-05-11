@@ -1,7 +1,7 @@
 
 const FavoriteRecipes = () => {
     return (
-            <h2>favoriteRecipes</h2>
+            <h2 className="mt-8">favoriteRecipes </h2>
     );
 };
 

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ActivityFeed from "../../../../Components/Dashboard/user/profile/activity-feed/ActivityFeed";
+import FavoriteRecipes from "../../../Dashboard/user/favourite/favoriteRecipes";
 
 const Tabs = () => {
 
@@ -7,6 +8,7 @@ const Tabs = () => {
 
     const activeTabColor = 'bg-primaryColor text-[white]'
     const deactiveTabColor = 'bg-[#f4f4f4] text-[black]'
+    // if active tab -> active color
     const bgColor = activeTabIndex === activeTabIndex?activeTabColor:deactiveTabColor
 
 
@@ -30,7 +32,7 @@ const Tabs = () => {
 
                 {/* tab content index 0 */}
                 <div className={`${activityFeedOpen ? 'visible -translate-x-0 opacity-100':'invisible translate-x-[400px] opacity-0'} transition-all duration-500`} ><ActivityFeed /></div>
-                <div className={`${favoriteRecipesOpen ? 'visible -translate-x-0 opacity-100':'invisible translate-x-[400px] opacity-0'} transition-all duration-500`} ><ActivityFeed /></div>
+                <div className={`${favoriteRecipesOpen ? 'visible -translate-x-0 opacity-100':'invisible translate-x-[400px] opacity-0'} transition-all duration-500`} ><FavoriteRecipes /></div>
                 <div className={`${rewardPointOpen ? 'visible -translate-x-0 opacity-100':'invisible translate-x-[400px] opacity-0'} transition-all duration-500`} ><ActivityFeed /></div>
                 
             </div>
