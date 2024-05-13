@@ -1,30 +1,89 @@
-import { CiGift } from "react-icons/ci";
-import { MdOutlineCelebration } from "react-icons/md";
-import { FaWineBottle } from "react-icons/fa6";
+
+import { FaGift } from 'react-icons/fa6';
+import giftBox from '../../.../../../../../assets/img/reward/celebrate1.png'
 import CelebratingIcons from "../../../../Shared/ui/Dot/CelebratingIcons";
 
+const RewardPoint = () => {
+  // Dynamic data
+  const loyaltyPointsData = {
+    pointsBalance: 500,
+    pointsBreakdown: {
+      orders: 300,
+      referrals: 100,
+      engagement: 100
+    },
+    rewards: [
+      { name: 'Discounts on future orders', description: '10% off next order' },
+      { name: 'Free items or upgrades', description: 'Free dessert with next meal' },
+      { name: 'Exclusive access to promotions or events', description: 'VIP access to upcoming events' }
+    ]
+  };
 
-const RewardPoint= () => {
+  // Function to handle redeeming points
+  const handleRedeemPoints = () => {
+    // Add logic to handle redeeming points here
+    console.log('Points redeemed!');
+  };
+
   return (
     <section>
       <div className="relative flex mt-8 justify-center">
-      <CiGift className="text-8xl bg-gradient-to-tr from-[white] to-[#a4ffaf] p-2 rounded-full"/>
-      <CelebratingIcons/>
-
-
+        <img className="w-28 h-28 bg-gradient-to-tr from-white to-[#a4ffaf] p-3 rounded-full" src={giftBox} alt="" />
+        
+        <CelebratingIcons />
       </div>
-      <div className="bg-[white] shadow-lg p-3 m-3 text-center mt-8">
-      <h1>oHOOOOO!!!</h1>
-      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laboriosam quibusdam eveniet neque quis magni nostrum, commodi rerum praesentium incidunt, sequi placeat! Temporibus vel nobis quidem totam laboriosam ratione dolor repellat?</p>
-
-
-
-      </div>
-
       
+      <div className="bg-white shadow-lg p-3 m-3 text-center mt-8">
+        <h1>OOHOOO!!!</h1>
+        
 
+
+         {/* Loyalty Points Balance */}
+         <div className="loyalty-points-balance">
+          <h2>Loyalty Points</h2>
+          <p>Total Points: {loyaltyPointsData.pointsBalance}</p>
+        </div>
+
+        {/* Points Breakdown */}
+        <div className="points-breakdown">
+          <h3>Points Breakdown</h3>
+          <ul>
+            <li>Orders Placed: {loyaltyPointsData.pointsBreakdown.orders}</li>
+            <li>Referrals: {loyaltyPointsData.pointsBreakdown.referrals}</li>
+            <li>Engagement: {loyaltyPointsData.pointsBreakdown.engagement}</li>
+          </ul>
+        </div>
+      </div>
+
+      {/* Loyalty Points Container */}
+      <div className="loyalty-points-container">
+       
+
+        {/* Rewards */}
+        <div className="rewards">
+          <h3>Rewards</h3>
+          <ul>
+            {loyaltyPointsData.rewards.map((reward, index) => (
+              <li key={index}>
+                {reward.name}: {reward.description}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Redeem Points Button */}
+        <button onClick={handleRedeemPoints}>Redeem Points</button>
+
+        {/* Empty State Message */}
+        {loyaltyPointsData.pointsBalance === 0 && (
+          <div className="empty-state-message">
+            <p>No loyalty points earned yet.</p>
+            <p>Start earning points by placing orders or engaging with the platform!</p>
+          </div>
+        )}
+      </div>
     </section>
   );
 };
 
-export default RewardPoint; 
+export default RewardPoint;

@@ -20,7 +20,7 @@ const UserInfo = () => {
     return (
         <UserProfileContext.Provider value={user}>
             <>
-                <div>
+                <div className="sticky top-0">
                     <div className="relative h-40 mb-16 ">
                         <div className=" relative flex w-ful h-full items-center gap-3 gradient p-2 rounded-md animate-pulse">
 

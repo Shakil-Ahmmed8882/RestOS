@@ -3,6 +3,7 @@ import RewardPoint from "../../../../Components/Dashboard/user/profile/reward-po
 import FavouriteReciepes from "../../../../Components/Dashboard/user/profile/favorite/FavouriteRecipes";
 import ActivityFeed from "../../../../Components/Dashboard/user/profile/activity-feed/ActivityFeed";
 import TabsContainer from "./TabsContainer";
+import "./sticky.css"
 
 
 
@@ -22,7 +23,7 @@ const Tabs = () => {
        const rewardPointOpen =  activeTabIndex === 2
 
     return (
-        <section className=" flex gap-8 mt-10 h-screen  ">
+        <section className=" flex gap-8 sticky top-0 sticky-element mt-10 h-screen  ">
             <div className="bg-[#ececec] w-[40%]  sticky top-0  h-[100vh]"></div>
             <div className="flex-1  w-[60%] relative">
                 <div className=" flex gap-3 relative z-50 items-start">
