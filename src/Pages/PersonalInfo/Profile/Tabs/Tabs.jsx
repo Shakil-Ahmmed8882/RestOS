@@ -8,7 +8,7 @@ import TabsContainer from "./TabsContainer";
 
 const Tabs = () => {
 
-    const [activeTabIndex,setActiveTabIndex] = useState(0)
+    const [activeTabIndex,setActiveTabIndex] = useState(2)
 
     const activeTabColor = 'bg-primaryColor text-[white]'
     const deactiveTabColor = 'bg-[#f4f4f4] text-[black]'
