@@ -1,7 +1,8 @@
+
 import ProfileDetails from "./ProfileDetails/ProfileDetails";
 import UserImage from "./ProfileDetails/user/UserImage.jsx";
 import Edit from "./Edit/Edit";
-import { createContext } from "react";
+import { createContext, useState } from "react";
 import { UserName } from "../../../Utils/user/index.jsx";
 import EventAndLinks from "./ProfileDetails/event&quicklinks/EventAndLinks.jsx";
 import Tabs from "./Tabs/Tabs.jsx";
@@ -14,9 +15,10 @@ const UserInfo = () => {
     user: "",
   };
 
+
   return (
     <UserProfileContext.Provider value={user}>
-        <InitialAnimateContainer>
+      <InitialAnimateContainer>
         <div className="sticky top-0">
           <div className="relative h-40 mb-16 ">
             <div className=" relative flex w-ful h-full items-center gap-3 gradient p-2 rounded-md animate-pulse"></div>
@@ -31,8 +33,11 @@ const UserInfo = () => {
           <div className="ml-16">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-2xl text-[#353535]">{UserName()}</h1>
-                <p className="text-[gray] text-[20px]">foundar/CEO</p>
+                <h1 className="text-2xl mt-2 mb-1  text-[#353535]">
+                  {UserName()}
+                </h1>
+                <p onClick={()=> setIsClicked(!isClicked)} className="text-[gray] mb-5 text-[20px]">foundar/CEO</p>
+
               </div>
               <EventAndLinks />
             </div>
@@ -40,7 +45,7 @@ const UserInfo = () => {
           </div>
           <Tabs />
         </div>
-        </InitialAnimateContainer>
+      </InitialAnimateContainer>
     </UserProfileContext.Provider>
   );
 };

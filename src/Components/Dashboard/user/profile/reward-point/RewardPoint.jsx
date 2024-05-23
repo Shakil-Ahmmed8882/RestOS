@@ -1,7 +1,13 @@
 
 import { FaGift } from 'react-icons/fa6';
 import giftBox from '../../.../../../../../assets/img/reward/celebrate1.png'
+import congratulationsIcon from '../../.../../../../../assets/img/dashboard/user-dashboard/congratulation.png'
+import gift from '../../.../../../../../assets/img/dashboard/user-dashboard/gift.png'
+import tickBadge from '../../.../../../../../assets/img/dashboard/user-dashboard/tick-badge.png'
+import starBadge from '../../.../../../../../assets/img/dashboard/user-dashboard/star-badge.png'
+import coinIcon from '../../.../../../../../assets/img/dashboard/user-dashboard/coin.png'
 import CelebratingIcons from "../../../../Shared/ui/Dot/CelebratingIcons";
+
 
 const RewardPoint = () => {
   // Dynamic data
@@ -27,31 +33,25 @@ const RewardPoint = () => {
 
   return (
     <section className='relative'>
-      <video autoPlay muted className="absolute -z-10 opacity-70 mix-blend-screen   -top-8" src="https://cdn.dribbble.com/userupload/5179994/file/original-71c6e182bd39eadab718679c7e4f94dc.mp4"></video>
       <div className="relative flex mt-8 justify-center">
         
         
+      <img className='mt-4 w-44 gradient p-5 rounded-full' src={congratulationsIcon} alt="" />
         <CelebratingIcons />
       </div>
       
-      <div className="bg-white mt-48 shadow-lg p-3 m-3 text-center ">
-        <h1>OOHOOO!!!</h1>
-        
+      <div className="bg-white  p-3 m-3 text-center ">
+        <h1 className='mb-8 text-4xl mt-3'>OOHOOO!!!</h1>
 
-
-         {/* Loyalty Points Balance */}
-         <div className="loyalty-points-balance">
-          <h2>Loyalty Points</h2>
-          <p>Total Points: {loyaltyPointsData.pointsBalance}</p>
-        </div>
 
         {/* Points Breakdown */}
         <div className="points-breakdown">
-          <h3>Points Breakdown</h3>
-          <ul>
-            <li>Orders Placed: {loyaltyPointsData.pointsBreakdown.orders}</li>
-            <li>Referrals: {loyaltyPointsData.pointsBreakdown.referrals}</li>
-            <li>Engagement: {loyaltyPointsData.pointsBreakdown.engagement}</li>
+          <ul className='text-left  grid grid-cols-2 gap-8 mt-5  '>
+            <li className='shadow-md p-5 rounded-lg flex items-center gap-3 text-[22px]'> Placed: <span className='text-primaryColor'>{loyaltyPointsData.pointsBreakdown.orders}</span> <img src={coinIcon}/></li>
+            <li className='shadow-md p-5 rounded-lg flex items-center gap-3 text-[22px]'>Referrals: <span className='text-primaryColor'>{loyaltyPointsData.pointsBreakdown.referrals}</span> <img src={gift}/></li>
+            <li className='shadow-md p-5 rounded-lg flex items-center gap-3 text-[22px]'>Engagement: <span className='text-primaryColor'>{loyaltyPointsData.pointsBreakdown.engagement}</span> <img src={tickBadge}/></li>
+            <li className='shadow-md p-5 rounded-lg flex items-center gap-3 text-[22px]'>Referrals: <span className='text-primaryColor'>{loyaltyPointsData.pointsBreakdown.referrals}</span> <img src={starBadge}/></li>
+            
           </ul>
         </div>
       </div>
