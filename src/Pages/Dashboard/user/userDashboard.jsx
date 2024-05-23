@@ -4,13 +4,13 @@ import Pizza from "./Pizza";
 import Categories from "./Categories/Categories";
 import OrderChart from "./OrderChart";
 import PurchaseChart from "./PurchaseChart";
+import InitialAnimateContainer from "../../../Components/Shared/animation/InitialAnimateContainer";
 
 
 const UserDashboard = () => {
   return (
-    <div>
-      {/* navbar */}
-
+    
+    <InitialAnimateContainer>
       <div className="relative">
         <Banner />
         {/* chart view */}
@@ -27,7 +27,8 @@ const UserDashboard = () => {
           <PopularDishes />
         </div>
       </div>
-    </div>
+    </InitialAnimateContainer>
+    
   );
 };
 

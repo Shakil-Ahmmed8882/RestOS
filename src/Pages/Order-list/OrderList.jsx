@@ -11,6 +11,7 @@ import { Helmet } from "react-helmet";
 import { useGetData } from "../../🔗Hook/httpRequests";
 import Loading from "../../Components/Shared/Loading";
 import NoDataFound from "../../Components/Shared/NoDataFound";
+import InitialAnimateContainer from "../../Components/Shared/animation/InitialAnimateContainer";
 
 const OrderList = () => {
   const { theme } = useTheme();
@@ -41,7 +42,6 @@ const OrderList = () => {
   console.log(data)
 
   const users = [];
-
   for (let i = 0; i < data.length; i++) {
     users.push({
       id: data[i]?._id,
@@ -69,8 +69,9 @@ const OrderList = () => {
       ),
     });
   }
-console.log(data)
+
   return (
+    <InitialAnimateContainer>
     <div className="max-w-6xl mx-auto">
       <Helmet>
         <title>RestOs || Order-list</title>
@@ -81,6 +82,7 @@ console.log(data)
         <NoDataFound></NoDataFound>
       }
     </div>
+    </InitialAnimateContainer>
   );
 };
 

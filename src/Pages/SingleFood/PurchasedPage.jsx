@@ -4,6 +4,7 @@ import { useAuth } from "../../Utils/useAuthHelper";
 import { useGetData } from "../../🔗Hook/httpRequests";
 import { BsCurrencyDollar } from "react-icons/bs";
 import NoDataFound from "../../Components/Shared/NoDataFound";
+import InitialAnimateContainer from "../../Components/Shared/animation/InitialAnimateContainer";
 
 const PurchasedPage = () => {
   const { user } = useAuth();
@@ -17,6 +18,7 @@ const PurchasedPage = () => {
 
 
   return (
+    <InitialAnimateContainer>
     <div>
       {
   
@@ -67,6 +69,7 @@ const PurchasedPage = () => {
       }
 
     </div>
+    </InitialAnimateContainer>
    
   );
 };

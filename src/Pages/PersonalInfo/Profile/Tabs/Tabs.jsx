@@ -32,7 +32,7 @@ const Tabs = () => {
                     <button onClick={()=> setActiveTabIndex(2)} className={`${ rewardPointOpen ? bgColor: deactiveTabColor} p-2 rounded-sm  transition-all duration-300 ease-linear`}>Reward point</button>
 
                 </div>
-   
+    
                 <TabsContainer isActive={favoriteRecipesOpen}><FavouriteReciepes/></TabsContainer>
                 <TabsContainer isActive={activityFeedOpen}><ActivityFeed/></TabsContainer>
                 <TabsContainer isActive={rewardPointOpen}><RewardPoint/></TabsContainer>

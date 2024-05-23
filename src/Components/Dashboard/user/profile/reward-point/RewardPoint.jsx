@@ -26,14 +26,15 @@ const RewardPoint = () => {
   };
 
   return (
-    <section>
+    <section className='relative'>
+      <video autoPlay muted className="absolute -z-10 opacity-70 mix-blend-screen   -top-8" src="https://cdn.dribbble.com/userupload/5179994/file/original-71c6e182bd39eadab718679c7e4f94dc.mp4"></video>
       <div className="relative flex mt-8 justify-center">
-        <img className="w-28 h-28 bg-gradient-to-tr from-white to-[#a4ffaf] p-3 rounded-full" src={giftBox} alt="" />
+        
         
         <CelebratingIcons />
       </div>
       
-      <div className="bg-white shadow-lg p-3 m-3 text-center mt-8">
+      <div className="bg-white mt-48 shadow-lg p-3 m-3 text-center ">
         <h1>OOHOOO!!!</h1>
         
 
