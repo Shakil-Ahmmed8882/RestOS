@@ -1,4 +1,4 @@
-export const cardData = [
+export const recipieCardData = [
     {
         id: 1,
         name: "Masud Rana",
@@ -28,6 +28,16 @@ export const cardData = [
         title: "Chocolate Cake",
         description: "Indulge in this rich and moist chocolate cake.",
         daysAgo: "5 days ago",
+    },
+    {
+        id: 4,
+        name: "Masud Rana",
+        uploaderImage:"https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        role: "Cook/Chef",
+        thumbnail: "https://images.pexels.com/photos/1640770/pexels-photo-1640770.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        title: "Creamy Garlic Shrimp Pasta",
+        description: "A delicious and easy-to-make pasta dish.",
+        daysAgo: "2 days ago",
     },
 
 ];

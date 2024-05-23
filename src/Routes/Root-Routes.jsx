@@ -2,7 +2,6 @@ import { createBrowserRouter } from "react-router-dom";
 import Main from "../Layout/Main";
 import Home from "../Pages/Home/Home/Home";
 import Foods from "../Pages/Foods/Foods";
-import Blog from "../Pages/Blog/Blog";
 import SignIn from "../Pages/Form/SignIn";
 import SignUp from "../Pages/Form/SignUp";
 import SinngleFoodPage from "../Pages/SingleFood/SinngleFoodPage";
@@ -23,6 +22,11 @@ import DashboardLayout from "../Layout/DashboardLayout";
 import PrivateRoute from "./PrivateRoutes";
 import { ManageUser } from "../Pages/Dashboard/Admin/Users/ManageUsers";
 import UserDashboard from "../Pages/Dashboard/user/userDashboard";
+import FAQ from "../Pages/FAQ/FAQ";
+import BlogPage from "../Pages/blog-post/blog/Blog";
+import BlogDetailPage from "../Pages/blog-post/blog/BlogDetails";
+import RecipePage from "../Pages/Recipe/RecipePage";
+import RecipeDetailPage from "../Pages/Recipe/RecipeDetailsPage";
 
 
 const router = createBrowserRouter([
@@ -40,9 +44,32 @@ const router = createBrowserRouter([
         element: <Foods />
       },
       {
-        path: "Blog",
-        element: <Blog />
+        path: "faq",
+        element: <FAQ />
       },
+      // ============= Blog start ===============
+      {
+        path: "blog",
+        element: <BlogPage />
+      },
+      {
+        path: "blog/:id",
+        element: <BlogDetailPage />
+      },
+      // ============= Blog ends ===============
+
+      
+      // ============= Recipe starts ===============
+      {
+        path: "recipe/new",
+        element: <RecipePage />
+      },
+
+      {
+        path: "recipe/:id",
+        element: <RecipeDetailPage />
+      },
+      // ============= Recipe ends ===============
       {
         path: "/food-details/:id",
         element: <Guard><SinngleFoodPage /></Guard>

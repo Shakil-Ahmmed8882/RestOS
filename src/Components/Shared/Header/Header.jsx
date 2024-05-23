@@ -65,7 +65,6 @@ export default function NavBar() {
   });
   // const isAdmin = true
   const isAdmin = data?.isAdmin;
-  
 
   const routesToShow = !isAdmin ? userRoutes : adminRoutes;
 
@@ -93,12 +92,14 @@ export default function NavBar() {
         className={`displayFlex hidden gap-4 ${
           theme === "dark" ? "text-[white]" : ""
         }`}
-        justify="center">
+        justify="center"
+      >
         <NavLink
           //  exact
           to="/"
           activeclassname="active"
-          className="flex items-center">
+          className="flex items-center"
+        >
           <span>Home</span>
         </NavLink>
 
@@ -106,8 +107,15 @@ export default function NavBar() {
           Food
         </NavLink>
 
+        <NavLink to="/faq" activeclassname="active">
+          FAQ
+        </NavLink>
+
         <NavLink to="/blog" activeclassname="active">
           Blog
+        </NavLink>
+        <NavLink to="/recipe/new" activeclassname="active">
+          Recipe
         </NavLink>
         <NavLink to="/dashboard" activeclassname="active">
           Dashboard
@@ -145,7 +153,8 @@ export default function NavBar() {
               className={`${
                 theme == "dark" ? "bg-[black] text-[white]" : ""
               } py-3`}
-              variant="flat">
+              variant="flat"
+            >
               <DropdownItem key="profile" className="h-14 gap-2">
                 <p className="font-semibold my-1">Signed in as</p>
                 <p className="font-semibold mb-2">

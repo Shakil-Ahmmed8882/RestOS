@@ -5,7 +5,7 @@ import "./blog.css";
 import { useTheme } from "next-themes";
 import { Helmet } from "react-helmet";
 
-export default function App() {
+export default function FAQ() {
   const { theme } = useTheme();
   const color = theme == "dark" ? "gray" : "gray";
 

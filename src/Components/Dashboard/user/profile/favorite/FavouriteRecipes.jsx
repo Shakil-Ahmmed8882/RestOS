@@ -1,5 +1,5 @@
-import Card from "./Card";
-import { cardData } from "./data";
+import RecipieCard from "./Card";
+import { recipieCardData } from "./data";
 
 const FavouriteReciepes= () => {
   return (
@@ -11,7 +11,7 @@ const FavouriteReciepes= () => {
       <div className="space-y-8">
 
       {
-        cardData?.map(card => <Card key={card?.id} card={card}/>)
+        recipieCardData?.map(card => <RecipieCard key={card?.id} card={card}/>)
       }
       </div>
     </div>
