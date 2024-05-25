@@ -1,7 +1,7 @@
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import light_gif from "../../assets/img/light-gift.gif";
 import dark_gif from "../../assets/img/darkfift.gif";
-import "./blog.css";
+import "./faq.css";
 import { useTheme } from "next-themes";
 import { Helmet } from "react-helmet";
 

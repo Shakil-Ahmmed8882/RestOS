@@ -12,9 +12,9 @@ export const UserRoutes = () => {
 
             {/* User routes  */}
             <MenuItem label={"Dashboard"}  icon={AiOutlineDashboard} address={"/dashboard"} />
-            <MenuItem label={'Profile'} icon={CgProfile} address={'/dashboard/profile'} />
-            <MenuItem label={'Order List'} icon={CiBoxList} address={'/dashboard/orderlist'} />
-            <MenuItem label={'Purchased List'} icon={BiPurchaseTag} address={'/dashboard/purchasedList'} />
+            <MenuItem label={'Profile'} icon={CgProfile} address={'/dashboard/user/profile'} />
+            <MenuItem label={'Order List'} icon={CiBoxList} address={'/dashboard/user/orderlist'} />
+            <MenuItem label={'Purchased List'} icon={BiPurchaseTag} address={'/dashboard/user/purchasedList'} />
             
         </>
     );

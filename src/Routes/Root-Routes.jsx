@@ -7,17 +7,17 @@ import SignUp from "../Pages/Form/SignUp";
 import SinngleFoodPage from "../Pages/SingleFood/SinngleFoodPage";
 import OrderFood from "../Pages/SingleFood/OrderFood";
 import Profile from "../Pages/PersonalInfo/Profile/Profile";
-import Added_Food from "../Pages/PersonalInfo/Added_Food";
+
 import Page404 from "../Components/Shared/404/Page404";
 import Guard from "../Components/Shared/Private/Guard";
-import Add_Food from "../Pages/PersonalInfo/Add_Food";
-import OrderList from "../Pages/Order-list/OrderList";
+
+import SingleUserOrderList from "../Pages/Dashboard/user/order-history/SingleUserOrderList";
 import AllMenu from "../Pages/Home/Home/AllMenu";
-import AddedFoodUpdate from "../Pages/PersonalInfo/AddedFoodUpdate/AddedFoodUpdate";
+import UpdateFood from "../Pages/Dashboard/Admin/update-food/UpdateFood";
 import MobileBreadCrump from "../Components/Shared/Header/MobileBreadCrump";
 import PurchasedPage from "../Pages/SingleFood/PurchasedPage";
-import AllOrders from "../Pages/Admin/AllOrders";
-import AllPurchasedPage from "../Pages/Admin/AllPurchasedList";
+import AllOrders from "../Pages/Dashboard/Admin/all-orders/AllOrders";
+
 import DashboardLayout from "../Layout/DashboardLayout";
 import PrivateRoute from "./PrivateRoutes";
 import { ManageUser } from "../Pages/Dashboard/Admin/Users/ManageUsers";
@@ -27,7 +27,10 @@ import BlogPage from "../Pages/blog-post/blog/Blog";
 import BlogDetailPage from "../Pages/blog-post/blog/BlogDetails";
 import RecipePage from "../Pages/Recipe/RecipePage";
 import RecipeDetailPage from "../Pages/Recipe/RecipeDetailsPage";
+import AllPurchasedPage from "../Pages/Dashboard/Admin/all-purchased-foods/AllPurchasedList";
 
+import Added_Food from "../Pages/Dashboard/Admin/recently-added-foods/Added_Food";
+import Add_Food from "../Pages/Dashboard/Admin/add-food/Add_Food";
 
 const router = createBrowserRouter([
   {
@@ -37,126 +40,143 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />
+        element: <Home />,
       },
       {
         path: "food",
-        element: <Foods />
+        element: <Foods />,
       },
       {
         path: "faq",
-        element: <FAQ />
+        element: <FAQ />,
       },
       // ============= Blog start ===============
       {
         path: "blog",
-        element: <BlogPage />
+        element: <BlogPage />,
       },
       {
         path: "blog/:id",
-        element: <BlogDetailPage />
+        element: <BlogDetailPage />,
       },
       // ============= Blog ends ===============
 
-      
       // ============= Recipe starts ===============
       {
         path: "recipe/new",
-        element: <RecipePage />
+        element: <RecipePage />,
       },
 
       {
         path: "recipe/:id",
-        element: <RecipeDetailPage />
+        element: <RecipeDetailPage />,
       },
       // ============= Recipe ends ===============
       {
         path: "/food-details/:id",
-        element: <Guard><SinngleFoodPage /></Guard>
+        element: (
+          <Guard>
+            <SinngleFoodPage />
+          </Guard>
+        ),
       },
 
       // User's personal info
       {
         path: "/order-food/:id",
-        element: <Guard><OrderFood></OrderFood></Guard>
+        element: (
+          <Guard>
+            <OrderFood></OrderFood>
+          </Guard>
+        ),
       },
       {
         path: "/added-food",
-        element: <Added_Food />
+        element: <Added_Food />,
       },
       {
-        path: "/food-update/:id",
-        element: <AddedFoodUpdate />
+        path: "/update-food/:id",
+        element: <UpdateFood />,
       },
       {
         path: "/add-food",
-        element: <Add_Food />
+        element: <Add_Food />,
       },
       {
-        path: '/all-menu',
-        element: <AllMenu></AllMenu>
+        path: "/all-menu",
+        element: <AllMenu></AllMenu>,
       },
       {
-        path: '/mobile-bradcrump',
-        element: <MobileBreadCrump></MobileBreadCrump>
+        path: "/mobile-bradcrump",
+        element: <MobileBreadCrump></MobileBreadCrump>,
       },
 
       //admin
       {
-        path: '/Allorderlist',
-        element: <AllOrders></AllOrders>
+        path: "/admin/Allorderlist",
+        element: <AllOrders></AllOrders>,
       },
       {
-        path: '/all-purchased-list',
-        element: <AllPurchasedPage></AllPurchasedPage>
-      }
+        path: "/all-purchased-list",
+        element: <AllPurchasedPage></AllPurchasedPage>,
+      },
     ],
   },
 
-  // user dashboard 
+  // user dashboard
   {
-    path: '/dashboard',
-    element: <><DashboardLayout /></>,
+    path: "/dashboard",
+    element: (
+      <>
+        <DashboardLayout />
+      </>
+    ),
     children: [
       {
         index: true,
-        element: <><UserDashboard/></>
+        element: (
+          <>
+            <UserDashboard />
+          </>
+        ),
       },
       {
-        path: "profile",
-        element: <Profile />
+        path: "user/profile",
+        element: <Profile />,
       },
       {
-        path: "orderlist",
-        element: <OrderList />
+        path: "user/orderlist",
+        element: <SingleUserOrderList />,
       },
       {
-        path: "purchasedList",
-        element: <PurchasedPage />
+        path: "user/purchasedList",
+        element: <PurchasedPage />,
       },
-
 
       // Admin routes
       {
-        path: 'manage-user',
-        element: <PrivateRoute><ManageUser /></PrivateRoute>
-      }
-    ]
+        path: "manage-user",
+        element: (
+          <PrivateRoute>
+            <ManageUser />
+          </PrivateRoute>
+        ),
+      },
+    ],
   },
-
 
   {
     path: "/sign-in",
-    element: <SignIn />
+    element: <SignIn />,
   },
   {
     path: "/sign-up",
-    element: <SignUp />
+    element: <SignUp />,
   },
   // Catch-all route for 404
   {
-    path: '*',
-    element: <Page404 />
+    path: "*",
+    element: <Page404 />,
   },
 ]);
 

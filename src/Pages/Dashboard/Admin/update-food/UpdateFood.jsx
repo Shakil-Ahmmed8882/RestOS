@@ -1,16 +1,14 @@
 import { useTheme } from "next-themes";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAuth } from "../../../Utils/useAuthHelper";
-import { useAxios } from "../../../🔗Hook/useAxios";
+import { useAuth } from "../../../../Utils/useAuthHelper";
+import { useAxios } from "../../../../🔗Hook/useAxios";
 import Swal from "sweetalert2";
-import getCurrentDate from "../../../Utils/Date/currentDate";
-import { useGetData } from "../../../🔗Hook/httpRequests";
-import InfiniteSpinner from "../../../Components/Shared/Spinner/InfiniteSpinner";
-// import {NotificationManager} from 'react-notifications';
-// import toast from "react-hot-toast";
-// import { useAxios } from "../../🔗Hook/useAxios";
+import getCurrentDate from "../../../../Utils/Date/currentDate";
+import { useGetData } from "../../../../🔗Hook/httpRequests";
+import InfiniteSpinner from "../../../../Components/Shared/Spinner/InfiniteSpinner";
 
-const AddedFoodUpdate = () => {
+
+const UpdateFood = () => {
   const { theme } = useTheme();
   const { user } = useAuth();
 
@@ -276,4 +274,4 @@ const AddedFoodUpdate = () => {
   );
 };
 
-export default AddedFoodUpdate;
+export default UpdateFood;

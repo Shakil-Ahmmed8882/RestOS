@@ -7,7 +7,6 @@ const MenuItem = ({ label, address, icon: Icon }) => {
   return (
     <NavLink
       to={address}
-      end
       className={`flex items-center px-4 py-2  my-5 transition-colors duration-300 transform border-b border-b-[#d2d2d2] hover:bg-[#efefef] ${
         isActive ? "font-bold text-[black]" : "text-description-text bg-[white]"
       }`}

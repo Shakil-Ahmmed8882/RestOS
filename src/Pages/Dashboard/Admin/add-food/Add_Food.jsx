@@ -1,12 +1,12 @@
 import { useTheme } from "next-themes";
 import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../Utils/useAuthHelper";
-import { useAxios } from "../../🔗Hook/useAxios";
+import { useAuth } from "../../../../Utils/useAuthHelper";
+import { useAxios } from "../../../../🔗Hook/useAxios";
 import Swal from "sweetalert2";
-import getCurrentDate from "../../Utils/Date/currentDate";
+import getCurrentDate from "../../../../Utils/Date/currentDate";
 
-const Added_Food = () => {
+const Add_Food = () => {
   const { theme } = useTheme();
   const { user } = useAuth();
 
@@ -235,4 +235,4 @@ const Added_Food = () => {
   );
 };
 
-export default Added_Food;
+export default Add_Food;

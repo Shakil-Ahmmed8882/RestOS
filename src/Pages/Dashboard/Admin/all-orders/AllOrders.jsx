@@ -1,16 +1,16 @@
 import { AiOutlineDelete } from "react-icons/ai";
 import { AiTwotoneDelete } from "react-icons/ai";
 import { BiSearchAlt } from "react-icons/bi";
-import UserTable from "../../Components/Shared/Table/Table";
+import UserTable from "../../../../Components/Shared/Table/Table";
 
-import { useAxios } from "../../🔗Hook/useAxios";
+import { useAxios } from "../../../../🔗Hook/useAxios";
 import { useTheme } from "next-themes";
-import { columns } from "../Order-list/TableHeading";
+import { columns } from "../../user/order-history/TableHeading";
 import { Helmet } from "react-helmet";
 
-import { useGetData } from "../../🔗Hook/httpRequests";
-import AnimatedBlub from "../../Components/Shared/animatedBlub/AnimatedBlub";
-import Loading from "../../Components/Shared/Loading";
+import { useGetData } from "../../../../🔗Hook/httpRequests";
+import AnimatedBlub from "../../../../Components/Shared/animatedBlub/AnimatedBlub";
+import Loading from "../../../../Components/Shared/Loading";
 import toast from "react-hot-toast";
 
 

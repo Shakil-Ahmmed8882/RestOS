@@ -1,19 +1,19 @@
 
 import { Helmet } from "react-helmet";
-import UserTable from "../../Components/Shared/Table/Table";
+import UserTable from "../../../../Components/Shared/Table/Table";
 
 import { BiSolidPencil } from "react-icons/bi";
 import { BiSearchAlt } from "react-icons/bi";
 
-import { columns } from "../../Components/Shared/Table/data";
-import { useAxios } from "../../🔗Hook/useAxios";
+import { columns } from "../../../../Components/Shared/Table/data";
+import { useAxios } from "../../../../🔗Hook/useAxios";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "../../Providers/🛡️AuthProvider";
-import AnimatedBlub from "../../Components/Shared/animatedBlub/AnimatedBlub";
-import Loading from "../../Components/Shared/Loading";
+import { AuthContext } from "../../../../Providers/🛡️AuthProvider";
+import AnimatedBlub from "../../../../Components/Shared/animatedBlub/AnimatedBlub";
+import Loading from "../../../../Components/Shared/Loading";
 
 const Added_Food = () => {
   const { user, loading } = useContext(AuthContext);
@@ -49,7 +49,7 @@ const Added_Food = () => {
               ? "bg-[#ffffff13] btn border-none hover:bg-[#000000a0]"
               : "btn"
           }`}>
-          <BiSolidPencil className="text-xl text-[#00e1ff]">
+          <BiSolidPencil className="text-xl text-black">
             Update
           </BiSolidPencil>
         </Link>

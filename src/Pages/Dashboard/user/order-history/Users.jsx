@@ -1,7 +1,7 @@
 import { AiOutlineDelete, AiTwotoneDelete } from "react-icons/ai";
-import { useGetData } from "../../🔗Hook/httpRequests";
-import { useAuth } from "../../Utils/useAuthHelper";
-import Loading from "../../Components/Shared/Loading";
+import { useGetData } from "../../../../🔗Hook/httpRequests";
+import { useAuth } from "../../../../Utils/useAuthHelper";
+import Loading from "../../../../Components/Shared/Loading";
 
 const Users = () => {
   const { user } = useAuth();

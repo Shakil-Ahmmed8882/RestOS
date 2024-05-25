@@ -1,19 +1,19 @@
 import { AiOutlineDelete } from "react-icons/ai";
 import { AiTwotoneDelete } from "react-icons/ai";
-import UserTable from "../../Components/Shared/Table/Table";
+import UserTable from "../../../../Components/Shared/Table/Table";
 
-import { useAuth } from "../../Utils/useAuthHelper";
-import { useAxios } from "../../🔗Hook/useAxios";
+import { useAuth } from "../../../../Utils/useAuthHelper";
+import { useAxios } from "../../../../🔗Hook/useAxios";
 import { useTheme } from "next-themes";
 import { columns } from "./TableHeading";
 import { Helmet } from "react-helmet";
 
-import { useGetData } from "../../🔗Hook/httpRequests";
-import Loading from "../../Components/Shared/Loading";
-import NoDataFound from "../../Components/Shared/NoDataFound";
-import InitialAnimateContainer from "../../Components/Shared/animation/InitialAnimateContainer";
+import { useGetData } from "../../../../🔗Hook/httpRequests";
+import Loading from "../../../../Components/Shared/Loading";
+import NoDataFound from "../../../../Components/Shared/NoDataFound";
+import InitialAnimateContainer from "../../../../Components/Shared/animation/InitialAnimateContainer";
 
-const OrderList = () => {
+const SingleUserOrderList = () => {
   const { theme } = useTheme();
   const xios = useAxios();
   const { user } = useAuth();
@@ -86,4 +86,4 @@ const OrderList = () => {
   );
 };
 
-export default OrderList;
+export default SingleUserOrderList;

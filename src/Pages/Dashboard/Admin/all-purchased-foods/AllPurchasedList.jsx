@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import Loading from "../../Components/Shared/Loading";
-import { useAuth } from "../../Utils/useAuthHelper";
-import { useGetData } from "../../🔗Hook/httpRequests";
+import Loading from "../../../../Components/Shared/Loading";
+import { useAuth } from "../../../../Utils/useAuthHelper";
+import { useGetData } from "../../../../🔗Hook/httpRequests";
 import { BsCurrencyDollar } from "react-icons/bs";
 
 const AllPurchasedPage = () => {
