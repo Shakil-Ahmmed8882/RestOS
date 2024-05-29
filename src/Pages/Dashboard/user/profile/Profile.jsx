@@ -1,4 +1,4 @@
-import { useAuth } from "../../../Utils/useAuthHelper";
+import { useAuth } from "../../../../Utils/useAuthHelper";
 import UserInfo from "./Avatar";
 
 const MyProfile = () => {

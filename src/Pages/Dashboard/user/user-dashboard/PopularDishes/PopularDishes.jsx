@@ -1,4 +1,4 @@
-import { PopularDishesCard } from "./OrderedFoodCard";
+import { PopularDishesCard } from "../../../shared/charts/OrderedFoodCard";
 
 const PopularDishes = () => {
     return (

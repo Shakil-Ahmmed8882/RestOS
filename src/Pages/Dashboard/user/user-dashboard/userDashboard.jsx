@@ -1,10 +1,11 @@
-import PopularDishes from "./PopularDishes";
-import Banner from "./banner/Banner";
-import Pizza from "./Pizza";
+
+import Pizza from "./pizza/Pizza";
 import Categories from "./Categories/Categories";
-import OrderChart from "./OrderChart";
-import PurchaseChart from "./PurchaseChart";
-import InitialAnimateContainer from "../../../Components/Shared/animation/InitialAnimateContainer";
+import OrderChart from "../../shared/charts/OrderChart"; 
+import PurchaseChart from "../../shared/charts/PurchaseChart";
+import InitialAnimateContainer from "../../../../Components/Shared/animation/InitialAnimateContainer";
+import Banner from "./banner/Banner";
+import PopularDishes from "./PopularDishes/PopularDishes";
 
 
 const UserDashboard = () => {

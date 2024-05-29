@@ -1,7 +1,7 @@
 import { useState } from "react";
-import RewardPoint from "../../../../Components/Dashboard/user/profile/reward-point/RewardPoint";
-import FavouriteReciepes from "../../../../Components/Dashboard/user/profile/favorite/FavouriteRecipes";
-import ActivityFeed from "../../../../Components/Dashboard/user/profile/activity-feed/ActivityFeed";
+import RewardPoint from "../../../../../Components/Dashboard/user/profile/reward-point/RewardPoint";
+import FavouriteReciepes from "../../../../../Components/Dashboard/user/profile/favorite/FavouriteRecipes";
+import ActivityFeed from "../../../../../Components/Dashboard/user/profile/activity-feed/ActivityFeed";
 import TabsContainer from "./TabsContainer";
 import "./sticky.css"
 

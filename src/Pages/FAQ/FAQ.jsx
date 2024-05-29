@@ -4,6 +4,7 @@ import dark_gif from "../../assets/img/darkfift.gif";
 import "./faq.css";
 import { useTheme } from "next-themes";
 import { Helmet } from "react-helmet";
+import Product from "../Product/Product";
 
 export default function FAQ() {
   const { theme } = useTheme();
@@ -19,6 +20,7 @@ export default function FAQ() {
     "Data ModelMongoDB uses a flexible, document-based data model where data is stored in BSON format, and documents have variable structures.MySQL employs a structured, table-based data model with a fixed schema, where data is organized into rows and columns in a tabular format.Schema Flexibility MongoDB is schema-less, allowing changes to the structure of documents without affecting existing data. This flexibility is well-suited for applications with evolving data requirements.MySQL enforces a rigid schema, and any changes to the schema require altering tables, which can be more cumbersome and may not accommodate rapidly changing data needs.";
 
   return (
+    <>
     <div
       className={`h-screen flex flex-col-reverse md:flex-row justify-center ${
         theme == "dark" ? " text-[white]" : "bg-[#F9F9FA]"
@@ -64,6 +66,10 @@ export default function FAQ() {
 
       </div>
       </div>
+
+
     </div>
+    <Product/>
+    </>
   );
 }

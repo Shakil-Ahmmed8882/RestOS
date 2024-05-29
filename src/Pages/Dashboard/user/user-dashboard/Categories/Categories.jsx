@@ -1,5 +1,5 @@
-import Title from "../../../../Components/Shared/ui/Title";
-import Dish from "../PopularDishes/Dish";
+import Title from "../../../../../Components/Shared/ui/Title";
+import Dish from "../../../shared/cards/Dish";
 
 const Categories = () => {
     return (

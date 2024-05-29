@@ -12,7 +12,8 @@ const NoDataFound = () => {
           <span
             className={`text-5xl font-bold ${
               theme == "dark" ? "text-[white]" : ""
-            }`}>
+            }`}
+          >
             No data found
           </span>
         </h1>

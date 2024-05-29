@@ -1,5 +1,5 @@
 import SocialLinks from "./social-link/SocialLinks";
-import EventAndLinks from "./event&quicklinks/EventAndLinks";
+import EventAndLinksf from "./additional-contents/EventAndLinks";
 
 const ProfileDetails = () => {
 

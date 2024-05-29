@@ -6,22 +6,21 @@ import SignIn from "../Pages/Form/SignIn";
 import SignUp from "../Pages/Form/SignUp";
 import SinngleFoodPage from "../Pages/SingleFood/SinngleFoodPage";
 import OrderFood from "../Pages/SingleFood/OrderFood";
-import Profile from "../Pages/PersonalInfo/Profile/Profile";
+import Profile from "../Pages/Dashboard/user/profile/Profile";
 
 import Page404 from "../Components/Shared/404/Page404";
 import Guard from "../Components/Shared/Private/Guard";
 
-import SingleUserOrderList from "../Pages/Dashboard/user/order-history/SingleUserOrderList";
 import AllMenu from "../Pages/Home/Home/AllMenu";
 import UpdateFood from "../Pages/Dashboard/Admin/update-food/UpdateFood";
 import MobileBreadCrump from "../Components/Shared/Header/MobileBreadCrump";
-import PurchasedPage from "../Pages/SingleFood/PurchasedPage";
+
 import AllOrders from "../Pages/Dashboard/Admin/all-orders/AllOrders";
 
 import DashboardLayout from "../Layout/DashboardLayout";
 import PrivateRoute from "./PrivateRoutes";
 import { ManageUser } from "../Pages/Dashboard/Admin/Users/ManageUsers";
-import UserDashboard from "../Pages/Dashboard/user/userDashboard";
+import UserDashboard from "../Pages/Dashboard/user/user-dashboard/userDashboard";
 import FAQ from "../Pages/FAQ/FAQ";
 import BlogPage from "../Pages/blog-post/blog/Blog";
 import BlogDetailPage from "../Pages/blog-post/blog/BlogDetails";
@@ -31,6 +30,7 @@ import AllPurchasedPage from "../Pages/Dashboard/Admin/all-purchased-foods/AllPu
 
 import Added_Food from "../Pages/Dashboard/Admin/recently-added-foods/Added_Food";
 import Add_Food from "../Pages/Dashboard/Admin/add-food/Add_Food";
+import SingleUserOrderList from "../Pages/Dashboard/user/order-history/SingleUserOrderList";
 
 const router = createBrowserRouter([
   {
@@ -150,7 +150,7 @@ const router = createBrowserRouter([
       },
       {
         path: "user/purchasedList",
-        element: <PurchasedPage />,
+        element: <AllPurchasedPage />,
       },
 
       // Admin routes

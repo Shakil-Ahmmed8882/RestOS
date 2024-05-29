@@ -1,6 +1,6 @@
 
 import { Helmet } from "react-helmet";
-import UserTable from "../../../../Components/Shared/Table/Table";
+
 
 import { BiSolidPencil } from "react-icons/bi";
 import { BiSearchAlt } from "react-icons/bi";
@@ -14,6 +14,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../../../Providers/🛡️AuthProvider";
 import AnimatedBlub from "../../../../Components/Shared/animatedBlub/AnimatedBlub";
 import Loading from "../../../../Components/Shared/Loading";
+import UserTable from "../../../../Components/Shared/Table/Table";
 
 const Added_Food = () => {
   const { user, loading } = useContext(AuthContext);

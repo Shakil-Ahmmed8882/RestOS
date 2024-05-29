@@ -1,12 +1,12 @@
 
-import ProfileDetails from "./ProfileDetails/ProfileDetails";
-import UserImage from "./ProfileDetails/user/UserImage.jsx";
+import ProfileDetails from "./ProfileDetails.jsx";
+import UserImage from "./user/UserImage.jsx";
 import Edit from "./Edit/Edit";
 import { createContext, useState } from "react";
-import { UserName } from "../../../Utils/user/index.jsx";
-import EventAndLinks from "./ProfileDetails/event&quicklinks/EventAndLinks.jsx";
+import { UserName } from "../../../../Utils/user/index.jsx"; 
+import EventAndLinks from "./additional-contents/EventAndLinks.jsx";
 import Tabs from "./Tabs/Tabs.jsx";
-import InitialAnimateContainer from "../../../Components/Shared/animation/InitialAnimateContainer.jsx";
+import InitialAnimateContainer from "../../../../Components/Shared/animation/InitialAnimateContainer.jsx";
 
 export const UserProfileContext = createContext(null);
 

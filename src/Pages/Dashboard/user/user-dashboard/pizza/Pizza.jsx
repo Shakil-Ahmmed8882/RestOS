@@ -1,6 +1,6 @@
-import Title from "../../../Components/Shared/ui/Title";
-import Dish from "./PopularDishes/Dish";
-import { url1 } from "./data";
+import Title from "../../../../../Components/Shared/ui/Title";
+import Dish from "../../../shared/cards/Dish";
+import { url1 } from "../../../shared/charts/data";
 
 
 

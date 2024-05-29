@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import Chart from "./Chart";
-import { TotalPriceOfOrderedFood } from "../../../api/utils";
-import { useAuth } from "../../../Utils/useAuthHelper";
+import { TotalPriceOfOrderedFood } from "../../../../api/utils"; 
+import { useAuth } from "../../../../Utils/useAuthHelper"; 
 
 const OrderChart = () => {
     const purchaseCountChartRef = useRef(null)

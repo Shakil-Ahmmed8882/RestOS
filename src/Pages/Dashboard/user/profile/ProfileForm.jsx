@@ -1,10 +1,10 @@
 
 import { useContext } from "react";
-import EditForm from "../../../Components/Shared/form/EditForm";
-import { useAuth } from "../../../Utils/useAuthHelper";
+import EditForm from "../../../../Components/Shared/form/EditForm";
+import { useAuth } from "../../../../Utils/useAuthHelper";
 import { profileContext } from "./Edit/Edit";
-import { handleUpdateProfile } from "../../../Utils/auth";
-import UserImage from "./ProfileDetails/user/UserImage";
+import { handleUpdateProfile } from "../../../../Utils/auth";
+import UserImage from "./user/UserImage";
 
 
 const ProfileForm = () => {

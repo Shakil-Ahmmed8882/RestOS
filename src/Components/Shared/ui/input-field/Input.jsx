@@ -1,5 +1,5 @@
 import { useRef, useState } from "react"
-import { linkArray } from "../../../../Pages/PersonalInfo/Profile/ProfileDetails/social-link/data"
+import { linkArray } from "../../../../Pages/Dashboard/user/profile/social-link/data";
 
 const Input = ({ name, placeholder, type, isLinkInput, isFocusName }) => {
 
@@ -7,7 +7,6 @@ const Input = ({ name, placeholder, type, isLinkInput, isFocusName }) => {
     const isFocus = isLinkInput && isFocusName;
     const [selectedLink, onSelectLink] = useState('')
 
-    console.log(selectedLink)
     
     return <>
 
