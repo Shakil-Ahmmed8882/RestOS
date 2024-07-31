@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useGetData } from "../../🔗Hook/httpRequests";
 import { useGetAllFoodsQuery } from "../../redux/features/food/food.api";
 
-import { SearchBar, FoodGrid, Pagination, FloodingReview, Spinner } from "./index";
+import { SearchBar, FoodGrid, Pagination, FloodingReview, FoodPageSpinner } from "./index";
 
 const Foods = () => {
   // const { data: count } = useGetData({
@@ -30,7 +30,7 @@ const Foods = () => {
     }
   }, [foodData?.data]);
 
-  if (isLoading) return <Spinner />;
+  if (isLoading) return <FoodPageSpinner />;
 
   return (
     <div className={`pb-9 ${themeColor} bg-[#f6f6f6]`}>
@@ -44,7 +44,7 @@ const Foods = () => {
           theme={theme}
           searchResult={searchResult}
           setSearchResult={setSearchResult}
-          foodData={foodData.data}
+          foodData={foodData?.data}
           setIsFieldEmpty={setIsFieldEmpty}
         />
         <FloodingReview />

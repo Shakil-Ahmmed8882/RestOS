@@ -1,7 +1,7 @@
 import { Navigate, useLocation } from "react-router-dom";
 
 import PropTypes from 'prop-types'; 
-import Spinner from "../Spinner/Spinner";
+import FoodPageSpinner from "../Spinner/Spinner";
 import { useAuth } from "../../../Utils/useAuthHelper";
 import React from "react";
 
@@ -12,7 +12,7 @@ const Private = ({ children }) => {
 
   console.log(user)
   console.log(loading)
-  if (loading) return <Spinner></Spinner>
+  if (loading) return <FoodPageSpinner></FoodPageSpinner>
 
 
   if (user) {

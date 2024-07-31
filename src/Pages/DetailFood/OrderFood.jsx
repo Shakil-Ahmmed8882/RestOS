@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetData } from "../../🔗Hook/httpRequests";
-import Spinner from "../../Components/Shared/Spinner/Spinner";
+import FoodPageSpinner from "../../Components/Shared/Spinner/Spinner";
 import { useState } from "react";
 import getCurrentDate from "../../Utils/Date/currentDate";
 import { useAxios } from "../../🔗Hook/useAxios";
@@ -22,7 +22,7 @@ const OrderFood = () => {
   });
 
   const [totalOrders, setTotalOrders] = useState(data?.orders);
-  if (isLoading) return <Spinner></Spinner>;
+  if (isLoading) return <FoodPageSpinner></FoodPageSpinner>;
 
   const {
     foodName,

@@ -17,6 +17,7 @@ import { useTheme } from "next-themes";
 import { useAuth } from "../../../Utils/useAuthHelper";
 import toast from "react-hot-toast";
 import { useGetData } from "../../../🔗Hook/httpRequests";
+import React from "react";
 
 export default function NavBar() {
   const { user, logOut } = useAuth();
@@ -75,7 +76,9 @@ export default function NavBar() {
   };
 
   return (
-    <Navbar maxWidth="full" isBlurred="true" className="bg-transparent">
+    <Navbar maxWidth="full" 
+// @ts-ignore
+    isBlurred="true" className="bg-transparent">
       <NavbarBrand className="md:pl-20">
         <div className="flex gap-1 items-center">
           <img className="w-[42px]" src={logo} alt="" />
