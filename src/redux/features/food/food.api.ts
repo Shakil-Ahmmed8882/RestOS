@@ -2,6 +2,12 @@ import { baseApi } from "../../api/baseApi";
 
 const foodApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    getSinglefood: builder.query({
+      query: (id: string | undefined) => ({
+        url: `/foods/${id}`,
+        method: "GET",
+      }),
+    }),
     getAllFoods: builder.query({
       query: () => ({
         url: "/foods",
@@ -11,5 +17,5 @@ const foodApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetAllFoodsQuery } = foodApi;
-export default foodApi
+export const { useGetAllFoodsQuery, useGetSinglefoodQuery } = foodApi;
+export default foodApi;

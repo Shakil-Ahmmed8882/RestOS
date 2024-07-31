@@ -46,6 +46,7 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
+        // @ts-ignore
         setUser(currentUser);
       }
       setLoading(false);
@@ -58,12 +59,11 @@ const AuthProvider = ({ children }) => {
   const updateUserInfo = (name, photoURL) => {
     const user = auth.currentUser;
 
-
     if (user !== null) {
       return updateProfile(user, {
         displayName: name,
         photoURL: photoURL,
-      })
+      });
     }
   };
 
@@ -78,8 +78,8 @@ const AuthProvider = ({ children }) => {
     updateUserInfo,
   };
 
-
   return (
+    // @ts-ignore
     <AuthContext.Provider value={userInfo}>{children}</AuthContext.Provider>
   );
 };

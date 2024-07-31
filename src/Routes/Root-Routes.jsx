@@ -2,14 +2,14 @@ import { createBrowserRouter } from "react-router-dom";
 import Main from "../Layout/Main";
 import Home from "../Pages/Home/Home/Home";
 import Foods from "../Pages/Foods/Foods";
-import SignIn from "../Pages/Form/SignIn";
+import SignIn from "../Pages/Form/signin/SignIn";
 import SignUp from "../Pages/Form/SignUp";
-import SinngleFoodPage from "../Pages/SingleFood/SinngleFoodPage";
-import OrderFood from "../Pages/SingleFood/OrderFood";
+import SinngleFoodPage from "../Pages/DetailFood/FoodsDetail";
+import OrderFood from "../Pages/DetailFood/OrderFood";
 import Profile from "../Pages/Dashboard/user/profile/Profile";
 
 import Page404 from "../Components/Shared/404/Page404";
-import Guard from "../Components/Shared/Private/Guard";
+import Private from "../Components/Shared/Private/Private";
 
 import AllMenu from "../Pages/Home/Home/AllMenu";
 import UpdateFood from "../Pages/Dashboard/Admin/update-food/UpdateFood";
@@ -31,6 +31,8 @@ import AllPurchasedPage from "../Pages/Dashboard/Admin/all-purchased-foods/AllPu
 import Added_Food from "../Pages/Dashboard/Admin/recently-added-foods/Added_Food";
 import Add_Food from "../Pages/Dashboard/Admin/add-food/Add_Food";
 import SingleUserOrderList from "../Pages/Dashboard/user/order-history/SingleUserOrderList";
+import FoodDetails from "../Pages/DetailFood/FoodsDetail";
+import React from "react";
 
 const router = createBrowserRouter([
   {
@@ -57,7 +59,7 @@ const router = createBrowserRouter([
       },
       {
         path: "blog/:id",
-        element: <BlogDetailPage />,
+        element: <BlogDetailPage match={undefined} />,
       },
       // ============= Blog ends ===============
 
@@ -75,9 +77,9 @@ const router = createBrowserRouter([
       {
         path: "/food-details/:id",
         element: (
-          <Guard>
-            <SinngleFoodPage />
-          </Guard>
+          <Private>
+            <FoodDetails/>
+          </Private>
         ),
       },
 
@@ -85,9 +87,9 @@ const router = createBrowserRouter([
       {
         path: "/order-food/:id",
         element: (
-          <Guard>
+          <Private>
             <OrderFood></OrderFood>
-          </Guard>
+          </Private>
         ),
       },
       {
