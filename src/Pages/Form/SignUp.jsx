@@ -5,6 +5,7 @@ import { useAuth } from "../../Utils/useAuthHelper";
 import toast from "react-hot-toast";
 import { useAxios } from "../../🔗Hook/useAxios";
 import { validate } from "../../Utils/Validate";
+import React from "react";
 
 const SignUp = () => {
   const { theme } = useTheme();
@@ -35,7 +36,7 @@ const SignUp = () => {
     createUser(email, password)
       .then((result) => {
         toast.success("Successfully created an account");
-        goTo(location.state ? location.state : "/");
+        // goTo(location.state ? location.state : "/");
         updateUserInfo(name, photo);
 
         // storing user here
@@ -46,17 +47,17 @@ const SignUp = () => {
           role:"user" 
         };
         xios
-          .post("user", currentUser)
+          .post("/users/create-user", currentUser)
           .then((res) => console.log(res.data))
           .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
 
     // creating a token
-    xios
-      .post("jwt", { email: user?.email })
-      .then((res) => console.log(res.data))
-      .catch((err) => toast.error(err.toString()));
+    // xios
+    //   .post("jwt", { email: user?.email })
+    //   .then((res) => console.log(res.data))
+    //   .catch((err) => toast.error(err.toString()));
   };
 
   return (

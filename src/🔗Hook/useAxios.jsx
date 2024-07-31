@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const instance = axios.create({
-      baseURL: 'http://localhost:5000/',
+      baseURL: 'http://localhost:5000/api/v1',
+      // baseURL: 'http://localhost:5000/',
       // baseURL: 'https://rest-os-server-11.vercel.app/',
       withCredentials:true
 });

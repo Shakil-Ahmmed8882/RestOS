@@ -1,6 +1,7 @@
 import { useTheme } from 'next-themes';
 import PropTypes from 'prop-types';
-const FooFloatingReview = ({review}) => {
+import React from 'react';
+const ReviewCard = ({review}) => {
 
       const {theme} = useTheme()
       const {foodImg,profile,name,comment,date} = review
@@ -37,7 +38,7 @@ const FooFloatingReview = ({review}) => {
   );
 };
 
-FooFloatingReview.propTypes = {
+ReviewCard.propTypes = {
       review: PropTypes.shape({
         foodImg: PropTypes.string.isRequired,
         profile: PropTypes.string.isRequired,
@@ -47,4 +48,4 @@ FooFloatingReview.propTypes = {
       }).isRequired,
     };
 
-export default FooFloatingReview;
+export default ReviewCard;

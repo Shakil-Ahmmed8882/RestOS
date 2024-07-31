@@ -49,7 +49,7 @@ const AllPurchasedPage = () => {
               <p>Buyer: {email}</p>
               </div>
               <div className="card-actions justify-end">
-                <Link to='/orderlist'>
+                <Link to='/dashboard/user/orderlist'>
                   <button className="btn btn-primary">Orderlist </button>
                 </Link>
               </div>
