@@ -9,10 +9,21 @@ const foodApi = baseApi.injectEndpoints({
       }),
     }),
     getAllFoods: builder.query({
-      query: () => ({
-        url: "/foods",
-        method: "GET",
-      }),
+      // send all of the args here 
+      query: (args) => {
+        const params = new URLSearchParams();
+
+        if (args) {
+          args.forEach((item: { name: string; value: string }) => {
+            params.append(item.name, item.value as string);
+          });
+        }
+        return {
+          url: "/foods",
+          method: "GET",
+          params: params
+        };
+      },
     }),
   }),
 });

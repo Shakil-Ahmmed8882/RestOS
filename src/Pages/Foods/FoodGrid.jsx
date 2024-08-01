@@ -6,7 +6,7 @@ const FoodGrid = ({ searchResult, isFieldEmpty }) => {
     <div
       className={`${
         isFieldEmpty ? "responsive-grid" : "responsive-grid-search"
-      } max-w-6xl mx-auto`}
+      } max-w-6xl mx-auto gap-10`}
     >
       {searchResult.length > 0 &&
         searchResult.map((food) => <Card key={food._id} food={food} />)}

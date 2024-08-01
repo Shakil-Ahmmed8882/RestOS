@@ -4,6 +4,7 @@ import details_icon from "../../../assets/img/details.gif";
 import { useTheme } from "next-themes";
 import darkDetail from "../../../assets/img/darkDetail.gif";
 import { useNavigate } from "react-router-dom";
+import React from "react";
 
 export default function Card({ food }) {
   const { theme } = useTheme();
@@ -12,55 +13,44 @@ export default function Card({ food }) {
   const { foodName, foodImage, foodCategory, price, quantity, _id } = food;
 
   return (
-    <div className={`overflow-hidden card-compact  ${theme == 'dark'?"bg-[#00000052]":"bg-[#fff] card"} rounded-lg items-start `}>
-      <figure className="">
+    <>
+      <div className="grid gap-4 relative group">
+        
         <img
           src={foodImage}
-          alt="Shoes"
-          className={`mb-4   h-[100px]  object-cover ${
-            theme === "dark" ? "w-[200%] ml-0 mt-0  " : "w-[100px] mt-4 bg-[white] ml-4"
-          }`}
+          alt="Football"
+          width={450}
+          height={500}
+          className={`rounded-lg object-cover w-full aspect-[3/4] group-hover:opacity-80 transition-opacity`}
         />
-      </figure>
-      <div
-        className={`w-full ${
-          theme == "dark" ? "bg-[#262526aa]" : "bg-[white]"
-        } card-body`}>
-        <h2
-          className={`font-semibold mb-1  text-[22px] ${
-            theme == "dark" ? "text-[#4bd6fdc0]" : ""
-          } pt-3`}>
-          {foodName}
-        </h2>
         <div
-          className={` space-y-2  text-[16px]  items-center ${
-            theme == "dark" ? "text-[#d7d6d6]" : "text-[#7a7979]"
-          }`}>
-          <div className="flex  gap-4">
-            <div>
-              <p>category: {foodCategory}</p>
-              <p>Price: ${price}</p>
-            </div>
-            <div>
-              <p>Quantity: {quantity}</p>
-              <p>Orders: {food.orders}</p>
-            </div>
+          className={`grid gap-1 space-y-2  ${
+            theme == "dark" ? "text-[white]" : ""
+          }`}
+        >
+          <h3
+            className={`font-semibold  ${
+              theme == "dark" ? "text-[w" : ""
+            } pt-3`}
+          >
+            {foodName}
+          </h3>
+          <div className={`flex justify-between pb-1 ${theme === "dark"? "text-[#eeeeee]":""}`}>
+            <p className="text-sm leading-none ">{foodCategory}</p>
+            <p className="text-sm leading-none ">$ {price}</p>
           </div>
-        </div>
         <div className="flex gap-2 items-center  mr-3 text-accent">
-          {theme == "dark" ? (
-            <img className="w-5" src={darkDetail} alt="" />
-          ) : (
-            <img className="w-5" src={details_icon} alt="" />
-          )}
+          
           <button
-            className=" text-[17px] mt-1 py-2"
-            onClick={() => goTo(`/food-details/${_id}`)}>
-            Details
+            className=" underline text-primaryColor underline-offset-4 "
+            onClick={() => goTo(`/food-details/${_id}`)}
+          >
+            Shop
           </button>
         </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

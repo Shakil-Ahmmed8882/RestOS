@@ -5,6 +5,7 @@ import "./faq.css";
 import { useTheme } from "next-themes";
 import { Helmet } from "react-helmet";
 import Product from "../Product/Product";
+import React from "react";
 
 export default function FAQ() {
   const { theme } = useTheme();

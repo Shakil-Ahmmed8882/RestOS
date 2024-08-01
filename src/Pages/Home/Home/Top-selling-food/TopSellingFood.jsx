@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useGetData } from "../../../../🔗Hook/httpRequests";
 import { HorizontalCard } from "./Card";
 import "../../../../Pages/Foods/food.css";
@@ -7,15 +8,18 @@ import knife from "../../../../assets/img/knife.gif";
 import pizza from "../../../../assets/img/pizza.gif";
 import duck from "../../../../assets/img/duck.gif";
 import Loading from "../../../../Components/Shared/Loading";
+import React from "react";
+import { useGetAllFoodsQuery } from "../../../../redux/features/food/food.api";
+import TopSellingFoodSkeleton from "../../../../Components/Shared/Spinner/TopSellingFoodSkeleton";
 
 const TopSellingFood = () => {
   const { theme } = useTheme();
-  const { data, isLoading } = useGetData({
-    endpoint: "top-selling-food",
-    key: ["top-selling-food"],
-  });
+  const { data, isLoading } = useGetAllFoodsQuery([
+    { name: "sort", value: "-orders" },
+    { name: "limit", value: 6 },
+  ]);
 
-  if (isLoading) return <Loading></Loading>;
+  if (isLoading) return <TopSellingFoodSkeleton/>
 
   return (
     <div
@@ -86,7 +90,7 @@ const TopSellingFood = () => {
               </div>
             </div>
             {/* ================= */}
-            {data?.map((food, index) => (
+            {data?.data?.map((food, index) => (
               <HorizontalCard
                 key={food._id}
                 index={index}

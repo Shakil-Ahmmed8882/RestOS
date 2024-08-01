@@ -1,15 +1,14 @@
 .responsive-grid {
   display: grid;
   width: 100%;
-  gap: 30px;
-  grid-template-columns: repeat(auto-fit, minmax(266px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
 .responsive-grid-top-selling-food {
   display: grid;
-  height: max-content;
+  height: 100%;
   gap: 20px;
-  margin-top: 20px;
+  margin-top: 80px;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
 

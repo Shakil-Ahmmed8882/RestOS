@@ -1,3 +1,5 @@
+import React from "react"
+
 const Product = () => {
     return (
         <>
@@ -16,7 +18,7 @@ const Product = () => {
           alt="Basketball"
           width={450}
           height={500}
-          className="rounded-lg object-cover w-full aspect-[3/4] group-hover:opacity-80 transition-opacity"
+          className=""
         />
         <div className="grid gap-1">
           <h3 className="font-semibold">Basketball</h3>

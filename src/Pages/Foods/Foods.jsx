@@ -1,6 +1,5 @@
 import { useTheme } from "next-themes";
 import React, { useState, useEffect } from "react";
-import { useGetData } from "../../🔗Hook/httpRequests";
 import { useGetAllFoodsQuery } from "../../redux/features/food/food.api";
 
 import { SearchBar, FoodGrid, Pagination, FloodingReview, FoodPageSpinner } from "./index";
