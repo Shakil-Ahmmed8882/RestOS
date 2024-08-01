@@ -22,7 +22,7 @@ const Foods = () => {
   const [isFieldEmpty, setIsFieldEmpty] = useState(true);
 
 
-  console.log(foodData?.data)
+  
   useEffect(() => {
     if (foodData?.data) {
       setSearchResult(foodData.data);
@@ -31,6 +31,7 @@ const Foods = () => {
 
   if (isLoading) return <FoodPageSpinner />;
 
+  
   return (
     <div className={`pb-9 ${themeColor} bg-[#f6f6f6]`}>
       <div

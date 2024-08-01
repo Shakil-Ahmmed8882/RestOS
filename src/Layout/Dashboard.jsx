@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import { DashboardRoutes } from "../Components/Shared/dashboard/DashboardRoutes";
 import { Profile } from "../Components/Shared/Profile/Profile";
 import { DashboardNavbar } from "../Components/Shared/dashboard/DashboardNavbar";
+import React from "react";
 
 export const Dashboard = () => {
 

@@ -21,20 +21,20 @@ import { useState } from "react";
 import { BsFillGeoAltFill } from "react-icons/bs";
 
 import { useAuth } from "../../Utils/useAuthHelper";
-import { useAxios } from "../../🔗Hook/useAxios";
-import getCurrentDate from "../../Utils/Date/currentDate";
 import Loading from "../../Components/Shared/Loading";
 import React from "react";
 import { useGetSinglefoodQuery } from "../../redux/features/food/food.api";
+import { useCreateOrderMutation } from "../../redux/features/order/orderApi";
 
 const FoodDetails = () => {
   const { id } = useParams();
   const { theme } = useTheme();
   const { user } = useAuth();
-  const xios = useAxios();
 
   const { data, isLoading } = useGetSinglefoodQuery(id);
-
+  // @ts-ignore
+  const [createOrder, { data: OData, isLoading: OIsloading }] =
+    useCreateOrderMutation();
 
   const goTo = useNavigate();
   const [totalOrders, setTotalOrders] = useState(0);
@@ -45,9 +45,10 @@ const FoodDetails = () => {
 
   if (isLoading) return <Loading></Loading>;
 
-  // const orderedData = getCurrentDate(isLoading, data?.dataf, user);
+  // const orderedData = getCurrentDate(isLoading, data?.data, user);
 
   const {
+    _id,
     foodName,
     foodImage,
     foodCategory,
@@ -59,7 +60,6 @@ const FoodDetails = () => {
     orders,
   } = data?.data || {};
 
-  console.log(data?.data);
   // Drawer
   const handleOrderPurchase = async (name) => {
     if (isNaN(orders)) {
@@ -76,36 +76,45 @@ const FoodDetails = () => {
       return alert("This Product is not available");
     }
 
-    // @ts-ignore
-    xios.post("add-ordered-food", orderedData).then((res) => {
-      // checking is order being duplicated
-      if (res.data.isExist) {
-        Swal.fire({
-          title: "This item already exists!",
-          text: "Pleasy try another",
-          icon: "error",
-        });
-        goTo("/food");
-        return;
-      }
-      // update the order
-      if (res.data.insertedId) {
-        xios
-          .patch(`modify-orders`, { orders: orders + 1, id: id })
-          .then((res) => {
-            if (res.data.modifiedCount > 0) {
-              return;
-            }
-          });
-        // Letting the user know order been added ..
-        Swal.fire({
-          title: "item has been ordered",
-          text: "Have a delicious food",
-          icon: "success",
-        });
-        goTo("/food");
-      }
-    });
+    const orderData = {
+      foodId: _id,
+      foodName,
+      foodImage,
+      price,
+      made_by,
+      email: user?.email,
+    };
+
+    createOrder(orderData);
+    console.log(orderData);
+    console.log(OData);
+    
+    if (OData?.success) {
+      Swal.fire({
+        title: "Ordered.",
+        text: "Enjoy more...",
+        icon: "success",
+      });
+      goTo("/food");
+    }
+
+    //   // if (res.data.insertedId) {
+    //   //   xios
+    //   //     .patch(`modify-orders`, { orders: orders + 1, id: id })
+    //   //     .then((res) => {
+    //   //       if (res.data.modifiedCount > 0) {
+    //   //         return;
+    //   //       }
+    //   //     });
+    //   //   // Letting the user know order been added ..
+    //   //   Swal.fire({
+    //   //     title: "item has been ordered",
+    //   //     text: "Have a delicious food",
+    //   //     icon: "success",
+    //   //   });
+    //   //   goTo("/food");
+    //   // }
+    // });
   };
 
   return (
