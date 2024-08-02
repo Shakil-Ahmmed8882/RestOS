@@ -26,7 +26,7 @@ import BlogPage from "../Pages/blog-post/blog/Blog";
 import BlogDetailPage from "../Pages/blog-post/blog/BlogDetails";
 import RecipePage from "../Pages/Recipe/RecipePage";
 import RecipeDetailPage from "../Pages/Recipe/RecipeDetailsPage";
-import AllPurchasedPage from "../Pages/Dashboard/Admin/all-purchased-foods/AllPurchasedList";
+import PurchaseList from "../Pages/Dashboard/Admin/all-purchased-foods/PurchaseList";
 
 import Added_Food from "../Pages/Dashboard/Admin/recently-added-foods/Added_Food";
 import Add_Food from "../Pages/Dashboard/Admin/add-food/Add_Food";
@@ -121,7 +121,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/all-purchased-list",
-        element: <AllPurchasedPage></AllPurchasedPage>,
+        element: <PurchaseList></PurchaseList>,
       },
     ],
   },
@@ -153,7 +153,7 @@ const router = createBrowserRouter([
       },
       {
         path: "user/purchasedList",
-        element: <AllPurchasedPage />,
+        element: <PurchaseList />,
       },
 
       // Admin routes
