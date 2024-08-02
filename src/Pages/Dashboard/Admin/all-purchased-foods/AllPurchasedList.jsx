@@ -10,6 +10,7 @@ const AllPurchasedPage = () => {
   // @ts-ignore
   const { user } = useAuth();
   const { data, isLoading, refetch } = useGetAllOrdersQuery([
+    { name: "email", value:user?.email },
     { name: "status", value: "confirmed" },
   ]);
 

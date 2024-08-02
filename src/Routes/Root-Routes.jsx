@@ -30,9 +30,10 @@ import AllPurchasedPage from "../Pages/Dashboard/Admin/all-purchased-foods/AllPu
 
 import Added_Food from "../Pages/Dashboard/Admin/recently-added-foods/Added_Food";
 import Add_Food from "../Pages/Dashboard/Admin/add-food/Add_Food";
-import SingleUserOrderList from "../Pages/Dashboard/user/order-history/SingleUserOrderList";
+
 import FoodDetails from "../Pages/DetailFood/FoodsDetail";
 import React from "react";
+import OrderList from "../Pages/Dashboard/user/order-history/SingleUserOrderList";
 
 const router = createBrowserRouter([
   {
@@ -148,7 +149,7 @@ const router = createBrowserRouter([
       },
       {
         path: "user/orderlist",
-        element: <SingleUserOrderList />,
+        element: <OrderList />,
       },
       {
         path: "user/purchasedList",

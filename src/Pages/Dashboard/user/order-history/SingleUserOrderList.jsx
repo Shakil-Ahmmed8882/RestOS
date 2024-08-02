@@ -1,90 +1,135 @@
-import { AiOutlineDelete } from "react-icons/ai";
-import { AiTwotoneDelete } from "react-icons/ai";
+// @ts-nocheck
+import { Table } from "antd";
+import { useState } from "react";
 
-import { useAuth } from "../../../../Utils/useAuthHelper";
-import { useAxios } from "../../../../🔗Hook/useAxios";
-import { useTheme } from "next-themes";
-import { columns } from "./TableHeading";
-import { Helmet } from "react-helmet";
-
-import Loading from "../../../../Components/Shared/Loading";
-import NoDataFound from "../../../../Components/Shared/NoDataFound";
-import InitialAnimateContainer from "../../../../Components/Shared/animation/InitialAnimateContainer";
-import UserTable from "../../../../Components/Shared/Table/Table";
 import React from "react";
-import { useGetAllOrdersQuery } from "../../../../redux/features/order/orderApi";
+import {
+  useDeleteOrderMutation,
+  useGetAllOrdersQuery,
+} from "../../../../redux/features/order/orderApi";
+import { Delete } from "../../../../assets/icons/Icons";
+import { Button } from "@nextui-org/react";
+import { useAuth } from "../../../../Utils/useAuthHelper";
 
-const SingleUserOrderList = () => {
-  const { theme } = useTheme();
-  const xios = useAxios();
-  // @ts-ignore
+const OrderList = () => {
+  // state and fetch data
   const { user } = useAuth();
 
-  const { data, isLoading, refetch } = useGetAllOrdersQuery([
+  const [params, setParams] = useState(undefined);
+  const { data: orderedData, isFetching } = useGetAllOrdersQuery([
     { name: "email", value: user?.email },
+    { name: "status", value: "pending" },
   ]);
+  const foodNamesArray = orderedData?.data?.map((food) => food.foodName);
+  const [deleteOrder, { data }] = useDeleteOrderMutation();
 
-  if (isLoading) return <Loading></Loading>;
-  const orderData = data?.data;
-  if (!orderData) return <Loading></Loading>;
-
-  //create an array of object using nextui table
-
-  // delete the ordered food
-  const handleDeleteOrderedFood = async (_id) => {
-    const res = await xios.delete(`cancel-ordered-food/${_id}`);
-    if (res.data.deletedCount > 0) {
-      console.log("deleted");
-      refetch();
-    } else {
-      <Loading></Loading>;
-    }
+  // Delete a order from the table
+  const handleDelete = (foodId) => {
+    console.log(foodId)
+    deleteOrder({ id: foodId, email: user?.email });
   };
 
-  const users = [];
-  for (let i = 0; i < orderData.length; i++) {
-    users.push({
-      id: orderData[i]?._id,
-      name: orderData[i]?.foodName,
-      "Added Time": orderData[i]?.createdAt,
-      status: "pending",
-      price: "$" + orderData[i]?.price,
-      avatar: orderData[i]?.foodImage,
-      made_by: orderData[i]?.made_by,
-      active: orderData[i]?.made_by,
-      delete: (
-        <button
-          onClick={() => handleDeleteOrderedFood(data[i]._id)}
-          className={` text-[rgb(5,19,20)] ${
-            theme == "dark"
-              ? "bg-[#ffffff13] btn border-none hover:bg-[#000000a0]"
-              : "btn"
-          }`}
-        >
-          {theme == "light" ? (
-            <AiTwotoneDelete className="text-xl text-primaryColor" />
-          ) : (
-            <AiOutlineDelete className="text-xl text-primaryColor"></AiOutlineDelete>
-          )}
-        </button>
+  const tableData = orderedData?.data?.map(
+    ({ _id, foodId, foodName, status, foodImage, price, made_by, email }) => ({
+      key: foodId,
+      foodId,
+      foodName,
+      foodImage,
+      price,
+      status,
+      made_by,
+      email,
+    })
+  );
+
+  const columns = [
+    {
+      title: "Food Image",
+      key: "foodImage",
+      dataIndex: "foodImage",
+      render: (image) => (
+        <img src={image} alt="Food" className="rounded-full size-11" />
       ),
+    },
+    {
+      title: "Food Name",
+      key: "foodName",
+      dataIndex: "foodName",
+      filters: foodNamesArray?.map((foodName) => ({
+        text: foodName,
+        value: foodName,
+      })),
+      onFilter: (value, record) => record.foodName.includes(value),
+    },
+    {
+      title: "Price",
+      key: "price",
+      dataIndex: "price",
+      sorter: (a, b) => a.price - b.price,
+    },
+    {
+      title: "Status",
+      key: "status",
+      dataIndex: "status",
+      sorter: (a, b) => a.price - b.price,
+    },
+    {
+      title: "Made By",
+      key: "made_by",
+      dataIndex: "made_by",
+      filters: [
+        {
+          text: "Chef A",
+          value: "Chef A",
+        },
+        {
+          text: "Chef B",
+          value: "Chef B",
+        },
+      ],
+      onFilter: (value, record) => record.made_by.includes(value),
+    },
+    {
+      title: "Action",
+      key: "action", // Key for action column
+      render: (record) => {
+        return (
+          <div className="flex gap-3">
+            <button onClick={() => handleDelete(record.foodId)}>
+              <Delete />
+            </button>
+          </div>
+        );
+      },
+      width: "1%",
+    },
+  ];
+
+  const onChange = (_pagination, filters, sorter, extra) => {
+    const queryParams = [];
+
+    Object.keys(filters).forEach((key) => {
+      if (filters[key]) {
+        filters[key].forEach((value) => {
+          queryParams.push({ name: key, value });
+        });
+      }
     });
-  }
+
+    // @ts-ignore
+    setParams(queryParams);
+    console.log(queryParams);
+  };
 
   return (
-    <InitialAnimateContainer>
-      <div className="max-w-6xl mx-auto">
-        <Helmet>
-          <title>RestOs || Order-list</title>
-        </Helmet>
-        {orderData ? (
-          <UserTable columns={columns} users={users}></UserTable>
-        ) : (
-          <NoDataFound></NoDataFound>
-        )}
-      </div>
-    </InitialAnimateContainer>
+    <Table
+      loading={isFetching}
+      columns={columns}
+      dataSource={tableData}
+      onChange={onChange}
+      showSorterTooltip={{ target: "sorter-icon" }}
+    />
   );
 };
 
-export default SingleUserOrderList;
+export default OrderList;
