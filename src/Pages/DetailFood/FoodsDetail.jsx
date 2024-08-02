@@ -61,12 +61,12 @@ const FoodDetails = () => {
   } = data?.data || {};
 
   // Drawer
-  const handleOrderPurchase = async (name) => {
+  const handleOrderPurchase = async () => {
     if (isNaN(orders)) {
       return alert("orders is not a number");
     }
     // adding new order to existed one
-    setTotalOrders(orders + 1);
+    // setTotalOrders(orders + 1);
 
     if (totalOrders > quantity) {
       return alert("This Product is not available");
@@ -96,6 +96,11 @@ const FoodDetails = () => {
         icon: "success",
       });
       goTo("/food");
+    } else {
+      Swal.fire({
+        title: "Already added!",
+        icon: "error",
+      });
     }
 
     //   // if (res.data.insertedId) {
@@ -225,13 +230,13 @@ const FoodDetails = () => {
                       className="drawer-button hover:bg-transparent border-none outline-none flex bg-transparent w-[200px] text-[white] rounded-full items-center gap-2   cursor-pointer btn-primary"
                     >
                       {/* <img className="w-11" src={order_now} alt="" /> */}
-                      <div
+                      <button
                         onClick={handleOrderPurchase}
                         className="bg-primaryColor ml-auto mr-5 mt-6 p-5 flex gap-3 rounded-lg items-center text-[21px]"
                       >
                         Order
                         <BsFillArrowRightCircleFill className="text-3xl" />
-                      </div>
+                      </button>
                     </label>
                   </div>
                 </div>

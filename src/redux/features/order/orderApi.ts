@@ -9,16 +9,6 @@ const orderApi = baseApi.injectEndpoints({
     //   }),
     // }),
 
-    createOrder: builder.mutation({
-      query: (data) => {
-        return {
-          url: "/orders/create-order",
-          method: "POST",
-          body: data,
-        };
-      },
-    }),
-
     getAllOrders: builder.query({
       // send all of the args here
       query: (args) => {
@@ -35,6 +25,18 @@ const orderApi = baseApi.injectEndpoints({
           params: params,
         };
       },
+      providesTags: ["order-data"],
+    }),
+
+    createOrder: builder.mutation({
+      query: (data) => {
+        return {
+          url: "/orders/create-order",
+          method: "POST",
+          body: data,
+        };
+      },
+      invalidatesTags: ["order-data"],
     }),
   }),
 });

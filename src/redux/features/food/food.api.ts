@@ -7,7 +7,8 @@ const foodApi = baseApi.injectEndpoints({
         url: `/foods/${id}`,
         method: "GET",
       }),
-    }),
+    }
+  ),
     getAllFoods: builder.query({
       // send all of the args here 
       query: (args) => {

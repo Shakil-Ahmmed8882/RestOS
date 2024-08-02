@@ -3,21 +3,23 @@ import Loading from "../../../../Components/Shared/Loading";
 import { useAuth } from "../../../../Utils/useAuthHelper";
 import { useGetData } from "../../../../🔗Hook/httpRequests";
 import { BsCurrencyDollar } from "react-icons/bs";
+import { useGetAllOrdersQuery } from "../../../../redux/features/order/orderApi";
+import React from "react";
 
 const AllPurchasedPage = () => {
+  // @ts-ignore
   const { user } = useAuth();
-  const { data, isLoading, refetch } = useGetData({
-    endpoint: `all-purchased-list`,
-    key: ["all-purchased-list"],
-  });
+  const { data, isLoading, refetch } = useGetAllOrdersQuery([
+    { name: "status", value: "confirmed" },
+  ]);
 
   if (isLoading) return <Loading></Loading>;
-  
 
+  const purchasedFoodData = data?.data
 
   return (
     <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 py-8 lg:grid-cols-3 gap-6">
-      {data?.map((pFood) => {
+      {purchasedFoodData?.map((pFood) => {
         const {
           _id,
           foodName,
@@ -34,6 +36,7 @@ const AllPurchasedPage = () => {
           orderedDate,
           email,
         } = pFood;
+        
         return (
           <div key={pFood._id} className="card bg-base-100 shadow-xl">
             <div className="card-body">
@@ -44,12 +47,15 @@ const AllPurchasedPage = () => {
               </div>
               <h2 className="card-title text-[25px]">{foodName}</h2>
               <div className="text-[gray] text-[18px] my-1 mb-4">
-              <p className="flex items-center"><BsCurrencyDollar/>{price}</p>
-              <p>{orderedDate}</p>
-              <p>Buyer: {email}</p>
+                <p className="flex items-center">
+                  <BsCurrencyDollar />
+                  {price}
+                </p>
+                <p>{orderedDate}</p>
+                <p>Buyer: {email}</p>
               </div>
               <div className="card-actions justify-end">
-                <Link to='/dashboard/user/orderlist'>
+                <Link to="/dashboard/user/orderlist">
                   <button className="btn btn-primary">Orderlist </button>
                 </Link>
               </div>
