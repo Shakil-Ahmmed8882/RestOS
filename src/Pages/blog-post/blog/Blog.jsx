@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Input } from "antd";
 import { Link } from 'react-router-dom';
 
 // Sample static data
@@ -61,7 +62,7 @@ function BlogPage() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-4xl font-bold mb-4">Blog</h1>
-      <input
+      <Input
         type="text"
         value={searchTerm}
         onChange={handleSearch}

@@ -14,14 +14,14 @@ export default function Card({ food }) {
 
   return (
     <>
-      <div className="grid gap-4 relative group">
+      <div className="grid gap-4 relative group ">
         
         <img
           src={foodImage}
           alt="Football"
           width={450}
           height={500}
-          className={`rounded-lg object-cover w-full aspect-[3/4] group-hover:opacity-80 transition-opacity`}
+          className={`rounded-lg object-top h-48 md:h-80 object-cover w-full aspect-[3/4] group-hover:opacity-80 transition-opacity`}
         />
         <div
           className={`grid gap-1 space-y-2  ${

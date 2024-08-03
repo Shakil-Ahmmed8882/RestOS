@@ -14,15 +14,15 @@ const SearchBar = ({ theme, searchResult, setSearchResult, foodData, isFieldEmpt
   };
 
   return (
-    <div className="relative md:w-[300px]">
+    <div className="relative w-[90%] md:w-[400px]">
       <input
         onChange={handleSearchFood}
         type="text"
         placeholder="Search by food name"
-        className={`input w-full focus-within:outline-none max-w-xs ${
+        className={`input w-full focus-within:outline-none  ${
           theme === "dark"
-            ? "bg-[#20acd377] text-[white]"
-            : "bg-[#ffffffae] text-[black]"
+            ? "bg-[#20acd357] text-[white]"
+            : "bg-[#ffffff75] text-[black]"
         }`}
       />
       <div

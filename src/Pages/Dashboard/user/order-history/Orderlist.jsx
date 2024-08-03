@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Table } from "antd";
+import { Table, Pagination } from "antd";
 import { useState } from "react";
 
 import React from "react";
@@ -16,11 +16,22 @@ const OrderList = () => {
   const { user } = useAuth();
 
   const [params, setParams] = useState(undefined);
-  const { data: orderedData, isFetching } = useGetAllOrdersQuery([
+  const [page, setPage] = useState(1);
+  const { data: OData, isFetching } = useGetAllOrdersQuery([
     { name: "email", value: user?.email },
     { name: "status", value: "pending" },
+    { name: "page", value: page },
+    { name: "limit", value: 5 },
+    { name: "sort", value: "-createdAt" },
+
   ]);
-  const foodNamesArray = orderedData?.data?.map((food) => food.foodName);
+
+  
+  const orderedData = OData?.data?.result
+  const meta = OData?.data?.meta
+
+  
+  const foodNamesArray = orderedData?.map((food) => food.foodName);
   const [deleteOrder, { data }] = useDeleteOrderMutation();
 
   // Delete a order from the table
@@ -29,7 +40,8 @@ const OrderList = () => {
     deleteOrder({ id: foodId, email: user?.email });
   };
 
-  const tableData = orderedData?.data?.map(
+  console.log(orderedData)
+  const tableData = orderedData?.map(
     ({ _id, foodId, foodName, status, foodImage, price, made_by, email }) => ({
       key: foodId,
       foodId,
@@ -121,14 +133,22 @@ const OrderList = () => {
     console.log(queryParams);
   };
 
+
   return (
+  
+    <>
     <Table
       loading={isFetching}
       columns={columns}
       dataSource={tableData}
       onChange={onChange}
       showSorterTooltip={{ target: "sorter-icon" }}
+      pagination={false}
     />
+    <div className="flex justify-start my-3 mr-6">
+     <Pagination onChange={(value) => setPage(value)} total={meta?.total}  pageSize={meta?.limit} current={page}  />
+    </div>
+    </>
   );
 };
 

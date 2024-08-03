@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import NavBar from "../Components/Shared/Header/Header";
 import Footer from "../Pages/Home/Home/Footer";
 import { useTheme } from "next-themes";
+import React from "react";
 const Main = () => {
   const {theme} = useTheme()
   const themeColor = theme == 'dark'?'bg-bgDark':''

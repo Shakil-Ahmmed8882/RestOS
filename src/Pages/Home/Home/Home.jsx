@@ -3,19 +3,20 @@ import Banner from "./Banner";
 import TopSellingFood from "./Top-selling-food/TopSellingFood";
 import MealsCategory from "../../MealsCategory/MealsCategory";
 import Ingredients from "../../SearchByLetter/SearchByLeter";
+import React from "react";
 
 const Home = () => {
   const { theme } = useTheme();
 
   return (
-    <div className={`${theme == "light" ? "bg-[#e9ffeb]" : "bg-[black]"}`}>
+    <div className={`${theme == "light" ? "bg-[#ffffff]" : "bg-[black]"}`}>
         <title>RestOs || Home</title>
-      <Banner></Banner>
-      <div className="">
+      <Banner/>
+      {/* <div className="">
         <TopSellingFood></TopSellingFood>
       </div>
       <Ingredients></Ingredients>
-      <MealsCategory></MealsCategory>
+      <MealsCategory></MealsCategory> */}
     </div>
   );
 };

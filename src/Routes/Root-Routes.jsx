@@ -30,10 +30,10 @@ import PurchaseList from "../Pages/Dashboard/Admin/all-purchased-foods/PurchaseL
 
 import Added_Food from "../Pages/Dashboard/Admin/recently-added-foods/Added_Food";
 import Add_Food from "../Pages/Dashboard/Admin/add-food/Add_Food";
-
 import FoodDetails from "../Pages/DetailFood/FoodsDetail";
 import React from "react";
-import OrderList from "../Pages/Dashboard/user/order-history/SingleUserOrderList";
+import OrderList from "../Pages/Dashboard/user/order-history/Orderlist";
+import FeaturedRecipes from "../Pages/Dashboard/Admin/Users/FeaturedRecipes/FeaturedRecipes";
 
 const router = createBrowserRouter([
   {
@@ -79,7 +79,7 @@ const router = createBrowserRouter([
         path: "/food-details/:id",
         element: (
           <Private>
-            <FoodDetails/>
+            <FoodDetails />
           </Private>
         ),
       },
@@ -154,6 +154,10 @@ const router = createBrowserRouter([
       {
         path: "user/purchasedList",
         element: <PurchaseList />,
+      },
+      {
+        path: "user/featured-recipes",
+        element: <FeaturedRecipes />,
       },
 
       // Admin routes

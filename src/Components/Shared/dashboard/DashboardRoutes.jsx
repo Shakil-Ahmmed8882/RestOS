@@ -2,6 +2,7 @@ import { CiHome } from "react-icons/ci";
 import { CiBoxList } from "react-icons/ci";
 import { FaBorderNone } from "react-icons/fa6";
 import { CiStickyNote } from "react-icons/ci";
+import React from "react";
 
 
 export const DashboardRoutes = () => {

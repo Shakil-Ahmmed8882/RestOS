@@ -2,6 +2,7 @@ import { useState } from "react";
 import { GrFavorite } from "react-icons/gr";
 import { MdOutlineFavorite } from "react-icons/md";
 import { FaRegComments } from "react-icons/fa6";
+import React from "react";
 
 const RecipieCard = ({ card }) => {
   const [isFavourite, setIsFavourite] = useState(true);
@@ -31,7 +32,7 @@ const RecipieCard = ({ card }) => {
               className="   object-cover "
               style={{ aspectRatio: "300 / 200", objectFit: "cover" }}
             />
-            <div className="absolute top-0 h-40 w-full group-hover:from-[#ff000000] group-hover:to-[#ff000000]  bg-gradient-to-t group-hover:translate-x-32 translate-x-0 from-[#ffffff] to-[#a0727200] transition-all duration-1000"></div>
+            <div className="absolute top-0 h-40 w-full   bg-gradient-to-t group-hover:translate-x-[40%] translate-x-0 from-[#ffffff] to-[#a0727200] transition-all duration-1000"></div>
           </div>
 
           <div className="p-4 bg-white dark:bg-gray-950">

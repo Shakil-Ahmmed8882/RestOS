@@ -1,10 +1,12 @@
 import { Outlet, useLocation } from 'react-router-dom'
 import Sidebar from '../components/Dashboard/Sidebar/Sidebar/Sidebar'
 import DashboardNavbar from '../Pages/Dashboard/navabar/DashboardNavbar'
+import React from 'react'
 
 const DashboardLayout = () => {
 
-  const NotProfilePage = useLocation().pathname !== '/dashboard/profile'
+  // const NotProfilePage = useLocation().pathname !== '/dashboard/user/profile'
+  const NotFeaturedRecipesPage = useLocation().pathname !== '/dashboard/user/featured-recipes'
 
   
   return (
@@ -14,7 +16,7 @@ const DashboardLayout = () => {
       <div className='flex-1 md:ml-72'>
         <div className='p-3'>
           {
-            NotProfilePage ?<DashboardNavbar />:''
+            NotFeaturedRecipesPage ?<DashboardNavbar />:''
           }
           {/* Outlet for dynamic contents */}
           <Outlet />

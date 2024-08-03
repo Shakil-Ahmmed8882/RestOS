@@ -51,13 +51,13 @@ function RecipePage() {
         {recipieCardData.map((recipe) => (
           <div
             key={recipe.id}
-            className="p-4  rounded shadow-sm hover:shadow-lg transition-all duration-500 relative"
+            className="pt-4  rounded shadow-sm cursor-pointer duration-500 relative"
           >
             <RecipieCard card={recipe}/>
           
             <Link
               to={`/recipe/${recipe.id}`}
-              className="text-blue-500 underline mt-2 block"
+              className="text-primaryColor underline mt-2 block"
             >
               Read More
             </Link>
