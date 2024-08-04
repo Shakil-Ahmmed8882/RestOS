@@ -5,17 +5,17 @@ import RSForm from "../../../../Components/form/RSForm";
 import RSInput from "../../../../Components/form/RSInput";
 import RSSelect from "../../../../Components/form/RSSelect";
 import RSModal from "../../../../Components/ui/modal/RSModal";
+import FoodTable from "./FoodTable";
 
 const AddFood = () => {
-
   const onSubmit = async (data) => {
     try {
       console.log(data);
     } catch (err) {}
   };
+  const [searchValue, setSearchValue] = useState("");
 
-
-  // add the category array in the constant file 
+  // add the category array in the constant file
   // make reusable funciton in utils to create this options with value and label
   const gender = ["male", "female", "other"];
   const genderOptions = gender.map((item) => ({
@@ -25,14 +25,27 @@ const AddFood = () => {
 
   const [open, setOpen] = useState(true);
 
-  const searchFood = (data) => {};
-
   return (
     <>
-        <div className={`flex w-5/6 mx-auto mt-11 ${open?"-translate-x-80 invisible opacity-0":"visible -translate-x-0 opacity-100"} transition500`}>
-          <Input type={"text"} placeholder="Search product name"/>
-          <Button onClick={()=> setOpen(true)} className="bg-primaryColor hover:!bg-primaryColor/90 text-[white] hover:!text-[white] p-6 w-32 flex-1">Add product</Button>
-        </div>
+      <div
+        className={`flex  lg:w-5/6 mx-auto mt-11 ${
+          open
+            ? "-translate-x-80 invisible opacity-0"
+            : "visible -translate-x-0 opacity-100"
+        } transition500`}
+      >
+        <Input
+          type={"text"}
+          onChange={(e) => setSearchValue(e.target.value)}
+          placeholder="Search product name"
+        />
+        <Button
+          onClick={() => setOpen(true)}
+          className="bg-primaryColor hover:!bg-primaryColor/90 text-[white] hover:!text-[white] p-6 w-32 flex-1"
+        >
+          Add product
+        </Button>
+      </div>
 
       {/* Modal */}
       <RSModal {...{ open, setOpen }}>
@@ -42,10 +55,7 @@ const AddFood = () => {
           align="middle"
           style={{ width: "100%", maxWidth: "800px", margin: "auto" }}
         >
-          <RSForm
-            resolver={""}
-            onSubmit={onSubmit}
-          >
+          <RSForm resolver={""} onSubmit={onSubmit}>
             {/* Food Name & Image URL */}
             <Row gutter={16}>
               <Col span={24} md={{ span: 12 }}>
@@ -130,6 +140,9 @@ const AddFood = () => {
           </RSForm>
         </Row>
       </RSModal>
+      <div className="max-w-6xl mx-auto mt-8">
+        <FoodTable searchValue={searchValue} />
+      </div>
     </>
   );
 };
