@@ -12,9 +12,9 @@ import { Button } from "@nextui-org/react";
 import { useAuth } from "../../../../Utils/useAuthHelper";
 
 const OrderList = () => {
+  
   // state and fetch data
   const { user } = useAuth();
-
   const [params, setParams] = useState(undefined);
   const [page, setPage] = useState(1);
   const { data: OData, isFetching } = useGetAllOrdersQuery([

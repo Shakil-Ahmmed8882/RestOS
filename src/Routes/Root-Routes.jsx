@@ -34,6 +34,8 @@ import FoodDetails from "../Pages/DetailFood/FoodsDetail";
 import React from "react";
 import OrderList from "../Pages/Dashboard/user/order-history/Orderlist";
 import FeaturedRecipes from "../Pages/Dashboard/Admin/Users/FeaturedRecipes/FeaturedRecipes";
+import X from "../../X";
+import AddFood from "../Pages/Dashboard/Admin/add-food/AddFood";
 
 const router = createBrowserRouter([
   {
@@ -103,7 +105,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/add-food",
-        element: <Add_Food />,
+        element: <AddFood />,
       },
       {
         path: "/all-menu",
@@ -184,6 +186,10 @@ const router = createBrowserRouter([
   {
     path: "*",
     element: <Page404 />,
+  },
+  {
+    path: "/x",
+    element: <Add_Food />,
   },
 ]);
 

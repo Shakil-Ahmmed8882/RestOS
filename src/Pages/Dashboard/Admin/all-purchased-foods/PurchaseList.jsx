@@ -14,10 +14,8 @@ import { useAuth } from "../../../../Utils/useAuthHelper";
 const PurchaseList = () => {
   // state and fetch data
   const { user } = useAuth();
-
   const [params, setParams] = useState(undefined);
-  const [page, setPage] = useState(5);
-  
+  const [page, setPage] = useState(1);
   const { data: OData, isFetching } = useGetAllOrdersQuery([
     { name: "email", value: user?.email },
     { name: "status", value: "confirmed" },
@@ -26,16 +24,10 @@ const PurchaseList = () => {
     { name: "sort", value: "-createdAt" },
   ]);
 
-  console.log(OData)
+  const orderedData = OData?.data?.result;
+  const meta = OData?.data?.meta;
 
-  
-  const orderedData = OData?.data?.result
-  const meta = OData?.data?.meta
-  
-  
-  const foodNamesArray = orderedData?.map(
-    (food) => food.foodName
-  );
+  const foodNamesArray = orderedData?.map((food) => food.foodName);
   const [deleteOrder, { data }] = useDeleteOrderMutation();
 
   // Delete a order from the table
@@ -44,6 +36,7 @@ const PurchaseList = () => {
     deleteOrder({ id: foodId, email: user?.email });
   };
 
+  
   const tableData = orderedData?.map(
     ({ _id, foodId, foodName, status, foodImage, price, made_by, email }) => ({
       key: foodId,
@@ -138,17 +131,22 @@ const PurchaseList = () => {
 
   return (
     <>
-    <Table
-      loading={isFetching}
-      columns={columns}
-      dataSource={tableData}
-      onChange={onChange}
-      showSorterTooltip={{ target: "sorter-icon" }}
-      pagination={false}
-    />
-     <div className="flex justify-start my-3 mr-6">
-     <Pagination onChange={(value) => setPage(value)} total={meta?.total}  pageSize={meta?.limit} current={page}  />
-    </div>
+      <Table
+        loading={isFetching}
+        columns={columns}
+        dataSource={tableData}
+        onChange={onChange}
+        showSorterTooltip={{ target: "sorter-icon" }}
+        pagination={false}
+      />
+      <div className="flex justify-start my-3 mr-6">
+        <Pagination
+          onChange={(value) => setPage(value)}
+          total={meta?.total}
+          pageSize={meta?.limit}
+          current={page}
+        />
+      </div>
     </>
   );
 };

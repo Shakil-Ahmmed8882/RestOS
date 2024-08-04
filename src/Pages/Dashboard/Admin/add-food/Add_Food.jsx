@@ -4,10 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../../Utils/useAuthHelper";
 import { useAxios } from "../../../../🔗Hook/useAxios";
 import Swal from "sweetalert2";
-import getCurrentDate from "../../../../Utils/Date/currentDate";
+import React from "react";
 
 const Add_Food = () => {
   const { theme } = useTheme();
+  // @ts-ignore
   const { user } = useAuth();
 
   const goTo = useNavigate();
@@ -20,9 +21,7 @@ const Add_Food = () => {
 
     console.log(data);
 
-    const addedData = getCurrentDate("", data, user, "added_date");
-    console.log(addedData);
-
+    
     xios
       .post("add-food", data)
       .then((res) => {
@@ -40,6 +39,9 @@ const Add_Food = () => {
   };
 
   return (
+
+
+    <>
     <div
       className={`  md:flex ${theme == "dark" ? "bg-[black]" : "bg-[white]"}`}>
       <Helmet>
@@ -70,6 +72,7 @@ const Add_Food = () => {
                     }`}
                   />
                 </div>
+                
                 {/* photo url */}
                 <div className="form-control">
                   <label className="label">
@@ -232,6 +235,8 @@ const Add_Food = () => {
         </div>
       </div>
     </div>
+    
+    </>
   );
 };
 

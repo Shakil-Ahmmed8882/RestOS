@@ -17,6 +17,15 @@
  * 4. show data in Antd tabular form in both (reusable)
  * 
  * 
+ * -------------------------------------------------
+ *                    Refractor 
+ * -------------------------------------------------
+ * 1. All orders & All purchases will be (admin & user)
+      reusable table (admin can see all users' 
+      data but user can see only of their data) 
+
+    2. 
+    
  * 
  * 
  * routes reusable array generator that is scallable
