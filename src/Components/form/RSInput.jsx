@@ -10,7 +10,7 @@ import { Controller } from "react-hook-form";
 // };
 
 // const PHInput = ({ type, name, label }: TInputProps) => {
-const RSInput = ({ type, name, label }) => {
+const RSInput = ({ type, name, label, className }) => {
   const {theme} = useTheme()
   return (
     <Form.Item  label={label} style={{
@@ -18,6 +18,7 @@ const RSInput = ({ type, name, label }) => {
       <Controller
         name={name}
         render={({ field }) => <Input className={`
+          ${className}
           ${theme === "dark" ? "bg-[#3c3c3c20] border-none  text-[white]" : ""}
           text-xl
           

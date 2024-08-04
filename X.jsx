@@ -1,47 +1,117 @@
-import { Button, Row } from "antd";
-import React from "react";
+// @ts-nocheck
+import React, { useState } from "react";
 
-import { useNavigate } from "react-router-dom";
-import RSForm from "./src/Components/form/RSForm";
-import RSInput from "./src/Components/form/RSInput";
-import RSSelect from "./src/Components/form/RSSelect";
+import { Button, Space, Table } from "antd";
+import { render } from "react-dom";
 
-const X = () => {
-  const defaultValues = {
-    foodName: "Birany",
-    category: "category-a",
+const data = [
+  {
+    key: "1",
+    name: "John Brown",
+    age: 32,
+    address: "New York No. 1 Lake Park",
+    img: "https://cdn.britannica.com/36/123536-050-95CB0C6E/Variety-fruits-vegetables.jpg"
+  },
+  {
+    key: "2",
+    name: "Jim Green",
+    age: 42,
+    address: "London No. 1 Lake Park",
+    img: "https://cdn.britannica.com/36/123536-050-95CB0C6E/Variety-fruits-vegetables.jpg"
+  },
+  {
+    key: "3",
+    name: "Joe Black",
+    age: 32,
+    address: "Sydney No. 1 Lake Park",
+    img: "https://cdn.britannica.com/36/123536-050-95CB0C6E/Variety-fruits-vegetables.jpg"
+  },
+  {
+    key: "4",
+    name: "Jim Red",
+    age: 32,
+    address: "London No. 2 Lake Park",
+    img: "https://cdn.britannica.com/36/123536-050-95CB0C6E/Variety-fruits-vegetables.jpg"
+  },
+];
+
+const App = () => {
+  const [filteredInfo, setFilteredInfo] = useState({});
+  const [sortedInfo, setSortedInfo] = useState({});
+
+  const handleChange = (pagination, filters, sorter) => {
+    setFilteredInfo(filters);
+    setSortedInfo(sorter);
   };
 
-  const onSubmit = async (data) => {
-    try {
-      console.log(data);
-    } catch (err) {}
+  const clearFilters = () => {
+    setFilteredInfo({});
   };
 
+  const clearAll = () => {
+    setFilteredInfo({});
+    setSortedInfo({});
+  };
 
+  const setAgeSort = () => {
+    setSortedInfo({
+      order: "descend",
+      columnKey: "age",
+    });
+  };
 
-  const gender = ["male", "female", "other"];
- const genderOptions = gender.map((item) => ({
-  value: item,
-  label: item,
-}));
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      filters: [
+        { text: "Joe", value: "Joe" },
+        { text: "Jim", value: "Jim" },
+      ],
+      filteredValue: filteredInfo.name || null,
+      onFilter: (value, record) => {
+        console.log(value,record)
+        return record.name.includes(value)
+      },
+      sorter: (a, b) => a.name.length - b.name.length,
+      ellipsis: true,
+    },
+    {
+      title: "Age",
+      dataIndex: "age",
+      key: "age",
+      sorter: (a, b) => a.age - b.age,
+      ellipsis: true,
+    },
+    {
+      title: "Address",
+      dataIndex: "address",
+      key: "address",
+      ellipsis: true,
+    },
+    {
+      title: "Profile",
+      dataIndex: "profile",
+      key: "profile",
+      ellipsis: true,
+      render:(text,record) => {
+        
+        return <img className=" rounded-full w-32 h-32" src={record?.img} alt="" />
+      }
+    },
+  ];
 
   return (
-    <Row justify="center" align="middle" style={{ height: "100vh" }}>
-      <RSForm resolver={""} onSubmit={onSubmit} defaultValues={defaultValues}>
-        <RSInput type="text" name="foodName" label="Food Name:" />
-        <RSInput type="text" name="category" label="Catogry" />
-        <RSSelect
-          defaultValue={"male"}
-          label="Gender"
-          name="gender"
-          options={genderOptions}
-          disabled={undefined}
-        />
-        <Button htmlType="submit">Login</Button>
-      </RSForm>
-    </Row>
+    <>
+      <Space style={{ marginBottom: 16 }}>
+        <Button onClick={setAgeSort}>Sort age</Button>
+        <Button onClick={clearFilters}>Clear filters</Button>
+        <Button onClick={clearAll}>Clear filters and sorters</Button>
+      </Space>
+      <Table columns={columns} dataSource={data} onChange={handleChange} />
+    </>
   );
 };
 
-export default X;
+export default App;

@@ -13,7 +13,7 @@ import React from "react";
 
 export const MySidebar = () => {
 
-  const [activeRole, setActiveRole] = useState('user')
+  const [activeRole, setActiveRole] = useState('admin')
 
   const navigate = useNavigate()
 
