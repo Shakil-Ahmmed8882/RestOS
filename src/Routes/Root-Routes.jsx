@@ -19,9 +19,9 @@ import PurchaseList from "../Pages/Dashboard/Admin/all-purchased-foods/PurchaseL
 import Added_Food from "../Pages/Dashboard/Admin/recently-added-foods/Added_Food";
 import FoodDetails from "../Pages/DetailFood/FoodsDetail";
 import React from "react";
-import FeaturedRecipes from "../Pages/Dashboard/Admin/Users/FeaturedRecipes/FeaturedRecipes";
+
 import PracticeTable from "../../X";
-import AddFood from "../Pages/Dashboard/Admin/add-food/AddFood";
+
 
 import SignInLayout from "../module/login/layout/SignInLayout";
 import SignUpLayout from "../module/logout/layout/SignUpLayout";
@@ -37,6 +37,8 @@ import MyProfile from "../module/dashboard/userDashboard/profile/Profile";
 import OrderLayout from "../module/dashboard/userDashboard/orders/OrderLayout";
 import PurchasedFoodsLayout from "../module/dashboard/userDashboard/purchases/PurchasedFoodsLayout";
 import UserDashboardLayout from "../module/dashboard/userDashboard/dashboard/userDashboardLayout";
+import AddFood from "../module/dashboard/adminDashboard/foodManagement/addFood/AddFood";
+import FeaturedRecipes from "../module/dashboard/userDashboard/FeaturedRecipes/FeaturedRecipes";
 
 
 const router = createBrowserRouter([

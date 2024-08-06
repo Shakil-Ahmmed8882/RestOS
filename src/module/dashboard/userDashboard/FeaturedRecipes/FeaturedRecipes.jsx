@@ -1,12 +1,15 @@
+// @ts-nocheck
 import React from "react";
-import { url1, url2 } from "../../../shared/charts/data";
+ 
 import { FaRegComments } from "react-icons/fa6";
-import demoBanner from "../../../../../assets/img/fishdemo.png";
+import demoBanner from "../../../../assets/img/fishdemo.png";
 import { BiTime } from "react-icons/bi";
 import { IoIceCream } from "react-icons/io5";
-import Title from "../../../../../Components/Shared/ui/Title";
+ 
 import { Link } from "react-router-dom";
 import { LiaApplePay } from "react-icons/lia";
+import Title from "../../../../Components/Shared/ui/Title";
+import { url1, url2 } from "../dashboard/components/charts/data";
 const FeaturedRecipes = () => {
   return (
     <section className="px-4 pt-5">

@@ -1,40 +1,34 @@
-import { useState } from "react";
-import { Table,Pagination } from "antd";
-import { useAuth } from "../../../../Utils/useAuthHelper";
-import { useDeleteOrderMutation, useGetAllOrdersQuery } from "../../../../redux/features/order/orderApi";
+// @ts-nocheck
 import React from "react";
-import { Delete } from "../../../../assets/icons/Icons";
+import { useState } from "react";
+import { Table, Pagination } from "antd";
+import { useAuth } from "../../../../../../Utils/useAuthHelper";
+import { Delete } from "../../../../../../assets/icons/Icons";
+import {
+  useDeleteOrderMutation,
+  useGetAllOrdersQuery,
+} from "../../../../../../redux/features/order/orderApi";
+import { Query } from "../utils";
 
-const FoodTable = ({searchValue}) => {
-  
+const FoodTable = ({ searchValue }) => {
   // state and fetch data
   const { user } = useAuth();
   const [params, setParams] = useState(undefined);
   const [page, setPage] = useState(1);
-  const { data: OData, isFetching } = useGetAllOrdersQuery([
-    { name: "status", value: "pending" },
-    { name: "page", value: page },
-    { name: "limit", value: 5 },
-    { name: "searchTerm", value: searchValue },
-    { name: "sort", value: "-createdAt" },
+  const { data: OData, isFetching } = useGetAllOrdersQuery(Query(page,searchValue));
 
-  ]);
+  const orderedData = OData?.data?.result;
+  const meta = OData?.data?.meta;
 
-  
-  const orderedData = OData?.data?.result
-  const meta = OData?.data?.meta
-
-  
   const foodNamesArray = orderedData?.map((food) => food.foodName);
   const [deleteOrder, { data }] = useDeleteOrderMutation();
 
   // Delete a order from the table
   const handleDelete = (foodId) => {
-    console.log(foodId)
+    console.log(foodId);
     deleteOrder({ id: foodId, email: user?.email });
   };
 
-  
   const tableData = orderedData?.map(
     ({ _id, foodId, foodName, status, foodImage, price, made_by, email }) => ({
       key: foodId,
@@ -127,21 +121,24 @@ const FoodTable = ({searchValue}) => {
     console.log(queryParams);
   };
 
-
   return (
-  
     <>
-    <Table
-      loading={isFetching}
-      columns={columns}
-      dataSource={tableData}
-      onChange={onChange}
-      showSorterTooltip={{ target: "sorter-icon" }}
-      pagination={false}
-    />
-    <div className="flex justify-start my-3 mr-6">
-     <Pagination onChange={(value) => setPage(value)} total={meta?.total}  pageSize={meta?.limit} current={page}  />
-    </div>
+      <Table
+        loading={isFetching}
+        columns={columns}
+        dataSource={tableData}
+        onChange={onChange}
+        showSorterTooltip={{ target: "sorter-icon" }}
+        pagination={false}
+      />
+      <div className="flex justify-start my-3 mr-6">
+        <Pagination
+          onChange={(value) => setPage(value)}
+          total={meta?.total}
+          pageSize={meta?.limit}
+          current={page}
+        />
+      </div>
     </>
   );
 };
