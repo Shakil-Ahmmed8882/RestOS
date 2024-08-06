@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Event from "../../components/Event";
 import QuickLinks from "../quickLinks/QuickLinks";
+import React from "react";
 
 const EventAndLinks = () => {
     const [showUpcomingEvent, SetshowUpcomingEvent] = useState(false)

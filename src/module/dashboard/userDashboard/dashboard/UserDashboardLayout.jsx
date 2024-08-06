@@ -1,14 +1,15 @@
 
-import Pizza from "./pizza/Pizza";
-import Categories from "./Categories/Categories";
-import OrderChart from "../../shared/charts/OrderChart"; 
-import PurchaseChart from "../../shared/charts/PurchaseChart";
 import InitialAnimateContainer from "../../../../Components/Shared/animation/InitialAnimateContainer";
-import Banner from "./banner/Banner";
-import PopularDishes from "./PopularDishes/PopularDishes";
+import Banner from "./components/Banner"; 
+import React from "react";
+import PopularDishes from "./features/PopularDishes";
+import PurchaseChart from "./components/charts/PurchaseChart";
+import OrderChart from "./components/charts/OrderChart";
+import Categories from "./components/Categories";
+import Pizza from "./components/Pizza";
 
 
-const UserDashboard = () => {
+const UserDashboardLayout = () => {
   return (
     
     <InitialAnimateContainer>
@@ -33,4 +34,4 @@ const UserDashboard = () => {
   );
 };
 
-export default UserDashboard;
+export default UserDashboardLayout;

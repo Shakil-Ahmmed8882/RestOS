@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Link } from "react-router-dom";
 import Loading from "../../../../Components/Shared/Loading";
 import { useAuth } from "../../../../Utils/useAuthHelper";
@@ -5,24 +6,24 @@ import { useGetData } from "../../../../🔗Hook/httpRequests";
 import { BsCurrencyDollar } from "react-icons/bs";
 
 import InitialAnimateContainer from "../../../../Components/Shared/animation/InitialAnimateContainer";
+import React from "react";
 
-const PurchasedPage = () => {
+const PurchasedFoodsLayout = () => {
   const { user } = useAuth();
   // const { data, isLoading, refetch } = useGetData({
   //   endpoint: `ordered-list?email=${user?.email}&status=confirmed`,
   //   key: "purchased-list",
   // });
 
-  
   // if (isLoading) return <Loading></Loading>;
 
-  const data = []
+  const data = [];
 
   return (
     <InitialAnimateContainer>
       <div>
         {data.length == 0 ? (
-          <NoDataFound/>
+          <NoDataFound />
         ) : (
           <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 py-8 lg:grid-cols-3 gap-6">
             {data?.map((pFood) => {
@@ -75,4 +76,4 @@ const PurchasedPage = () => {
   );
 };
 
-export default PurchasedPage;
+export default PurchasedFoodsLayout;

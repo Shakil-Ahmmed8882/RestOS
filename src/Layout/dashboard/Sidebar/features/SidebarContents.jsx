@@ -11,7 +11,7 @@ import React from "react";
 import Logo from "../../../../shared/Logo";
 
 export const SidebarContents = () => {
-  const [activeRole, setActiveRole] = useState("admin");
+  const [activeRole, setActiveRole] = useState("user");
 
   const navigate = useNavigate();
 

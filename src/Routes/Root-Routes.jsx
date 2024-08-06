@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Main from "../Layout/Main";
 import OrderFood from "../Pages/DetailFood/OrderFood";
-import Profile from "../Pages/Dashboard/user/profile/Profile";
 
 import Page404 from "../Components/Shared/404/Page404";
 import Private from "../Components/Shared/Private/Private";
@@ -14,14 +13,12 @@ import AllOrders from "../Pages/Dashboard/Admin/all-orders/AllOrders";
 
 import PrivateRoute from "./PrivateRoutes";
 import { ManageUser } from "../Pages/Dashboard/Admin/Users/ManageUsers";
-import UserDashboard from "../Pages/Dashboard/user/user-dashboard/userDashboard";
 
 import PurchaseList from "../Pages/Dashboard/Admin/all-purchased-foods/PurchaseList";
 
 import Added_Food from "../Pages/Dashboard/Admin/recently-added-foods/Added_Food";
 import FoodDetails from "../Pages/DetailFood/FoodsDetail";
 import React from "react";
-import OrderList from "../Pages/Dashboard/user/order-history/Orderlist";
 import FeaturedRecipes from "../Pages/Dashboard/Admin/Users/FeaturedRecipes/FeaturedRecipes";
 import PracticeTable from "../../X";
 import AddFood from "../Pages/Dashboard/Admin/add-food/AddFood";
@@ -37,6 +34,9 @@ import RecipeDetailPage from "../module/frontFace/recipe/features/RecipeDetailsP
 import FoodsLayout from "../module/frontFace/food/FoodsLayout";
 import DashboardLayout from "../Layout/dashboard/DashboardLayout";
 import MyProfile from "../module/dashboard/userDashboard/profile/Profile";
+import OrderLayout from "../module/dashboard/userDashboard/orders/OrderLayout";
+import PurchasedFoodsLayout from "../module/dashboard/userDashboard/purchases/PurchasedFoodsLayout";
+import UserDashboardLayout from "../module/dashboard/userDashboard/dashboard/userDashboardLayout";
 
 
 const router = createBrowserRouter([
@@ -125,7 +125,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/all-purchased-list",
-        element: <PurchaseList></PurchaseList>,
+        element: <PurchasedFoodsLayout></PurchasedFoodsLayout>,
       },
     ],
   },
@@ -143,7 +143,7 @@ const router = createBrowserRouter([
         index: true,
         element: (
           <>
-            <UserDashboard />
+            <UserDashboardLayout />
           </>
         ),
       },
@@ -153,7 +153,7 @@ const router = createBrowserRouter([
       },
       {
         path: "user/orderlist",
-        element: <OrderList />,
+        element: <OrderLayout />,
       },
       {
         path: "user/purchasedList",

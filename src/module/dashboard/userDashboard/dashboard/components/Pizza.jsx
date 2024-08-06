@@ -1,7 +1,7 @@
 import React from "react";
 import Title from "../../../../../Components/Shared/ui/Title";
-import Dish from "../../../shared/cards/Dish";
-import { url1 } from "../../../shared/charts/data";
+import Dish from "./Dish";
+import { url1 } from "./charts/data";
 
 
 

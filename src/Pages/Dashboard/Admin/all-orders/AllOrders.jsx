@@ -5,7 +5,7 @@ import { BiSearchAlt } from "react-icons/bi";
 
 import { useAxios } from "../../../../🔗Hook/useAxios";
 import { useTheme } from "next-themes";
-import { columns } from "../../user/order-history/TableHeading"; 
+import { columns } from "../../../../module/dashboard/userDashboard/orders/TableHeading"; 
 import { Helmet } from "react-helmet";
 
 import { useGetData } from "../../../../🔗Hook/httpRequests";

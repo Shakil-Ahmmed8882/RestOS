@@ -3,6 +3,7 @@ import { ProjectTable } from "../../../../components/Dashboard/Sidebar/project-t
 import { DashboardNavbar } from "../../../../components/Navbar/DashboardNavbar";
 import Tabs from "../../../../components/Tabs/Tabs";
 import { FilterTags } from "../../../../components/Shared/Filter/FilterTags";
+import React from "react";
 
 export const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState(false);

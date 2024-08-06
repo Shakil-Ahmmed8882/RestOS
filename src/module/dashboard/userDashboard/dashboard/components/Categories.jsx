@@ -1,6 +1,7 @@
 import React from "react";
 import Title from "../../../../../Components/Shared/ui/Title";
-import Dish from "../../../shared/cards/Dish";
+import Dish from "./Dish";
+
 
 const Categories = () => {
     return (

@@ -1,5 +1,5 @@
 import { useRef, useState } from "react"
-import { linkArray } from "../../../../Pages/Dashboard/user/profile/social-link/data";
+import { linkArray } from "./data";
 
 const Input = ({ name, placeholder, type, isLinkInput, isFocusName }) => {
 

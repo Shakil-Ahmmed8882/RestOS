@@ -1,4 +1,5 @@
 // @ts-nocheck
+
 import { Table, Pagination } from "antd";
 import { useState } from "react";
 
@@ -11,7 +12,7 @@ import { Delete } from "../../../../assets/icons/Icons";
 import { Button } from "@nextui-org/react";
 import { useAuth } from "../../../../Utils/useAuthHelper";
 
-const OrderList = () => {
+const OrderLayout = () => {
   
   // state and fetch data
   const { user } = useAuth();
@@ -152,4 +153,4 @@ const OrderList = () => {
   );
 };
 
-export default OrderList;
+export default OrderLayout;
