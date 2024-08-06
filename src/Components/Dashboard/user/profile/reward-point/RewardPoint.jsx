@@ -1,12 +1,13 @@
 
 import { FaGift } from 'react-icons/fa6';
-import giftBox from '../../.../../../../../assets/img/reward/celebrate1.png'
-import congratulationsIcon from '../../.../../../../../assets/img/dashboard/user-dashboard/congratulation.png'
-import gift from '../../.../../../../../assets/img/dashboard/user-dashboard/gift.png'
-import tickBadge from '../../.../../../../../assets/img/dashboard/user-dashboard/tick-badge.png'
-import starBadge from '../../.../../../../../assets/img/dashboard/user-dashboard/star-badge.png'
-import coinIcon from '../../.../../../../../assets/img/dashboard/user-dashboard/coin.png'
+import giftBox from '../../../../../assets/img/reward/celebrate1.png'
+import congratulationsIcon from '../../../../../assets/img/dashboard/user-dashboard/congratulation.png'
+import gift from '../../../../../assets/img/dashboard/user-dashboard/gift.png'
+import tickBadge from '../../../../../assets/img/dashboard/user-dashboard/tick-badge.png'
+import starBadge from '../../../../../assets/img/dashboard/user-dashboard/star-badge.png'
+import coinIcon from '../../../../../assets/img/dashboard/user-dashboard/coin.png'
 import CelebratingIcons from "../../../../Shared/ui/Dot/CelebratingIcons";
+import React from 'react';
 
 
 const RewardPoint = () => {

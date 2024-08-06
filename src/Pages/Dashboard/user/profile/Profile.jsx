@@ -1,3 +1,4 @@
+import React from "react";
 import { useAuth } from "../../../../Utils/useAuthHelper";
 import UserInfo from "./Avatar";
 

@@ -11,10 +11,12 @@
  * Add Antd Change navbar layout
  * use antDesign table fro order list purchase list (purchase & order list can be tab)
  * 
+ * 
  * 1. user based order by email ✅
  * 2. Ensure that one product is ordered only once & refetch ✅ 
  * 3. purschaged data by confirmed status ✅
- * 4. show data in Antd tabular form in both (reusable)
+ * 4. show data in Antd tabular form in both (reusable) 
+ * 5. create a logo
  * 
  * 
  * -------------------------------------------------

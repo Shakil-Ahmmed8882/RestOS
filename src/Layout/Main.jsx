@@ -1,8 +1,9 @@
 import { Outlet } from "react-router-dom";
 import NavBar from "../Components/Shared/Header/Header";
-import Footer from "../Pages/Home/Home/Footer";
+
 import { useTheme } from "next-themes";
 import React from "react";
+import Footer from "../module/shared/Footer";
 const Main = () => {
   const {theme} = useTheme()
   const themeColor = theme == 'dark'?'bg-bgDark':''
@@ -15,7 +16,7 @@ const Main = () => {
       <div className="px-0 md:px-0">
       <Outlet></Outlet>
       </div>
-      <Footer></Footer>
+    <Footer/>  
 
       </div>
     </div>

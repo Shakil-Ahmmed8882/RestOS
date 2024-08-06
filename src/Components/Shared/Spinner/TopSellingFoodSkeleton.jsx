@@ -7,8 +7,9 @@ const TopSellingFoodSkeleton = () => {
       {/* ================= */}
       <div className="grid grid-cols-3 gap-8 max-w-7xl mx-auto">
         {[{ className: "!h-full col-span-2 row-span-2" }, 2, 3, 4, 5, 6]?.map(
-          (item) => (
+          (item,index) => (
             <Skeleton
+            key={index}
               className={`${
                 // @ts-ignore
                 item.className

@@ -1,5 +1,5 @@
+// @ts-nocheck
 import PropTypes from "prop-types";
-
 import details_icon from "../../../assets/img/details.gif";
 import { useTheme } from "next-themes";
 import darkDetail from "../../../assets/img/darkDetail.gif";

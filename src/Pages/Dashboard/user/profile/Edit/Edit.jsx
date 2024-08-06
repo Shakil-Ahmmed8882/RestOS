@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { FaUserEdit } from "react-icons/fa";
 import ProfileForm from "../ProfileForm";
 import { createContext, useState } from "react";

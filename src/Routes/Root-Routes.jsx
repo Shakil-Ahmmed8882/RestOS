@@ -1,41 +1,43 @@
 import { createBrowserRouter } from "react-router-dom";
 import Main from "../Layout/Main";
-import Home from "../Pages/Home/Home/Home";
-import Foods from "../Pages/Foods/Foods";
-import SignIn from "../Pages/Form/signin/SignIn";
-import SignUp from "../Pages/Form/SignUp";
-import SinngleFoodPage from "../Pages/DetailFood/FoodsDetail";
 import OrderFood from "../Pages/DetailFood/OrderFood";
 import Profile from "../Pages/Dashboard/user/profile/Profile";
 
 import Page404 from "../Components/Shared/404/Page404";
 import Private from "../Components/Shared/Private/Private";
 
-import AllMenu from "../Pages/Home/Home/AllMenu";
 import UpdateFood from "../Pages/Dashboard/Admin/update-food/UpdateFood";
 import MobileBreadCrump from "../Components/Shared/Header/MobileBreadCrump";
 
 import AllOrders from "../Pages/Dashboard/Admin/all-orders/AllOrders";
 
-import DashboardLayout from "../Layout/DashboardLayout";
+
 import PrivateRoute from "./PrivateRoutes";
 import { ManageUser } from "../Pages/Dashboard/Admin/Users/ManageUsers";
 import UserDashboard from "../Pages/Dashboard/user/user-dashboard/userDashboard";
-import FAQ from "../Pages/FAQ/FAQ";
-import BlogPage from "../Pages/blog-post/blog/Blog";
-import BlogDetailPage from "../Pages/blog-post/blog/BlogDetails";
-import RecipePage from "../Pages/Recipe/RecipePage";
-import RecipeDetailPage from "../Pages/Recipe/RecipeDetailsPage";
+
 import PurchaseList from "../Pages/Dashboard/Admin/all-purchased-foods/PurchaseList";
 
 import Added_Food from "../Pages/Dashboard/Admin/recently-added-foods/Added_Food";
-import Add_Food from "../Pages/Dashboard/Admin/add-food/Add_Food";
 import FoodDetails from "../Pages/DetailFood/FoodsDetail";
 import React from "react";
 import OrderList from "../Pages/Dashboard/user/order-history/Orderlist";
 import FeaturedRecipes from "../Pages/Dashboard/Admin/Users/FeaturedRecipes/FeaturedRecipes";
 import PracticeTable from "../../X";
 import AddFood from "../Pages/Dashboard/Admin/add-food/AddFood";
+
+import SignInLayout from "../module/login/layout/SignInLayout";
+import SignUpLayout from "../module/logout/layout/SignUpLayout";
+import HomeLayout from "../module/frontFace/home/layout/HomeLayout";
+import FAQ from "../module/frontFace/faq/features/FAQ";
+import BlogPage from "../module/frontFace/blog/layout/Blog";
+import BlogDetailPage from "../module/frontFace/blog/features/BlogDetails";
+import RecipePageLayout from "../module/frontFace/recipe/layout/RecipePageLayout";
+import RecipeDetailPage from "../module/frontFace/recipe/features/RecipeDetailsPage";
+import FoodsLayout from "../module/frontFace/food/FoodsLayout";
+import DashboardLayout from "../Layout/dashboard/DashboardLayout";
+import MyProfile from "../module/dashboard/userDashboard/profile/Profile";
+
 
 const router = createBrowserRouter([
   {
@@ -45,11 +47,11 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />,
+        element: <HomeLayout />,
       },
       {
         path: "food",
-        element: <Foods />,
+        element: <FoodsLayout />,
       },
       {
         path: "faq",
@@ -69,7 +71,7 @@ const router = createBrowserRouter([
       // ============= Recipe starts ===============
       {
         path: "recipe/new",
-        element: <RecipePage />,
+        element: <RecipePageLayout />,
       },
 
       {
@@ -109,7 +111,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/all-menu",
-        element: <AllMenu></AllMenu>,
+        element: <h1>Menu</h1>,
       },
       {
         path: "/mobile-bradcrump",
@@ -133,7 +135,7 @@ const router = createBrowserRouter([
     path: "/dashboard",
     element: (
       <>
-        <DashboardLayout />
+        <DashboardLayout/>
       </>
     ),
     children: [
@@ -147,7 +149,7 @@ const router = createBrowserRouter([
       },
       {
         path: "user/profile",
-        element: <Profile />,
+        element: <MyProfile />,
       },
       {
         path: "user/orderlist",
@@ -176,11 +178,11 @@ const router = createBrowserRouter([
 
   {
     path: "/sign-in",
-    element: <SignIn />,
+    element: <SignInLayout />,
   },
   {
     path: "/sign-up",
-    element: <SignUp />,
+    element: <SignUpLayout />,
   },
   // Catch-all route for 404
   {

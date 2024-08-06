@@ -10,7 +10,6 @@ import {
   Avatar,
 } from "@nextui-org/react";
 import "./Navbar.css";
-import logo from "../../../assets/img/logo.png";
 import { Link, NavLink } from "react-router-dom";
 import ThemeSwitcher from "./ThemeSwitcher";
 import { useTheme } from "next-themes";
@@ -18,6 +17,7 @@ import { useAuth } from "../../../Utils/useAuthHelper";
 import toast from "react-hot-toast";
 import { useGetData } from "../../../🔗Hook/httpRequests";
 import React from "react";
+import Logo from "../../../shared/Logo";
 
 export default function NavBar() {
   const { user, logOut } = useAuth();
@@ -80,15 +80,7 @@ export default function NavBar() {
 // @ts-ignore
     isBlurred="true" className="bg-transparent">
       <NavbarBrand className="md:pl-20">
-        <div className="flex gap-1 items-center">
-          <img className="w-[42px]" src={logo} alt="" />
-          <p className="flex font-bold  items-center text-[19px]">
-            <span className={` ${theme === "dark" ? "text-[white]" : ""}`}>
-              Rest
-            </span>
-            <span className="text-primaryColor text-[18px]">OS</span>
-          </p>
-        </div>
+      <Logo/>
       </NavbarBrand>
 
       <NavbarContent

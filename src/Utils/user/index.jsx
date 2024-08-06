@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useAuth } from "../useAuthHelper"
 
 export const UserProfileImage = () => {

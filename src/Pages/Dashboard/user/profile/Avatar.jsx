@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 import ProfileDetails from "./ProfileDetails.jsx";
 import UserImage from "./user/UserImage.jsx";
@@ -7,6 +8,7 @@ import { UserName } from "../../../../Utils/user/index.jsx";
 import EventAndLinks from "./additional-contents/EventAndLinks.jsx";
 import Tabs from "./Tabs/Tabs.jsx";
 import InitialAnimateContainer from "../../../../Components/Shared/animation/InitialAnimateContainer.jsx";
+import React from "react";
 
 export const UserProfileContext = createContext(null);
 
