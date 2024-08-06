@@ -5,22 +5,18 @@ import OrderFood from "../Pages/DetailFood/OrderFood";
 import Page404 from "../Components/Shared/404/Page404";
 import Private from "../Components/Shared/Private/Private";
 
-import UpdateFood from "../Pages/Dashboard/Admin/update-food/UpdateFood";
+
 import MobileBreadCrump from "../Components/Shared/Header/MobileBreadCrump";
 
-import AllOrders from "../Pages/Dashboard/Admin/all-orders/AllOrders";
+// import AllOrders from "../Pages/Dashboard/Admin/all-orders/AllOrders";
 
 
 import PrivateRoute from "./PrivateRoutes";
-import { ManageUser } from "../Pages/Dashboard/Admin/Users/ManageUsers";
 
-import PurchaseList from "../Pages/Dashboard/Admin/all-purchased-foods/PurchaseList";
 
-import Added_Food from "../Pages/Dashboard/Admin/recently-added-foods/Added_Food";
+
 import FoodDetails from "../Pages/DetailFood/FoodsDetail";
 import React from "react";
-
-import PracticeTable from "../../X";
 
 
 import SignInLayout from "../module/login/layout/SignInLayout";
@@ -35,10 +31,12 @@ import FoodsLayout from "../module/frontFace/food/FoodsLayout";
 import DashboardLayout from "../Layout/dashboard/DashboardLayout";
 import MyProfile from "../module/dashboard/userDashboard/profile/Profile";
 import OrderLayout from "../module/dashboard/userDashboard/orders/OrderLayout";
-import PurchasedFoodsLayout from "../module/dashboard/userDashboard/purchases/PurchasedFoodsLayout";
 import UserDashboardLayout from "../module/dashboard/userDashboard/dashboard/userDashboardLayout";
 import AddFood from "../module/dashboard/adminDashboard/foodManagement/addFood/AddFood";
 import FeaturedRecipes from "../module/dashboard/userDashboard/FeaturedRecipes/FeaturedRecipes";
+import X from "../../X";
+import Allorders from "../module/dashboard/adminDashboard/foodManagement/allOrders/Allorders";
+import PurchasedFoodsLayout from "../module/dashboard/userDashboard/purchases/PurchasedFoodsLayout";
 
 
 const router = createBrowserRouter([
@@ -100,14 +98,6 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/added-food",
-        element: <Added_Food />,
-      },
-      {
-        path: "/update-food/:id",
-        element: <UpdateFood />,
-      },
-      {
         path: "/add-food",
         element: <AddFood />,
       },
@@ -122,8 +112,8 @@ const router = createBrowserRouter([
 
       //admin
       {
-        path: "/admin/Allorderlist",
-        element: <AllOrders></AllOrders>,
+        path: "/admin/all-orders",
+        element: <Allorders></Allorders>,
       },
       {
         path: "/all-purchased-list",
@@ -159,7 +149,7 @@ const router = createBrowserRouter([
       },
       {
         path: "user/purchasedList",
-        element: <PurchaseList />,
+        element: <PurchasedFoodsLayout />,
       },
       {
         path: "user/featured-recipes",
@@ -167,14 +157,6 @@ const router = createBrowserRouter([
       },
 
       // Admin routes
-      {
-        path: "manage-user",
-        element: (
-          <PrivateRoute>
-            <ManageUser />
-          </PrivateRoute>
-        ),
-      },
     ],
   },
 
@@ -193,7 +175,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/x",
-    element: <PracticeTable />,
+    element: <X />,
   },
 ]);
 
