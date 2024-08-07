@@ -8,8 +8,8 @@ import EventAndLinks from "../event/EventAndLinks.jsx";
 
 import Tabs from "../../components/Tabs/Tabs.jsx";
 import React from "react";
-import InitialAnimateContainer from "../../../../../../Components/Shared/animation/InitialAnimateContainer.jsx";
 import UserImage from "../../components/UserImage.jsx";
+import InitialAnimateContainer from "../../../../../../shared/animations/InitialAnimateContainer.jsx";
 
 export const UserProfileContext = createContext(null);
 

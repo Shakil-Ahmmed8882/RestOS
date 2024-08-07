@@ -1,6 +1,6 @@
 import React from "react";
 import MenuItem from "../../Sidebar/components/MenuItem";
-import { DownArrayIcon } from "../../../../assets/icons/Icons";
+import { DownArrowIcon } from "../../../../assets/icons/Icons";
 
 export const SidebarItem = ({
   handleClick,
@@ -20,7 +20,7 @@ export const SidebarItem = ({
         <Icon className="text-gray-400" />
 
         <span className="ml-2 text-sm">{label}</span>
-        <DownArrayIcon
+        <DownArrowIcon
           className={`${
             isOpen && "rotate-180"
           } transition-all duration-500 text-gray-400 ml-auto`}

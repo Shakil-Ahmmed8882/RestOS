@@ -4,7 +4,7 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { useState } from "react";
 import { SidebarContents } from "./features/SidebarContents";
 import React from "react";
-import Logo from "../../../shared/Logo";
+import Logo from "../../../shared/ui/Logo";
 
 const Sidebar = () => {
   const [isOpenSideBar, setIsOpenSidebar] = useState(false);

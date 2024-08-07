@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { UserRoutes } from "./UserRoutes";
 import { AdminRoutes } from "./AdminRoutes";
 import React from "react";
-import Logo from "../../../../shared/Logo";
+import Logo from "../../../../shared/ui/Logo";
 
 export const SidebarContents = () => {
   const [activeRole, setActiveRole] = useState("user");

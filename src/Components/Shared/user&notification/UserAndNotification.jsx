@@ -2,6 +2,7 @@ import { IoIosNotificationsOutline } from "react-icons/io";
 import Notification from "./Notification";
 import UserAvater from "./UserAvater";
 import { useAuth } from "../../../Utils/useAuthHelper";
+import React from "react";
 
 const UserAndNotification = () => {
     const { user } = useAuth()

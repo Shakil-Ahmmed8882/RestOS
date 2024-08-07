@@ -3,8 +3,8 @@
 
 import { IoCloseOutline } from "react-icons/io5";
 import UpcomingEvent from "../../../../../Components/Shared/upcoming-event/UpcomingEvent";
-import SpringAnimateContainer from "../../../../../Components/Shared/animation/SpringAnimateContainer";
 import React from "react";
+import SpringAnimateContainer from "../../../../../shared/animations/SpringAnimateContainer";
 
 const Event = ({showUpcomingEvent ,SetshowUpcomingEvent}) => {
     return (

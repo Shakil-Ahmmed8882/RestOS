@@ -1,14 +1,22 @@
+// @ts-nocheck
+import React from "react";
 import { useAuth } from "../../../Utils/useAuthHelper";
 
-const UserAvater = () => {
-
-    const { user } = useAuth()
-    return (
-        <>            {
-            (user?.photoURL) ? <img className="w-10 h-10 rounded-full border border-[white]" src={user?.photoURL} alt="" /> :
-                <span className="block w-10 h-10 rounded-full bg-primaryColor"></span>
-        }
-        </>
-    );
+const UserAvater = ({ size = "size-10" }) => {
+  const { user } = useAuth();
+  return (
+    <>
+      {" "}
+      {user?.photoURL ? (
+        <img
+          className={`${size} rounded-full border border-[white]`}
+          src={user?.photoURL}
+          alt=""
+        />
+      ) : (
+        <span className={`${size} block  rounded-full bg-primaryColor`}></span>
+      )}
+    </>
+  );
 };
-export default UserAvater
+export default UserAvater;

@@ -10,8 +10,10 @@ import { Link } from "react-router-dom";
 import { LiaApplePay } from "react-icons/lia";
 import Title from "../../../../Components/Shared/ui/Title";
 import { url1, url2 } from "../dashboard/components/charts/data";
+import InitialAnimateContainer from "../../../../shared/animations/InitialAnimateContainer";
 const FeaturedRecipes = () => {
   return (
+    <InitialAnimateContainer>
     <section className="px-4 pt-5">
       <h1 className="text-3xl pb-4">Featured Recipes</h1>
       <div className="flex gap-8 pb-16">
@@ -28,6 +30,7 @@ const FeaturedRecipes = () => {
         <KnowAll/>
       </div>
     </section>
+    </InitialAnimateContainer>
   );
 };
 

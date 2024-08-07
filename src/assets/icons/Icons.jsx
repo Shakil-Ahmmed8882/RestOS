@@ -1,4 +1,16 @@
+// @ts-nocheck
 import React from "react";
+import { useAuth } from "../../Utils/useAuthHelper";
+/*
+Table of contents 
+1. Delete
+2. Close 
+3. DownArrowIcon
+5. Notification
+6. UserAvater
+
+*/
+
 
 export const Delete = () => {
   return (
@@ -39,9 +51,7 @@ export const Close = () => {
 };
 
 
-
-
-export function DownArrayIcon(props) {
+export function DownArrowIcon(props) {
   return (
     <svg
       {...props}
@@ -59,3 +69,40 @@ export function DownArrayIcon(props) {
     </svg>
   );
 }
+
+
+
+// Notification 
+import { IoIosNotificationsOutline } from "react-icons/io";
+export const Notification = () => {
+  return (
+    <>
+      <div className="p-2 rounded-full bg-[#f7f7f7] relative flex-start">
+        <span className="absolute w-[8px] h-[8px] border border-[white] block bg-deepPink top-[10px] right-[12px] z-10 rounded-full"></span>
+        <IoIosNotificationsOutline className="text-2xl relative"></IoIosNotificationsOutline>
+      </div>
+    </>
+  );
+};
+
+
+export const UserAvater = ({ size = "size-10" }) => {
+  const { user } = useAuth();
+  return (
+    <>
+      {" "}
+      {user?.photoURL ? (
+        <img
+          className={`${size} rounded-full border border-[white]`}
+          src={user?.photoURL}
+          alt=""
+        />
+      ) : (
+        <span className={`${size} block  rounded-full bg-primaryColor`}></span>
+      )}
+    </>
+  );
+};
+
+
+

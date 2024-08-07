@@ -1,6 +1,7 @@
 import { useTheme } from "next-themes";
 import { BiSearchAlt } from "react-icons/bi";
-import AnimatedBlub from "./animatedBlub/AnimatedBlub";
+import React from "react";
+import AnimatedBlub from "../../shared/animations/AnimatedBlub";
 
 const NoDataFound = () => {
   const { theme } = useTheme();

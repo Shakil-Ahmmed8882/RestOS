@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { BiFork } from "react-icons/bi";
 import { useTheme } from "next-themes";
-import lightClock from "../../../assets/img/light-clock.gif";
+import lightClock from "../../../../assets/img/light-clock.gif";
 import darkClock from "../../../assets/img/dark-clock.gif";
 import React from "react";
 

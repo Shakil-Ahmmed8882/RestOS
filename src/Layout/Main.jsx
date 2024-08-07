@@ -3,7 +3,7 @@ import NavBar from "../Components/Shared/Header/Header";
 
 import { useTheme } from "next-themes";
 import React from "react";
-import Footer from "../module/shared/Footer";
+import Footer from "../module/shared/ui/Footer";
 const Main = () => {
   const {theme} = useTheme()
   const themeColor = theme == 'dark'?'bg-bgDark':''

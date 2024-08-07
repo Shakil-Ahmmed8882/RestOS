@@ -17,7 +17,7 @@ import { useAuth } from "../../../Utils/useAuthHelper";
 import toast from "react-hot-toast";
 import { useGetData } from "../../../🔗Hook/httpRequests";
 import React from "react";
-import Logo from "../../../shared/Logo";
+import Logo from "../../../shared/ui/Logo";
 
 export default function NavBar() {
   const { user, logOut } = useAuth();

@@ -1,7 +1,8 @@
 import { Outlet, useLocation } from "react-router-dom";
 import Sidebar from "./Sidebar/Sidebar";
-import DashboardNavbar from "../../Pages/Dashboard/navabar/DashboardNavbar";
+
 import React from "react";
+import DashboardNavbar from "../../module/dashboard/shared/navabar/DashboardNavbar";
 
 const DashboardLayout = () => {
   // const NotProfilePage = useLocation().pathname !== '/dashboard/user/profile'
@@ -12,7 +13,7 @@ const DashboardLayout = () => {
       <Sidebar />
       <div className="flex-1 md:ml-72">
         <div className="p-3">
-          <DashboardNavbar />
+          <DashboardNavbar/>
           <Outlet />
         </div>
       </div>

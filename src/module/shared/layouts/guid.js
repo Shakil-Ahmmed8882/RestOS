@@ -1,0 +1,4 @@
+/*
+Different layout structures 
+that can be reused across pages
+*/

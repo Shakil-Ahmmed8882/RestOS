@@ -1,22 +1,7 @@
+import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import Main from "../Layout/Main";
-import OrderFood from "../Pages/DetailFood/OrderFood";
-
-import Page404 from "../Components/Shared/404/Page404";
-import Private from "../Components/Shared/Private/Private";
-
-
 import MobileBreadCrump from "../Components/Shared/Header/MobileBreadCrump";
-
-// import AllOrders from "../Pages/Dashboard/Admin/all-orders/AllOrders";
-
-
-import PrivateRoute from "./PrivateRoutes";
-
-
-
-import FoodDetails from "../Pages/DetailFood/FoodsDetail";
-import React from "react";
 
 
 import SignInLayout from "../module/login/layout/SignInLayout";
@@ -37,6 +22,11 @@ import FeaturedRecipes from "../module/dashboard/userDashboard/FeaturedRecipes/F
 import X from "../../X";
 import Allorders from "../module/dashboard/adminDashboard/foodManagement/allOrders/Allorders";
 import PurchasedFoodsLayout from "../module/dashboard/userDashboard/purchases/PurchasedFoodsLayout";
+import Private from "../Components/Shared/Pagination/Private/Private";
+import FoodDetails from "../module/frontFace/foodDetails/FoodsDetail";
+import Page404 from "../shared/features/Page404";
+
+
 
 
 const router = createBrowserRouter([
@@ -84,16 +74,6 @@ const router = createBrowserRouter([
         element: (
           <Private>
             <FoodDetails />
-          </Private>
-        ),
-      },
-
-      // User's personal info
-      {
-        path: "/order-food/:id",
-        element: (
-          <Private>
-            <OrderFood></OrderFood>
           </Private>
         ),
       },

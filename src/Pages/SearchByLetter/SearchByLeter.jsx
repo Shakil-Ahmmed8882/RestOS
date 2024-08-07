@@ -9,6 +9,7 @@ import { BiFork } from "react-icons/bi";
 import { BsBookmark } from "react-icons/bs";
 import { BiGift } from "react-icons/bi";
 import Loading from "../../Components/Shared/Loading";
+import React from "react";
 const icons = [<BiFork />, <BiGift />, <BiGift />, <BiFork />];
 
 const Ingredients = () => {

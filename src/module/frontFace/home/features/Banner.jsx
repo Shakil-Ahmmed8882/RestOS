@@ -1,15 +1,11 @@
-import { FaStar } from "react-icons/fa6";
 
 import { useTheme } from "next-themes";
 import "../styles/home.css";
-import { Link } from "react-router-dom";
-
-import { BiSolidFoodMenu } from "react-icons/bi";
 import React from "react";
 import { Button } from "antd";
-import { url2 } from "../../../../Pages/Dashboard/shared/charts/data";
 import TitleAndDescription from "../../../../Components/Shared/common/TitleAndDescription";
 import DemoImage, { DemoFoodCard } from "../components/DemoImage";
+import { url2 } from "../../../dashboard/userDashboard/dashboard/components/charts/data";
 
 
 const Banner = () => {
