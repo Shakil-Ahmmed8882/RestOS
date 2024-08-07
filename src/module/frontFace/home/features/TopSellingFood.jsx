@@ -11,7 +11,8 @@ import duck from  "../../../../assets/img/duck.gif";
 import React from "react";
 import { HorizontalCard } from "../components/Card";
 import { useGetAllFoodsQuery } from "../../../../redux/features/food/food.api";
-import TopSellingFoodSkeleton from "../../../../Components/Shared/Spinner/TopSellingFoodSkeleton";
+import TopSellingFoodSkeleton from "../../../../shared/ui/loading/TopSellingFoodSkeleton";
+
 
 const TopSellingFood = () => {
   const { theme } = useTheme();

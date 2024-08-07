@@ -1,9 +1,10 @@
 import { Outlet } from "react-router-dom";
-import NavBar from "../Components/Shared/Header/Header";
+import {NavBar} from "../shared/features/Header/Header";
 
 import { useTheme } from "next-themes";
 import React from "react";
 import Footer from "../module/shared/ui/Footer";
+import Navigation from "../shared/navigation/Navigation";
 const Main = () => {
   const {theme} = useTheme()
   const themeColor = theme == 'dark'?'bg-bgDark':''
@@ -11,7 +12,10 @@ const Main = () => {
     <>
     <div className={`${themeColor}`}>
       <div className="px-3 md:px-0">
+      <div className="flex items-center">
       <NavBar></NavBar>
+      <Navigation/>
+      </div>
      
       <div className="px-0 md:px-0">
       <Outlet></Outlet>

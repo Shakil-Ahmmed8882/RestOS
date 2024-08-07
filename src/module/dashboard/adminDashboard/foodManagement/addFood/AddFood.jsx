@@ -1,13 +1,13 @@
 // @ts-nocheck
 
-
 import { Button, Row, Col, Input } from "antd";
 import React, { useState } from "react";
-import RSForm from "../../../../../Components/form/RSForm";
+
 import FoodTable from "./features/FoodTable";
-import RSModal from "../../../../../Components/ui/modal/RSModal";
-import RSSelect from "../../../../../Components/form/RSSelect";
-import RSInput from "../../../../../Components/form/RSInput";
+import RSModal from "../../../../../shared/modals/RSModal";
+import RSForm from "../../../../../shared/forms/RSForm";
+import RSInput from "../../../../../shared/forms/RSInput";
+import RSSelect from "../../../../../shared/forms/RSSelect";
 
 const AddFood = () => {
   const onSubmit = async (data) => {

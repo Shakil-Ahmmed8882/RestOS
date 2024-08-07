@@ -58,6 +58,14 @@ body {
   background: linear-gradient(to bottom, #fdfffd, #fdf9ff);
 }
 
+
+.responsive-grid {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+
 .dark-bg {
   background: linear-gradient(to right, #012929fd, rgb(30, 0, 15));
   background-blend-mode: darken;

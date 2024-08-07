@@ -4,11 +4,12 @@
 import React from "react";
 import { useTheme } from "next-themes";
 import logo from "../../assets/img/logo.png";
+import { Link } from "react-router-dom";
 
 const Logo = () => {
   const { theme } = useTheme();
   return (
-    <div className="flex gap-1 items-center">
+    <Link to={'/'} className="flex gap-1 items-center">
       <img className="w-[42px]" src={logo} alt="" />
       <p className="flex font-bold  items-center text-[19px]">
         <span className={` ${theme === "dark" ? "text-[white]" : ""}`}>
@@ -16,7 +17,7 @@ const Logo = () => {
         </span>
         <span className="text-primaryColor text-[18px]">OS</span>
       </p>
-    </div>
+    </Link>
   );
 };
 

@@ -4,12 +4,13 @@ import { createContext, useState } from "react";
 import ProfileDetails from "./ProfileDetails.jsx";
 import Edit from "./Edit.jsx";
 import { UserName } from "../../utils/index.jsx";
-import EventAndLinks from "../event/EventAndLinks.jsx";
+
 
 import Tabs from "../../components/Tabs/Tabs.jsx";
 import React from "react";
 import UserImage from "../../components/UserImage.jsx";
 import InitialAnimateContainer from "../../../../../../shared/animations/InitialAnimateContainer.jsx";
+import EventAndLinks from "../event/EventAndLinks.jsx";
 
 export const UserProfileContext = createContext(null);
 
@@ -21,7 +22,7 @@ const UserInfo = () => {
   return (
     <UserProfileContext.Provider value={user}>
       <InitialAnimateContainer>
-        <div className="sticky top-0">
+        <div className="relative">
           <div className="relative h-40 mb-16 ">
             <div className=" relative flex w-ful h-full items-center gap-3 gradient p-2 rounded-md animate-pulse"></div>
 
@@ -49,8 +50,8 @@ const UserInfo = () => {
             </div>
             <ProfileDetails />
           </div>
-          <Tabs />
         </div>
+          <Tabs />
       </InitialAnimateContainer>
     </UserProfileContext.Provider>
   );

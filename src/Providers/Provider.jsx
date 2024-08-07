@@ -2,6 +2,7 @@
 import PropTypes from 'prop-types';
 import { NextUIProvider } from '@nextui-org/react';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
+import React from 'react';
 
 function Providers({ children }) {
   return (

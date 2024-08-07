@@ -8,9 +8,9 @@ import { IoIceCream } from "react-icons/io5";
  
 import { Link } from "react-router-dom";
 import { LiaApplePay } from "react-icons/lia";
-import Title from "../../../../Components/Shared/ui/Title";
 import { url1, url2 } from "../dashboard/components/charts/data";
 import InitialAnimateContainer from "../../../../shared/animations/InitialAnimateContainer";
+import Title from "../../../../shared/ui/Title";
 const FeaturedRecipes = () => {
   return (
     <InitialAnimateContainer>

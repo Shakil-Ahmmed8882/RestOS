@@ -1,3 +1,4 @@
+// @ts-nocheck
 import PropTypes from "prop-types";
 import { useNavigate, useParams } from "react-router-dom";
 import { BsCartCheckFill } from "react-icons/bs";

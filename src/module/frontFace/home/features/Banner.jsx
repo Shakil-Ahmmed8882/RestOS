@@ -3,9 +3,9 @@ import { useTheme } from "next-themes";
 import "../styles/home.css";
 import React from "react";
 import { Button } from "antd";
-import TitleAndDescription from "../../../../Components/Shared/common/TitleAndDescription";
 import DemoImage, { DemoFoodCard } from "../components/DemoImage";
 import { url2 } from "../../../dashboard/userDashboard/dashboard/components/charts/data";
+import TitleAndDescription from "../components/TitleAndDescription";
 
 
 const Banner = () => {
