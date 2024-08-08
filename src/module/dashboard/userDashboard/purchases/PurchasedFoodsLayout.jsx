@@ -10,19 +10,20 @@ import {
 import { Delete } from "../../../../assets/icons/Icons";
 import { Button } from "@nextui-org/react";
 import { useAuth } from "../../../../Utils/useAuthHelper";
+import { QueryGenerator } from "../../../../Utils";
 
 const PurchasedFoodsLayout = () => {
   // state and fetch data
   const { user } = useAuth();
   const [params, setParams] = useState(undefined);
   const [page, setPage] = useState(1);
-  const { data: OData, isFetching } = useGetAllOrdersQuery([
-    { name: "email", value: user?.email },
-    { name: "status", value: "confirmed" },
-    { name: "page", value: page },
-    { name: "limit", value: 5 },
-    { name: "sort", value: "-createdAt" },
-  ]);
+  
+
+  // fetch all purchesed data 
+  const { data: OData, isFetching } = useGetAllOrdersQuery(
+    QueryGenerator("confirmed", user?.email, page)
+  );
+
 
   const orderedData = OData?.data?.result;
   const meta = OData?.data?.meta;
