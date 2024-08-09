@@ -1,18 +1,18 @@
-
 import { useTheme } from "next-themes";
 import "../styles/home.css";
 import React from "react";
-import { Button } from "antd";
-import DemoImage, { DemoFoodCard } from "../components/DemoImage";
+
+import  { DemoFoodCard } from "../components/DemoImage";
 import { url2 } from "../../../dashboard/userDashboard/dashboard/components/charts/data";
 import TitleAndDescription from "../components/TitleAndDescription";
-
+import { RoundCheckBadge } from "../../../../assets/icons/Icons";
+import { CheckmarkIcon } from "react-hot-toast";
 
 const Banner = () => {
   const { theme } = useTheme();
 
   return (
-    <section className=" bg-[#f8f8f8] py-8 pt-16">
+    <section className=" bg-[#fff] py-14">
       <div className="max-w-6xl  flex  px-3  flex-col lg:flex-row lg:items-center mx-auto  ">
         <div className="flex-1">
           <div
@@ -26,19 +26,12 @@ const Banner = () => {
             <div className="space-y-1 z-10 w-full">
               <TitleAndDescription />
 
-              <div className="pb-32 w-full md:w-[80%] mx-auto pt-8">
-                <DemoImage />
-              </div>
             </div>
           </div>
         </div>
         <div className="w-full  lg:w-[45%]">
           <DemoFood />
-          <div className="text-center mt-8">
-            <Button className="p-5 text-primaryColor outline outline-[1px] outline-primaryColor px-11">
-              Discover more
-            </Button>
-          </div>
+          
         </div>
       </div>
     </section>
@@ -79,7 +72,7 @@ export default Banner;
 
 const DemoFood = () => {
   return (
-    <div className="grid md:grid-cols-2 gap-8 lg:gap-y-24 lg:gap-x-4 items-start">
+    <div className="grid md:grid-cols-2 gap-8 lg:gap-y-4 lg:gap-x-4 items-start">
       <DemoFoodContent />
       <DemoFoodContent />
       <DemoFoodContent />
@@ -90,14 +83,17 @@ const DemoFood = () => {
 
 const DemoFoodContent = () => {
   return (
-    <div className="bg-[white] rounded-md justify-self-start w-full shadow-lg shadow-[#6c6a6a22] rounded-lg lg:pt-14 lg:p-5  relative flex gap-8">
+    <div className="bg-[white] justify-self-start w-full shadow-lg shadow-[#c1c1c13d] rounded-lg p-4 gap-4 relative">
       <DemoFoodCard url={url2} />
-      <div className="flex-1">
+      <div className="absolute right-4 top-4">
+      <CheckmarkIcon className="absolute"/>
+
+      </div>
+      <div className="flex-1 mt-2 flex  flex-col items-center">
         <h2 className="font-bold text-[17px] mt-3">Cherry Salad</h2>
-        <p className="text-sm py-2 text-[#5b5b5b]">
-          Cucumber Organic and cherry
-        </p>
-        <strong className="text-sm font-bold">$12.50</strong>
+        <strong className="text-md mt-2 text-primaryColor font-bold">
+          $12.50
+        </strong>
       </div>
     </div>
   );

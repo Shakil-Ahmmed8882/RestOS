@@ -15,9 +15,8 @@ export default DemoImage;
 
 export const DemoFoodCard = ({url}) => {
     return (
-      <div className=" flex-1 left-1/4 lg:absolute 
-      -top-[32%] lg:-top-[45%]">    
-        <img className="object-cover h-44 w-full lg:size-[110px] rounded-l-md   lg:rounded-full object-bottom" src={url ||demoBanner} alt="" />
+      <div className="">    
+        <img className="mx-auto object-cover h-44 w-full lg:size-[90px] rounded-l-md   lg:rounded-full object-bottom" src={demoBanner} alt="" />
       </div>
     );
   };

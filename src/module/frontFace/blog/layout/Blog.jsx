@@ -1,85 +1,102 @@
+// @ts-nocheck
 import React, { useState } from 'react';
-import { Input } from "antd";
-import { Link } from 'react-router-dom';
+import { Pagination } from 'antd';
+import { useAuth } from '../../../../Utils/useAuthHelper';
+import Sidebar from '../components/Sidebar';
+import ArticleCard from '../components/ArticleCard';
+import CommentsSidebar from '../components/CommentsSidebar';
+import demoBanner from "../../../../assets/img/fishdemo.png"
 
-// Sample static data
-const blogData = [
-  {
-    id: 1,
-    title: 'Creamy Garlic Shrimp Pasta',
-    description: 'A delicious pasta recipe with creamy garlic sauce and shrimp.',
-    image: 'https://via.placeholder.com/400x200',
-    createdAt: '2023-05-23T10:00:00Z',
-  },
-  {
-    id: 2,
-    title: 'Classic Margherita Pizza',
-    description: 'An easy recipe for a classic Margherita pizza with fresh ingredients.',
-    image: 'https://via.placeholder.com/400x200',
-    createdAt: '2023-05-22T09:00:00Z',
-  },
-  {
-    id: 3,
-    title: 'Spicy Chicken Tacos',
-    description: 'A quick and simple recipe for spicy chicken tacos.',
-    image: 'https://via.placeholder.com/400x200',
-    createdAt: '2023-05-21T08:00:00Z',
-  },
-  {
-    id: 4,
-    title: 'Spicy Chicken Tacos',
-    description: 'A quick and simple recipe for spicy chicken tacos.',
-    image: 'https://via.placeholder.com/400x200',
-    createdAt: '2023-05-21T08:00:00Z',
-  },
-  {
-    id: 5,
-    title: 'Spicy Chicken Tacos',
-    description: 'A quick and simple recipe for spicy chicken tacos.',
-    image: 'https://via.placeholder.com/400x200',
-    createdAt: '2023-05-21T08:00:00Z',
-  },
-  {
-    id: 3,
-    title: 'Spicy Chicken Tacos',
-    description: 'A quick and simple recipe for spicy chicken tacos.',
-    image: 'https://via.placeholder.com/400x200',
-    createdAt: '2023-05-21T08:00:00Z',
-  },
+
+const articles = [
+  { id: 1, title: "The Future of Web Development", category: "Development", author: "John Doe", date: "2023-08-09", banner: demoBanner },
+  { id: 2, title: "Introduction to Redux Toolkit", category: "Development", author: "Jane Smith", date: "2023-08-10", banner: demoBanner },
+  { id: 3, title: "Mastering TypeScript", category: "Programming", author: "Alice Johnson", date: "2023-08-11", banner: demoBanner },
+  { id: 4, title: "Effective UI Design", category: "Design", author: "Bob Brown", date: "2023-08-12", banner: demoBanner },
+  { id: 5, title: "Building REST APIs", category: "Backend", author: "Charlie Davis", date: "2023-08-13", banner: demoBanner },
+  { id: 6, title: "Understanding NoSQL Databases", category: "Database", author: "Emily White", date: "2023-08-14", banner: demoBanner },
+];
+
+const commentsData = {
+  1: [
+    { id: 101, author: "Alex Lee", content: "Great insights on the future of web development!", date: "2023-08-10" },
+    { id: 102, author: "Sophie Turner", content: "Thanks for sharing this!", date: "2023-08-11" },
+  ],
+  2: [
+    { id: 103, author: "James Bond", content: "Redux Toolkit made my life easier. Great post!", date: "2023-08-12" },
+  ],
+  3: [
+    { id: 104, author: "Tony Stark", content: "TypeScript is awesome, thanks for the tips!", date: "2023-08-13" },
+  ],
+  // Add more comments for other articles as needed
+};
+
+const categories = [
+  "Development",
+  "Programming",
+  "Design",
+  "Backend",
+  "Database",
+  "Frontend",
+  "DevOps",
 ];
 
 function BlogPage() {
+  const { user } = useAuth();
+  const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [showComments, setShowComments] = useState(false);
+  const [selectedArticleId, setSelectedArticleId] = useState(null);
 
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
+
+  const pageSize = 5;
+
+  const handlePageChange = (page) => setCurrentPage(page);
+  const handleSearch = (term) => setSearchTerm(term);
+  const handleCategorySelect = (category) => setSelectedCategory(category);
+  const toggleCommentsSidebar = (articleId) => {
+    setSelectedArticleId(articleId);
+    setShowComments(!showComments);
   };
 
-  const filteredBlogs = blogData.filter(blog =>
-    blog.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredArticles = articles
+    .filter(article => article.title.toLowerCase().includes(searchTerm.toLowerCase()))
+    .filter(article => !selectedCategory || article.category === selectedCategory);
+
+  const paginatedArticles = filteredArticles.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-4xl font-bold mb-4">Blog</h1>
-      <Input
-        type="text"
-        value={searchTerm}
-        onChange={handleSearch}
-        placeholder="Search blog posts..."
-        className="w-full p-2 mb-4 border border-gray-300 rounded"
+    <div className="grid grid-cols-1 pt-20 md:grid-cols-[300px_1fr] gap-8 max-w-6xl mx-auto px-4 py-8">
+      <div className='sticky top-0 bg-[#f7f7f7] p-2 pb-0 h-screen'>
+      <Sidebar
+        categories={categories}
+        onSearch={handleSearch}
+        onSelectCategory={handleCategorySelect}
       />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredBlogs.map(blog => (
-          <Link to={`/blog/${blog.id}`} key={blog.id}>
-            <div className="p-4 border border-gray-200 rounded shadow-sm hover:shadow-lg">
-              <img src={blog.image} alt={blog.title} className="w-full h-40 object-cover rounded mb-2" />
-              <h2 className="text-2xl font-bold mb-2">{blog.title}</h2>
-              <p className="text-gray-600">{blog.description.substring(0, 100)}...</p>
-            </div>
-          </Link>
-        ))}
       </div>
+      <div className="space-y-8">
+        {paginatedArticles.length > 0 ?paginatedArticles.map(article => (
+          <ArticleCard
+            key={article.id}
+            article={article}
+            user={user}
+            onCommentClick={() => toggleCommentsSidebar(article.id)}
+          />
+        )):<div className='flex h-[0vh] w-full items-center justify-center'>no data....</div>}
+        <Pagination
+          current={currentPage}
+          pageSize={pageSize}
+          total={filteredArticles.length}
+          onChange={handlePageChange}
+        />
+      </div>
+      <CommentsSidebar
+        isVisible={showComments}
+        articleId={selectedArticleId}
+        comments={commentsData[selectedArticleId] || []}
+        onClose={() => setShowComments(false)}
+      />
     </div>
   );
 }

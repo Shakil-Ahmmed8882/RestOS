@@ -10,13 +10,14 @@ const Logo = () => {
   const { theme } = useTheme();
   return (
     <Link to={'/'} className="flex gap-1 items-center">
-      <img className="w-[42px]" src={logo} alt="" />
+      {/* <img className="w-[42px]" src={logo} alt="" />
       <p className="flex font-bold  items-center text-[19px]">
         <span className={` ${theme === "dark" ? "text-[white]" : ""}`}>
           Rest
         </span>
         <span className="text-primaryColor text-[18px]">OS</span>
-      </p>
+      </p> */}
+      <p className="btn">Logo</p>
     </Link>
   );
 };

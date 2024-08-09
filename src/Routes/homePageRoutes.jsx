@@ -8,7 +8,7 @@ import RecipePageLayout from "../module/frontFace/recipe/layout/RecipePageLayout
 import RecipeDetailPage from "../module/frontFace/recipe/features/RecipeDetailsPage";
 import Private from "../shared/ui/Private";
 import FoodDetails from "../module/frontFace/foodDetails/FoodsDetail";
-import path from "path";
+
 
 export const homePagePaths = [
   {
@@ -17,7 +17,6 @@ export const homePagePaths = [
     element: <HomeLayout />,
   },
   {
-    name: "Home",
     path: "/all-menu",
     element: <h1>Menu</h1>,
   },
@@ -28,7 +27,6 @@ export const homePagePaths = [
     element: <FoodsLayout />,
   },
   {
-    name: "Food",
     path: "/food-details/:id",
     element: (
       <Private>
@@ -49,7 +47,6 @@ export const homePagePaths = [
     element: <BlogPage />,
   },
   {
-    name: "Blog",
     path: "blog/:id",
     element: <BlogDetailPage match={undefined} />,
   },
@@ -61,6 +58,6 @@ export const homePagePaths = [
   },
   {
     path: "recipe/:id",
-    element: <RecipeDetailPage />,
+    element: <RecipeDetailPage />
   },
 ];

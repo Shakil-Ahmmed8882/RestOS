@@ -1,4 +1,5 @@
 import { useTheme } from "@material-tailwind/react";
+import { Button } from "antd";
 import React from "react";
 import { BiSolidFoodMenu } from "react-icons/bi";
 import { Link } from "react-router-dom";
@@ -30,11 +31,20 @@ const TitleAndDescription = () => {
         <p>Superfresh</p>
         <p>100% Organic</p>
       </div>
-      <Link to="/all-menu" className="flex">
-        <button className="my-5 md:my-4 w-full text-center sm:w-1/2 flex text-primaryColor lg:w-1/3 rounded-lg items-center gap-3 border-none h-full  md:text-[19px] ">
-          All Menus <BiSolidFoodMenu></BiSolidFoodMenu>
-        </button>
-      </Link>
+
+      <div className="text-center flex gap-3 pt-5  ">
+        <Link to="/all-menu" className="flex">
+          <button className="flex items-center py-2 px-6 bg-[#ededed] rounded-full gap-2">
+            All Menus <BiSolidFoodMenu></BiSolidFoodMenu>
+          </button>
+        </Link>
+
+        <Link to="/" className="flex">
+          <button className="flex items-center py-2 px-6 text-primaryColor  bg-primaryColor/10  rounded-full gap-2 ">
+            Discover more
+          </button>
+        </Link>
+      </div>
     </>
   );
 };

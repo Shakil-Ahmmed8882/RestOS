@@ -1,47 +1,31 @@
-// @ts-nocheck
 import React from "react";
-import { useState } from "react";
-import { Table, Pagination } from "antd";
-import { useAuth } from "../../../../../../Utils/useAuthHelper";
-import { Delete } from "../../../../../../assets/icons/Icons";
 import {
   useDeleteOrderMutation,
   useGetAllOrdersQuery,
 } from "../../../../../../redux/features/order/orderApi";
-import { Query } from "../utils";
+import ReusableTable from "../../../../../../shared/tables/RSTable";
 
-const FoodTable = ({ searchValue }) => {
-  // state and fetch data
-  const { user } = useAuth();
-  const [params, setParams] = useState(undefined);
-  const [page, setPage] = useState(1);
-  const { data: OData, isFetching } = useGetAllOrdersQuery(Query(page,searchValue));
+const ParentComponent = ({ searchValue }) => {
+  const [deleteOrder] = useDeleteOrderMutation();
 
-  const orderedData = OData?.data?.result;
-  const meta = OData?.data?.meta;
+  // Fetch data function
+  const fetchData = (query) => useGetAllOrdersQuery(query);
 
-  const foodNamesArray = orderedData?.map((food) => food.foodName);
-  const [deleteOrder, { data }] = useDeleteOrderMutation();
-
-  // Delete a order from the table
-  const handleDelete = (foodId) => {
-    console.log(foodId);
-    deleteOrder({ id: foodId, email: user?.email });
+  // Delete handler
+  const handleDelete = (record) => {
+    const { foodId } = record;
+    deleteOrder({ id: foodId });
   };
 
-  const tableData = orderedData?.map(
-    ({ _id, foodId, foodName, status, foodImage, price, made_by, email }) => ({
-      key: foodId,
-      foodId,
-      foodName,
-      foodImage,
-      price,
-      status,
-      made_by,
-      email,
-    })
-  );
+  // Edit handler
+  const handleEdit = (record) => {
+    // Logic to handle edit operation
+    const { foodId } = record;
+    // Redirect to edit page or open a modal for editing
+    console.log(`Edit food with ID: ${foodId}`);
+  };
 
+  // Columns configuration
   const columns = [
     {
       title: "Food Image",
@@ -55,10 +39,7 @@ const FoodTable = ({ searchValue }) => {
       title: "Food Name",
       key: "foodName",
       dataIndex: "foodName",
-      filters: foodNamesArray?.map((foodName) => ({
-        text: foodName,
-        value: foodName,
-      })),
+      filters: [], // Populate filters dynamically
       onFilter: (value, record) => record.foodName.includes(value),
     },
     {
@@ -71,76 +52,46 @@ const FoodTable = ({ searchValue }) => {
       title: "Status",
       key: "status",
       dataIndex: "status",
-      sorter: (a, b) => a.price - b.price,
+      sorter: (a, b) => a.status.localeCompare(b.status),
     },
     {
       title: "Made By",
       key: "made_by",
       dataIndex: "made_by",
       filters: [
-        {
-          text: "Chef A",
-          value: "Chef A",
-        },
-        {
-          text: "Chef B",
-          value: "Chef B",
-        },
+        { text: "Chef A", value: "Chef A" },
+        { text: "Chef B", value: "Chef B" },
       ],
       onFilter: (value, record) => record.made_by.includes(value),
     },
     {
       title: "Action",
-      key: "action", // Key for action column
-      render: (record) => {
-        return (
-          <div className="flex gap-3">
-            <button onClick={() => handleDelete(record.foodId)}>
-              <Delete />
-            </button>
-          </div>
-        );
-      },
+      key: "action",
+      render: (record) => (
+        <div className="flex gap-3">
+          <Button onClick={() => handleAction("delete", record)}>Delete</Button>
+          {/* Other actions can be added here */}
+        </div>
+      ),
       width: "1%",
     },
   ];
 
-  const onChange = (_pagination, filters, sorter, extra) => {
-    const queryParams = [];
 
-    Object.keys(filters).forEach((key) => {
-      if (filters[key]) {
-        filters[key].forEach((value) => {
-          queryParams.push({ name: key, value });
-        });
-      }
-    });
-
-    // @ts-ignore
-    setParams(queryParams);
-    console.log(queryParams);
+  // Action handlers
+  const actions = {
+    delete: handleDelete,
+    edit: handleEdit,
   };
 
   return (
-    <>
-      <Table
-        loading={isFetching}
-        columns={columns}
-        dataSource={tableData}
-        onChange={onChange}
-        showSorterTooltip={{ target: "sorter-icon" }}
-        pagination={false}
-      />
-      <div className="flex justify-start my-3 mr-6">
-        <Pagination
-          onChange={(value) => setPage(value)}
-          total={meta?.total}
-          pageSize={meta?.limit}
-          current={page}
-        />
-      </div>
-    </>
+    <ReusableTable
+      columns={columns}
+      fetchData={fetchData}
+      actions={actions}
+      searchValue={searchValue}
+    />
   );
 };
 
-export default FoodTable;
+export default ParentComponent;
