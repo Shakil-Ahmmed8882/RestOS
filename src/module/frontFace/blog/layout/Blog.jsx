@@ -1,32 +1,93 @@
 // @ts-nocheck
-import React, { useState } from 'react';
-import { Pagination } from 'antd';
-import { useAuth } from '../../../../Utils/useAuthHelper';
-import Sidebar from '../components/Sidebar';
-import ArticleCard from '../components/ArticleCard';
-import CommentsSidebar from '../components/CommentsSidebar';
-import demoBanner from "../../../../assets/img/fishdemo.png"
-
+import React, { useState } from "react";
+import { Pagination } from "antd";
+import { useAuth } from "../../../../Utils/useAuthHelper";
+import Sidebar from "../components/Sidebar";
+import ArticleCard from "../components/ArticleCard";
+import CommentsSidebar from "../components/CommentsSidebar";
+import demoBanner from "../../../../assets/img/fishdemo.png";
 
 const articles = [
-  { id: 1, title: "The Future of Web Development", category: "Development", author: "John Doe", date: "2023-08-09", banner: demoBanner },
-  { id: 2, title: "Introduction to Redux Toolkit", category: "Development", author: "Jane Smith", date: "2023-08-10", banner: demoBanner },
-  { id: 3, title: "Mastering TypeScript", category: "Programming", author: "Alice Johnson", date: "2023-08-11", banner: demoBanner },
-  { id: 4, title: "Effective UI Design", category: "Design", author: "Bob Brown", date: "2023-08-12", banner: demoBanner },
-  { id: 5, title: "Building REST APIs", category: "Backend", author: "Charlie Davis", date: "2023-08-13", banner: demoBanner },
-  { id: 6, title: "Understanding NoSQL Databases", category: "Database", author: "Emily White", date: "2023-08-14", banner: demoBanner },
+  {
+    id: 1,
+    title: "The Future of Web Development",
+    category: "Development",
+    author: "John Doe",
+    date: "2023-08-09",
+    banner: demoBanner,
+  },
+  {
+    id: 2,
+    title: "Introduction to Redux Toolkit",
+    category: "Development",
+    author: "Jane Smith",
+    date: "2023-08-10",
+    banner: demoBanner,
+  },
+  {
+    id: 3,
+    title: "Mastering TypeScript",
+    category: "Programming",
+    author: "Alice Johnson",
+    date: "2023-08-11",
+    banner: demoBanner,
+  },
+  {
+    id: 4,
+    title: "Effective UI Design",
+    category: "Design",
+    author: "Bob Brown",
+    date: "2023-08-12",
+    banner: demoBanner,
+  },
+  {
+    id: 5,
+    title: "Building REST APIs",
+    category: "Backend",
+    author: "Charlie Davis",
+    date: "2023-08-13",
+    banner: demoBanner,
+  },
+  {
+    id: 6,
+    title: "Understanding NoSQL Databases",
+    category: "Database",
+    author: "Emily White",
+    date: "2023-08-14",
+    banner: demoBanner,
+  },
 ];
 
 const commentsData = {
   1: [
-    { id: 101, author: "Alex Lee", content: "Great insights on the future of web development!", date: "2023-08-10" },
-    { id: 102, author: "Sophie Turner", content: "Thanks for sharing this!", date: "2023-08-11" },
+    {
+      id: 101,
+      author: "Alex Lee",
+      content: "Great insights on the future of web development!",
+      date: "2023-08-10",
+    },
+    {
+      id: 102,
+      author: "Sophie Turner",
+      content: "Thanks for sharing this!",
+      date: "2023-08-11",
+    },
   ],
   2: [
-    { id: 103, author: "James Bond", content: "Redux Toolkit made my life easier. Great post!", date: "2023-08-12" },
+    {
+      id: 103,
+      author: "James Bond",
+      content: "Redux Toolkit made my life easier. Great post!",
+      date: "2023-08-12",
+    },
   ],
   3: [
-    { id: 104, author: "Tony Stark", content: "TypeScript is awesome, thanks for the tips!", date: "2023-08-13" },
+    {
+      id: 104,
+      author: "Tony Stark",
+      content: "TypeScript is awesome, thanks for the tips!",
+      date: "2023-08-13",
+    },
   ],
   // Add more comments for other articles as needed
 };
@@ -44,11 +105,10 @@ const categories = [
 function BlogPage() {
   const { user } = useAuth();
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [showComments, setShowComments] = useState(false);
   const [selectedArticleId, setSelectedArticleId] = useState(null);
-
 
   const pageSize = 5;
 
@@ -61,29 +121,42 @@ function BlogPage() {
   };
 
   const filteredArticles = articles
-    .filter(article => article.title.toLowerCase().includes(searchTerm.toLowerCase()))
-    .filter(article => !selectedCategory || article.category === selectedCategory);
+    .filter((article) =>
+      article.title.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .filter(
+      (article) => !selectedCategory || article.category === selectedCategory
+    );
 
-  const paginatedArticles = filteredArticles.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+  const paginatedArticles = filteredArticles.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
 
   return (
     <div className="grid grid-cols-1 pt-20 md:grid-cols-[300px_1fr] gap-8 max-w-6xl mx-auto px-4 py-8">
-      <div className='sticky top-0 bg-[#f7f7f7] p-2 pb-0 h-screen'>
-      <Sidebar
-        categories={categories}
-        onSearch={handleSearch}
-        onSelectCategory={handleCategorySelect}
-      />
+      <div className="sticky top-0 bg-[#f7f7f7] p-2 pb-0 h-screen">
+        <Sidebar
+          categories={categories}
+          onSearch={handleSearch}
+          onSelectCategory={handleCategorySelect}
+        />
       </div>
       <div className="space-y-8">
-        {paginatedArticles.length > 0 ?paginatedArticles.map(article => (
-          <ArticleCard
-            key={article.id}
-            article={article}
-            user={user}
-            onCommentClick={() => toggleCommentsSidebar(article.id)}
-          />
-        )):<div className='flex h-[0vh] w-full items-center justify-center'>no data....</div>}
+        {paginatedArticles.length > 0 ? (
+          paginatedArticles.map((article) => (
+            <ArticleCard
+              key={article.id}
+              article={article}
+              user={user}
+              onCommentClick={() => toggleCommentsSidebar(article.id)}
+            />
+          ))
+        ) : (
+          <div className="flex h-[0vh] w-full items-center justify-center">
+            no data....
+          </div>
+        )}
         <Pagination
           current={currentPage}
           pageSize={pageSize}
