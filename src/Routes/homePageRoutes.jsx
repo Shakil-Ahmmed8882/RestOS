@@ -1,7 +1,7 @@
 import React from "react";
 import HomeLayout from "../module/frontFace/home/layout/HomeLayout";
 import FoodsLayout from "../module/frontFace/food/FoodsLayout";
-import BlogPage from "../module/frontFace/blog/layout/Blog";
+import BlogLayout from "../module/frontFace/blog/layout/BlogLayout";
 import FAQ from "../module/frontFace/faq/features/FAQ";
 import BlogDetailPage from "../module/frontFace/blog/features/BlogDetails";
 import RecipePageLayout from "../module/frontFace/recipe/layout/RecipePageLayout";
@@ -44,7 +44,7 @@ export const homePagePaths = [
   {
     name: "Blog",
     path: "blog",
-    element: <BlogPage />,
+    element: <BlogLayout />,
   },
   {
     path: "blog/:id",

@@ -3,7 +3,7 @@ import { Space } from "antd";
 import useClickOutside from "../../🔗Hook/useClickOutside";
 
 const RSDropdown = ({ items, children = <></> }) => {
-    const [reveal, setReveal] = useState(true);
+    const [reveal, setReveal] = useState(false);
     const dropdownRef = useRef(null);
 
     // Handle clicks outside the dropdown to close it

@@ -34,8 +34,8 @@ const UserAvatar = () => {
 
   return (
     <>
-      <Avatar >
-        <img src={user?.photoURL} alt="" />
+      <Avatar className='border-3 border-[#efefef]'>
+        <img className=' object-cover ' src={user?.photoURL} alt="" />
       </Avatar>
       
     </>

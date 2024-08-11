@@ -28,6 +28,9 @@
   .transition500 {
     @apply transition-all duration-300
   }
+  .primaryGradient {
+    @apply bg-gradient-to-r from-primaryColor to-primaryColor/60
+  }
 
   /* gradient */
   .gradient{
@@ -125,4 +128,18 @@ body {
 
 ::-webkit-scrollbar-thumb:window-inactive {
   background: rgba(255, 255, 255, 0.137);
+}
+
+
+/* Modal styles */
+
+/* Prevent background content from scrolling */
+.no-scroll {
+  overflow: hidden;
+}
+
+/* Ensure the modal is scrollable */
+.modal {
+  max-height: 100vh; /* or any other desired height */
+  overflow-y: auto;  /* Allow vertical scrolling */
 }

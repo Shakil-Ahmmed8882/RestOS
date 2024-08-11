@@ -3,6 +3,7 @@ import { Button } from "antd";
 import React from "react";
 import { BiSolidFoodMenu } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import { SingleCheckBadge } from "../../../../assets/icons/Icons";
 
 const TitleAndDescription = () => {
   const { theme } = useTheme();
@@ -27,9 +28,9 @@ const TitleAndDescription = () => {
           theme == "dark" ? "text-[#dadada]" : "text-[#828282]"
         } font-sans text-[15px] md:text-[18px] flex gap-3 w-full`}
       >
-        <p>Tasty</p>
-        <p>Superfresh</p>
-        <p>100% Organic</p>
+        <p className="flex items-center gap-1 "><SingleCheckBadge  /> Tasty</p>
+        <p className="flex items-center gap-1 "> <SingleCheckBadge /> Superfresh</p>
+        <p className="flex items-center gap-1 "> <SingleCheckBadge /> 100% Organic</p>
       </div>
 
       <div className="text-center flex gap-3 pt-5  ">
