@@ -1,3 +1,4 @@
+
 import { useTheme } from "next-themes";
 import "../styles/home.css";
 import React from "react";
@@ -5,7 +6,6 @@ import React from "react";
 import  { DemoFoodCard } from "../components/DemoImage";
 import { url2 } from "../../../dashboard/userDashboard/dashboard/components/charts/data";
 import TitleAndDescription from "../components/TitleAndDescription";
-import { RoundCheckBadge } from "../../../../assets/icons/Icons";
 import { CheckmarkIcon } from "react-hot-toast";
 
 const Banner = () => {

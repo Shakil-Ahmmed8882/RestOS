@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 
 import { recipieCardData } from "../data";
 import RecipieCard from "../components/Card";
+import Container from "../../../../shared/layouts/Container";
+import AddBlog from "../../blog/features/AddBlog";
+import Header from "../features/Header";
 
 
 // Sample static data
@@ -39,17 +42,9 @@ const recipeData = [
 function RecipePageLayout() {
  
   return (
-    <div className="container mx-auto p-4 pt-20">
-        <article className="flex justify-between items-center py-8">
-      <h1 className="text-4xl font-bold mb-4">Recipes</h1>
-      <Link
-        to="/recipe/new"
-        className="bg-green-500 text-white py-2 px-4 rounded mb-4 inline-block"
-      >
-        Post New Recipe
-      </Link>
-
-        </article>
+    <Container>
+    <div className=" pt-20">
+    <Header/>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
         {recipieCardData.map((recipe) => (
           <div
@@ -68,6 +63,8 @@ function RecipePageLayout() {
         ))}
       </div>
     </div>
+
+    </Container>
   );
 }
 

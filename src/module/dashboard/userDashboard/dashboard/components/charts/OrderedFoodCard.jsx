@@ -1,3 +1,4 @@
+import React from "react";
 import { url2 } from "./data";
 
 export const PopularDishesCard = () => {

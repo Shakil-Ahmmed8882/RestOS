@@ -7,6 +7,7 @@ import ArticleCard from "../components/ArticleCard";
 import CommentsSidebar from "../components/CommentsSidebar";
 import { articles } from "../components/constant";
 import Header from "../features/Header";
+import Container from "../../../../shared/layouts/Container";
 
 const commentsData = {
   1: [
@@ -85,9 +86,8 @@ function BlogLayout() {
 
   return (
     <section className="py-8 -mt-20 pt-32">
-
-      <section className="max-w-6xl mx-auto sm:px-4  ">
-      <Header />
+      <Container>
+        <Header />
         <div className="grid grid-cols-1 pt-8 md:pt-20 md:grid-cols-[300px_1fr] gap-8 ">
           <div className=" z-40 sticky top-0 bg-[#fafafa]  p-2 pb-0 md:h-screen">
             <Sidebar
@@ -125,7 +125,7 @@ function BlogLayout() {
             onClose={() => setShowComments(false)}
           />
         </div>
-      </section>
+      </Container>
     </section>
   );
 }
