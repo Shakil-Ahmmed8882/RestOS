@@ -18,7 +18,7 @@ const HomeLayout = () => {
         <title>RestOs || Home</title>
       <Banner/>
         {/* <TopSellingFood/> */}
-      <MealsCategory></MealsCategory>
+      {/* <MealsCategory></MealsCategory> */}
     </div>
   );
 };

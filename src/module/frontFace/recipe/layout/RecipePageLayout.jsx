@@ -46,7 +46,7 @@ function RecipePageLayout() {
     <Container>
     <div className=" py-20">
     <Header/>
-      <div className="grid md:grid-cols-2  justify-center gap-8 lg:gap-16">
+      <div className="grid md:grid-cols-2  justify-center gap-8 lg:gap-16 pt-9">
         {recipieCardData.map((recipe) => (
           <div
             key={recipe.id}

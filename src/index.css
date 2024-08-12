@@ -20,7 +20,7 @@
   }
 
   h1 {
-    @apply text-2xl md:text-4xl sm:text-3xl font-bold lg:text-5xl;
+    @apply text-3xl md:text-4xl sm:text-3xl font-bold lg:text-5xl;
   }
   .transition300 {
     @apply transition-all duration-300 ease-linear
@@ -37,7 +37,7 @@
     @apply bg-gradient-to-r from-[#effff1] to-[#f3eaff]
   }
   .description{
-    @apply text-[#878787] text-[15px] sm:text-[18px] md:text-[20px]    leading-7
+    @apply text-[#878787] text-[17px] sm:text-[18px] md:text-[20px]    leading-8
   }
 
   .hide-with-animation{

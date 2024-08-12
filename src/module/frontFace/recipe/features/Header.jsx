@@ -4,7 +4,7 @@ import AddRecipe from "./AddRecipe";
 const Header = () => {
   return (
     <article className="pt-11 pb-8 ">
-      <div className="flex justify-between w-full">
+      <div className="  flex justify-between w-full">
         <h1>Recipe</h1>
         <AddRecipe />
       </div>

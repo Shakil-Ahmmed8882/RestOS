@@ -41,7 +41,7 @@ const AddBlog = () => {
       >
         <Button
           onClick={() => setOpen(true)}
-          className=" md:p-6 rounded-full  border-none !bg-primaryColor/10 !text-primaryColor text-medium md:text-[18px]   shadow-primaryColor/10 shadow-xl"
+          className=" md:p-6 rounded-full  border-none !bg-primaryColor/6 !text-primaryColor text-medium md:text-[18px]   shadow-primaryColor/10 shadow-xl"
         >
           Add Blog
         </Button>

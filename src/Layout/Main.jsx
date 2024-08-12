@@ -18,7 +18,7 @@ const Main = () => {
 
   return (
     <div className={`${themeColor}`}>
-      <div className="px-3 md:px-0">
+      <div className="">
         <div
           className={`flex items-center sticky top-0 z-50  transition-transform duration-300 ${
             showNavbar ? "translate-y-0" : "-translate-y-full"
