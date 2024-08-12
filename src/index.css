@@ -34,7 +34,10 @@
 
   /* gradient */
   .gradient{
-    @apply bg-gradient-to-r from-[#e1ffe4] to-[#e8d6ff]
+    @apply bg-gradient-to-r from-[#effff1] to-[#f3eaff]
+  }
+  .description{
+    @apply text-[#878787] text-[15px] sm:text-[18px] md:text-[20px]    leading-7
   }
 
   .hide-with-animation{
@@ -57,7 +60,7 @@ body {
   font-family: "Poppins", sans-serif;
 
   font-style: normal;
-  overflow-x: hidden;
+  overflow-x: hidden !important;
   background: linear-gradient(to bottom, #fdfffd, #fdf9ff);
 }
 
@@ -130,16 +133,3 @@ body {
   background: rgba(255, 255, 255, 0.137);
 }
 
-
-/* Modal styles */
-
-/* Prevent background content from scrolling */
-.no-scroll {
-  overflow: hidden;
-}
-
-/* Ensure the modal is scrollable */
-.modal {
-  max-height: 100vh; /* or any other desired height */
-  overflow-y: auto;  /* Allow vertical scrolling */
-}

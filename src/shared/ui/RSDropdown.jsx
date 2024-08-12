@@ -7,7 +7,7 @@ const RSDropdown = ({ items, children = <></> }) => {
     const dropdownRef = useRef(null);
 
     // Handle clicks outside the dropdown to close it
-    useClickOutside(dropdownRef, () => setReveal(false));
+    useClickOutside(dropdownRef, () => setReveal);
 
     return (
         <Space className="relative rounded-lg" ref={dropdownRef}>

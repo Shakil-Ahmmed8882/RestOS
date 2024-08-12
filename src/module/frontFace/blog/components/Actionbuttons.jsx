@@ -1,27 +1,74 @@
-import React from 'react';
+import React, { useState } from "react";
+import { BookMarkIcon, MarkFavoriteIcon } from "../../../../assets/icons/Icons";
+import {
+  BookedmarkIcon,
+  DisLikedIcon,
+  DisLikeIcon,
+  LikedIcon,
+  LikeIcon,
+  MarkedFavorite,
+} from "../../../../assets/icons";
+import ToggleIconButton from "./ToggleIconButton";
 
 function ActionButtons({ articleId }) {
-  const handleSave = () => console.log('Saved article with id:', articleId);
-  const handleLike = () => console.log('Liked article with id:', articleId);
+  const [likeStatus, setLikeStatus] = useState({
+    liked: false,
+    disliked: false,
+  });
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [isBookMark, setBookMark] = useState(false);
+
+  const handleLike = () => {
+    setLikeStatus({ liked: !likeStatus.liked, disliked: false });
+    console.log("Liked article with id:", articleId);
+  };
+
+  const handleDislike = () => {
+    setLikeStatus({ liked: false, disliked: !likeStatus.disliked });
+    console.log("Disliked article with id:", articleId);
+  };
+
+  const handleBookmark = () => {
+    setBookMark(!isBookMark);
+    console.log("Bookmarked article with id:", articleId);
+  };
+
+  const handleFavorite = () => {
+    setIsFavorite(!isFavorite);
+    console.log("Marked as favorite article with id:", articleId);
+  };
 
   return (
-    <div className="flex items-center gap-2">
-      <button
+    <div className="flex items-center gap-3 py-3">
+      {/* like and dislik */}
+      <ToggleIconButton
+        defaultIcon={LikeIcon}
+        activeIcon={LikedIcon}
+        isActive={likeStatus.liked}
         onClick={handleLike}
-        className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10"
-      >
-        <span className="sr-only">Like</span>
-        {/* Add your like icon here */}
-        Like
-      </button>
-      <button
-        onClick={handleSave}
-        className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10"
-      >
-        <span className="sr-only">Save</span>
-        {/* Add your save icon here */}
-        Save
-      </button>
+      />
+      {/* dislik */}
+      <ToggleIconButton
+        defaultIcon={DisLikeIcon}
+        activeIcon={DisLikedIcon}
+        isActive={likeStatus.disliked}
+        onClick={handleDislike}
+      />
+      {/* Bookmark */}
+      <ToggleIconButton
+        defaultIcon={BookMarkIcon}
+        activeIcon={BookedmarkIcon}
+        isActive={isBookMark}
+        onClick={handleBookmark}
+        sizeClass="size-[21px]"
+      />
+      {/* Favorite */}
+      <ToggleIconButton
+        defaultIcon={MarkFavoriteIcon}
+        activeIcon={MarkedFavorite}
+        isActive={isFavorite}
+        onClick={handleFavorite}
+      />
     </div>
   );
 }

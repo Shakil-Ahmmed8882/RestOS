@@ -1,12 +1,14 @@
 // @ts-nocheck
+
 import { Form, DatePicker } from "antd";
-import { useTheme } from "next-themes";
 import { Controller } from "react-hook-form";
 
 // const PHInput = ({ type, name, label }: TInputProps) => {
 const RSDatePicker = ({ name, label }) => {
-  const { theme } = useTheme();
 
+  const onChange =  (date, dateString) => {
+    console.log(date, dateString);
+  };
   return (
     <Form.Item
       label={label}
@@ -18,8 +20,10 @@ const RSDatePicker = ({ name, label }) => {
         name={name}
         render={({ field }) => (
           <DatePicker
-          style={{width:"100%"}}
-          size="large"
+            onChange={onChange}
+            picker=""
+            style={{ width: "100%" }}
+            size="large"
             {...field}
             id={name}
           />

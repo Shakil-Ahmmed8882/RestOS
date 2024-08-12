@@ -8,8 +8,6 @@ import CommentsSidebar from "../components/CommentsSidebar";
 import { articles } from "../components/constant";
 import Header from "../features/Header";
 
-
-
 const commentsData = {
   1: [
     {
@@ -86,46 +84,48 @@ function BlogLayout() {
   );
 
   return (
-    <section className="max-w-6xl mx-auto px-4 py-8">
-      <Header/>
-      <div className="grid grid-cols-1 pt-20 md:grid-cols-[300px_1fr] gap-8 ">
-        <div className="sticky top-0 bg-[#f7f7f7] p-2 pb-0 h-screen">
-          <Sidebar
-            categories={categories}
-            onSearch={handleSearch}
-            onSelectCategory={handleCategorySelect}
+    <section className="py-8 -mt-20 pt-32">
+
+      <section className="max-w-6xl mx-auto sm:px-4  ">
+      <Header />
+        <div className="grid grid-cols-1 pt-8 md:pt-20 md:grid-cols-[300px_1fr] gap-8 ">
+          <div className=" z-40 sticky top-0 bg-[#fafafa]  p-2 pb-0 md:h-screen">
+            <Sidebar
+              categories={categories}
+              onSearch={handleSearch}
+              onSelectCategory={handleCategorySelect}
+            />
+          </div>
+          <div className="space-y-8">
+            {paginatedArticles.length > 0 ? (
+              paginatedArticles.map((article) => (
+                <ArticleCard
+                  key={article.id}
+                  article={article}
+                  user={user}
+                  onCommentClick={() => toggleCommentsSidebar(article.id)}
+                />
+              ))
+            ) : (
+              <div className="flex h-[0vh] w-full items-center justify-center">
+                no data....
+              </div>
+            )}
+            <Pagination
+              current={currentPage}
+              pageSize={pageSize}
+              total={filteredArticles.length}
+              onChange={handlePageChange}
+            />
+          </div>
+          <CommentsSidebar
+            isVisible={showComments}
+            articleId={selectedArticleId}
+            comments={commentsData[selectedArticleId] || []}
+            onClose={() => setShowComments(false)}
           />
         </div>
-        <div className="space-y-8">
-          {paginatedArticles.length > 0 ? (
-            paginatedArticles.map((article) => (
-              <ArticleCard
-                key={article.id}
-                article={article}
-                user={user}
-                onCommentClick={() => toggleCommentsSidebar(article.id)}
-              />
-            ))
-          ) : (
-            <div className="flex h-[0vh] w-full items-center justify-center">
-              no data....
-            </div>
-          )}
-          <Pagination
-            current={currentPage}
-            pageSize={pageSize}
-            total={filteredArticles.length}
-            onChange={handlePageChange}
-          />
-        </div>
-        <CommentsSidebar
-          isVisible={showComments}
-          articleId={selectedArticleId}
-          comments={commentsData[selectedArticleId] || []}
-          onClose={() => setShowComments(false)}
-          />
-          
-      </div>
+      </section>
     </section>
   );
 }

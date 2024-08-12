@@ -2,12 +2,13 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ActionButtons from './ActionButtons';
+import { CommentIcon } from '../../../../assets/icons/Icons';
 
 function ArticleCard({ article, user, onCommentClick }) {
   const navigate = useNavigate();
 
   return (
-    <article className="bg-background rounded-lg shadow-sm overflow-hidden">
+    <article className="bg-background rounded-lg shadow-sm overflow-hidden pb-6">
       <img
         src={article.banner}
         alt="Blog post cover image"
@@ -18,7 +19,7 @@ function ArticleCard({ article, user, onCommentClick }) {
         onClick={() => navigate(`/blog/${article.id}`)}
       />
       <div className="p-4 md:p-6">
-        <div className="flex items-center gap-2 mb-2">
+        <div className="flex items-center gap-2 mb-4">
           <span className="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
             <img
               className="aspect-square h-full w-full"
@@ -26,21 +27,20 @@ function ArticleCard({ article, user, onCommentClick }) {
               src={user?.photoURL || article.banner}
             />
           </span>
-          <div>
+          <div className='mt-4'>
             <Link className="font-medium hover:underline" to="#">
               {article.author}
             </Link>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm description ">
               Published on <time dateTime={article.date}>{article.date}</time>
             </p>
           </div>
         </div>
-        <h2 className="text-2xl font-bold mb-4 cursor-pointer" onClick={() => navigate(`/article/${article.id}`)}>
+        <h2 className="text-2xl font-bold my-2 sm:my-0 sm:mb-2  cursor-pointer" onClick={() => navigate(`/article/${article.id}`)}>
           {article.title}
         </h2>
         <div className="prose prose-lg text-muted-foreground">
-          <p className='text-[gray]'>
-            {/* Article summary or snippet */}
+          <p className='description'>
             This is a brief introduction to the article. Read more to dive deeper into the topic.
           </p>
         </div>
@@ -49,9 +49,7 @@ function ArticleCard({ article, user, onCommentClick }) {
       <div className="p-4 md:p-6 flex items-center justify-between">
         <ActionButtons articleId={article.id} />
         <button onClick={onCommentClick} className="inline-flex items-center">
-          <span className="sr-only">Comments</span>
-          {/* Add your comment icon here */}
-          Comments
+          <CommentIcon/>
         </button>
       </div>
     </article>

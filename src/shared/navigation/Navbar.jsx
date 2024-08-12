@@ -13,7 +13,6 @@ const Navbar = () => {
         {homePagePaths?.map((route) => {
           if (route && route.name && route.name !== "Sign In") {
             return (
-              <>
                 <NavLink
                   key={route.name}
                   className={`${route?.className}
@@ -22,7 +21,7 @@ const Navbar = () => {
                 >
                   {route.name}
                 </NavLink>
-              </>
+              
             );
           }
         })}

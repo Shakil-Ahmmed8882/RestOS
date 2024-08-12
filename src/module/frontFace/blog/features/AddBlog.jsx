@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import { Button, Row, Col, Input } from "antd";
-const { TextArea } = Input;
+import { Controller } from "react-hook-form";
 import React, { useEffect, useState } from "react";
 
 import RSModal from "../../../../shared/modals/RSModal";
@@ -10,6 +10,7 @@ import RSInput from "../../../../shared/forms/RSInput";
 import RSSelect from "../../../../shared/forms/RSSelect";
 import useStopScroll from "../../../../🔗Hook/useStopScroll";
 import RSDatePicker from "../../../../shared/forms/RSDatePicker";
+import RSTextArea from "../../../../shared/forms/RSTextArea";
 
 const AddBlog = () => {
   const onSubmit = async (data) => {
@@ -32,7 +33,7 @@ const AddBlog = () => {
   return (
     <>
       <div
-        className={`flex  mt-11 ${
+        className={`flex  ${
           open
             ? "-translate-x-80 invisible opacity-0"
             : "visible -translate-x-0 opacity-100"
@@ -40,7 +41,7 @@ const AddBlog = () => {
       >
         <Button
           onClick={() => setOpen(true)}
-          className="p-6 rounded-full  border-none hover:!bg-primaryColor/10 hover:!text-primaryColor text-[18px] hover:border-none  hover:shadow-primaryColor/10 hover:shadow-xl"
+          className=" md:p-6 rounded-full  border-none !bg-primaryColor/10 !text-primaryColor text-medium md:text-[18px]   shadow-primaryColor/10 shadow-xl"
         >
           Add Blog
         </Button>
@@ -58,7 +59,7 @@ const AddBlog = () => {
           <RSForm resolver={""} onSubmit={onSubmit}>
             {/* Food Name & Image URL */}
             <Row gutter={16}>
-            <Col span={24} md={{ span: 12 }}>
+              <Col span={24} md={{ span: 12 }}>
                 <RSInput
                   type="text"
                   name="title"
@@ -86,15 +87,16 @@ const AddBlog = () => {
                   options={genderOptions}
                 />
               </Col>
-              
+
               <Col span={24} md={{ span: 12 }}>
-                <RSDatePicker name={"blogDate"} label={"Date"}/>
+                <RSDatePicker name={"blogDate"} label={"Date"} />
               </Col>
-              
-            </Row>
+
+              {/* Description */}
               <Col span={24} md={{ span: 24 }}>
-                <TextArea placeholder="Write description" rows={4}/>
+              <RSTextArea name={"description"} placeholder={"place blog description.."}/>
               </Col>
+            </Row>
 
             <Button
               htmlType="submit"
