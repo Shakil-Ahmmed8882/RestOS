@@ -9,8 +9,8 @@ const RecipieCard = ({ card }) => {
 
   return (
     <div>
-      <section className="group">
-        <div className="flex gap-3 items-start pb-4 ">
+      <section className=" group">
+        <div className="flex gap-3 pb-4 ">
           <img
             className="size-8 rounded-full"
             src={card?.uploaderImage}
@@ -24,35 +24,36 @@ const RecipieCard = ({ card }) => {
             <p className="text-[#a1a1a1] mt-1 text-[14px]">{card?.role}</p>
           </article>
         </div>
-        <div className="group relative  rounded-lg pr-20 ">
+        <div className="group relative  rounded-lg ">
           <div className="container w-full h-40 overflow-hidden">
             <img
               src={card?.thumbnail}
               alt="Recipe Thumbnail"
-              className="   object-cover "
-              style={{ aspectRatio: "300 / 200", objectFit: "cover" }}
+              className="   object-cover w-full "
             />
-            <div className="absolute top-0 h-40 w-full   bg-gradient-to-t group-hover:translate-x-[40%] translate-x-0 from-[#ffffff] to-[#a0727200] transition-all duration-1000"></div>
+            {/* <div className="absolute top-0 h-40 w-full   bg-gradient-to-t  from-[#ffffff] to-[#ffffff00] transition-all duration-1000"></div> */}
           </div>
 
-          <div className="p-4 bg-white dark:bg-gray-950">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg tracking-tight">{card?.title}</h3>
-              <div className="flex gap-1 items-center hover:text-[black] transition-all duration-300 cursor-pointer text-[#828282]">
+          <div className="py-4 bg-white dark:bg-gray-950">
+            <div className="flex justify-between">
+              <h3 className="text-lg tracking-tight w-[80%] sm:w-auto">
+                {card?.title}
+              </h3>
+              <div className="flex gap-1 items-center  hover:text-[black] transition-all duration-300 cursor-pointer text-[#828282]">
                 <FaRegComments className="text-2xl" />
               </div>
               <div
                 onClick={() => setIsFavourite(!isFavourite)}
                 className={`
                         ${!isFavourite && "text-[black]"}
-                        hover:text-[black] transition-all duration-300 text-[#828282] cursor-pointer flex items-center gap-1`}
+                        hover:text-[black] transition-all duration-300 text-[#828282] items-center justify-center cursor-pointer sm:flex gap-1`}
               >
                 {isFavourite ? (
                   <GrFavorite />
                 ) : (
                   <MdOutlineFavorite className="text-deepPink" />
                 )}
-                <span className="text-sm">{card.daysAgo}</span>
+                <span className="text-sm hidden sm:block">{card.daysAgo}</span>
               </div>
             </div>
             <p className="mt-2 text-[#828282] text-gray-500 dark:text-gray-400 text-md">

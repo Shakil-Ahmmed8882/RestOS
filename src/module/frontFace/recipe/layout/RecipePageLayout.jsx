@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 
 import { recipieCardData } from "../data";
-import RecipieCard from "../components/Card";
+import RecipieCard from "../components/RecipeCard";
 import Container from "../../../../shared/layouts/Container";
 import AddBlog from "../../blog/features/AddBlog";
 import Header from "../features/Header";
@@ -42,14 +42,15 @@ const recipeData = [
 function RecipePageLayout() {
  
   return (
+    
     <Container>
-    <div className=" pt-20">
+    <div className=" py-20">
     <Header/>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+      <div className="grid md:grid-cols-2  justify-center gap-8 lg:gap-16">
         {recipieCardData.map((recipe) => (
           <div
             key={recipe.id}
-            className="pt-4  rounded shadow-sm cursor-pointer duration-500 relative"
+            className="pt-4 bg-[white]  md:p-5 shadow-sm  rounded cursor-pointer duration-500 relative"
           >
             <RecipieCard card={recipe}/>
           
@@ -65,6 +66,8 @@ function RecipePageLayout() {
     </div>
 
     </Container>
+
+    
   );
 }
 

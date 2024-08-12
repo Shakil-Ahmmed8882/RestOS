@@ -1,22 +1,21 @@
 import React from "react";
 import AddRecipe from "./AddRecipe";
 
-const Header= () => {
+const Header = () => {
   return (
-    <article className=" md:flex justify-between  pt-11 pb-2 ">
-      <div className="pb-11">
-        <div className="flex items-start justify-between">
+    <article className="pt-11 pb-8 ">
+      <div className="flex justify-between w-full">
         <h1>Recipe</h1>
-        </div>
-        <article className=" sm:w-[80%] lg:w-[60%]">
-        <p className="description pt-8 md:pt-4">
-          This is your creativity vault. Let's let world know what's on your mind. The world needs your innovation. 
-        </p>
-        </article>
+        <AddRecipe />
       </div>
-        <AddRecipe/>
+      <article className=" sm:w-[80%] lg:w-[60%]">
+        <p className="description pt-10 md:pt-6">
+          This is your creativity vault. Let's let world know what's on your
+          mind. The world needs your innovation.
+        </p>
+      </article>
     </article>
   );
 };
 
-export default Header; 
+export default Header;
