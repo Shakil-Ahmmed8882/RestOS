@@ -10,13 +10,13 @@ const WhyRestOS = () => {
   return (
     <div className="bg-white py-16">
       <div className="max-w-7xl mx-auto text-center">
-        <h2 className="text-3xl font-extrabold text-gray-900 mb-8">Why RestOS?</h2>
+        <h2 className="secondaryTitle">Why RestOS?</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {reasons.map((reason) => (
             <div key={reason.id} className="flex flex-col items-center p-6 bg-gray-100 rounded-lg">
               <img src={reason.imgSrc} alt={reason.altText} className="w-16 h-16 mb-4" />
               <h3 className="text-xl font-semibold text-gray-800 mb-2">{reason.title}</h3>
-              <p className="text-gray-600 text-center">{reason.description}</p>
+              <p className=" description leading-7 text-[17px] text-center">{reason.description}</p>
             </div>
           ))}
         </div>

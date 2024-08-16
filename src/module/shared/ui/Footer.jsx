@@ -11,7 +11,7 @@ const Footer = () => {
   return (
     <div
       className={` py-20 relative bottom-0  ${
-        theme == "light" ? "bg-[#f1ededc5]" : "bg-[#000000]  text-[white]"
+        theme == "light" ? "bg-[#F7F7F7] " : "bg-[#000000]  text-[white]"
       }`}
     >
       <footer className="footer pl-4 flex-wrap flex md:justify-between max-w-6xl mx-auto">

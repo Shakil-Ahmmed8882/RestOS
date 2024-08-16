@@ -11,7 +11,7 @@ const Banner = () => {
   const { theme } = useTheme();
 
   return (
-    <Container>
+    
       <div className=" min-h-[70vh] w-full flex justify-between items-center">
         <>
           <section className="w-full py-12 md:py-11 lg:py-16">
@@ -70,7 +70,7 @@ const Banner = () => {
           </section>
         </>
       </div>
-    </Container>
+    
   );
 };
 

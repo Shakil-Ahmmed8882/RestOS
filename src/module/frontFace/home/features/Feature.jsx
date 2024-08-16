@@ -20,7 +20,6 @@ const Feature = () => {
         
         <div className="w-full  lg:w-[45%]">
           <DemoFood />
-
         </div>
 
         <div className="flex-1">
