@@ -9,6 +9,7 @@ import ConfirmModal from "../../../../shared/modals/ConfirmModal";
 import { showErrorModal, showInfoModal } from "../../../../shared/modals";
 import RSDropdown from "../../../../shared/ui/RSDropdown";
 import Feature from "../features/Feature";
+import WhyRestOS from "../features/WhyRestOS";
 
 
 const HomeLayout = () => {
@@ -18,6 +19,7 @@ const HomeLayout = () => {
     <div className={`${theme == "light" ? "bg-[#ffffff]" : "bg-[black]"}`}>
         <title>RestOs || Home</title>
       <Banner/>
+      <WhyRestOS/>
       <Feature/>
         {/* <TopSellingFood/> */}
       {/* <MealsCategory></MealsCategory> */}

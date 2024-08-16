@@ -10,34 +10,6 @@ import Header from "../features/Header";
 
 
 // Sample static data
-const recipeData = [
-  {
-    id: 1,
-    title: "Creamy Garlic Shrimp Pasta",
-    description:
-      "A delicious pasta recipe with creamy garlic sauce and shrimp.",
-    image: "https://via.placeholder.com/400x200",
-    createdAt: "2023-05-23T10:00:00Z",
-    isFavorite: false,
-  },
-  {
-    id: 2,
-    title: "Classic Margherita Pizza",
-    description:
-      "An easy recipe for a classic Margherita pizza with fresh ingredients.",
-    image: "https://via.placeholder.com/400x200",
-    createdAt: "2023-05-22T09:00:00Z",
-    isFavorite: false,
-  },
-  {
-    id: 3,
-    title: "Spicy Chicken Tacos",
-    description: "A quick and simple recipe for spicy chicken tacos.",
-    image: "https://via.placeholder.com/400x200",
-    createdAt: "2023-05-21T08:00:00Z",
-    isFavorite: false,
-  },
-];
 
 function RecipePageLayout() {
  
