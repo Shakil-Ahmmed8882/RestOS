@@ -12,7 +12,7 @@ const Banner = () => {
 
   return (
     
-      <div className=" min-h-[70vh] w-full flex justify-between items-center">
+      <div className="  w-full flex justify-between items-center">
         <>
           <section className="w-full py-12 md:py-11 lg:py-16">
             <div className="lg:pt-0 flex flex-col-reverse lg:flex-row justify-center">

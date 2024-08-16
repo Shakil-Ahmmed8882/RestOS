@@ -23,7 +23,7 @@ const TopCategories = () => {
 
   return (
 
-    <section className="topCategory-section py-8 bg-[#f8f7f7]">
+    <section className="topCategory-section py-8 bg-[#f8f8f8]">
     <Container>
       <h2 className="secondaryTitle text-center">Top Categories</h2>
       <div id="category-container" className="flex md:justify-start justify-center  items-center flex-wrap">
