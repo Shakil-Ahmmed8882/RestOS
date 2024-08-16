@@ -11,6 +11,7 @@ import {
   SignUpLayout,
   Page404,
 } from ".";
+import RecipePage from "../../X";
 
 
 
@@ -47,6 +48,11 @@ const router = createBrowserRouter([
   {
     path: "*",
     element: <Page404 />,
+  },
+  // Catch-all route for 404
+  {
+    path: "x",
+    element: <RecipePage />,
   },
 ]);
 

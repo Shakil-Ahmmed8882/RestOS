@@ -23,6 +23,7 @@ const TitleAndDescription = () => {
         </span>
       </h1>
 
+
       <div
         className={`${
           theme == "dark" ? "text-[#dadada]" : "text-[#828282]"
@@ -32,9 +33,7 @@ const TitleAndDescription = () => {
         <p className="flex items-center gap-1 "> <SingleCheckBadge /> Superfresh</p>
         <p className="flex items-center gap-1 "> <SingleCheckBadge /> 100% Organic</p>
       </div>
-
-    
-      
+       
     </>
   );
 };
