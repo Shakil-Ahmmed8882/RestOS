@@ -13,6 +13,7 @@ import WhyRestOS from "../features/WhyRestOS";
 import TopCategories from "../features/topCategories/TopCategories";
 import Container from "../../../../shared/layouts/Container";
 import PopularDishes from "../features/popularDishes/PopularDishes";
+import SpecialDinnerMenus from "../features/specialDinnerMenu/SpecialDinnerMenus";
 
 
 const HomeLayout = () => {
@@ -24,10 +25,11 @@ const HomeLayout = () => {
         <title>RestOs || Home</title>
       <Banner/>
     </Container>
+      <SpecialDinnerMenus/>
       <PopularDishes/>
       <TopCategories/>
       <WhyRestOS/>
-      {/* <Feature/> */}
+      <Feature/>
         {/* <TopSellingFood/> */}
       {/* <MealsCategory></MealsCategory> */}
     </div>
