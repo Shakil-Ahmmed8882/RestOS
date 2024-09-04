@@ -50,7 +50,7 @@ const Testimonial = () => {
   return (
     <Container>
       <h2 className="text-center">What pople say about us</h2>
-      <div className="flex justify-center items-center gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  justify-center items-center gap-8">
         {testimonials.map((testimonial) => (
           <TestimonialCard key={testimonial.id} {...testimonial} />
         ))}

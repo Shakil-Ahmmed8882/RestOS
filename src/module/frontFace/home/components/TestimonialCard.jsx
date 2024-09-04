@@ -10,18 +10,18 @@ const TestimonialCard = ({ name, role, feedback, rating, image, handle }) => {
       <div className="flex items-center mb-4">
         
           <div className="flex items-center gap-2 py-4">
-          <FillStar className="text-[27px] text-primaryColor" />
-          <FillStar className="text-[27px] text-primaryColor" />
-          <FillStar className="text-[27px] text-primaryColor" />
-          <FillStar className="text-[27px] text-primaryColor" />
-          <FillStar className="text-[27px] text-[#E5E5E5]" />
+          <FillStar className="text-[20px] md:text-[27px] text-primaryColor" />
+          <FillStar className="text-[20px] md:text-[27px] text-primaryColor" />
+          <FillStar className="text-[20px] md:text-[27px] text-primaryColor" />
+          <FillStar className="text-[20px] md:text-[27px] text-primaryColor" />
+          <FillStar className="text-[20px] md:text-[27px] text-[#E5E5E5]" />
           
         </div>
       </div>
 
       {/* Feedback */}
-      <p className="text-lg font-semibold mb-2">{feedback.title}</p>
-      <p className="mb-4 description text-[17px]">{feedback.text}</p>
+      <p className="text-2xl font-semibold mb-2">{feedback.title}</p>
+      <p className="mb-4 description md:text-[17px]">{feedback.text}</p>
 
       {/* User Info */}
       <div className="flex items-center">
