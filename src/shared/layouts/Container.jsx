@@ -2,7 +2,7 @@
 
 import React from "react";
 
-const Container = ({ className = '', children }) => {
+const Container = ({ className = 'pb-8', children }) => {
   return (
     <section className={`${className} px-3 py-8 max-w-6xl mx-auto sm:px-4  `}>
       {children}

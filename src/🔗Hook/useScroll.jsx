@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { useRef } from "react";
+import { animate } from "framer-motion";
 
 const useScroll = (scrollAmount = 80) => {
   const scrollRef = useRef(null);
@@ -9,17 +10,15 @@ const useScroll = (scrollAmount = 80) => {
       const { scrollTop, clientHeight, scrollHeight } = scrollRef.current;
       const maxScrollTop = scrollHeight - clientHeight;
 
+      let targetScrollTop = scrollTop;
+
       if (direction === "up") {
-        scrollRef.current.scrollTo({
-          top: Math.max(scrollTop - scrollAmount, 0),
-          behavior: "smooth",
-        });
+        targetScrollTop = Math.max(scrollTop - scrollAmount, 0);
       } else if (direction === "down") {
-        scrollRef.current.scrollTo({
-          top: Math.min(scrollTop + scrollAmount, maxScrollTop),
-          behavior: "smooth",
-        });
+        targetScrollTop = Math.min(scrollTop + scrollAmount, maxScrollTop);
       }
+
+      animate(scrollRef.current, { scrollTop: targetScrollTop }, { type: "spring", damping: 25, stiffness: 120 });
     }
   };
 

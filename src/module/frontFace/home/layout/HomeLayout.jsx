@@ -3,17 +3,13 @@ import { useTheme } from "next-themes";
 
 import React from "react";
 import Banner from "../features/Banner";
-import TopSellingFood from "../features/TopSellingFood";
-import MealsCategory from "../features/MealsCategory";
-import ConfirmModal from "../../../../shared/modals/ConfirmModal";
-import { showErrorModal, showInfoModal } from "../../../../shared/modals";
-import RSDropdown from "../../../../shared/ui/RSDropdown";
 import Feature from "../features/Feature";
 import WhyRestOS from "../features/WhyRestOS";
 import TopCategories from "../features/topCategories/TopCategories";
 import Container from "../../../../shared/layouts/Container";
 import PopularDishes from "../features/popularDishes/PopularDishes";
 import SpecialDinnerMenus from "../features/specialDinnerMenu/SpecialDinnerMenus";
+import Testimonial from "../features/testimonials/Testimonials";
 
 
 const HomeLayout = () => {
@@ -24,12 +20,13 @@ const HomeLayout = () => {
     <Container>
         <title>RestOs || Home</title>
       <Banner/>
+      <Feature/>
     </Container>
       <SpecialDinnerMenus/>
       <PopularDishes/>
       <TopCategories/>
       <WhyRestOS/>
-      <Feature/>
+      <Testimonial/>
         {/* <TopSellingFood/> */}
       {/* <MealsCategory></MealsCategory> */}
     </div>
