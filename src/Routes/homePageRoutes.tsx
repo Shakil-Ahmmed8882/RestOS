@@ -8,7 +8,8 @@ import RecipePageLayout from "../module/frontFace/recipe/layout/RecipePageLayout
 import RecipeDetailPage from "../module/frontFace/recipe/features/RecipeDetailsPage";
 import Private from "../shared/ui/Private";
 import FoodDetails from "../module/frontFace/foodDetails/FoodsDetail";
-
+import AllCategories from "../module/frontFace/all-categories/AllCategories";
+import AllTrendings from "../module/frontFace/all-trendings/AllTrendings";
 
 export const homePagePaths = [
   {
@@ -58,6 +59,18 @@ export const homePagePaths = [
   },
   {
     path: "recipe/:id",
-    element: <RecipeDetailPage />
+    element: <RecipeDetailPage />,
+  },
+
+  // --------------- common routes ----------------
+  {
+    name: "",
+    path: "/all-categories",
+    element: <AllCategories />,
+  },
+  {
+    name: "",
+    path: "/all-trendings",
+    element: <AllTrendings />,
   },
 ];

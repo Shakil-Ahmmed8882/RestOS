@@ -12,8 +12,7 @@ import {
   Page404,
 } from ".";
 import RecipePage from "../../X";
-
-
+import AllCategories from "../module/frontFace/all-categories/AllCategories";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +35,7 @@ const router = createBrowserRouter([
     children: routeGenerator(adminPaths),
   },
 
+  // ----------------------------------------------
   {
     path: "/sign-in",
     element: <SignInLayout />,
@@ -49,7 +49,7 @@ const router = createBrowserRouter([
     path: "*",
     element: <Page404 />,
   },
-  // Catch-all route for 404
+  // test route
   {
     path: "x",
     element: <RecipePage />,

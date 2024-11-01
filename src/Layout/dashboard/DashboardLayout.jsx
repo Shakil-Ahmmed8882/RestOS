@@ -3,6 +3,7 @@ import Sidebar from "./Sidebar/Sidebar";
 
 import React from "react";
 import DashboardNavbar from "../../module/dashboard/shared/navabar/DashboardNavbar";
+import Footer from "../../module/shared/ui/Footer";
 
 const DashboardLayout = () => {
   // const NotProfilePage = useLocation().pathname !== '/dashboard/user/profile'
@@ -15,6 +16,7 @@ const DashboardLayout = () => {
         <div className="p-3">
           <DashboardNavbar/>
           <Outlet />
+          <Footer/>
         </div>
       </div>
     </div>

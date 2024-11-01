@@ -29,7 +29,6 @@ export const SidebarContents = () => {
         absolute inset-y-0
         transition-all
         transform md:translate-x-0
-        
         ease-in-out`}
       >
         <div className="w-full flex justify-between  gap-3 items-end px-4 py-2">
