@@ -23,7 +23,7 @@ export const CategoryList: React.FC<foodListProps> = ({
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-3xl italic font-bold text-[#a6a6a6]">{title}</h2>
         {onViewAll && (
-          <button onClick={onViewAll} className="font-medium text-[#fd38ab]">
+          <button onClick={onViewAll} className=" bg-[#e0ffe4] px-3 p-1 rounded-full text-primaryColor">
             View all
           </button>
         )}

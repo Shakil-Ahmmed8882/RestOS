@@ -18,7 +18,7 @@ const FoodsLayout = () => {
 
   const [itemsPerPage, setItemsPerPage] = useState(9);
   const [activePage, setActivePage] = useState(0);
-  const [searchResult, setSearchResult] = useState([] || [...foodData?.data]);
+  const [searchResult, setSearchResult] = useState(foodData?.data || []);
   const [isFieldEmpty, setIsFieldEmpty] = useState(true);
 
   useEffect(() => {
@@ -29,8 +29,6 @@ const FoodsLayout = () => {
 
   if (isLoading) return <FoodPageSpinner />;
 
-  
-  console.log(foodData)
 
   return (
     <div className={`pb-9 ${themeColor} bg-[#f6f6f6]`}>

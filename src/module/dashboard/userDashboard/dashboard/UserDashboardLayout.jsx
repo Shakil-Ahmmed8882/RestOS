@@ -1,6 +1,6 @@
 import Banner from "./components/Banner";
 import React from "react";
-import PopularDishes from "./features/PopularDishes";
+import PopularDishes from "./features/RestaurantSidebar";
 import PurchaseChart from "./components/charts/PurchaseChart";
 import OrderChart from "./components/charts/OrderChart";
 import { TrendingFoods } from "./components/Pizza";
@@ -8,39 +8,45 @@ import InitialAnimateContainer from "../../../../shared/animations/InitialAnimat
 import { CategoryList } from "./components/categories/CategoryList";
 import { categories, trendingFoods } from "../../../../demo-data/category";
 import { useGetAllOrderSummaryQuery } from "../../../../redux/features/order/orderApi";
+import RestaurantSidebar from "./features/RestaurantSidebar";
 
 const UserDashboardLayout = () => {
   const { data, isLoading } = useGetAllOrderSummaryQuery(undefined);
 
-  // Initialize the summary with default values
-  let orderSummary = {
-    totalOrderCount: 0,
-    totalOrderPrice: 0,
-    totalPurchaseCount: 0,
-    totalPurchasePrice: 0,
-  };
+  
 
-  // Check if data is loaded and available
-  if (!isLoading && data) {
-    orderSummary = data.data;
-  }
+  // Initialize the summary with default values
+let orderSummary = {
+  totalOrderCount: 0,
+  totalOrderPrice: 0,
+  totalPurchaseCount: 0,
+  totalPurchasePrice: 0,
+};
+
+// Check if data is loaded and available
+if (!isLoading && data) {
+  orderSummary = data.data;
+}
+
+
+
 
   return (
     <InitialAnimateContainer>
       <div className="relative">
         <Banner />
         {/* chart view */}
-
-        <div className=" mt-6 md:grid  md:grid-cols-2 lg:grid-cols-8 gap-3 w-full">
-          <div className="col-span-6 space-y-2">
+        
+        <div className=" mt-6 md:grid  md:grid-cols-2 lg:grid-cols-12 gap-3 w-full">
+          <div className="col-span-8 space-y-2">
             <div className="grid lg:grid-cols-6 gap-6 ">
-              <OrderChart
-                totalOrderPrice={orderSummary.totalOrderPrice}
-                totalOrderCount={orderSummary.totalOrderCount}
+            <OrderChart
+                totalOrderPrice={orderSummary.totalOrderPrice} 
+                totalOrderCount={orderSummary.totalOrderCount} 
               />
               <PurchaseChart
-                totalPurchaseCount={orderSummary?.totalPurchaseCount}
-                totalPurchasePrice={orderSummary?.totalPurchasePrice}
+              totalPurchaseCount= {orderSummary?.totalPurchaseCount}
+              totalPurchasePrice= {orderSummary?.totalPurchasePrice}
               />
             </div>
             <CategoryList
@@ -56,7 +62,9 @@ const UserDashboardLayout = () => {
             />
             ;
           </div>
-          <PopularDishes />
+          <div className="col-span-4 ">
+          <RestaurantSidebar />
+          </div>
         </div>
       </div>
     </InitialAnimateContainer>
@@ -64,3 +72,4 @@ const UserDashboardLayout = () => {
 };
 
 export default UserDashboardLayout;
+
