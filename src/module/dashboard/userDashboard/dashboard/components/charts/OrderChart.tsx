@@ -5,10 +5,9 @@ import { TotalPriceOfOrderedFood } from "../../../../../../api/utils";
 import { useAuth } from "../../../../../../Utils/useAuthHelper";
 import React from "react";
 
-const OrderChart = () => {
+const OrderChart = ({totalOrderPrice, totalOrderCount }) => {
     const orderCountChartRef = useRef(null)
     const {user} = useAuth()
-    const { data, totalPrice, isLoading, refetch } = TotalPriceOfOrderedFood(user)
 
 
     
@@ -21,7 +20,7 @@ const OrderChart = () => {
                 {/* Purchase count chart */}
                 <div className="bg-[white] p-3">
                     <span className="text-[#b5b5b5]">Order</span>
-                    <h1 className=" text-3xl">${totalPrice || "000.00"}</h1>
+                    <h1 className=" text-3xl">${totalOrderPrice || "000.00"}</h1>
                     <div className="bg-[white]" ref={orderCountChartRef}></div>
                 </div>
             </div>

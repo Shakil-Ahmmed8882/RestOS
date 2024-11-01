@@ -7,7 +7,7 @@ const DashboardNavbar = () => {
     return (
         <>
 
-            <div className="hidden md:flex justify-between p-2 rounded-lg shadow-sm bg-gradient-to-r from-[#ffffff] to-[#fdfffe] mb-8 gap-6 items-center">
+            <div className="hidden md:flex justify-between p-2 rounded-lg shadow-sm bg-gradient-to-r from-[#ffffff] to-[#fdfffe] mb-5 gap-6 items-center">
                 <h1 className="font-bold text-2xl">Dashboard</h1>
                 <Search />
                 <UserAndNotification/>

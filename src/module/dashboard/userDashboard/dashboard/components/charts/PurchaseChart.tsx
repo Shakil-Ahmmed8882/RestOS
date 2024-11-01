@@ -2,9 +2,8 @@ import { useRef } from "react";
 import Chart from "./Chart";
 import React from "react";
 
-const PurchaseChart = () => {
+const PurchaseChart = ({totalPurchaseCount, totalPurchasePrice}) => {
     const purchaseCountChartRef = useRef(null)
-
 
     return (
         <div className="lg:col-span-3 bg-[white] p-3 rounded-b-lg">
@@ -14,7 +13,7 @@ const PurchaseChart = () => {
                 {/* Purchase count chart */}
                 <div className="bg-[white] p-3">
                     <span className="text-[#b5b5b5]">Purchases</span>
-                    <h1 className=" text-3xl">$2389.00</h1>
+                    <h1 className=" text-3xl">${totalPurchasePrice.toString() ||"2389.00"}</h1>
                     <div className="bg-[white]" ref={purchaseCountChartRef}></div>
                 </div>
             </div>

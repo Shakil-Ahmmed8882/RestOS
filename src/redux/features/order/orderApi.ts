@@ -28,6 +28,25 @@ const orderApi = baseApi.injectEndpoints({
       providesTags: ["order-data"],
     }),
 
+    getAllOrderSummary: builder.query({
+      // send all of the args here
+      query: (args) => {
+        const params = new URLSearchParams();
+
+        if (args) {
+          args.forEach((item: { name: string; value: string }) => {
+            params.append(item.name, item.value as string);
+          });
+        }
+        return {
+          url: "/orders/summary/shakilahmmed8882@gmail.com",
+          method: "GET",
+          params: params,
+        };
+      },
+      providesTags: ["order-data"],
+    }),
+
     createOrder: builder.mutation({
       query: (data) => {
         return {
@@ -54,5 +73,6 @@ export const {
   useGetAllOrdersQuery,
   useCreateOrderMutation,
   useDeleteOrderMutation,
+  useGetAllOrderSummaryQuery
 } = orderApi;
 export default orderApi;

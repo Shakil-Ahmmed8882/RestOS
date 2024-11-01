@@ -11,11 +11,6 @@ import {
 import { useGetAllFoodsQuery } from "../../../redux/features/food/food.api";
 
 const FoodsLayout = () => {
-  // const { data: count } = useGetData({
-  //   endpoint: "total-food-count",
-  //   key: ["items-count"],
-  // });
-
   const { theme } = useTheme();
   const themeColor = theme === "dark" ? "dark-bg" : "";
 
@@ -33,6 +28,9 @@ const FoodsLayout = () => {
   }, [foodData?.data]);
 
   if (isLoading) return <FoodPageSpinner />;
+
+  
+  console.log(foodData)
 
   return (
     <div className={`pb-9 ${themeColor} bg-[#f6f6f6]`}>
