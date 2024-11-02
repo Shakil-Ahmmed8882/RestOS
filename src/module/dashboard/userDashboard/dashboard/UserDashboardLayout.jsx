@@ -1,6 +1,5 @@
 import Banner from "./components/Banner";
 import React from "react";
-import PopularDishes from "./features/RestaurantSidebar";
 import PurchaseChart from "./components/charts/PurchaseChart";
 import OrderChart from "./components/charts/OrderChart";
 import { TrendingFoods } from "./components/Pizza";
@@ -27,9 +26,6 @@ let orderSummary = {
 if (!isLoading && data) {
   orderSummary = data.data;
 }
-
-
-
 
   return (
     <InitialAnimateContainer>
@@ -62,7 +58,7 @@ if (!isLoading && data) {
             />
             ;
           </div>
-          <div className="col-span-4 ">
+          <div className="col-span-4 relative z-50 bg-[#fff] ">
           <RestaurantSidebar />
           </div>
         </div>

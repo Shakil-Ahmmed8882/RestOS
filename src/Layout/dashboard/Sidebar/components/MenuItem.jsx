@@ -9,15 +9,15 @@ const MenuItem = ({ label, address, icon: Icon }) => {
     <NavLink
       to={address}
       end
-      className={`flex items-center px-4 py-2  my-5 transition-colors duration-300 transform border-b border-b-[#d2d2d2] hover:bg-[#efefef] ${
-        isActive ? "font-bold text-black" : "text-gray-700"
+      className={`flex items-center px-4 py-2  my-5 transition-colors duration-300 transform  hover:bg-[#efefef] ${
+        isActive ? " bg-[#f8fff9] shadow-xl shadow-[#f7fef8] " : "text-[#8a8a8a]"
       }`}
     >
       <li className="flex items-center px-4 py-2">
         {Icon ? (
           <Icon
             className={`font-bold ${
-              isActive ? "font-bold text-black" : "text-gray-400"
+              isActive ? "font-bold text-primaryColor" : "text-gray-400"
             } text-[21px]`}
           />
         ) : (

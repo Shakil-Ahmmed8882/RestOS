@@ -10,10 +10,14 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../Config/🔥 firebase.config";
+import { AuthContextType } from "./type";
+
+// types.ts (or at the top of your file)
 
 const googleProvider = new GoogleAuthProvider();
 
-export const AuthContext = createContext(null);
+export const AuthContext = createContext<any| null>(null);
+
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);

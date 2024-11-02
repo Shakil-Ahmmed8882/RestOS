@@ -10,9 +10,10 @@ import {
   SignInLayout,
   SignUpLayout,
   Page404,
+  commonRoutes,
 } from ".";
 import RecipePage from "../../X";
-import AllCategories from "../module/frontFace/all-categories/AllCategories";
+
 
 const router = createBrowserRouter([
   {
@@ -35,7 +36,15 @@ const router = createBrowserRouter([
     children: routeGenerator(adminPaths),
   },
 
-  // ----------------------------------------------
+  // ------------------ common dashboard routes ----------------------------
+
+  {
+    path: "/dashboard/common",
+    element: <DashboardLayout />,
+    children: routeGenerator(commonRoutes),
+  },
+
+
   {
     path: "/sign-in",
     element: <SignInLayout />,

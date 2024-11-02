@@ -15,7 +15,7 @@ const Navbar = () => {
               <NavLink
                 key={route.name}
                 className={({ isActive }) =>
-                  `${route?.className} p-2 ${
+                  `p-2 ${
                     isActive ? 'border-b-2 border-primaryColor text-primaryColor' : ''
                   }`
                 }

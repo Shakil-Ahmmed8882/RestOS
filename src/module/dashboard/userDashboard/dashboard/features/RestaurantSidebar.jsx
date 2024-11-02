@@ -1,5 +1,5 @@
 import React from "react";
-import { FaHamburger, FaPizzaSlice, FaMapMarkerAlt, FaStar } from "react-icons/fa";
+import {  FaMapMarkerAlt, FaStar } from "react-icons/fa";
 import { BsFillCircleFill } from "react-icons/bs";
 import { useAuth } from "../../../../../Utils/useAuthHelper";
 import { UserAvater } from "../../../../../assets/icons/Icons";
@@ -32,7 +32,7 @@ export default function RestaurantSidebar() {
 
 
   return (
-    <div className="p-4 w-full rounded-lg shadow-lg space-y-6">
+    <div className="p-4 w-full rounded-lg shadow-sm space-y-6">
       {/* User Profile Section */}
       <div className="flex items-center space-x-3">
         <UserAvater />

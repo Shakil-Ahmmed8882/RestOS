@@ -18,7 +18,7 @@ import { useAuth } from "../../../Utils/useAuthHelper";
 import toast from "react-hot-toast";
 import { useGetData } from "../../../🔗Hook/httpRequests";
 import React from "react";
-import Logo from "../../../shared/ui/Logo";
+import Logo from "../../ui/Logo";
 
 export function NavBar() {
   const { user, logOut } = useAuth();
@@ -33,7 +33,7 @@ export function NavBar() {
     }
   }, [user]);
 
-  const handleSignOut = () => {
+   const handleSignOut = () => {
     logOut()
       .then(() => {
         toast.success("Signed out");
