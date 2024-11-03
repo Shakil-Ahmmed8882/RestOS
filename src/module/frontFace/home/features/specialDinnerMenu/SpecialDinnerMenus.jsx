@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import greenFood2 from "../../../../../assets/img/home/greenFood2.png";
 import pizza from "../../../../../assets/img/home/top-categories/Pizza.png";
 import burgers from "../../../../../assets/img/home/top-categories/Burgers.png";
-import seafood from "../../../../../assets/img/home/top-categories/Seafood.png";
-import grill from "../../../../../assets/img/home/top-categories/Grill.png";
 import Vegetarian from "../../../../../assets/img/home/top-categories/Vegetarian.png";
 import Container from "../../../../../shared/layouts/Container";
 import useScroll from "../../../../../🔗Hook/useScroll";
