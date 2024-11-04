@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { SearchIcon } from "../../../../assets/icons/Icons";
 import { blogCategories } from "../blog.constants";
 import { Input } from "@nextui-org/react";
+import { getCategoryFromUrl } from "../layout/BlogLayout";
 
 function Sidebar({ onSearch}) {
   const [focus, setFocus] = useState(false);
@@ -57,7 +58,7 @@ function Sidebar({ onSearch}) {
           {blogCategories.map((category) => (
             <div
               key={category}
-              className="block cursor-pointer hover:bg-[#eeeeee] p-4 transition500 text-sm font-medium text-muted-foreground hover:text-foreground"
+              className={`${getCategoryFromUrl() === category?' border-l-2 border-primaryColor border-0 text-primaryColor':"border-transparent"}  block cursor-pointer hover:bg-[#f6fff7] hover:text-primaryColor p-4 transition500 text-sm font-medium text-muted-foreground  `}
               onClick={() => handleDropdownCategory(category)}
             >
               {category}

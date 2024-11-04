@@ -26,7 +26,7 @@ const Header = () => {
     if (validateEmail(email)) {
       console.log("Email:", email);
       setIsModalVisible(true);
-      
+
     } else {
       setEmailError(true);
     }

@@ -30,6 +30,14 @@ const commentsData = {
   // ...other comments
 };
 
+
+// extract category
+export const getCategoryFromUrl = () => {
+  const queryParams = new URLSearchParams(location.search);
+  return queryParams.get("category");
+};
+
+
 function BlogLayout() {
   const { user } = useAuth();
   const [currentPage, setCurrentPage] = useState(1);
@@ -52,10 +60,6 @@ function BlogLayout() {
 
   // GET CATEGORY
   const location = useLocation();
-  const getCategoryFromUrl = () => {
-    const queryParams = new URLSearchParams(location.search);
-    return queryParams.get("category");
-  };
   const category = getCategoryFromUrl();
   
   
@@ -75,7 +79,7 @@ function BlogLayout() {
       <Container>
         <Header />
         <div className="grid grid-cols-1 pt-8 md:pt-20 md:grid-cols-[300px_1fr] gap-8 ">
-          <div className="z-40 sticky top-0 bg-[#fafafa] p-2 pb-0 md:h-screen">
+          <div className="z-40 sticky top-0  p-2 pb-0 md:h-screen">
             <Sidebar onSearch={setSearchTerm} />
           </div>
           {
