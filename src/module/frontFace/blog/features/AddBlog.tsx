@@ -15,13 +15,13 @@ import RSInput from "../../../../shared/forms/RSInput";
 import RSSelect from "../../../../shared/forms/RSSelect";
 import RSTextarea from "../../../../shared/forms/RSTextArea";
 import generateDescription from "../../../../services/ImageDescription";
-import Ingredient from "../components/Ingredient";
+import Instructions from "../components/Ingredient";
+import { categoryOptions, tagOptions } from "../blog.constants";
 
 export default function AddBlog() {
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
   const [imagePreviews, setImagePreviews] = useState<string[] | []>([]);
   const [isLoading, setIsLoading] = useState(false);
-
 
   const methods = useForm();
 
@@ -29,23 +29,53 @@ export default function AddBlog() {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "ingredients",
+    name: "instructions",
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     const formData = new FormData();
 
-    const validIngredients = data.ingredients.filter(
+    const validInstructions = data.instructions.filter(
       (ingredient) => ingredient.trim() !== ""
     );
 
-    formData.append("ingredients", JSON.stringify(validIngredients));
+  
+    const blogData = {
+      ...data,
+      instructions: validInstructions,
+      author: {
+        userId: "66aa22f43a81bd0fd69b85d7",
+        name: "Chef Mario",
+      },
+    };
 
+
+  // appending formdata
     for (let image of imageFiles) {
-      formData.append("blogImages", image);
+      formData.append("file", image);
     }
+    formData.append("data", JSON.stringify(blogData));
 
+    
+    console.log(blogData)
     // handleCreatePost(formData);
+
+
+    /*
+
+    // {
+//   "title": "The Art of Perfecting Pasta",
+//   "category": "Recipes",
+//   "description": "A detailed guide on making perfect pasta at home, with tips from expert chefs.",
+//   "instructions": ["step 1","step2"],
+//   "author": {
+//     "userId": "66aa22f43a81bd0fd69b85d7",
+//     "name": "Chef Mario"
+//   },
+//   "tags": ["pasta", "Italian", "home-cooking"]
+// }
+
+    */
   };
 
   const handleFieldAppend = () => {
@@ -78,8 +108,6 @@ export default function AddBlog() {
 
       methods.setValue("description", response);
       setIsLoading(false);
-
-      console.log(response);
     } catch (error: any) {
       console.error(error);
       setIsLoading(false);
@@ -89,17 +117,6 @@ export default function AddBlog() {
   // if (!createPostPending && isSuccess) {
   //   router.push("/");
   // }
-
-  
-
-
-  // add the category array in the constant file
-  // make reusable funciton in utils to create this options with value and label
-  const categories = ["web development", "Design", "other"];
-  const categoryOptions = categories.map((item) => ({
-    value: item,
-    label: item,
-  }));
 
   const [open, setOpen] = useState(false);
 
@@ -133,7 +150,7 @@ export default function AddBlog() {
               className="grid lg:grid-cols-3 gap-3"
             >
               <div className="lg:col-span-2">
-                <div className="flex flex-wrap gap-2 py-2">
+                <div className="md:flex space-y-3 md:space-y-0 flex-wrap gap-2 py-2">
                   <div className="min-w-fit flex-1">
                     <RSInput label="Title" name="title" />
                   </div>
@@ -147,7 +164,10 @@ export default function AddBlog() {
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-2 py-2">
+                <div className="space-y-3 md:space-y-0 md:flex flex-wrap gap-2 py-2">
+                  <div className="min-w-fit flex-1">
+                    <RSSelect label="Tags" name="tags" options={tagOptions} />
+                  </div>
                   <div className="min-w-fit flex-1">
                     <label
                       className="flex h-14 w-full cursor-pointer items-center justify-center rounded-xl border-2 border-default-200 text-default-500 shadow-sm transition-all duration-100 hover:border-default-400"
@@ -210,7 +230,7 @@ export default function AddBlog() {
                 </div>
 
                 <div className="grid md:hidden mt-6">
-                  <Ingredient
+                  <Instructions
                     fields={fields}
                     handleFieldAppend={handleFieldAppend}
                     methods={methods}
@@ -230,7 +250,7 @@ export default function AddBlog() {
               </div>
 
               <div className="hidden md:grid">
-                <Ingredient
+                <Instructions
                   fields={fields}
                   handleFieldAppend={handleFieldAppend}
                   methods={methods}

@@ -1,7 +1,6 @@
 import React from "react";
 import HomeLayout from "../module/frontFace/home/layout/HomeLayout";
 import FoodsLayout from "../module/frontFace/food/FoodsLayout";
-import BlogLayout from "../module/frontFace/blog/layout/BlogLayout";
 import FAQ from "../module/frontFace/faq/features/FAQ";
 import BlogDetailPage from "../module/frontFace/blog/features/BlogDetails";
 import RecipePageLayout from "../module/frontFace/recipe/layout/RecipePageLayout";
@@ -10,6 +9,7 @@ import Private from "../shared/ui/Private";
 import FoodDetails from "../module/frontFace/foodDetails/FoodsDetail";
 import AllCategories from "../module/frontFace/all-categories/AllCategories";
 import AllTrendings from "../module/frontFace/all-trendings/AllTrendings";
+import BlogLayout from "../module/frontFace/blog/layout/BlogLayout";
 
 export const homePagePaths = [
   {

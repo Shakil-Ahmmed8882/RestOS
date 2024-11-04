@@ -63,8 +63,6 @@ declare module "*.scss" {
   export default content;
 }
 
-
-
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {

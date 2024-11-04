@@ -4,12 +4,12 @@ import { IoAddOutline } from "react-icons/io5";
 import RSInput from "../../../../shared/forms/RSInput";
 import { IoMdTrash } from "react-icons/io";
 
-const Ingredient = ({ handleFieldAppend, fields, methods, remove }) => {
+const Instructions = ({ handleFieldAppend, fields, methods, remove }) => {
   return (
     <div className="md:col-span-1">
       <div>
         <div className="flex justify-between items-center mb-5">
-          <h1 className="text-xl">Ingredients</h1>
+          <h1 className="text-xl">Instructions</h1>
           <Button
             className="bg-[#f3f3f3] text-[#000]"
             isIconOnly
@@ -26,14 +26,14 @@ const Ingredient = ({ handleFieldAppend, fields, methods, remove }) => {
               className="flex  items-center gap-3 relative z-50"
             >
               <RSInput
-                label={`Ingredient ${index + 1}`}
-                name={`ingredients.${index}`}
+                label={`Instruction ${index + 1}`}
+                name={`instructions.${index}`}
                 labelColor="#00D019"
                 className={`${
                   index > 0 ? "mt-4" : ""
                 } bg-[#fff] border-collapse  `}
                 onChange={(e) =>
-                  methods.setValue(`ingredients.${index}`, e.target.value)
+                  methods.setValue(`instructions.${index}`, e.target.value)
                 }
               />
               <Button
@@ -58,4 +58,4 @@ const Ingredient = ({ handleFieldAppend, fields, methods, remove }) => {
   );
 };
 
-export default Ingredient;
+export default Instructions;

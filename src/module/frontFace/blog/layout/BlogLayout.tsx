@@ -3,11 +3,12 @@ import React, { useState } from "react";
 import { Pagination, Button, Input } from "antd";
 import { useAuth } from "../../../../Utils/useAuthHelper";
 import Sidebar from "../components/Sidebar";
-import ArticleCard from "../components/ArticleCard";
+import BlogCard from "../components/ArticleCard";
 import CommentsSidebar from "../components/CommentsSidebar";
 import { articles } from "../components/constant";
 import Header from "../features/Header";
 import Container from "../../../../shared/layouts/Container";
+import { useGetAllBlogsQuery } from "../../../../redux/features/blog/blog.api";
 
 const commentsData = {
   1: [
@@ -84,6 +85,12 @@ function BlogLayout() {
     currentPage * pageSize
   );
 
+  const { data } = useGetAllBlogsQuery(undefined);
+
+  
+  console.log(data?.data)
+  
+
   return (
     <section className="py-8 -mt-20 pt-32">
       <Container>
@@ -98,12 +105,12 @@ function BlogLayout() {
           </div>
           <div className="space-y-8">
             {paginatedArticles.length > 0 ? (
-              paginatedArticles.map((article) => (
-                <ArticleCard
-                  key={article.id}
-                  article={article}
+              data?.data?.map((blog) => (
+                <BlogCard
+                  key={blog._id}
+                  blog={blog}
                   user={user}
-                  onCommentClick={() => toggleCommentsSidebar(article.id)}
+                  onCommentClick={() => toggleCommentsSidebar(blog.id)}
                 />
               ))
             ) : (
