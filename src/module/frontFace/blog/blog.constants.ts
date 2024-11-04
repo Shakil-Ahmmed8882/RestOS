@@ -9,3 +9,5 @@ export const tagOptions = tags.map((item) => ({
   value: item,
   label: item,
 }));
+
+export const blogCategories = ["Plant-Based", "Vegan", "Dessert", "Appetizers", "Beverages"]

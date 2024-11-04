@@ -12,11 +12,11 @@ function BlogCard({ blog, user, onCommentClick }) {
       key={blog._id}
       className="bg-background rounded-lg shadow-sm overflow-hidden pb-6"
     >
-      <div className="w-full  relative overflow-hidden">
+      <div className=" mx-auto md:h-[400px] relative overflow-hidden">
         <img
           src={blog?.image}
           alt="Blog post cover image"
-          className="w-full h-full object-cover cursor-pointer"
+          className="w-full h-full object-cover object-top cursor-pointer"
           onClick={() => navigate(`/blog/${blog._id}`)}
         />
       </div>
@@ -27,14 +27,13 @@ function BlogCard({ blog, user, onCommentClick }) {
             <img
               className="aspect-square h-full w-full"
               alt="Author avatar"
-              src={user?.photoURL || blog?.image}
+              src={ blog?.author?.user?.photo || blog?.image}
             />
           </span>
           <div className="mt-4">
             <Link className="font-medium hover:underline" to="#">
               {blog?.author?.name}
             </Link>
-            <p className="text-sm description "></p>
           </div>
         </div>
         <h2
@@ -43,10 +42,11 @@ function BlogCard({ blog, user, onCommentClick }) {
         >
           {blog?.title}
         </h2>
-        <div className="prose prose-lg text-muted-foreground">
+        <div className="prose prose-lg w-[70%] text-muted-foreground">
           <p className="description">
-            This is a brief introduction to the article. Read more to dive
-            deeper into the topic.
+            {
+              blog?.description
+            }
           </p>
         </div>
       </div>

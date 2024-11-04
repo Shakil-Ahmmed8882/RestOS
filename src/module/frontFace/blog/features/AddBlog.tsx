@@ -8,7 +8,7 @@ import {
   useForm,
 } from "react-hook-form";
 // import { allDistict } from "@bangladeshi/bangladesh-address";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import starAi from "../../../../assets/img/dashboard/star.png";
 import RSModal from "../../../../shared/modals/RSModal";
 import RSInput from "../../../../shared/forms/RSInput";
@@ -17,67 +17,40 @@ import RSTextarea from "../../../../shared/forms/RSTextArea";
 import generateDescription from "../../../../services/ImageDescription";
 import Instructions from "../components/Ingredient";
 import { categoryOptions, tagOptions } from "../blog.constants";
+import { useCreateBlogMutation } from "../../../../redux/features/blog/blog.api";
+import Spinner from "../../../../shared/ui/Spinner";
+import { useNavigate } from "react-router-dom";
 
 export default function AddBlog() {
-  const [imageFiles, setImageFiles] = useState<File[] | []>([]);
-  const [imagePreviews, setImagePreviews] = useState<string[] | []>([]);
-  const [isLoading, setIsLoading] = useState(false);
 
+
+  // State management part-1
   const methods = useForm();
-
   const { control, handleSubmit } = methods;
-
   const { fields, append, remove } = useFieldArray({
     control,
     name: "instructions",
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    const formData = new FormData();
-
-    const validInstructions = data.instructions.filter(
-      (ingredient) => ingredient.trim() !== ""
-    );
+  // State management part-2
+  const [imageFiles, setImageFiles] = useState<File[] | []>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[] | []>([]);
+  
+  // State management part-3
+  const [isLoading, setIsLoading] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  
 
   
-    const blogData = {
-      ...data,
-      instructions: validInstructions,
-      author: {
-        userId: "66aa22f43a81bd0fd69b85d7",
-        name: "Chef Mario",
-      },
-    };
-
-
-  // appending formdata
-    for (let image of imageFiles) {
-      formData.append("file", image);
-    }
-    formData.append("data", JSON.stringify(blogData));
-
-    
-    console.log(blogData)
-    // handleCreatePost(formData);
-
-
-    /*
-
-    // {
-//   "title": "The Art of Perfecting Pasta",
-//   "category": "Recipes",
-//   "description": "A detailed guide on making perfect pasta at home, with tips from expert chefs.",
-//   "instructions": ["step 1","step2"],
-//   "author": {
-//     "userId": "66aa22f43a81bd0fd69b85d7",
-//     "name": "Chef Mario"
-//   },
-//   "tags": ["pasta", "Italian", "home-cooking"]
-// }
-
-    */
-  };
-
+  // create blog api call 
+  const [
+    createBlog,
+    {
+      data: BData,
+      isLoading: isBlogCreating,
+      isSuccess: isBlogCreationSuccess,
+    },
+  ] = useCreateBlogMutation();
   const handleFieldAppend = () => {
     append(" ");
   };
@@ -114,23 +87,59 @@ export default function AddBlog() {
     }
   };
 
-  // if (!createPostPending && isSuccess) {
-  //   router.push("/");
-  // }
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    const formData = new FormData();
 
-  const [open, setOpen] = useState(false);
+    const validInstructions = data.instructions.filter(
+      (ingredient) => ingredient.trim() !== ""
+    );
+
+    const blogData = {
+      ...data,
+      tags: [data.tags],
+      instructions: validInstructions,
+      author: {
+        userId: "66aa22f43a81bd0fd69b85d7",
+        name: "Chef Mario",
+      },
+    };
+
+    // appending formdata
+    for (let image of imageFiles) {
+      formData.append("file", image);
+    }
+    formData.append("data", JSON.stringify(blogData));
+
+    createBlog(formData);
+
+  };
+
+  
+  useEffect(()=> {
+
+    if (!isBlogCreating && isBlogCreationSuccess) {
+      setModalOpen(false)
+  }
+  },[isBlogCreating, isBlogCreationSuccess])
+
+
+
+
+
+  
 
   return (
     <>
+      {isBlogCreating && <Spinner />}
       <div
         className={`flex  ${
-          open
+          modalOpen
             ? "-translate-x-80 invisible opacity-0"
             : "visible -translate-x-0 opacity-100"
         } transition500 `}
       >
         <Button
-          onClick={() => setOpen(true)}
+          onClick={() => setModalOpen(true)}
           className=" md:p-6 rounded-full  border-none bg-[#fff] !bg-primaryColor/6 !text-primaryColor text-medium md:text-[18px]   shadow-primaryColor/10 shadow-xl"
         >
           Add Blog
@@ -139,7 +148,7 @@ export default function AddBlog() {
 
       {/* Modal */}
 
-      <RSModal {...{ open, setOpen }}>
+      <RSModal {...{ modalOpen, setModalOpen }}>
         {/* {createPostPending && <Loading />} */}
         <div className="h-full rounded-xl  max-w-7xl mx-auto bg-gradient-to-r from-[#ffffff] py-8 px-2 lg:px-[73px] md:py-12">
           <h1 className="text-2xl font-semibold">Post a found item</h1>

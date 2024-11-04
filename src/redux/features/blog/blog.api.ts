@@ -25,16 +25,16 @@ const blogApi = baseApi.injectEndpoints({
 
   
 
-    // createblog: builder.mutation({
-    //   query: (data) => {
-    //     return {
-    //       url: "/blogs/create-blog",
-    //       method: "POST",
-    //       body: data,
-    //     };
-    //   },
-    //   invalidatesTags: ["blog-data"],
-    // }),
+    createBlog: builder.mutation({
+      query: (data) => {
+        return {
+          url: "/blogs/create",
+          method: "POST",
+          body: data,
+        };
+      },
+      invalidatesTags: ["blog-data"],
+    }),
 
     // deleteblog: builder.mutation({
     //   query: ({ id, email }) => {
@@ -51,7 +51,7 @@ const blogApi = baseApi.injectEndpoints({
 
 export const {
   useGetAllBlogsQuery,
-//   useCreateblogMutation,
+  useCreateBlogMutation,
 //   useDeleteblogMutation
 } = blogApi;
 export default blogApi;

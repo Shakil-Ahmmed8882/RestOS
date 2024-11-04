@@ -2,14 +2,14 @@ import React from "react";
 import { Close } from "../../assets/icons/Icons";
 import useStopScroll from "../../🔗Hook/useStopScroll";
 
-const RSModal = ({ setOpen, open, children }) => {
-  useStopScroll(open); // Use the custom hook
+const RSModal = ({  setModalOpen, modalOpen, children }) => {
+  useStopScroll(modalOpen); // Use the custom hook
 
   
   return (
     <section 
       className={`${
-        open
+        modalOpen
           ? "!overflow-auto visible translate-x-0 opacity-100"
           : " translate-x-80 invisible opacity-0 "
       }
@@ -18,7 +18,7 @@ const RSModal = ({ setOpen, open, children }) => {
       {children}
       <button
         className="absolute top-5 right-3 bg-[#d3d3d343] text-[black] p-3 rounded-full font-bold"
-        onClick={() => setOpen(false)}
+        onClick={() => setModalOpen(false)}
       >
         <Close />
       </button>
