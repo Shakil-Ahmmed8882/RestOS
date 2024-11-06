@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Drawer } from "antd";
-import CommentSection from "./Comment";
+
 import CommentInput from "./CommentInput";
 import useDisableBodyScroll from "../../../../🔗Hook/useDisableBodyScroll";
 import { useAddCommentOnBlogMutation } from "../../../../redux/features/comment/comment.api";
 import { Spinner } from "@nextui-org/react";
+import CommentLayout from "../layout/CommentLayout";
 
 
 interface CommentsSidebarProps {
@@ -92,7 +93,7 @@ const CommentsSidebar: React.FC<CommentsSidebarProps> = ({
         }
         <div className="flex flex-col justify-between max-h-screen scroll-my-0">
           <div className="space-y-4">
-            <CommentSection blogId={blogId}/>
+            <CommentLayout blogId={blogId}/>
           </div>
         </div>
       </Drawer>

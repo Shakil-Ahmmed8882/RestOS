@@ -3,19 +3,23 @@ import React from "react";
 
 const SendReply = ({ replyContent, setReplyContent, handleReply, placeholder = "Write your reply..." }) => {
     return (
-      <div>
-        <Textarea
+      <div className="">
+        <input
           placeholder={placeholder}
           value={replyContent}
-          onValueChange={setReplyContent}
-          className="mb-2"
+          onChange={(e) =>setReplyContent(e.target.value)}
+          className="mb-2 !bg-[white] text-wrap focus-within:outline-[1px] outline-none  p-3 h-20 block w-full rounded-lg"
         />
+        <div className="text-end">
         <Button
-          className="bg-primaryColor text-white"
+          size="sm"
+          className="border bg-primaryColor !text-[#fff] rounded-full"
           onPress={handleReply}
         >
           Send Reply
         </Button>
+
+        </div>
       </div>
     );
   };
