@@ -4,6 +4,7 @@ import foodApi from "./features/food/food.api";
 import userApi from "./features/user/userApi";
 import orderApi from "./features/order/orderApi";
 import menuReducer from "./features/global/menuSlice"
+import commentApi from "./features/comment/comment.api";
 
 export const store = configureStore({
   reducer: {
@@ -16,7 +17,8 @@ export const store = configureStore({
     getDefaultMiddleware().concat(
       foodApi.middleware,
       userApi.middleware,
-      orderApi.middleware
+      orderApi.middleware,
+      commentApi.middleware
     ),
 });
 

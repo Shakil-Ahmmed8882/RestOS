@@ -46,3 +46,21 @@
  * 
  * 
  */
+
+
+
+   /*
+      // ----------------- BLOG COMMENT ----------------
+      1. make the ui & take the comment ✅
+      
+      2. create api and send it to backend ✅ 
+      3. show all comments ✅
+
+      4. update a comment 
+          - create input and take updated comment 
+          - pass it to the server and update 
+      5. delete comment
+          - create dropdown of edit and delete
+          - once delete pass id and delete from the db
+
+   */

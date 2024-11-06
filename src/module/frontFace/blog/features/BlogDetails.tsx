@@ -49,6 +49,7 @@ function BlogDetailPage({ match }) {
       </div>
       <div className="mt-8">
         <h2 className="text-2xl font-bold mb-4">Comments</h2>
+        
         <form onSubmit={handleCommentSubmit} className="mb-4">
           <textarea
             value={comment}

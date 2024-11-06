@@ -9,27 +9,8 @@ import Container from "../../../../shared/layouts/Container";
 import { useGetAllBlogsQuery } from "../../../../redux/features/blog/blog.api";
 import useDebounce from "../../../../🔗Hook/useDebounce";
 import { useLocation } from "react-router-dom";
-import  notFoundImg  from "../../../../assets/img/shared/4041.png";
+import notFoundImg from "../../../../assets/img/shared/4041.png";
 import BlogPageSkeleton from "../components/BlogPageSkeleton";
-
-const commentsData = {
-  1: [
-    {
-      id: 101,
-      author: "Alex Lee",
-      content: "Great insights!",
-      date: "2023-08-10",
-    },
-    {
-      id: 102,
-      author: "Sophie Turner",
-      content: "Thanks for sharing!",
-      date: "2023-08-11",
-    },
-  ],
-  // ...other comments
-};
-
 
 // extract category
 export const getCategoryFromUrl = () => {
@@ -37,42 +18,35 @@ export const getCategoryFromUrl = () => {
   return queryParams.get("category");
 };
 
-
 function BlogLayout() {
   const { user } = useAuth();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [showComments, setShowComments] = useState(false);
-  const [selectedArticleId, setSelectedArticleId] = useState(null);
+  const [showCommentBlogId, setShowCommenBlogId] = useState(null);
 
   const pageSize = 5;
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const handlePageChange = (page) => setCurrentPage(page);
 
-  const toggleCommentsSidebar = (articleId) => {
-    setSelectedArticleId(articleId);
+  const toggleCommentsSidebar = (blogId) => {
+    setShowCommenBlogId(blogId);
     setShowComments(!showComments);
   };
-
-
 
   // GET CATEGORY
   const location = useLocation();
   const category = getCategoryFromUrl();
-  
-  
-  
-  const { data, isLoading:isBlogDataLoading } = useGetAllBlogsQuery([
+
+  const { data, isLoading: isBlogDataLoading } = useGetAllBlogsQuery([
     { name: "searchTerm", value: debouncedSearchTerm },
-    ...(category && category !== 'All' ? [{ name: "category", value: category }] : [])
+    ...(category && category !== "All"
+      ? [{ name: "category", value: category }]
+      : []),
   ]);
   const fetchedBlogs = data?.data || []; // Ensure data is defined
-  
-  
-
-  
 
   return (
     <section className="py-8 -mt-20 pt-32">
@@ -82,35 +56,37 @@ function BlogLayout() {
           <div className="z-40 sticky top-0  p-2 pb-0 md:h-screen">
             <Sidebar onSearch={setSearchTerm} />
           </div>
-          {
-            isBlogDataLoading ? <><BlogPageSkeleton/></>:
-          <div className="space-y-8">
-            {fetchedBlogs.length > 0 ? (
-              data?.data.map((blog) => (
-                <BlogCard
-                  key={blog._id}
-                  blog={blog}
-                  user={user}
-                  onCommentClick={() => toggleCommentsSidebar(blog.id)}
-                />
-              ))
-            ) : (
-              <div className="flex h-[80vh] animate-pulse opacity-80 w-full items-center justify-center">
-                <img src={notFoundImg} alt="" />
-              </div>
-            )}
-            {/* <Pagination
+          {isBlogDataLoading ? (
+            <>
+              <BlogPageSkeleton />
+            </>
+          ) : (
+            <div className="space-y-8">
+              {fetchedBlogs.length > 0 ? (
+                data?.data.map((blog) => (
+                  <BlogCard
+                    key={blog._id}
+                    blog={blog}
+                    user={user}
+                    onCommentClick={() => toggleCommentsSidebar(blog._id)}
+                  />
+                ))
+              ) : (
+                <div className="flex h-[80vh] animate-pulse opacity-80 w-full items-center justify-center">
+                  <img src={notFoundImg} alt="" />
+                </div>
+              )}
+              {/* <Pagination
               current={currentPage}
               pageSize={pageSize}
               total={filteredArticles.length}
               onChange={handlePageChange}
             /> */}
-          </div>
-          }
+            </div>
+          )}
           <CommentsSidebar
+            blogId={`${showCommentBlogId}`}
             isVisible={showComments}
-            articleId={selectedArticleId}
-            comments={commentsData[selectedArticleId] || []}
             onClose={() => setShowComments(false)}
           />
         </div>

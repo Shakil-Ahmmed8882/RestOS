@@ -22,6 +22,7 @@
     "base64-js": "^1.5.1",
     "firebase": "^10.7.1",
     "framer-motion": "^10.18.0",
+    "lucide-react": "^0.454.0",
     "next-themes": "^0.2.1",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
