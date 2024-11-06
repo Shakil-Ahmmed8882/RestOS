@@ -23,30 +23,6 @@ import {
 } from "../../../../redux/features/comment/comment.api";
 import CommentSidebarSkeleton from "../features/CommentSkeleton";
 
-interface User {
-  _id: string;
-  name: string;
-  email: string;
-  photo: string;
-}
-
-interface Reply {
-  _id: string;
-  user: string;
-  comment: string;
-  createdAt: string;
-}
-
-interface CommentData {
-  _id: string;
-  blog: string;
-  user: User;
-  comment: string;
-  replies: Reply[];
-  createdAt: string;
-  updatedAt: string;
-}
-
 const CommentComponent: React.FC<{ comment: CommentData }> = ({ comment }) => {
   const [isReplying, setIsReplying] = useState(false);
   const [replyContent, setReplyContent] = useState("");
@@ -55,31 +31,12 @@ const CommentComponent: React.FC<{ comment: CommentData }> = ({ comment }) => {
   const [editedComment, setEditedComment] = useState(comment.comment);
   const [deleteCommentId, setDeleteCommentId] = useState("");
 
-  // API CALL
+  // ================  COMMENT API ================
   const [updateComment] = useUpdateCommentOnBlogMutation();
   const [deleteComment, { isLoading: commentDeleteLoading }] =
     useDeleteCommentOnBlogMutation();
 
-  const handleReply = () => {
-    if (replyContent.trim()) {
-      const newReply: Reply = {
-        _id: Date.now().toString(),
-        user: "current-user-id",
-        comment: replyContent,
-        createdAt: new Date().toISOString(),
-      };
-      setBlogComment({
-        ...blogComment,
-        replies: [...blogComment.replies, newReply],
-      });
-      setReplyContent("");
-      // setIsReplying(false);
-      console.log(
-        `Reply added to comment - Comment ID: ${blogComment._id}, Reply: ${replyContent}`
-      );
-    }
-  };
-
+  // ------------  COMMENT HANDLER ------------
   const handleUpdateComment = async () => {
     setBlogComment({ ...blogComment, comment: editedComment });
     setIsEditing(false);
@@ -111,8 +68,46 @@ const CommentComponent: React.FC<{ comment: CommentData }> = ({ comment }) => {
     }
   };
 
-  // ================= REPLY ==================
-  const handleReplyUpdate = (replyId: string, newComment: string) => {
+
+
+  //  ==============  REPLY API ================
+  const [addReplyToComment, { data, isSuccess }] =
+    useAddReplyToCommentMutation();
+  const [updateReplyOnComment] = useUpdateReplyOnCommentMutation();
+  const [deleteReplyOnComment] = useDeleteReplyOnCommentMutation();
+
+  //  ------------  REPLY HANDLER ------------
+  const handleReplyToComment = async () => {
+    if (replyContent.trim()) {
+      const newReply: Reply = {
+        _id: Date.now().toString(),
+        user: "current-user-id",
+        comment: replyContent,
+        createdAt: new Date().toISOString(),
+      };
+      setBlogComment({
+        ...blogComment,
+        replies: [...blogComment.replies, newReply],
+      });
+      setReplyContent("");
+      console.log(
+        `Reply added to comment - Comment ID: ${blogComment._id}, Reply: ${replyContent}`
+      );
+      await addReplyToComment({
+        commentId: blogComment._id,
+        comment: replyContent,
+      });
+
+      console.log(data, isSuccess);
+      try {
+      } catch (error: any) {
+        console.log(error.message);
+      }
+    }
+  };
+
+  // update
+  const handleReplyUpdate = async (replyId: string, newComment: string) => {
     const updatedReplies = blogComment.replies.map((reply) =>
       reply._id === replyId ? { ...reply, comment: newComment } : reply
     );
@@ -120,16 +115,33 @@ const CommentComponent: React.FC<{ comment: CommentData }> = ({ comment }) => {
     console.log(
       `Reply updated - Comment ID: ${blogComment._id}, Reply ID: ${replyId}, New reply: ${newComment}`
     );
+
+    try {
+      const updatedReplyData = await updateReplyOnComment({
+        commentId: blogComment._id,
+        replyId,
+        replyText: newComment,
+      });
+    } catch (error: any) {
+      console.log(error.message);
+    }
   };
 
-  const handleReplyDelete = (replyId: string) => {
+  // delete 
+  const handleReplyDelete = async (replyId: string) => {
     const updatedReplies = blogComment.replies.filter(
       (reply) => reply._id !== replyId
     );
     setBlogComment({ ...blogComment, replies: updatedReplies });
-    console.log(
-      `Reply deleted - Comment ID: ${blogComment._id}, Reply ID: ${replyId}`
-    );
+
+    try {
+      const deletedReply = await deleteReplyOnComment({
+        commentId: blogComment._id,
+        replyId,
+      });
+    } catch (error: any) {
+      console.log(error.message);
+    }
   };
 
   return (
@@ -158,9 +170,13 @@ const CommentComponent: React.FC<{ comment: CommentData }> = ({ comment }) => {
               </h4>
               <h5 className="text-small tracking-tight text-default-400 mt-2">
                 <div className="flex justify-center items-center">
-                {commentDeleteLoading && <Spinner className="absolute inset-0 text-[#fff]" color="default" />}
-                {new Date(blogComment.createdAt).toLocaleString()}
-
+                  {commentDeleteLoading && (
+                    <Spinner
+                      className="absolute inset-0 text-[#fff]"
+                      color="default"
+                    />
+                  )}
+                  {new Date(blogComment.createdAt).toLocaleString()}
                 </div>
               </h5>
             </div>
@@ -258,18 +274,11 @@ const CommentComponent: React.FC<{ comment: CommentData }> = ({ comment }) => {
               transition={{ duration: 0.3 }}
             >
               <div className="p-4 bg-default-100">
-                <Textarea
-                  placeholder="Write your reply..."
-                  value={replyContent}
-                  onValueChange={setReplyContent}
-                  className="mb-2"
+                <SendReply
+                  replyContent={replyContent}
+                  setReplyContent={setReplyContent}
+                  handleReply={handleReplyToComment}
                 />
-                <Button
-                  className="bg-primaryColor text-[white]"
-                  onPress={handleReply}
-                >
-                  Send Reply
-                </Button>
                 <AnimatePresence>
                   {blogComment.replies.map((reply) => (
                     <ReplyComponent
@@ -293,6 +302,13 @@ const CommentComponent: React.FC<{ comment: CommentData }> = ({ comment }) => {
 
 import commentGif from "../../../../assets/img/shared/comment-gif.gif";
 import toast from "react-hot-toast";
+import { CommentData, Reply } from "../../../../types/blog.type";
+import SendReply from "../features/reply/SendReply";
+import {
+  useAddReplyToCommentMutation,
+  useDeleteReplyOnCommentMutation,
+  useUpdateReplyOnCommentMutation,
+} from "../../../../redux/features/reply/reply.api";
 export default function CommentSection({ blogId }: { blogId: string }) {
   const { data, isLoading } = useGetAllCommentsOnSingleBlogQuery(blogId);
 
