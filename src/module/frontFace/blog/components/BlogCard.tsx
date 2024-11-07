@@ -51,10 +51,11 @@ function BlogCard({ blog, user, onCommentClick }) {
         </div>
       </div>
       <hr className="border-t mx-6 border-[#cfcfcf]" />
+      {/* Blog bottom action part  */}
       <div className="p-4 md:p-6 flex items-center justify-between">
-        <ActionButtons articleId={blog._id} />
+        <ActionButtons blogId={blog._id} blog={blog} />
         <button onClick={onCommentClick} className="inline-flex items-center">
-          <CommentIcon />
+          <CommentIcon /> 
         </button>
       </div>
     </article>

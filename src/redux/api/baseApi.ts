@@ -5,7 +5,8 @@ import {
   FetchArgs,
   fetchBaseQuery,
 } from "@reduxjs/toolkit/query/react";
-import { RootState } from "../store";
+// import { RootState } from "../store";
+import { Tags } from ".";
 // import { logout, setUser } from "../features/auth/authSlice";
 
 
@@ -60,5 +61,5 @@ export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQueryWithRefreshToken,
   endpoints: () => ({}),
-  tagTypes: ["order-data","blog-data","comment-data"]
+  tagTypes: Tags
 });

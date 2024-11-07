@@ -6,6 +6,8 @@ import orderApi from "./features/order/orderApi";
 import menuReducer from "./features/global/menuSlice"
 import commentApi from "./features/comment/comment.api";
 import replyApi from "./features/reply/reply.api";
+import voteApi from "./features/vote/vote.api";
+import saveBlogApi from "./features/save/save.blog.api";
 
 export const store = configureStore({
   reducer: {
@@ -21,6 +23,8 @@ export const store = configureStore({
       orderApi.middleware,
       commentApi.middleware,
       replyApi.middleware,
+      voteApi.middleware,
+      saveBlogApi.middleware,
 
     ),
 });

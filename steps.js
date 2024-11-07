@@ -63,4 +63,12 @@
           - create dropdown of edit and delete
           - once delete pass id and delete from the db
 
+
+
+      // ----------------- BLOG SAVE ----------------
+          -Get the blog id and save the blog 
+          -unsave the blog 
+          -get inspiration of saved blogs design 
+          -create ui 
+          -get all the saved blogs 
    */
