@@ -1,11 +1,27 @@
 import commentGif from "../../../../assets/img/shared/comment-gif.gif";
 import { AnimatePresence } from "framer-motion";
-import React from "react";
+import React, { useEffect } from "react";
 import CommentSidebarSkeleton from "../features/CommentSkeleton";
 import { useGetAllCommentsOnSingleBlogQuery } from "../../../../redux/features/comment/comment.api";
 import CommentComponent from "../components/Comment";
+import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
+import { setComments } from "../../../../redux/features/comment/comment.slice";
 export function CommentLayout({ blogId }: { blogId: string }) {
   const { data, isLoading } = useGetAllCommentsOnSingleBlogQuery(blogId);
+  const dispatch = useAppDispatch();
+  const comments = useAppSelector((state) => state.comment);
+
+
+  
+  
+  useEffect(() => {
+    if (!isLoading && data) {
+      dispatch(setComments(data.data)); 
+    }
+  }, [isLoading, data, dispatch]);
+
+
+
 
   return (
     <div className="space-y-4">
@@ -18,7 +34,7 @@ export function CommentLayout({ blogId }: { blogId: string }) {
           <>
             {data?.data?.length > 0 ? (
               <>
-                {data?.data?.map((comment) => (
+                {comments?.comments?.map((comment) => (
                   <CommentComponent key={comment._id} comment={comment} />
                 ))}
               </>

@@ -4,6 +4,7 @@ import foodApi from "./features/food/food.api";
 import userApi from "./features/user/userApi";
 import orderApi from "./features/order/orderApi";
 import menuReducer from "./features/global/menuSlice"
+import commentReducer from "./features/comment/comment.slice"
 import commentApi from "./features/comment/comment.api";
 import replyApi from "./features/reply/reply.api";
 import voteApi from "./features/vote/vote.api";
@@ -12,7 +13,8 @@ import saveBlogApi from "./features/save/save.blog.api";
 export const store = configureStore({
   reducer: {
     [baseApi.reducerPath]: baseApi.reducer,
-    menu: menuReducer, // Add the menu reducer here
+    menu: menuReducer, 
+    comment: commentReducer
   },
 
   // APIs Middleware connection ...

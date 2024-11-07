@@ -4,13 +4,11 @@ import {
   Button,
   Card,
   CardBody,
-  CardFooter,
   CardHeader,
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Input,
 } from "@nextui-org/react";
 import { MoreVertical, Edit2, Trash2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -36,6 +34,7 @@ const ReplyComponent: React.FC<{
     onDelete();
     console.log(`Reply deleted - ID: ${reply._id}`);
   };
+
 
   return (
     <motion.div

@@ -25,6 +25,8 @@ import { useAddReplyToCommentMutation, useDeleteReplyOnCommentMutation, useUpdat
 import SendReply from "../features/reply/SendReply";
 import ReplyComponent from "./reply/ReplyComponent";
 import toast from "react-hot-toast"
+import { useAppDispatch } from "../../../../redux/hooks";
+import { removeLocalComment } from "../../../../redux/features/comment/comment.slice";
 
 const CommentComponent: React.FC<{ comment: CommentData }> = ({ comment }) => {
   const [isReplying, setIsReplying] = useState(false);
@@ -33,6 +35,7 @@ const CommentComponent: React.FC<{ comment: CommentData }> = ({ comment }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedComment, setEditedComment] = useState(comment.comment);
   const [deleteCommentId, setDeleteCommentId] = useState("");
+  const dispatch = useAppDispatch()
 
   // ================  COMMENT API ================
   const [updateComment] = useUpdateCommentOnBlogMutation();
@@ -59,10 +62,9 @@ const CommentComponent: React.FC<{ comment: CommentData }> = ({ comment }) => {
     try {
       // this id is to match with command card
       // to conditionally make it little disable feel when delete is processing
+      dispatch(removeLocalComment(blogComment._id))
       setDeleteCommentId(blogComment?._id);
       const data = await deleteComment(blogComment._id);
-
-      console.log(data?.data?.success);
       if (data?.data?.success) {
         toast.success("Deleted! ", { position: "bottom-right" });
       }

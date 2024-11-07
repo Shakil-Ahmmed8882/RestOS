@@ -6,6 +6,9 @@ import useDisableBodyScroll from "../../../../🔗Hook/useDisableBodyScroll";
 import { useAddCommentOnBlogMutation } from "../../../../redux/features/comment/comment.api";
 import { Spinner } from "@nextui-org/react";
 import CommentLayout from "../layout/CommentLayout";
+import { useAppDispatch } from "../../../../redux/hooks";
+import { addLocalComment } from "../../../../redux/features/comment/comment.slice";
+import { useAuth } from "../../../../Utils/useAuthHelper";
 
 
 interface CommentsSidebarProps {
@@ -19,6 +22,15 @@ const CommentsSidebar: React.FC<CommentsSidebarProps> = ({
   blogId,
   onClose,
 }) => {
+
+
+
+  // State management 
+  const dispatch = useAppDispatch()
+  const {user} = useAuth()
+
+
+
   // API call
   const [addComment, { data, isLoading:createCommentLoading }] = useAddCommentOnBlogMutation();
 
@@ -45,23 +57,46 @@ const CommentsSidebar: React.FC<CommentsSidebarProps> = ({
   };
 
 
-
   // ADD COMMENTS 
   const handleComment = () => {
+    
     if (inputValue.trim()) {
+      // Simulating the local comment data
       const commentData = {
+        _id: new Date().getTime().toString(),  
+        blog: blogId,
+        user: {
+          _id: "672a2aa19a0d15f44b88473f",
+          name: user?.displayName,                 
+          email:user?.email,  
+          photo:user?.photoURL,  
+        },
+        comment: inputValue,
+        replies: [],  
+        createdAt: new Date().toISOString(), 
+        updatedAt: new Date().toISOString(), 
+      };
+
+      const remoteCommentData = {
         blog: blogId,
         comment: inputValue,
       };
+  
       try {
-        addComment(commentData);
+        // Dispatch the action to add the comment optimistically
+        dispatch(addLocalComment(commentData));
+  
+        // Call the API to add the comment to the backend
+        addComment(remoteCommentData);
+  
+        // Clear the input field after successfully submitting the comment
+        setInputValue("");
       } catch (error) {
-        console.log(error);
+        console.log("Error while adding comment:", error);
       }
-
-      // Clear the input after commenting
-      setInputValue("");
     }
+
+
   };
 
   const handleCancel = () => {
@@ -88,9 +123,6 @@ const CommentsSidebar: React.FC<CommentsSidebarProps> = ({
             inputRef={inputRef}
           />
         </div>
-        {
-          createCommentLoading && <Spinner className="mx-auto mb-3 -mt-2 flex" color="default"/>
-        }
         <div className="flex flex-col justify-between max-h-screen scroll-my-0">
           <div className="space-y-4">
             <CommentLayout blogId={blogId}/>
