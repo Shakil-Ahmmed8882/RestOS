@@ -1,40 +1,42 @@
 import { BuildingIcon, PencilIcon, ScaleIcon, TagIcon } from "../assets/Icons";
 import {
-  designsItems,
-  legalItems,
-  officeItems,
-  salesItems,
+  blogManagementItems,
+  foodManagementItems,
+  orderManagementItems,
+  recipeManagementItems,
+  userManagementItems,
 } from "./dropdownContents";
 
 export const adminRoutesArray = [
   {
-    label: "Design",
+    label: "User Management",
     icon: PencilIcon,
-    items: designsItems,
-    key: "designs",
+    items: userManagementItems,
+    key: "users",
   },
   {
-    label: "Office",
+    label: "Food Management",
     icon: BuildingIcon,
-    items: officeItems,
-    key: "office",
+    items: foodManagementItems,
+    key: "foods",
   },
   {
-    label: "Legal",
+    label: "Order Managemnt",
     icon: ScaleIcon,
-    items: legalItems,
-    key: "legal",
+    items: orderManagementItems,
+    key: "orders",
   },
   {
-    label: "Sales",
-    icon: TagIcon,
-    items: salesItems,
-    key: "sales",
+    label: "Blog Management",
+    icon: PencilIcon,
+    items: blogManagementItems,
+    key: "blogs",
   },
   {
-    label: "Sales",
-    icon: TagIcon,
-    items: salesItems,
-    key: "sales",
+    label: "Recipe Management",
+    icon: PencilIcon,
+    items: recipeManagementItems,
+    key: "recipes",
   },
+ 
 ];

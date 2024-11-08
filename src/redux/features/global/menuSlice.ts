@@ -1,8 +1,8 @@
 // src/store/menuSlice.js
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const menuSlice = createSlice({
-  name: 'menu',
+  name: "menu",
   initialState: {
     dashboardMenuOpen: false,
   },
