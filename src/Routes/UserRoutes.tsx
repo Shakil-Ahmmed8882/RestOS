@@ -1,10 +1,10 @@
 import React from "react";
-import MyProfile from "../module/dashboard/userDashboard/profile/Profile";
 
 import OrderLayout from "../module/dashboard/userDashboard/orders/OrderLayout";
 import PurchasedFoodsLayout from "../module/dashboard/userDashboard/purchases/PurchasedFoodsLayout";
 import FeaturedRecipes from "../module/dashboard/userDashboard/FeaturedRecipes/FeaturedRecipes";
 import UserDashboardLayout from "../module/dashboard/userDashboard/dashboard/UserDashboardLayout";
+import Profile from "../module/dashboard/shared/profile/Profile";
 
 export const userPaths = [
   {
@@ -15,7 +15,7 @@ export const userPaths = [
   {
     name: "Profile",
     path: "user/profile",
-    element: <MyProfile />,
+    element: <Profile />,
   },
   {
     name: "Featured Recipes",

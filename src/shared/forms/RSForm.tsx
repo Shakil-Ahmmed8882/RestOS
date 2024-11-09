@@ -1,5 +1,3 @@
-
-
 import React, { ReactNode } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 
@@ -35,7 +33,9 @@ export default function RSForm({
 
   return (
     <FormProvider {...methods}>
-      <form className="space-y-4" onSubmit={submitHandler(onSubmit)}>{children}</form>
+      <form className="space-y-4" onSubmit={submitHandler(onSubmit)}>
+        {children}
+      </form>
     </FormProvider>
   );
 }

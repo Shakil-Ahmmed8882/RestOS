@@ -1,8 +1,5 @@
-
-
 import { Input } from "@nextui-org/input";
 import { useFormContext } from "react-hook-form";
-
 
 import React from "react";
 import { IInput } from "../../types";
@@ -18,7 +15,7 @@ export default function RSInput({
   name,
   className,
   labelColor,
-  onChange
+  onChange,
 }: IProps) {
   const {
     register,
@@ -32,12 +29,7 @@ export default function RSInput({
       className={className}
       errorMessage={errors[name] ? (errors[name].message as string) : ""}
       isInvalid={!!errors[name]}
-      label={
-        <span style={{ color: labelColor || "'#000'" }}> 
-          {label}
-        </span>
-      }
-      
+      label={<span style={{ color: labelColor || "'#000'" }}>{label}</span>}
       required={required}
       size={size}
       type={type}

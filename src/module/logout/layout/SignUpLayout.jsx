@@ -6,6 +6,7 @@ import React from "react";
 import { useCreateUserMutation } from "../../../redux/features/user/userApi";
 import { validate } from "../../../Utils/Validate";
 import { useAuth } from "../../../Utils/useAuthHelper";
+import { imageUpload } from "../../../api/utils";
 
 
 const SignUpLayout = () => {
@@ -20,14 +21,17 @@ const SignUpLayout = () => {
   const goTo = useNavigate();
   // console.log(createUser)
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async(e) => {
     e.preventDefault();
     const form = new FormData(e.target);
     const data = Object.fromEntries(form);
+    const imageData = await imageUpload(data.photo)
     const email = data.email;
     const name = data.name;
-    const photo = data.photo;
+    const photo = imageData?.data?.display_url;
     const password = data.password;
+
+    
 
     // data for storing in database
 
@@ -35,7 +39,7 @@ const SignUpLayout = () => {
     const hasError = validate(name, email, photo, password);
     if (hasError) return;
 
-    e.target.reset();
+    // e.target.reset();
 
     // create user here
     createUser(email, password)
@@ -50,18 +54,15 @@ const SignUpLayout = () => {
           photo,
           role: "user",
         };
+        
+        console.log(currentUser)
         createUserInDB(currentUser);
         if (data) {
           goTo(from, { replace: true });
           return toast.success("Successfully created an account");
         }
       })
-      .catch((err) => console.log(err));
-    // creating a token
-    // xios
-    //   .post("jwt", { email: user?.email })
-    //   .then((res) => console.log(res.data))
-    //   .catch((err) => toast.error(err.toString()));
+
   };
 
   return (
@@ -128,11 +129,11 @@ const SignUpLayout = () => {
                     theme == "dark" ? "text-[white]" : ""
                   } py-2`}
                 >
-                  Photo url
+                  Photo 
                 </span>
               </label>
               <input
-                type="text"
+                type="file"
                 placeholder="Photo URL"
                 name="photo"
                 className={`input input-bordered ${
