@@ -1,18 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../../../../Utils/useAuthHelper";
 import ProfileAvatar from "./components/ProfileAvatar";
 import ProfileName from "./components/ProfileName";
 import ProfileInfo from "./components/ProfileInfo";
 import ProfileCompletion from "./components/ProfileCompletion";
 
-
 export default function Profile() {
   const { user, updateUserInfo, loading: profileUpdateLoading } = useAuth();
   const [name, setName] = useState(user?.displayName || "");
+  const [profileCompletionPercentage, setProfileCompletionPercentage] = useState(40);
+
 
   return (
-    <div className=" lg:p-6 space-y-6">
-      <div className="flex flex-col-reverse lg:flex-row  justify-between items-start">
+    <div className="lg:p-6 space-y-6">
+      <div className="flex flex-col-reverse lg:flex-row justify-between items-start">
         <div className="w-full">
           <div className="flex items-center lg:gap-6">
             <ProfileAvatar
@@ -27,9 +28,11 @@ export default function Profile() {
               updateUserInfo={updateUserInfo}
             />
           </div>
-          <ProfileInfo />
+          <ProfileInfo
+            setProfileCompletionPercentage={setProfileCompletionPercentage}
+          />
         </div>
-        <ProfileCompletion />
+        <ProfileCompletion profileCompletionPercentage={profileCompletionPercentage} />
       </div>
     </div>
   );

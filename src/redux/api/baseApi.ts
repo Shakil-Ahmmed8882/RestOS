@@ -11,7 +11,7 @@ import { Tags } from ".";
 
 
 // Hardcoded token
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzJhMmFhMTlhMGQxNWY0NGI4ODQ3M2YiLCJuYW1lIjoic2hha2lsIiwiZW1haWwiOiJzaGFraWxhaG1tZWQ4ODgyQGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwicGhvdG8iOiJodHRwczovL2Nkbi1pY29ucy1wbmcuZmxhdGljb24uY29tLzUxMi8yMTkvMjE5OTg2LnBuZyIsImlhdCI6MTczMDgxNjY3MywiZXhwIjoxNzMzNDA4NjczfQ.sDb94INPs1hgSmW-ms1pRhi5-LxOPQ2616R86-ILids";
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzJmNzRhNzY1Y2Q1ODNjN2VhYjkxODUiLCJuYW1lIjoiVXNlciAyIiwiZW1haWwiOiJ1c2VyeEAyLmNvbSIsInJvbGUiOiJVU0VSIiwicGhvdG8iOiIvL2V4YW1wbGUxLmNvbS9waG90by5qcGciLCJpYXQiOjE3MzExNjMzMDQsImV4cCI6MTczMzc1NTMwNH0.JDc52pHRuOzLpMFcEOagmJkmp05gTpPI1ip1FSWwNhI";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:5000/api/v1",

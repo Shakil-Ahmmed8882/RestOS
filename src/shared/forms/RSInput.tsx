@@ -14,8 +14,7 @@ export default function RSInput({
   label,
   name,
   className,
-  labelColor,
-  onChange,
+  labelColor
 }: IProps) {
   const {
     register,
@@ -25,7 +24,6 @@ export default function RSInput({
   return (
     <Input
       {...register(name)}
-      onChange={onChange}
       className={className}
       errorMessage={errors[name] ? (errors[name].message as string) : ""}
       isInvalid={!!errors[name]}

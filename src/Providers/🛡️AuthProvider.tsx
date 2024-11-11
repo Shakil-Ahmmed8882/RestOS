@@ -10,7 +10,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../Config/🔥 firebase.config";
-import { AuthContextType } from "./type";
+
 
 // types.ts (or at the top of your file)
 
@@ -66,8 +66,7 @@ const AuthProvider = ({ children }) => {
     if (user !== null) {
       return updateProfile(user, {
         displayName: name,
-        photoURL: photoURL,
-      });
+        photoURL: photoURL});
     }
   };
 

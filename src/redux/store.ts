@@ -5,16 +5,19 @@ import userApi from "./features/user/userApi";
 import orderApi from "./features/order/orderApi";
 import menuReducer from "./features/global/menuSlice"
 import commentReducer from "./features/comment/comment.slice"
+import profileReducer from "./features/profile/profile.slice"
 import commentApi from "./features/comment/comment.api";
 import replyApi from "./features/reply/reply.api";
 import voteApi from "./features/vote/vote.api";
 import saveBlogApi from "./features/save/save.blog.api";
+import profileApi from "./features/profile/profile.api";
 
 export const store = configureStore({
   reducer: {
     [baseApi.reducerPath]: baseApi.reducer,
     menu: menuReducer, 
-    comment: commentReducer
+    comment: commentReducer,
+    profile: profileReducer
   },
 
   // APIs Middleware connection ...
@@ -27,7 +30,7 @@ export const store = configureStore({
       replyApi.middleware,
       voteApi.middleware,
       saveBlogApi.middleware,
-
+      profileApi.middleware,
     ),
 });
 
