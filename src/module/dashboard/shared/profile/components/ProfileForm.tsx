@@ -5,14 +5,15 @@ import SocialMediaSection from "./SocialMediaSection";
 import { Button } from "@nextui-org/react";
 import { useAppDispatch } from "../../navabar";
 import { setProfileData } from "../../../../../redux/features/profile/profile.slice";
-import { useUpdateUserMutation } from "../../../../../redux/features/profile/profile.api";
+import { useUpdateUserProfileMutation } from "../../../../../redux/features/profile/profile.api";
+
+
 
 export default function ProfileForm({ data, calculateCompletionPercentage }) {
   const dispatch = useAppDispatch();
-  const [updateUser] = useUpdateUserMutation();
+  const [updateUser] = useUpdateUserProfileMutation();
 
-
-//Default value of user 
+  //Default value of user
   const defaultValues = {
     email: data?.email || "",
     contactNumber: data?.contactNumber || "",
@@ -29,10 +30,10 @@ export default function ProfileForm({ data, calculateCompletionPercentage }) {
     twitter: data?.socialMedia?.twitter || "",
   };
 
-  // update user info 
-  // dispatch in local slice 
-  // calculate percentage for chart view 
-  // then actual api call 
+  // update user info
+  // dispatch in local slice
+  // calculate percentage for chart view
+  // then actual api call
   const onsubmit = async (formData) => {
     const userData = {
       ...formData,
@@ -48,9 +49,8 @@ export default function ProfileForm({ data, calculateCompletionPercentage }) {
     calculateCompletionPercentage(formData);
 
     try {
-      const res = await updateUser(userData);
-
-      console.log({ res });
+      const res = await updateUser({id:import.meta.env.VITE_TEST_USER_ID,data:userData});
+      
     } catch (error) {}
   };
 

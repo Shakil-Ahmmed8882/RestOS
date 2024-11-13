@@ -39,7 +39,7 @@ const orderApi = baseApi.injectEndpoints({
           });
         }
         return {
-          url: "/orders/summary/672f74a765cd583c7eab9185",
+          url: `/orders/summary/${import.meta.env.VITE_TEST_USER_ID}`,
           method: "GET",
           params: params,
         };

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function ProfileName({ user, name, setName, updateUserInfo }) {
+export default function ProfileName({ user, name = "", setName, updateUserInfo }) {
   const [isEditing, setIsEditing] = useState(false);
 
   const handleSave = async () => {

@@ -43,19 +43,23 @@ const profileApi = baseApi.injectEndpoints({
       invalidatesTags: ["user-data"],
     }),
 
-    updateUser: builder.mutation({
-      query: (data) => {
+    updateUserProfile: builder.mutation({
+      query: ({ id, data }) => {
         return {
-          url: `/users`,
+          url: `/users/${id}`,
           method: "PATCH",
           body: data,
         };
       },
-      invalidatesTags: ["comment-data"],
+      invalidatesTags: ["user-data"],
     }),
 
     deleteUser: builder.mutation({
-      query: (id:string) => {
+      query: (id: string) => {
+
+
+        
+        console.log(`/users/${id}`)
         return {
           url: `/users/${id}`,
           method: "DELETE",
@@ -70,7 +74,7 @@ export const {
   useCreateUserMutation,
   useGetAllUsersQuery,
   useGetSingleUserQuery,
-  useUpdateUserMutation,
-  useDeleteUserMutation
+  useDeleteUserMutation,
+  useUpdateUserProfileMutation,
 } = profileApi;
 export default profileApi;

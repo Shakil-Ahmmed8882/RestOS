@@ -20,7 +20,7 @@ const OrderLayout = () => {
 
   const { data } = useGetAllOrdersQuery([
     { name: "status", value: "pending" },
-    { name: "user", value: "672f74a765cd583c7eab9185" },
+    { name: "user", value: import.meta.env.VITE_TEST_USER_ID},
     { name: "page", value: page },
     { name: "limit", value: 10 },
     { name: "sort", value: "-createdAt" },

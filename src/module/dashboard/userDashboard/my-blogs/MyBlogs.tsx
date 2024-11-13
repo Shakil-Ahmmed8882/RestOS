@@ -6,7 +6,7 @@ import MyBlogCard from "./components/MyBlogCard";
 
 export default function MyBlogs() {
   const { data, isLoading: isBlogDataLoading } = useGetAllBlogsQuery([
-    { name: "user", value: "672f74a765cd583c7eab9185" },
+    { name: "user", value:import.meta.env.VITE_TEST_USER_ID },
   ]);
   const blogData = data?.data || [];
 

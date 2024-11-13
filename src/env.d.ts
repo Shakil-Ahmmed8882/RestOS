@@ -1,6 +1,10 @@
-// src/env.d.ts or just in the root directory if you don't have a src folder
+// src/env.d.ts
 interface ImportMetaEnv {
   VITE_IMGBB_API_KEY: string;
+  VITE_TOKEN: string; // Ensure the token is prefixed with 'VITE_'
+  VITE_TEST_USER_ID: string; // Ensure the token is prefixed with 'VITE_'
 }
 
-// You can add more environment variables as needed
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
