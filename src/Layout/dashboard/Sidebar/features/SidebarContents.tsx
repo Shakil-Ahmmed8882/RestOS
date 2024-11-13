@@ -12,7 +12,7 @@ import Logo from "../../../../shared/ui/Logo";
 import { DashboardAdminRoutes } from "./AdminRoutes";
 
 export const SidebarContents = () => {
-  const [role, setRole] = useState("user");
+  const [role, setRole] = useState("admin");
 
 
   return (

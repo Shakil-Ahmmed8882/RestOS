@@ -7,7 +7,6 @@ const Sidebar = () => {
 
   return (
     <>
-      {/* Small Screen Navbar */}
 
       {/* Large device Sidebar */}
       <div className={`hidden md:block `}>

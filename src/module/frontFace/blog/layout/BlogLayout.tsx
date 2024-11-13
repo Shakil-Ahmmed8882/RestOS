@@ -12,11 +12,15 @@ import { useLocation } from "react-router-dom";
 import notFoundImg from "../../../../assets/img/shared/4041.png";
 import BlogPageSkeleton from "../components/BlogPageSkeleton";
 
-// extract category
+
+
 export const getCategoryFromUrl = () => {
   const queryParams = new URLSearchParams(location.search);
   return queryParams.get("category");
 };
+
+
+
 
 function BlogLayout() {
   const { user } = useAuth();
@@ -43,7 +47,7 @@ function BlogLayout() {
       ? [{ name: "category", value: category }]
       : []),
   ]);
-  const fetchedBlogs = data?.data || []; // Ensure data is defined
+  const fetchedBlogs = data?.data || []; 
 
   return (
     <section className="py-8 -mt-20 pt-32">
