@@ -22,11 +22,8 @@ function BlogLayout() {
   const { user } = useAuth();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
   const [showComments, setShowComments] = useState(false);
   const [showCommentBlogId, setShowCommenBlogId] = useState(null);
-
-  const pageSize = 5;
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const handlePageChange = (page) => setCurrentPage(page);

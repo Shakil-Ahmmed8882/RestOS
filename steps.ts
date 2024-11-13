@@ -75,18 +75,19 @@
       
       
       
+          // ----------------- SHOW MY ORDERS & Purchases ----------------
+          -1. Create compoentnt, create redux api and load the data ✅
+          -2. load all orders ✅
+          -3. Load all purchage at same page ✅
+          
+
           // ----------------- SHOW MY BLOGS ----------------
-          -1. Create compoentnt, create redux api and load the data 
-          -2. 
-          -3. 
-          -4. 
+          -1. Create compoentnt, create redux api and load the data ✅ac
+          -2. get inspiration and simply create it 
+          -3. make it reponsive 
+          -4. update the github
 
 
-          // ----------------- SHOW MY ORDERS ----------------
-          -1. Create compoentnt, create redux api and load the data 
-          -2. load all orders 
-          -3. Load all purchage at same page
-          -4. 
           -
           -
           -

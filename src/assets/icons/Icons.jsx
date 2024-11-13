@@ -199,7 +199,7 @@ export const SingleCheckBadge = ({ className = "" }) => {
   );
 };
 
-export const CommentIcon = () => {
+export const CommentIcon = ({className=''}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -207,7 +207,7 @@ export const CommentIcon = () => {
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="currentColor"
-      className="size-6 text-[#727272] hover:text-[black] transition500"
+      className={`${className} size-6 text-[#727272] hover:text-[black] transition500`}
     >
       <path
         strokeLinecap="round"
