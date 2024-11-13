@@ -4,10 +4,9 @@ import "../styles/home.css";
 import React from "react";
 
 import  { DemoFoodCard } from "../components/DemoImage";
-import { url2 } from "../../../dashboard/userDashboard/dashboard/components/charts/data";
-import TitleAndDescription from "../components/TitleAndDescription";
+
+const url2 = ""
 import { CheckmarkIcon } from "react-hot-toast";
-// import demoBanner from "../../../../assets/img/fishdemo.png";
 import demoBanner from "../../../../assets/img/home/sprinkleTomato.png";
 
 
@@ -32,7 +31,7 @@ const Feature = () => {
 
           <div className="-z-30 text-right md:mr-8 sm:mt-11 flex-col-reverse lg:flex-row md:mt-20 gap-16  md:flex justify-center items-center">
             <div className="space-y-1 z-10 w-full">
-              <TitleAndDescription />
+              {/* <TitleAndDescription /> */}
               <img className="w-[80%] ml-auto" src={demoBanner}/>
             </div>
           </div>

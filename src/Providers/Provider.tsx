@@ -7,7 +7,7 @@ import React from 'react';
 function Providers({ children }) {
   return (
     <NextUIProvider>
-      <NextThemesProvider attribute="class" defaultTheme="dark">
+      <NextThemesProvider attribute="class" defaultTheme="light">
         {children}
       </NextThemesProvider>
     </NextUIProvider>

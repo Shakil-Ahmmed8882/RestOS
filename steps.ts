@@ -56,23 +56,44 @@
       2. create api and send it to backend ✅ 
       3. show all comments ✅
 
-      4. update a comment 
+      4. update a comment ✅
           - create input and take updated comment 
           - pass it to the server and update 
-      5. delete comment
+      5. delete comment ✅
           - create dropdown of edit and delete
           - once delete pass id and delete from the db
 
 
 
       // ----------------- BLOG SAVE ----------------
-          -Get the blog id and save the blog 
-          -unsave the blog 
-          -get inspiration of saved blogs design 
+          -Get the blog id and save the blog ✅
+          -unsave the blog ✅
+          -get inspiration of saved blogs design ✅
+          add helmet get from FAQ✅
           -create ui 
           -get all the saved blogs 
+      
+      
+      
+          // ----------------- SHOW MY BLOGS ----------------
+          -1. Create compoentnt, create redux api and load the data 
+          -2. 
+          -3. 
+          -4. 
 
 
+          // ----------------- SHOW MY ORDERS ----------------
+          -1. Create compoentnt, create redux api and load the data 
+          -2. load all orders 
+          -3. Load all purchage at same page
+          -4. 
+          -
+          -
+          -
+          -
+          -
+          -
+          -
+          -
 
-          add helmet get from FAQ
    */

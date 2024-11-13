@@ -1,4 +1,4 @@
-import { propTypesValue } from "@material-tailwind/react/types/components/accordion";
+
 
 module.exports = {
   root: true,

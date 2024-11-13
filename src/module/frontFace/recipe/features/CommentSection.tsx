@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {Input,Button} from 'antd';
-import { SearchIcon } from '../../../../assets/icons/Icons';
-import Comment from '../components/comment';
+import Comment from '../components/Comments';
 
 
 const CommentSection = () => {

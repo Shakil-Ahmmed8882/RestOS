@@ -1,7 +1,7 @@
 import ApexCharts from 'apexcharts';
 import React, { useEffect, useRef } from "react";
 
-import { orderCountOptions, purchaseCountOptions } from './data';
+import { orderCountOptions,purchaseCountOptions } from './data';
 
 const Chart = ({reference, CountOption}) => {
     const PurchaOptionsRef = useRef(null)

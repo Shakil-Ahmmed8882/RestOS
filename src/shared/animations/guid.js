@@ -1,7 +1,0 @@
-/*
-
-
-
-Animation components and wrappers
-
-*/

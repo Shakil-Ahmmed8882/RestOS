@@ -57,6 +57,7 @@ const CommentsSidebar: React.FC<CommentsSidebarProps> = ({
   };
 
 
+console.log(user)
   // ADD COMMENTS 
   const handleComment = () => {
     
@@ -100,7 +101,7 @@ const CommentsSidebar: React.FC<CommentsSidebarProps> = ({
   };
 
   const handleCancel = () => {
-    setInputValue(""); // Clear the input on cancel
+    setInputValue(""); 
   };
 
   return (

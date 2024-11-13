@@ -14,6 +14,7 @@ import { Tags } from ".";
 const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzJmNzRhNzY1Y2Q1ODNjN2VhYjkxODUiLCJuYW1lIjoiVXNlciAyIiwiZW1haWwiOiJ1c2VyeEAyLmNvbSIsInJvbGUiOiJVU0VSIiwicGhvdG8iOiIvL2V4YW1wbGUxLmNvbS9waG90by5qcGciLCJpYXQiOjE3MzExNjMzMDQsImV4cCI6MTczMzc1NTMwNH0.JDc52pHRuOzLpMFcEOagmJkmp05gTpPI1ip1FSWwNhI";
 
 const baseQuery = fetchBaseQuery({
+  // baseUrl: "http://localhost:5000/api/v1",
   baseUrl: "http://localhost:5000/api/v1",
   credentials: "include",
   // Adding the token to headers for each request

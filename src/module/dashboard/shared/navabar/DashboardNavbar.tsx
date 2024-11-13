@@ -50,7 +50,7 @@ export default function AppNavbar() {
       {/* Center Content */}
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
-          <h2 className="font-bold text-[#c2c2c2] italic">Dashboard</h2>
+          <h2 className="font-bold text-light-gray italic">Dashboard</h2>
         </NavbarItem>
       </NavbarContent>
 

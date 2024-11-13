@@ -11,7 +11,7 @@
 export const QueryGenerator = (status, email, page, searchValue= undefined) => {
   const queryArray = [
     { name: "status", value: status },
-    email && { name: "email", value: email },
+    email && { name: "user", value: "672f74a765cd583c7eab9185" },
     { name: "page", value: page },
     { name: "limit", value: 5 },
     searchValue && { name: "searchTerm", value: searchValue },

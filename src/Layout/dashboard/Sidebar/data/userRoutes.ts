@@ -6,11 +6,11 @@ import { AiOutlineDashboard } from "react-icons/ai";
 
 
 
-export const userRoutesArray = [
+export const userRoutes = [
     {label:"Dashboard", icon:AiOutlineDashboard, address: `/dashboard`},
-    {label:"Profile", icon:CgProfile, address: `/dashboard/user/profile`},
+    {label:"Profile", icon:CgProfile, address: `/dashboard/profile`},
     {label:"Featured Recipes", icon:BiPurchaseTag, address: `/dashboard/user/featured-recipes`},
     {label:"Order List", icon:CiBoxList, address: `/dashboard/user/orderlist`},
-    {label:"Purchased List", icon:BiPurchaseTag, address: `/dashboard/user/purchasedList`},
+    {label:"My Blogs", icon:BiPurchaseTag, address: `/dashboard/user/my-blogs`},
   ]
 

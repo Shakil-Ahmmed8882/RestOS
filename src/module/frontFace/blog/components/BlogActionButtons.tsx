@@ -21,7 +21,7 @@ import {
 } from "../../../../redux/features/save/save.blog.api";
 import ActionButtonSkeleton from "./ActionButtonSkeleton";
 
-function ActionButtons({ blogId, blog }) {
+function BlogActionButtons({ blogId, blog }) {
   // ============== API ===============
   //UPVOTE
   const { data } = useGetSingleVoteOfUserOnBlogQuery(blogId);
@@ -158,4 +158,4 @@ function ActionButtons({ blogId, blog }) {
   );
 }
 
-export default ActionButtons;
+export default BlogActionButtons;

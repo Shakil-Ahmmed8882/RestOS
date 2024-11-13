@@ -10,7 +10,6 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Input,
   Spinner,
   Textarea,
 } from "@nextui-org/react";
@@ -46,12 +45,9 @@ const CommentComponent: React.FC<{ comment: CommentData }> = ({ comment }) => {
   const handleUpdateComment = async () => {
     setBlogComment({ ...blogComment, comment: editedComment });
     setIsEditing(false);
-    // console.log(
-    //   `Comment updated - ID: ${blogComment._id}, New comment: ${editedComment}`
-    // );
+
 
     try {
-      console.log({ id: blogComment?._id, comment: editedComment });
       await updateComment({ id: blogComment?._id, comment: editedComment });
     } catch (error) {
       console.log(error);
@@ -140,7 +136,7 @@ const CommentComponent: React.FC<{ comment: CommentData }> = ({ comment }) => {
     setBlogComment({ ...blogComment, replies: updatedReplies });
 
     try {
-      const deletedReply = await deleteReplyOnComment({
+       await deleteReplyOnComment({
         commentId: blogComment._id,
         replyId,
       });
@@ -148,6 +144,8 @@ const CommentComponent: React.FC<{ comment: CommentData }> = ({ comment }) => {
       console.log(error.message);
     }
   };
+
+  
 
   return (
     <motion.div
@@ -157,7 +155,10 @@ const CommentComponent: React.FC<{ comment: CommentData }> = ({ comment }) => {
       transition={{ duration: 0.5 }}
     >
       <Card
-        className={`${
+        className={`
+          
+          ${commentDeleteLoading && "animate-pulse"}
+          ${
           blogComment._id === deleteCommentId ? "bg-[#f5f5f5]" : ""
         } w-full mb-4 !shadow-none `}
       >
@@ -167,20 +168,15 @@ const CommentComponent: React.FC<{ comment: CommentData }> = ({ comment }) => {
               isBordered
               radius="full"
               size="sm"
-              src={blogComment.user.photo}
+              src={blogComment?.user?.photo || ""}
             />
             <div className="flex flex-col items-start justify-center">
               <h4 className="text-medium font-semibold leading-none text-default-600">
-                {blogComment.user.name}
+                {blogComment?.user?.name}
               </h4>
               <h5 className="text-small tracking-tight text-default-400 mt-2">
                 <div className="flex justify-center items-center">
-                  {commentDeleteLoading && (
-                    <Spinner
-                      className="absolute inset-0 text-[#fff]"
-                      color="default"
-                    />
-                  )}
+           
                   {new Date(blogComment.createdAt).toLocaleString()}
                 </div>
               </h5>
@@ -212,7 +208,7 @@ const CommentComponent: React.FC<{ comment: CommentData }> = ({ comment }) => {
             </DropdownMenu>
           </Dropdown>
         </CardHeader>
-        <CardBody className="py-0 text-small text-default-400 shadow-none">
+        <CardBody className={` py-0 text-small text-default-400 shadow-none`}>
           <AnimatePresence mode="wait">
             {isEditing ? (
               <motion.div

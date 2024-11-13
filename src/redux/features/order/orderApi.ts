@@ -39,7 +39,7 @@ const orderApi = baseApi.injectEndpoints({
           });
         }
         return {
-          url: "/orders/summary/shakilahmmed8882@gmail.com",
+          url: "/orders/summary/672f74a765cd583c7eab9185",
           method: "GET",
           params: params,
         };
@@ -58,9 +58,9 @@ const orderApi = baseApi.injectEndpoints({
       invalidatesTags: ["order-data"],
     }),
     deleteOrder: builder.mutation({
-      query: ({ id, email }) => {
+      query: (id:string) => {
         return {
-          url: `/orders/${id}/${email}`,
+          url: `/orders/${id}`,
           method: "DELETE",
         };
       },

@@ -13,6 +13,7 @@ dist
 .env
 dist-ssr
 *.local
+.test.tsx
 inpiration.js
 
 # Editor directories and files
@@ -25,3 +26,4 @@ inpiration.js
 *.njsproj
 *.sln
 *.sw?
+.vercel

@@ -2,7 +2,7 @@ export const items = [
     {
       key: "profile",
       label: "Profile",
-      path: "/dashboard/common/profile",
+      path: "/dashboard/profile",
     },
     {
       key: "setting",

@@ -1,13 +1,13 @@
 
 import React from "react";
-import { userRoutesArray } from "../data/UserRoutes";
+import { userRoutes } from "../data/userRoutes.ts";
 import MenuItem from "../components/MenuItem";
 
 export const DashboardUserRoutes = () => {
   return (
     <>
       {/* User routes  */}
-      {userRoutesArray?.map((route) => (
+      {userRoutes?.map((route) => (
         <MenuItem
           label={route.label}
           icon={route.icon}
