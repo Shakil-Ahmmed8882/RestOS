@@ -1,13 +1,11 @@
 import React from "react";
 import { Table } from "antd";
-import { motion } from "framer-motion";
-
 import { Trash2Icon } from "lucide-react";
 import StatusDropdown from "./StatusDropdown";
-import RoleDropdown from "./RoleDropdown";
 import { ConfirmationModal } from "../../../../../../shared/modals/ConfirmationModal";
+import { DisLikeIcon, LikeIcon } from "../../../../../../assets/icons";
 
-interface UsersTableProps {
+interface blogsTableProps {
   data: any[];
   isFetching: boolean;
   hoveredRow: string | null;
@@ -15,16 +13,15 @@ interface UsersTableProps {
   dropdownType: string;
   setDropdownType: React.Dispatch<React.SetStateAction<string>>;
   onDelete: (userId: string) => void;
-  onEditRole: (role: string) => void;
   onEditStatus: (status: string) => void;
-  setSelectedUserId: (status: string | null) => void;
+  setSelectedBlogId: (status: string | null) => void;
   selectedUserId: string | null;
   onOpen: () => void;
   onOpenChange: () => void;
   isOpen: boolean;
 }
 
-const UsersTable: React.FC<UsersTableProps> = ({
+const BlogsTable: React.FC<blogsTableProps> = ({
   data,
   isFetching,
   hoveredRow,
@@ -32,19 +29,17 @@ const UsersTable: React.FC<UsersTableProps> = ({
   dropdownType,
   setDropdownType,
   onDelete,
-  onEditRole,
   onEditStatus,
-  selectedUserId,
-  setSelectedUserId,
+  setSelectedBlogId,
   onOpen,
   onOpenChange,
   isOpen,
 }) => {
   const columns = [
     {
-      key: "photo",
-      title: "Photo",
-      dataIndex: "photo",
+      key: "image",
+      title: "image",
+      dataIndex: "image",
       render: (image: string) => (
         <img
           src={image}
@@ -54,18 +49,26 @@ const UsersTable: React.FC<UsersTableProps> = ({
       ),
     },
     {
-      title: "Name",
-      key: "name",
-      dataIndex: "name",
+      key: "title",
+      title: "Title",
+      dataIndex: "title",
+      render: (title: string) => (
+        <p className="text-[gray] text-[10px] sm:text-sm md:text-md">{title}</p>
+      ),
     },
     {
-      title: "Email",
-      key: "email",
-      dataIndex: "email",
+      key: "category",
+      title: "Category",
+      dataIndex: "category",
+      render: (category: string) => (
+        <p className="text-[gray] text-[10px] sm:text-sm md:text-md">
+          {category}
+        </p>
+      ),
     },
     {
-      title: "Status",
       key: "status",
+      title: "Status",
       dataIndex: "status",
       render: (status: string, record: any) => (
         <StatusDropdown
@@ -80,19 +83,29 @@ const UsersTable: React.FC<UsersTableProps> = ({
       ),
     },
     {
-      title: "Role",
-      key: "role",
-      dataIndex: "role",
-      render: (role: string, record: any) => (
-        <RoleDropdown
-          role={role}
-          record={record}
-          hoveredRow={hoveredRow}
-          setHoveredRow={setHoveredRow}
-          dropdownType={dropdownType}
-          setDropdownType={setDropdownType}
-          onEditRole={onEditRole}
-        />
+      key: "upvotes",
+      title: "Upvotes",
+      dataIndex: "upvotes",
+      render: (upvotes: number) => (
+        <span
+          className={`  shadow-primaryColor flex items-center gap-1 text-[10px] sm:text-sm md:text-md`}
+        >
+          <LikeIcon className="text-primaryColor" />
+          {upvotes}
+        </span>
+      ),
+    },
+    {
+      key: "downvotes",
+      title: "Downvotes",
+      dataIndex: "downvotes",
+      render: (downvotes: number) => (
+        <span
+          className={`text-[10px] sm:text-sm md:text-md shadow-primaryColor flex items-center gap-2`}
+        >
+          <DisLikeIcon />
+          {downvotes}
+        </span>
       ),
     },
     {
@@ -109,10 +122,10 @@ const UsersTable: React.FC<UsersTableProps> = ({
             message="Are you sure you want to delete this item? This action cannot be undone."
           />
           <Trash2Icon
-            className="cursor-pointer size-4 text-deepPink"
+            className="cursor-pointer size-3 md:size-4 text-deepPink"
             onClick={() => {
               onOpen();
-              setSelectedUserId(record._id);
+              setSelectedBlogId(record._id);
             }}
           />
         </div>
@@ -120,8 +133,6 @@ const UsersTable: React.FC<UsersTableProps> = ({
       width: "1%",
     },
   ];
-
-
 
   return (
     <Table
@@ -133,4 +144,4 @@ const UsersTable: React.FC<UsersTableProps> = ({
   );
 };
 
-export default UsersTable;
+export default BlogsTable;

@@ -83,9 +83,19 @@
 
           // ----------------- SHOW MY BLOGS ----------------
           -1. Create compoentnt, create redux api and load the data ✅ac
-          -2. get inspiration and simply create it 
-          -3. make it reponsive 
-          -4. update the github
+          -2. get inspiration and simply create it ✅
+          -3. make it reponsive ✅
+          -4. update the github ✅
+
+
+
+
+          // ----------------- BLOG MANAGEMENT ----------------
+          -1. Create compoentnt, create redux api and load the data
+          -2. Show the statistics all blogs count, comment count, like and dislike counts
+          -3. Show the statistics all blogs count, comment count, like and dislike counts
+          -4. Search and Filter Options: ---------- by title, category, or author.
+          -5. Consider filters by status (published/draft), category, or date range.
 
 
           -

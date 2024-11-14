@@ -12,7 +12,6 @@ import { Query } from "../../module/dashboard/adminDashboard/food-management/all
  * @param  searchValue - Search term for filtering.
  */
 const ReusableTable = ({ columns, fetchData, actions, searchValue }) => {
-  const [params, setParams] = useState(undefined);
   const [page, setPage] = useState(1);
   const { data, isFetching } = fetchData(Query(page, searchValue));
 
@@ -64,7 +63,7 @@ const ReusableTable = ({ columns, fetchData, actions, searchValue }) => {
           });
 
           // @ts-ignore          setParams(queryParams);
-          console.log(queryParams);
+          
         }}
         showSorterTooltip={{ target: "sorter-icon" }}
         pagination={false}

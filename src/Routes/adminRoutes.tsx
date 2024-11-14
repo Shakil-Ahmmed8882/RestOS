@@ -11,7 +11,7 @@ import UserActivityLog from "../module/dashboard/adminDashboard/user-management/
 import PendingOrders from "../module/dashboard/adminDashboard/order-management/pending-orders/PendingOrders";
 import OrderHistory from "../module/dashboard/adminDashboard/order-management/order-histories/OrderHistory";
 import AllPurchsedOrders from "../module/dashboard/adminDashboard/order-management/purchaed-orders/AllPurchsedOrders";
-import AllBlogs from "../module/dashboard/adminDashboard/blog-management/all-blogs/AllBlogs";
+import AllBlogsLayout from "../module/dashboard/adminDashboard/blog-management/all-blogs/AllBlogsLayout";
 import BlogCategories from "../module/dashboard/adminDashboard/blog-management/blog-categories/BlogCategories";
 import AllBlogComments from "../module/dashboard/adminDashboard/blog-management/all-blog-comments/AllBlogComments";
 import BlogAnalytics from "../module/dashboard/adminDashboard/blog-management/blog-analytics/BlogAnalytics";
@@ -74,11 +74,7 @@ export const adminPaths = [
   // BLOG MANAGEMENT
   {
     path: "all-blog-posts",
-    element: <AllBlogs />,
-  },
-  {
-    path: "all-blog-posts",
-    element: <AllBlogs />,
+    element: <AllBlogsLayout />,
   },
   {
     path: "blog-categories",
