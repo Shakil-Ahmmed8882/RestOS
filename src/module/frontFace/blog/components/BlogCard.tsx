@@ -42,7 +42,7 @@ function BlogCard({ blog, user, onCommentClick }) {
         >
           {blog?.title}
         </h2>
-        <div className="prose prose-lg w-[70%] text-muted-foreground">
+        <div className="prose prose-lg text-muted-foreground">
           <p className="description">
             {
               blog?.description

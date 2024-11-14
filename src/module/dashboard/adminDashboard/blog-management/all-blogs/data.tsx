@@ -2,6 +2,7 @@ import { MessageCircle, Notebook, ThumbsDown, ThumbsUp } from "lucide-react";
 import React from "react";
 
 export const blogCategories = [
+    { title: "All", icon: "⚙️" },
     { title: "Technology", icon: "⚙️" },
     { title: "Food", icon: "🍔" },
     { title: "Travel", icon: "✈️" },

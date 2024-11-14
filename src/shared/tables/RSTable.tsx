@@ -52,7 +52,7 @@ const ReusableTable = ({ columns, fetchData, actions, searchValue }) => {
         columns={updatedColumns}
         dataSource={tableData}
         onChange={(pagination, filters) => {
-          const queryParams = [];
+          const queryParams:any = [];
 
           Object.keys(filters).forEach((key) => {
             if (filters[key]) {

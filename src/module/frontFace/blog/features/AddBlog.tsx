@@ -94,15 +94,19 @@ export default function AddBlog() {
       (ingredient) => ingredient.trim() !== ""
     );
 
+    
+    
     const blogData = {
       ...data,
       tags: [data.tags],
       instructions: validInstructions,
       author: {
-        userId: "66aa22f43a81bd0fd69b85d7",
+        user: import.meta.env.VITE_TEST_USER_ID,
         name: "Chef Mario",
       },
     };
+    
+    console.log(blogData)
 
     // appending formdata
     for (let image of imageFiles) {

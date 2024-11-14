@@ -1,1 +1,1 @@
-export const Tags = ["order-data","blog-data","comment-data","vote-data","save-data","user-data"]
+export const Tags = ["order-data","blog-data","comment-data","vote-data","save-data","user-data","analytics-data"]

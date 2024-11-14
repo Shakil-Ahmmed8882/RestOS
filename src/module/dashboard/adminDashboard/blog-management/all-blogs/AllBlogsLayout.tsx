@@ -12,6 +12,8 @@ import {
 } from "../../../../../redux/features/blog/blog.api.ts";
 import { blogCategories, blogStats } from "./data.tsx";
 import Statistics from "../../../../../shared/ui/stats/Statistics.tsx";
+import { getCategoryFromUrl } from "../../../../frontFace/blog/layout/BlogLayout.tsx";
+import useDebounce from "../../../../../🔗Hook/useDebounce.ts";
 
 const AllBlogsLayout = () => {
   const [page, setPage] = useState(1);
@@ -21,9 +23,18 @@ const AllBlogsLayout = () => {
   const [selectedBlogId, setSelectedBlogId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { data, isFetching } = useGetAllBlogsQuery([
-    { name: "page", value: page },
-    { name: "searchTerm", value: searchTerm },
+  const category = getCategoryFromUrl();
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+
+  const {
+    data,
+    isLoading: isBlogDataLoading,
+    isFetching,
+  } = useGetAllBlogsQuery([
+    { name: "searchTerm", value: debouncedSearchTerm },
+    ...(category && category !== "All"
+      ? [{ name: "category", value: category }]
+      : []),
   ]);
 
   const userData = data?.data;
@@ -68,8 +79,7 @@ const AllBlogsLayout = () => {
 
   return (
     <div className="mt-11">
-
-<Statistics stats={blogStats} />
+      <Statistics stats={blogStats} />
       <PageHeader
         py="py-10"
         searchPlaceholder="Search User"
@@ -81,7 +91,7 @@ const AllBlogsLayout = () => {
         dropdownProps={{ closeOnSelect: true }}
         inputProps={{ color: "success" }}
       />
-      
+
       <AllBlogsTable
         data={userData}
         isFetching={isFetching}
