@@ -19,7 +19,7 @@ import {
   useDeleteCommentOnBlogMutation,
   useUpdateCommentOnBlogMutation,
 } from "../../../../redux/features/comment/comment.api";
-import { CommentData, Reply } from "../../../../types/blog.type";
+import { TCommentData, Reply } from "../../../../types/blog.type";
 import { useAddReplyToCommentMutation, useDeleteReplyOnCommentMutation, useUpdateReplyOnCommentMutation } from "../../../../redux/features/reply/reply.api";
 import SendReply from "../features/reply/SendReply";
 import ReplyComponent from "./reply/ReplyComponent";
@@ -27,7 +27,14 @@ import toast from "react-hot-toast"
 import { useAppDispatch } from "../../../../redux/hooks";
 import { removeLocalComment } from "../../../../redux/features/comment/comment.slice";
 
-const CommentComponent: React.FC<{ comment: CommentData }> = ({ comment }) => {
+
+interface CommentComponentProps {
+  blogId: string;
+  comment: TCommentData;
+}
+
+const CommentComponent: React.FC<CommentComponentProps> = ({ blogId, comment }) => {
+
   const [isReplying, setIsReplying] = useState(false);
   const [replyContent, setReplyContent] = useState("");
   const [blogComment, setBlogComment] = useState(comment);
@@ -82,7 +89,7 @@ const CommentComponent: React.FC<{ comment: CommentData }> = ({ comment }) => {
     if (replyContent.trim()) {
       const newReply: Reply = {
         _id: Date.now().toString(),
-        user: "current-user-id",
+        user: import.meta.env.VITE_TEST_USER_ID,
         comment: replyContent,
         createdAt: new Date().toISOString(),
       };
@@ -91,13 +98,16 @@ const CommentComponent: React.FC<{ comment: CommentData }> = ({ comment }) => {
         replies: [...blogComment.replies, newReply],
       });
       setReplyContent("");
-      console.log(
-        `Reply added to comment - Comment ID: ${blogComment._id}, Reply: ${replyContent}`
-      );
-      await addReplyToComment({
+
+
+      const replyRemoteData = {
         commentId: blogComment._id,
-        comment: replyContent,
-      });
+        replyText: replyContent,
+        blogId,
+      }
+      const res = await addReplyToComment(replyRemoteData);
+      
+      console.log(res)
 
       console.log(data, isSuccess);
       try {
@@ -118,7 +128,8 @@ const CommentComponent: React.FC<{ comment: CommentData }> = ({ comment }) => {
     );
 
     try {
-      const updatedReplyData = await updateReplyOnComment({
+       await updateReplyOnComment({
+        blogId,
         commentId: blogComment._id,
         replyId,
         replyText: newComment,

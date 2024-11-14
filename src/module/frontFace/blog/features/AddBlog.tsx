@@ -106,14 +106,15 @@ export default function AddBlog() {
       },
     };
     
-    console.log(blogData)
+    console.log({blogData})
 
     // appending formdata
     for (let image of imageFiles) {
       formData.append("file", image);
     }
     formData.append("data", JSON.stringify(blogData));
-
+    
+    
     createBlog(formData);
 
   };

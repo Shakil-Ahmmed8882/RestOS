@@ -3,17 +3,12 @@ import { baseApi } from "../../api/baseApi";
 const replyApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     addReplyToComment: builder.mutation({
-      query: ({
-        commentId,
-        comment,
-      }: {
-        commentId: string;
-        comment: string;
-      }) => {
+      query: (data) => {
+        const { replyText, blogId } = data;
         return {
-          url: `/replies/${commentId}/reply`,
+          url: `/replies/${data?.commentId}/reply`,
           method: "POST",
-          body: { comment },
+          body: { replyText, blogId },
         };
       },
       invalidatesTags: ["comment-data"],
@@ -24,15 +19,17 @@ const replyApi = baseApi.injectEndpoints({
         replyId,
         commentId,
         replyText,
+        blogId
       }: {
         replyId: string;
         commentId: string;
         replyText: string;
+        blogId: string;
       }) => {
         return {
           url: `/replies/comments/${commentId}/reply/${replyId}`,
           method: "PATCH",
-          body: { comment: replyText },
+          body: { replyText,blogId },
         };
       },
       invalidatesTags: ["comment-data"],

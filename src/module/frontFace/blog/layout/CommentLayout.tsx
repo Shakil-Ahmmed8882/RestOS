@@ -35,7 +35,7 @@ export function CommentLayout({ blogId }: { blogId: string }) {
             {data?.data?.length > 0 ? (
               <>
                 {comments?.comments?.map((comment) => (
-                  <CommentComponent key={comment._id} comment={comment} />
+                  <CommentComponent blogId={blogId} key={comment._id} comment={comment} />
                 ))}
               </>
             ) : (

@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { Button } from "antd";
 import { Avatar } from "@nextui-org/react";
+import { useAuth } from "../../../../Utils/useAuthHelper";
 
 interface CommentInputProps {
   inputValue: string;
@@ -18,12 +19,14 @@ const CommentInput: React.FC<CommentInputProps> = ({
   isCommentingDisabled,
   inputRef,
 }) => {
+  const { user } = useAuth();
+
   return (
     <div className="p-4 pb-5">
       {/* Avatar and username always visible */}
       <div className="flex items-center gap-3 mb-3">
-        <Avatar />
-        <p>Shakil Ahmmed</p>
+        <Avatar src={`${user?.photoURL}`} />
+        <p>{user?.displayName}</p>
       </div>
 
       {/* Input field always visible and auto-focused */}
@@ -38,9 +41,12 @@ const CommentInput: React.FC<CommentInputProps> = ({
 
       {/* Cancel and Comment buttons always visible */}
       <div className="flex justify-end gap-3">
-     
         <Button
-          className={`${!inputValue.trim() ? "disabled:opacity-40 disabled:text-[white]" : "disabled:opacity-100"}  rounded-full !bg-primaryColor text-[#fff]`}
+          className={`${
+            !inputValue.trim()
+              ? "disabled:opacity-40 disabled:text-[white]"
+              : "disabled:opacity-100"
+          }  rounded-full !bg-primaryColor text-[#fff]`}
           onClick={onComment}
           disabled={isCommentingDisabled}
         >

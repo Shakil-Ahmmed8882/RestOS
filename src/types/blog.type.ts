@@ -12,7 +12,7 @@ export interface User {
     createdAt: string;
   }
   
-  export interface CommentData {
+  export interface TCommentData {
     _id: string;
     blog: string;
     user: User;

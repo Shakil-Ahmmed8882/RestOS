@@ -35,7 +35,8 @@ const ReplyComponent: React.FC<{
     console.log(`Reply deleted - ID: ${reply._id}`);
   };
 
-
+  
+  console.log({reply:reply})
   return (
     <motion.div
       initial={{ opacity: 0, y: -10 }}
