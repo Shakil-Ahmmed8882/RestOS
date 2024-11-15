@@ -106,7 +106,7 @@ export default function AddBlog() {
       },
     };
     
-    console.log({blogData})
+    
 
     // appending formdata
     for (let image of imageFiles) {
@@ -130,6 +130,7 @@ export default function AddBlog() {
 
 
 
+console.log(imagePreviews)
 
   
 

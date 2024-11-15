@@ -1,6 +1,6 @@
 import React from "react";
 import PurchasedFoodsLayout from "../module/dashboard/userDashboard/purchases/PurchasedFoodsLayout";
-import AllFoods from "../module/dashboard/adminDashboard/food-management/all-foods/AddFood";
+
 import Allorders from "../module/dashboard/adminDashboard/order-management/allOrders/Allorders";
 import AddFood from "../module/dashboard/adminDashboard/food-management/add-food/AddFood";
 import FoodCategories from "../module/dashboard/adminDashboard/food-management/food-categories/FoodCategories";
@@ -18,6 +18,8 @@ import BlogAnalytics from "../module/dashboard/adminDashboard/blog-management/bl
 import AddRecipe from "../module/frontFace/recipe/features/AddRecipe";
 import RecipeCategories from "../module/dashboard/adminDashboard/recipe-management/recipe-categories/RecipeCategories";
 import AllRecipies from "../module/dashboard/adminDashboard/recipe-management/all-recipies/AllRecipies";
+import AllFoodsLayout from "../module/dashboard/adminDashboard/food-management/all-foods/AllFoodsLayout";
+import EditFoodLayout from "../module/dashboard/adminDashboard/food-management/all-foods/edit-food/EditFoodLayout";
 
 export const adminPaths = [
   // USER MANAGEMENT
@@ -34,7 +36,7 @@ export const adminPaths = [
   // FOOD MANAGEMENT
   {
     path: "all-foods",
-    element: <AllFoods />,
+    element: <AllFoodsLayout />,
   },
   {
     path: "add-food",
@@ -49,10 +51,9 @@ export const adminPaths = [
     element: <DisCountAndOffers />,
   },
   {
-    path: "analytics",
-    element: <FoodAnalytics />,
+    path: "all-foods/edit/food",
+    element: <EditFoodLayout />,
   },
-
   // // ORDERS MANAGEMENT
   {
     path: "all-orders",
@@ -80,10 +81,10 @@ export const adminPaths = [
     path: "blog-categories",
     element: <BlogCategories />,
   },
-  {
-    path: "blog-comments",
-    element: <AllBlogComments />,
-  },
+  // {
+  //   path: "blog-comments",
+  //   element: <AllBlogComments />,
+  // },
   {
     path: "blog-analytics",
     element: <BlogAnalytics />,

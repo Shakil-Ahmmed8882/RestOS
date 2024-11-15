@@ -16,7 +16,9 @@ const DashboardLayout = () => {
       <div className="flex-1 md:ml-72">
         <div className="p-3">
           <DashboardNavbar/>
+          <div className="min-h-screen">
           <Outlet />
+          </div>
           <Footer/>
         </div>
       </div>

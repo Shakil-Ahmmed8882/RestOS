@@ -7,10 +7,9 @@ const foodApi = baseApi.injectEndpoints({
         url: `/foods/${id}`,
         method: "GET",
       }),
-    }
-  ),
+    }),
     getAllFoods: builder.query({
-      // send all of the args here 
+      // send all of the args here
       query: (args) => {
         const params = new URLSearchParams();
 
@@ -22,12 +21,26 @@ const foodApi = baseApi.injectEndpoints({
         return {
           url: "/foods",
           method: "GET",
-          params: params
+          params: params,
+        };
+      },
+    }),
+    updateFood: builder.mutation({
+      // send all of the args here
+      query: ({ id, data }) => {
+        return {
+          url: `foods/${id}`,
+          method: "PATCH",
+          body: data,
         };
       },
     }),
   }),
 });
 
-export const { useGetAllFoodsQuery, useGetSinglefoodQuery } = foodApi;
+export const {
+  useGetAllFoodsQuery,
+  useGetSinglefoodQuery,
+  useUpdateFoodMutation,
+} = foodApi;
 export default foodApi;
