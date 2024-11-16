@@ -2,11 +2,7 @@ import React, { useState } from "react";
 import { Table } from "antd";
 import { Edit2Icon, Trash2Icon } from "lucide-react";
 import { ConfirmationModal } from "../../../../../../shared/modals/ConfirmationModal";
-import { DisLikeIcon, LikeIcon } from "../../../../../../assets/icons";
-import RSModal from "../../../../../../shared/modals/RSModal";
-import { Button } from "@nextui-org/react";
-import ReusableModal from "../../../../../../shared/modals/ReusableModal";
-import EditFoodLayout from "../edit-food/EditFoodLayout";
+
 import { Link } from "react-router-dom";
 
 interface foodsTableProps {

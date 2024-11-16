@@ -1,10 +1,24 @@
 // src/components/FoodCategoryCard.tsx
 import React, { useState } from "react";
-import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
+import {
+  Card,
+  CardBody,
+  CardFooter,
+  Image,
+  useDisclosure,
+} from "@nextui-org/react";
 import { motion } from "framer-motion";
 import { FoodItem } from "../../../../../../types/foodCategory";
-import { DeleteIcon, EditIcon, TrashIcon } from "lucide-react";
+import {
+  AwardIcon,
+  DeleteIcon,
+  EditIcon,
+  Trash2Icon,
+  TrashIcon,
+} from "lucide-react";
 import EditFoodCategory from "./EditCategory";
+import { ConfirmationModal } from "../../../../../../shared/modals/ConfirmationModal";
+import { useDeleteFoodCategoryMutation } from "../../../../../../redux/features/food-category/foodCategory.api";
 
 interface FoodCategoryCardProps {
   item: FoodItem;
@@ -12,8 +26,16 @@ interface FoodCategoryCardProps {
 
 const FoodCategoryCard: React.FC<FoodCategoryCardProps> = ({ item }) => {
   const [categoryId, setCategoryId] = useState("");
+  const [deleteCategory] = useDeleteFoodCategoryMutation();
 
-  
+  const onFoodCategoryDelete = async (id: string) => {
+    try {
+      await deleteCategory(id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
     <motion.div
@@ -43,9 +65,21 @@ const FoodCategoryCard: React.FC<FoodCategoryCardProps> = ({ item }) => {
           <h3 className="">{item.name}</h3>
 
           <div className="flex gap-3 items-center">
-            <button onClick={() => setCategoryId(item._id)}>
-              <TrashIcon className="size-5 cursor-pointer text-deepPink" />
-            </button>
+            <ConfirmationModal
+              isOpen={isOpen}
+              onConfirm={() => onFoodCategoryDelete(item._id)}
+              onOpenChange={onOpenChange}
+              onCancel={() => onOpenChange()}
+              title="Confirm Deletion"
+              message="Are you sure you want to delete this item? This action cannot be undone."
+            />
+            <Trash2Icon
+              className="cursor-pointer size-3 md:size-4 text-deepPink"
+              onClick={() => {
+                onOpen();
+                setCategoryId(item._id);
+              }}
+            />
 
             <EditFoodCategory
               categoryId={categoryId}
