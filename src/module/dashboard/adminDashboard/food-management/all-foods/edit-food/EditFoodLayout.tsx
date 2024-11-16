@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@nextui-org/react";
 import RSForm from "../../../../../../shared/forms/RSForm";
 import RSInput from "../../../../../../shared/forms/RSInput";
@@ -14,15 +14,17 @@ import {
 
 const EditFoodLayout = () => {
   // Using useSearchParams to extract query parameters
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate()
   const id = searchParams.get("id");
 
-  const { data: foodData } = useGetSinglefoodQuery(`${id}`);
+  const { data } = useGetSinglefoodQuery(`${id}`);
   const [updateFood,{isSuccess:isFoodUpdateSuccess,isLoading:isFoodUpdateLoading}] = useUpdateFoodMutation();
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
   
 
+  const foodData = data?.data
   const handleImageChange = (files: File[]) => {
     setImageFiles(files);
   };
@@ -58,30 +60,25 @@ const EditFoodLayout = () => {
     } catch (error) {}
   };
 
-  const defaultValue = {
-    _id: foodData?._id,
-    foodName: foodData?.foodName,
-    status: foodData?.status,
-    foodImage: foodData?.foodImage,
-    foodCategory: foodData?.foodCategory,
-    price: foodData?.price,
-    orders: foodData?.orders,
-    quantity: foodData?.quantity,
-    made_by: foodData?.made_by,
-    food_origin: foodData?.food_origin,
-    description: foodData?.description,
-    reviews: foodData?.reviews,
-  };
+
+  
+
+
+
+  useEffect(()=> {
+    setImagePreviews([data?.data?.foodImage]);
+  },[data])
 
   // If foodData is not loaded, return loading state
-  if (!foodData) {
+  if (!data) {
     return <div>Loading...</div>;
   }
+
 
   return (
     <section>
       <div className="py-10 block">
-        <RSForm onSubmit={onSubmit} defaultValues={defaultValue}>
+        <RSForm onSubmit={onSubmit} >
           <div className="flex justify-between items-center pr-3 pb-3">
             <h1>Edit Food </h1>
             <Link to={"/admin/dashboard/all-foods/"}>
@@ -91,12 +88,8 @@ const EditFoodLayout = () => {
           <div className="grid lg:grid-cols-2 gap-3 auto-rows-auto">
             {/* Column 1 */}
             <div className="flex flex-col gap-3">
-              <RSInput name="foodName" label="Food Name" />
-              <RSSelect
-                options={[{ label: "pending", value: "pending" }]}
-                name="status"
-                label="Status"
-              />
+              <RSInput defaultvalue={foodData?.foodName} name="foodName" label="Food Name" />
+              
               <RSTextarea name="description" label="Write Food Description" />
 
               <RSSelect
@@ -104,16 +97,16 @@ const EditFoodLayout = () => {
                 name="foodCategory"
                 label="Food Category"
               />
-              <RSInput type="number" name="price" label="Price" />
-              <RSInput name="quantity" label="Quantity" />
+              <RSInput type="number" defaultvalue={foodData?.price} name="price" label="Price" />
+              <RSInput name="quantity" defaultvalue={foodData.quantity} label="Quantity" />
             </div>
 
             {/* Column 2 */}
             <div className="flex flex-col gap-3">
-              <RSInput name="made_by" label="Made by" />
-              <RSInput name="food_origin" label="Food Origin" />
+              <RSInput defaultvalue={foodData?.made_by} name="made_by" label="Made by" />
+              <RSInput defaultvalue={foodData?.food_origin} name="food_origin" label="Food Origin" />
 
-              <ImageUploader onImagesChange={handleImageChange} />
+              <ImageUploader imagePreviews={imagePreviews} setImagePreviews={setImagePreviews} onImagesChange={handleImageChange} />
             </div>
           </div>
 

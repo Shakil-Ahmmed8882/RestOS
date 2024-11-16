@@ -9,6 +9,7 @@ import { useCreateFoodCategoryMutation } from "../../../../../redux/features/foo
 const AddCategory = () => {
   // State management part-2
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [
     createFoodCategory,
     {
@@ -47,7 +48,8 @@ const AddCategory = () => {
         <RSForm onSubmit={onFoodCategorySubmit}>
             <RSInput name="name" label="Category Name" />
             <RSInput name="description" label="description" />
-            <ImageUploader onImagesChange={handleImageChange} />
+            {/* <ImageUploader onImagesChange={handleImageChange} /> */}
+            <ImageUploader imagePreviews={imagePreviews} setImagePreviews={setImagePreviews} onImagesChange={handleImageChange} />
             <Button type="submit" className="bg-primaryColor text-[white]">
               create
             </Button>

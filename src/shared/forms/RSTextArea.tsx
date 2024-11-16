@@ -12,6 +12,7 @@ export default function RSTextarea({
   name,
   label,
   variant = "bordered",
+  defaultvalue
 }: IProps) {
   const {
     register,
@@ -24,6 +25,7 @@ export default function RSTextarea({
     <Textarea
       {...register(name)}
       label={label}
+      defaultValue={defaultvalue || ""}
       minRows={6}
       errorMessage={errors[name] ? (errors[name].message as string) : ""}
       isInvalid={!!errors[name]}

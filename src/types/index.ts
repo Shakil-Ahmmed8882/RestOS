@@ -16,4 +16,5 @@ export interface IInput {
   labelColor?:  string,
   onChange?: (p:any) => void
   disabled?: boolean;
+  defaultvalue?: string;
 }

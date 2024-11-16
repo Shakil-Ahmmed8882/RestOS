@@ -20,6 +20,7 @@ const AddFoodLayout = () => {
   const navigate = useNavigate();
   const [createFood] = useCreateFoodMutation();
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const handleImageChange = (files: File[]) => {
     setImageFiles(files);
   };
@@ -91,7 +92,8 @@ const AddFoodLayout = () => {
               <RSInput name="made_by" label="Made by" />
               <RSInput name="food_origin" label="Food Origin" />
 
-              <ImageUploader onImagesChange={handleImageChange} />
+              {/* <ImageUploader onImagesChange={handleImageChange} /> */}
+              <ImageUploader imagePreviews={imagePreviews} setImagePreviews={setImagePreviews} onImagesChange={handleImageChange} />
             </div>
           </div>
 

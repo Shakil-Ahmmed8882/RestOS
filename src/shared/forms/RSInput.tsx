@@ -14,7 +14,8 @@ export default function RSInput({
   label,
   name,
   className,
-  labelColor
+  labelColor,
+  defaultvalue
 }: IProps) {
   const {
     register,
@@ -25,6 +26,7 @@ export default function RSInput({
     <Input
       {...register(name)}
       className={className}
+      defaultValue={defaultvalue || ""}
       errorMessage={errors[name] ? (errors[name].message as string) : ""}
       isInvalid={!!errors[name]}
       label={<span style={{ color: labelColor || "'#000'" }}>{label}</span>}

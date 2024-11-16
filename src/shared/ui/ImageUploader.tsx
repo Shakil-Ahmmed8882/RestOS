@@ -2,11 +2,16 @@ import React, { ChangeEvent, useState } from "react";
 
 interface ImageUploaderProps {
   onImagesChange: (files: File[]) => void; // Callback to pass the selected files back to the parent
+  setImagePreviews: (p: any) => void; // Callback to pass the selected files back to the parent
+  imagePreviews:  any[];
 }
 
-const ImageUploader: React.FC<ImageUploaderProps> = ({ onImagesChange }) => {
+const ImageUploader: React.FC<ImageUploaderProps> = ({
+  onImagesChange,
+  setImagePreviews,
+  imagePreviews,
+}) => {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
-  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -19,7 +24,10 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImagesChange }) => {
         const reader = new FileReader();
         reader.onload = (event) => {
           if (event.target?.result) {
-            setImagePreviews((prev) => [...prev, event.target!.result as string]);
+            setImagePreviews((prev) => [
+              ...prev,
+              event.target!.result as string,
+            ]);
           }
         };
         reader.readAsDataURL(file);
