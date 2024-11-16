@@ -25,6 +25,8 @@ export default function RSTextarea({
       {...register(name)}
       label={label}
       minRows={6}
+      errorMessage={errors[name] ? (errors[name].message as string) : ""}
+      isInvalid={!!errors[name]}
       variant={variant}
       value={currentValue || ""}
     />

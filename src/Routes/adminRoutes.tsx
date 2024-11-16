@@ -20,6 +20,7 @@ import RecipeCategories from "../module/dashboard/adminDashboard/recipe-manageme
 import AllRecipies from "../module/dashboard/adminDashboard/recipe-management/all-recipies/AllRecipies";
 import AllFoodsLayout from "../module/dashboard/adminDashboard/food-management/all-foods/AllFoodsLayout";
 import EditFoodLayout from "../module/dashboard/adminDashboard/food-management/all-foods/edit-food/EditFoodLayout";
+import FoodCategoryLayout from "../module/dashboard/adminDashboard/food-management/food-categories/compoents/FoodCategoryLayout";
 
 export const adminPaths = [
   // USER MANAGEMENT
@@ -44,7 +45,7 @@ export const adminPaths = [
   },
   {
     path: "categories",
-    element: <FoodCategories />,
+    element: <FoodCategoryLayout/>,
   },
   {
     path: "discounts",

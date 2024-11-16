@@ -9,7 +9,7 @@ import ReusableModal from "../../../../../../shared/modals/ReusableModal";
 import EditFoodLayout from "../edit-food/EditFoodLayout";
 import { Link } from "react-router-dom";
 
-interface blogsTableProps {
+interface foodsTableProps {
   data: any[];
   isFetching: boolean;
   hoveredRow: string | null;
@@ -17,7 +17,6 @@ interface blogsTableProps {
   dropdownType: string;
   setDropdownType: React.Dispatch<React.SetStateAction<string>>;
   onDelete: (userId: string) => void;
-  onEditStatus: (status: string) => void;
   setSelectedBlogId: (status: string | null) => void;
   selectedUserId: string | null;
   onOpen: () => void;
@@ -25,7 +24,7 @@ interface blogsTableProps {
   isOpen: boolean;
 }
 
-const AllFoodsTable: React.FC<blogsTableProps> = ({
+const AllFoodsTable: React.FC<foodsTableProps> = ({
   data,
   isFetching,
   hoveredRow,

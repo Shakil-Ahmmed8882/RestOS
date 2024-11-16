@@ -1,5 +1,8 @@
 
 
+
+
+
 import React from "react";
 
 const SearchBar = ({ theme, searchResult, setSearchResult, foodData, isFieldEmpty, setIsFieldEmpty }) => {

@@ -1,27 +1,27 @@
 import React, { useState } from "react";
-import { Pagination } from "antd";
+// import { Pagination } from "antd";
 import AllFoodsTable from "./components/AllFoods.tsx";
 import { useDisclosure } from "@nextui-org/react";
 
 import { useNavigate } from "react-router-dom";
 import PageHeader from "../../../../../shared/ui/PageHeader.tsx";
-import {
-  useDeleteblogMutation,
-  useGetAllBlogsQuery,
-  useUpdateBlogMutation,
-} from "../../../../../redux/features/blog/blog.api.ts";
+
 import { blogCategories, blogStats } from "./data.tsx";
 import Statistics from "../../../../../shared/ui/stats/Statistics.tsx";
 import { getCategoryFromUrl } from "../../../../frontFace/blog/layout/BlogLayout.tsx";
 import useDebounce from "../../../../../🔗Hook/useDebounce.ts";
-import { useGetAllFoodsQuery } from "../../../../../redux/features/food/food.api.ts";
+import {
+  useDeleteFoodMutation,
+  useGetAllFoodsQuery,
+} from "../../../../../redux/features/food/food.api.ts";
+import CustomPagination from "../../../../../shared/ui/CustomPagination.tsx";
 
 const AllFoodsLayout = () => {
   const [page, setPage] = useState(1);
   const [hoveredRow, setHoveredRow] = useState<string | null>(null); // Ensure the type is string | null
   const [dropdownType, setDropdownType] = useState("");
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [selectedBlogId, setSelectedFoodId] = useState<string | null>(null);
+  const [selectedFoodId, setSelectedFoodId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
 
   const category = getCategoryFromUrl();
@@ -29,37 +29,30 @@ const AllFoodsLayout = () => {
 
   const {
     data,
-    isLoading: isBlogDataLoading,
+    isLoading: isAllFoodLoading,
     isFetching,
   } = useGetAllFoodsQuery([
     { name: "searchTerm", value: debouncedSearchTerm },
+    { name: "page", value: page },
+    { name: "limit", value: 5 },
     ...(category && category !== "All"
       ? [{ name: "category", value: category }]
       : []),
   ]);
 
   const foodData = data?.data;
-  const meta = data?.data?.meta;
-  const [deleteFood] = useDeleteblogMutation();
-  const [updateFood] = useUpdateBlogMutation();
+  const meta = data?.meta;
 
-  const handleDeleteFood = async (userId) => {
-    console.log({ selectedBlogId });
+  const [deleteFood] = useDeleteFoodMutation();
+
+  const handleDeleteFood = async (_userId) => {
+    console.log({ selectedFoodId });
     try {
-      await deleteFood(`${selectedBlogId}`);
+      const res = await deleteFood(`${selectedFoodId}`);
       onOpenChange();
+
+      console.log(res);
       setSelectedFoodId(null);
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
-
-  const handleEditStatus = async (status: string) => {
-    try {
-      const res = await updateFood({ id: hoveredRow, data: { status } });
-
-      console.log({ res });
-      setHoveredRow(null);
     } catch (error) {
       console.error(error.message);
     }
@@ -101,19 +94,18 @@ const AllFoodsLayout = () => {
         dropdownType={dropdownType}
         setDropdownType={setDropdownType}
         onDelete={handleDeleteFood}
-        onEditStatus={handleEditStatus}
-        selectedUserId={selectedBlogId}
+        selectedUserId={selectedFoodId}
         setSelectedBlogId={setSelectedFoodId}
         onOpen={onOpen}
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       />
       <div className="flex justify-start my-3 mr-6">
-        <Pagination
-          onChange={(value) => setPage(value)}
+        <CustomPagination
           total={meta?.total}
-          pageSize={meta?.limit}
-          current={page}
+          limit={meta?.limit}
+          currentPage={meta?.page}
+          onPageChange={setPage}
         />
       </div>
     </div>

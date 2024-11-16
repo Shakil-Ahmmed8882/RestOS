@@ -1,102 +1,112 @@
-import { Button, Col, Row } from "antd";
-import React from "react";
+import React, { useState } from "react";
+import { Button } from "@nextui-org/react";
+
+import { ArrowLeft } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import RSForm from "../../../../../shared/forms/RSForm";
 import RSInput from "../../../../../shared/forms/RSInput";
 import RSSelect from "../../../../../shared/forms/RSSelect";
+import RSTextarea from "../../../../../shared/forms/RSTextArea";
+import ImageUploader from "../../../../../shared/ui/ImageUploader";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { foodSchema } from "../../../../../schema/food.chema";
+import {
+  foodCategories,
+  foodStatusOptions,
+} from "../../../../../demo-data/food";
+import { useCreateFoodMutation } from "../../../../../redux/features/food/food.api";
 
-const AddFood = () => {
-  const onSubmit = (data) => {
-    console.log(data);
+const AddFoodLayout = () => {
+  const navigate = useNavigate();
+  const [createFood] = useCreateFoodMutation();
+  const [imageFiles, setImageFiles] = useState<File[] | []>([]);
+  const handleImageChange = (files: File[]) => {
+    setImageFiles(files);
   };
+
+  const onFoodSubmit = async (data) => {
+    console.log(data);
+    const formData = new FormData();
+    const foodData = {
+      ...data,
+      quantity: Number(data.quantity) || 1,
+      price: Number(data.price) || 10,
+    };
+    // getting only the values based filds in data
+    //not undefined or "" or 0 value like price, quantity
+    const sanitizedFoodData = Object.fromEntries(
+      Object.entries(foodData).filter(
+        ([key, value]) =>
+          value !== "" &&
+          value !== undefined &&
+          !(typeof value === "number" && value <= 0)
+      )
+    );
+
+    // appending formdata
+    for (let image of imageFiles) {
+      formData.append("file", image);
+    }
+    formData.append("data", JSON.stringify(sanitizedFoodData));
+
+    try {
+      const res = await createFood(formData);
+      
+      console.log(res)
+    } catch (error) {}
+  };
+
   return (
     <section>
-      <Row
-        className="block py-16"
-        justify="center"
-        align="middle"
-        style={{ width: "100%", maxWidth: "800px", margin: "auto" }}
-      >
-        <RSForm resolver={""} onSubmit={onSubmit}>
-          {/* Food Name & Image URL */}
-          <Row gutter={16}>
-            <Col span={24} md={{ span: 12 }}>
-              <RSInput
-                type="text"
-                name="foodName"
-                label="Food Name:"
-                key={"foodName"}
-              />
-            </Col>
-            <Col span={24} md={{ span: 12 }}>
-              <RSInput
-                type="text"
-                name="imageURL"
-                label="Image URL:"
-                key={"imageURL"}
-              />
-            </Col>
-          </Row>
-
-          {/* Category & Price */}
-          <Row gutter={16}>
-            <Col span={24} md={{ span: 12 }}>
+      <div className="py-10 block">
+        <RSForm onSubmit={onFoodSubmit} resolver={zodResolver(foodSchema)}>
+          <div className="flex justify-between items-center pr-3 pb-3">
+            <h1>Add Food </h1>
+            <Link to={"/admin/dashboard/all-foods/"}>
+              <ArrowLeft className="bg-[#f2f2f2] size-12 p-3  rounded-full" />
+            </Link>
+          </div>
+          <div className="grid lg:grid-cols-2 gap-3 auto-rows-auto">
+            {/* Column 1 */}
+            <div className="flex flex-col gap-3">
+              <RSInput name="foodName" label="Food Name" />
               <RSSelect
-                //   defaultValue={"category-1"}
-                label="Category"
-                name="category"
-                options={[]}
+                options={foodStatusOptions}
+                name="status"
+                label="Status"
               />
-            </Col>
-            <Col span={24} md={{ span: 12 }}>
-              <RSInput type="text" name="price" label="Price" key={"price"} />
-            </Col>
-          </Row>
+              <RSTextarea name="description" label="Write Food Description" />
 
-          {/* Add by & Food origin */}
-          <Row gutter={16}>
-            <Col span={24} md={{ span: 12 }}>
-              <RSInput type="text" name="addBy" label="Add By" key={"addBy"} />
-            </Col>
-            <Col span={24} md={{ span: 12 }}>
-              <RSInput
-                type="text"
-                name="origin"
-                label="Origin"
-                key={"origin"}
+              <RSSelect
+                options={foodCategories}
+                name="foodCategory"
+                label="Food Category"
               />
-            </Col>
-          </Row>
+              <RSInput type="number" name="price" label="Price" />
+              <RSInput name="quantity" label="Quantity" />
+            </div>
 
-          {/* Description & Quantity */}
-          <Row gutter={16}>
-            <Col span={24} md={{ span: 12 }}>
-              <RSInput
-                type="text"
-                name="foodDescription"
-                label="Food Description"
-                key={"foodDescription"}
-              />
-            </Col>
-            <Col span={24} md={{ span: 12 }}>
-              <RSInput
-                type="text"
-                name="quantity"
-                label="Quantity"
-                key={"quantity"}
-              />
-            </Col>
-          </Row>
+            {/* Column 2 */}
+            <div className="flex flex-col gap-3">
+              <RSInput name="made_by" label="Made by" />
+              <RSInput name="food_origin" label="Food Origin" />
 
-          <Button
-            htmlType="submit"
-            className="w-full py-5 bg-primaryColor text-[white] hover:!bg-primary-color border-none hover:!text-[white] mt-3"
-          >
-            Login
-          </Button>
+              <ImageUploader onImagesChange={handleImageChange} />
+            </div>
+          </div>
+
+          <div className="text-end pt-3">
+            <Button
+              type="submit"
+              className="bg-primaryColor text-[white] w-full"
+            >
+              Update
+            </Button>
+          </div>
         </RSForm>
-      </Row>
+      </div>
     </section>
   );
 };
 
-export default AddFood;
+export default AddFoodLayout;

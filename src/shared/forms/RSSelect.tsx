@@ -29,6 +29,8 @@ export default function RSSelect({
       className="min-w-full sm:min-w-[225px]"
       isDisabled={disabled}
       label={label}
+      errorMessage={errors[name] ? (errors[name].message as string) : ""}
+      isInvalid={!!errors[name]}
       variant={variant}
     >
       {options.map((option) => (

@@ -9,17 +9,19 @@ import React, { ReactNode } from "react";
 type PopoverWrapperProps = {
   children: ReactNode; // The content inside the popover
   triggerElement: ReactNode | string; // The trigger element for the popover
+  butttonClass?:string
 };
 
 export default function PopoverWrapper({
   children,
   triggerElement,
+  butttonClass = ''
 }: PopoverWrapperProps) {
   return (
     <Popover placement="bottom" showArrow={true} shouldCloseOnBlur={false}>
       <PopoverTrigger>
         {typeof triggerElement === "string" ? (
-          <Button>{triggerElement}</Button>
+          <Button className={`${butttonClass}`}>{triggerElement}</Button>
         ) : (
           <span tabIndex={0} style={{ cursor: "pointer" }}>
             {triggerElement}

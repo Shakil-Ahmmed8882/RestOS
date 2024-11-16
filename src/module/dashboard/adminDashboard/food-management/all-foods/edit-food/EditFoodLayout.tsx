@@ -1,12 +1,11 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
-import SlidingModal from "../../../../../../shared/modals/SlideLeftModal";
-import { Button, Input } from "@nextui-org/react";
+import React, { useState } from "react";
+import { Button } from "@nextui-org/react";
 import RSForm from "../../../../../../shared/forms/RSForm";
 import RSInput from "../../../../../../shared/forms/RSInput";
 import RSSelect from "../../../../../../shared/forms/RSSelect";
 import RSTextarea from "../../../../../../shared/forms/RSTextArea";
 import ImageUploader from "../../../../../../shared/ui/ImageUploader";
-import { ArrowLeft, UndoIcon } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   useGetSinglefoodQuery,
@@ -34,7 +33,7 @@ const EditFoodLayout = () => {
       ...data,
       quantity: Number(data.quantity),
       price: Number(data.price),
-    };
+    }; 
     // getting only the values based filds in data
     //not undefined or "" or 0 value like price, quantity
     const sanitizedFoodData = Object.fromEntries(

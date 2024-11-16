@@ -1,30 +1,30 @@
 import { baseApi } from "../../api/baseApi";
 
-const foodApi = baseApi.injectEndpoints({
+const foodCategoryApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
 
 
-    createFood: builder.mutation({
+    createFoodCategory: builder.mutation({
       // send all of the args here
       query: (data) => {
         return {
-          url: `/foods/create-food`,
+          url: `/food-categories/create-category`,
           method: "POST",
           body: data,
         };
       },
-      invalidatesTags: ["food-data"],
+      invalidatesTags: ["food-category-data"],
     }),
 
 
-    getSinglefood: builder.query({
+    getSingleFoodCategory: builder.query({
       query: (id: string | undefined) => ({
-        url: `/foods/${id}`,
+        url: `/food-categories/${id}`,
         method: "GET",
       }),
-      providesTags: ["food-data"],
+      providesTags: ["food-category-data"],
     }),
-    getAllFoods: builder.query({
+    getAllFoodsCategories: builder.query({
       // send all of the args here
       query: (args) => {
         const params = new URLSearchParams();
@@ -35,44 +35,43 @@ const foodApi = baseApi.injectEndpoints({
           });
         }
         return {
-          url: "/foods",
+          url: "/food-categories",
           method: "GET",
           params: params,
         };
       },
-      providesTags: ["food-data"],
+      providesTags: ["food-category-data"],
     }),
-    updateFood: builder.mutation({
+    updateFoodCategory: builder.mutation({
       // send all of the args here
       query: ({ id, data }) => {
         
-        console.log({id,data})
         return {
-          url: `foods/${id}`,
+          url: `/food-categories/${id}`,
           method: "PATCH",
           body: data,
         };
       },
-      invalidatesTags: ["food-data"],
+      invalidatesTags: ["food-category-data"],
     }),
-    deleteFood: builder.mutation({
+    deleteFoodCategory: builder.mutation({
       // send all of the args here
       query: (id: string) => {
         return {
-          url: `foods/${id}`,
+          url: `/food-categories/${id}`,
           method: "DELETE",
         };
       },
-      invalidatesTags: ["food-data"],
+      invalidatesTags: ["food-category-data"],
     }),
   }),
 });
 
 export const {
-  useGetAllFoodsQuery,
-  useGetSinglefoodQuery,
-  useUpdateFoodMutation,
-  useDeleteFoodMutation,
-  useCreateFoodMutation
-} = foodApi;
-export default foodApi;
+    useCreateFoodCategoryMutation,
+    useGetAllFoodsCategoriesQuery,
+    useGetSingleFoodCategoryQuery,
+    useUpdateFoodCategoryMutation,
+    useDeleteFoodCategoryMutation
+} = foodCategoryApi;
+export default foodCategoryApi;
