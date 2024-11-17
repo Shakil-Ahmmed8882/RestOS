@@ -22,7 +22,7 @@ const FoodCategoryList: React.FC<FoodCategoryListProps> = ({ data, isLoading, is
   }
 
   return (
-    <motion.div layout className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+    <motion.div layout className="grid  sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {data.map((item) => (
         <FoodCategoryCard key={item._id} item={item} />
       ))}

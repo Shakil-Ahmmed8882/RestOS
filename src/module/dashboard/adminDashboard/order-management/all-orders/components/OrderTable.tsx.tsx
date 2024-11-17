@@ -1,12 +1,11 @@
 import React from "react";
 import { Table } from "antd";
+
 import { Trash2Icon } from "lucide-react";
 import StatusDropdown from "./StatusDropdown";
 import { ConfirmationModal } from "../../../../../../shared/modals/ConfirmationModal";
-import { DisLikeIcon, LikeIcon } from "../../../../../../assets/icons";
 
-
-interface blogsTableProps {
+interface UsersTableProps {
   data: any[];
   isFetching: boolean;
   hoveredRow: string | null;
@@ -15,14 +14,14 @@ interface blogsTableProps {
   setDropdownType: React.Dispatch<React.SetStateAction<string>>;
   onDelete: (userId: string) => void;
   onEditStatus: (status: string) => void;
-  setSelectedBlogId: (status: string | null) => void;
-  selectedUserId: string | null;
+  setSelectedUserId: (status: string | null) => void;
+  selectedOrderId: string | null;
   onOpen: () => void;
   onOpenChange: () => void;
   isOpen: boolean;
 }
 
-const BlogsTable: React.FC<blogsTableProps> = ({
+const UsersTable: React.FC<UsersTableProps> = ({
   data,
   isFetching,
   hoveredRow,
@@ -31,45 +30,57 @@ const BlogsTable: React.FC<blogsTableProps> = ({
   setDropdownType,
   onDelete,
   onEditStatus,
-  setSelectedBlogId,
+  setSelectedUserId,
   onOpen,
   onOpenChange,
   isOpen,
 }) => {
+
+
+
   const columns = [
+
+
     {
-      key: "image",
-      title: "image",
-      dataIndex: "image",
+      title: "Food Image",
+      key: "foodImage",
+      dataIndex: ["food", "foodImage"], // Accessing foodImage from nested food object
       render: (image: string) => (
         <img
           src={image}
-          alt="Profile"
+          alt="Food"
           className="rounded-full object-cover size-6 md:size-8 lg:size-11"
         />
       ),
     },
     {
-      key: "title",
-      title: "Title",
-      dataIndex: "title",
-      render: (title: string) => (
-        <p className="text-[gray] text-[10px] sm:text-sm md:text-md">{title}</p>
-      ),
+      title: "Food",
+      key: "foodName",
+      dataIndex: ["food", "foodName"], // Accessing foodName from nested food object
     },
     {
-      key: "category",
-      title: "Category",
-      dataIndex: "category",
-      render: (category: string) => (
-        <p className="text-[gray] text-[10px] sm:text-sm md:text-md">
-          {category}
-        </p>
-      ),
+      title: "Customer",
+      key: "customerName",
+      dataIndex: ["user", "name"], 
     },
     {
-      key: "status",
+      title: "Email",
+      key: "customerEmail",
+      dataIndex: ["user", "email"], // Accessing user's email from nested user object
+    },
+    {
+      title: "Quantity",
+      key: "quantity",
+      dataIndex: "quantity",
+    },
+    {
+      title: "Price",
+      key: "totalPrice",
+      dataIndex: "totalPrice",
+    },
+    {
       title: "Status",
+      key: "status",
       dataIndex: "status",
       render: (status: string, record: any) => (
         <StatusDropdown
@@ -81,32 +92,6 @@ const BlogsTable: React.FC<blogsTableProps> = ({
           setDropdownType={setDropdownType}
           onEditStatus={onEditStatus}
         />
-      ),
-    },
-    {
-      key: "upvotes",
-      title: "Upvotes",
-      dataIndex: "upvotes",
-      render: (upvotes: number) => (
-        <span
-          className={`  shadow-primaryColor flex items-center gap-1 text-[10px] sm:text-sm md:text-md`}
-        >
-          <LikeIcon className="text-primaryColor" />
-          {upvotes}
-        </span>
-      ),
-    },
-    {
-      key: "downvotes",
-      title: "Downvotes",
-      dataIndex: "downvotes",
-      render: (downvotes: number) => (
-        <span
-          className={`text-[10px] sm:text-sm md:text-md shadow-primaryColor flex items-center gap-2`}
-        >
-          <DisLikeIcon />
-          {downvotes}
-        </span>
       ),
     },
     {
@@ -123,10 +108,10 @@ const BlogsTable: React.FC<blogsTableProps> = ({
             message="Are you sure you want to delete this item? This action cannot be undone."
           />
           <Trash2Icon
-            className="cursor-pointer size-3 md:size-4 text-deepPink"
+            className="cursor-pointer size-4 text-deepPink"
             onClick={() => {
               onOpen();
-              setSelectedBlogId(record._id);
+              setSelectedUserId(record._id);
             }}
           />
         </div>
@@ -134,6 +119,8 @@ const BlogsTable: React.FC<blogsTableProps> = ({
       width: "1%",
     },
   ];
+  
+
 
   return (
     <Table
@@ -145,4 +132,4 @@ const BlogsTable: React.FC<blogsTableProps> = ({
   );
 };
 
-export default BlogsTable;
+export default UsersTable;

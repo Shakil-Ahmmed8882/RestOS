@@ -14,6 +14,7 @@ import { blogCategories, blogStats } from "./data.tsx";
 import Statistics from "../../../../../shared/ui/stats/Statistics.tsx";
 import { getCategoryFromUrl } from "../../../../frontFace/blog/layout/BlogLayout.tsx";
 import useDebounce from "../../../../../🔗Hook/useDebounce.ts";
+import CustomPagination from "../../../../../shared/ui/CustomPagination.tsx";
 
 const AllBlogsLayout = () => {
   const [page, setPage] = useState(1);
@@ -32,13 +33,18 @@ const AllBlogsLayout = () => {
     isFetching,
   } = useGetAllBlogsQuery([
     { name: "searchTerm", value: debouncedSearchTerm },
+    { name: "page", value: page },
+    { name: "limit", value: 5 },
     ...(category && category !== "All"
       ? [{ name: "category", value: category }]
       : []),
   ]);
 
+
+  
+  console.log(data)
   const userData = data?.data;
-  const meta = data?.data?.meta;
+  const meta = data?.meta;
   const [deleteUser] = useDeleteblogMutation();
   const [updateBlog] = useUpdateBlogMutation();
 
@@ -108,11 +114,11 @@ const AllBlogsLayout = () => {
         onOpenChange={onOpenChange}
       />
       <div className="flex justify-start my-3 mr-6">
-        <Pagination
-          onChange={(value) => setPage(value)}
+        <CustomPagination
+          currentPage={page}
+          limit={meta?.limit}
+          onPageChange={setPage}
           total={meta?.total}
-          pageSize={meta?.limit}
-          current={page}
         />
       </div>
     </div>

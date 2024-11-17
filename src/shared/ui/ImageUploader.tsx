@@ -1,9 +1,12 @@
+
+
+
 import React, { ChangeEvent, useState } from "react";
 
 interface ImageUploaderProps {
   onImagesChange: (files: File[]) => void; // Callback to pass the selected files back to the parent
   setImagePreviews: (p: any) => void; // Callback to pass the selected files back to the parent
-  imagePreviews:  any[];
+  imagePreviews: any[]; // Array of image preview URLs
 }
 
 const ImageUploader: React.FC<ImageUploaderProps> = ({
@@ -13,32 +16,33 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
 }) => {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
 
+  // Handle image selection
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
 
     if (files) {
       const newFiles = Array.from(files);
-      setImageFiles((prev) => [...prev, ...newFiles]);
-
-      const newPreviews = newFiles.map((file) => {
+      
+      // Only update the previews with the new images
+       newFiles.map((file) => {
         const reader = new FileReader();
         reader.onload = (event) => {
           if (event.target?.result) {
-            setImagePreviews((prev) => [
-              ...prev,
-              event.target!.result as string,
-            ]);
+            // Replace the previews with the new one
+            setImagePreviews([event.target.result as string]); // Only one image should be shown
           }
         };
         reader.readAsDataURL(file);
         return "";
       });
 
-      // Notify parent about new files
-      onImagesChange([...imageFiles, ...newFiles]);
+      // Update file state and pass to parent
+      setImageFiles(newFiles);
+      onImagesChange(newFiles);
     }
   };
 
+  // Clear selected image
   const handleClearImage = (index: number) => {
     const newImageFiles = imageFiles.filter((_, i) => i !== index);
     const newImagePreviews = imagePreviews.filter((_, i) => i !== index);

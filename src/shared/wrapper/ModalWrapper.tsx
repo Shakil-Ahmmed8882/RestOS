@@ -16,7 +16,7 @@ export const ModalWrapper: React.FC<ModalWrapperProps> = ({
   children, 
   footer 
 }) => (
-  <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+  <Modal  isOpen={isOpen} onOpenChange={onOpenChange}>
     <ModalContent>
       {(onClose) => (
         <>

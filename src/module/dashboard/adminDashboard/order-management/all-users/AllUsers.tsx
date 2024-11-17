@@ -1,19 +1,18 @@
 import React, { useState } from "react";
 import { Pagination } from "antd";
-import UsersTable from "./components/UsersTable.tsx";
+import UsersTable from "./components/UsersTable.tsx.tsx";
 import { Input, useDisclosure } from "@nextui-org/react";
 import {
   useDeleteUserMutation,
   useGetAllUsersQuery,
   useUpdateUserProfileMutation,
-} from "../../../../../redux/features/profile/profile.api";
+} from "../../../../../redux/features/profile/profile.api.ts";
 import { SearchIcon } from "../../../../../assets/icons/Icons.jsx";
 import { blogCategories } from "../../../../frontFace/blog/blog.constants.ts";
 import { useNavigate } from "react-router-dom";
 import SelectDropdown from "../../../../../shared/ui/SelectDropdown.tsx";
 import PageHeader from "../../../../../shared/ui/PageHeader.tsx";
 import useDebounce from "../../../../../🔗Hook/useDebounce.ts";
-import CustomPagination from "../../../../../shared/ui/CustomPagination.tsx";
 
 const AllUsersLayout = () => {
   const [params, setParams] = useState<{ name: string; value: any }[]>([]);
@@ -25,7 +24,6 @@ const AllUsersLayout = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const { data, isFetching } = useGetAllUsersQuery([
-    { name: "limit", value: 5 },
     { name: "page", value: page },
     { name: "searchTerm", value: debouncedSearchTerm },
   ]);
@@ -109,11 +107,11 @@ const AllUsersLayout = () => {
         onOpenChange={onOpenChange}
       />
       <div className="flex justify-start my-3 mr-6">
-      <CustomPagination
-          currentPage={page}
-          limit={meta?.limit}
-          onPageChange={setPage}
+        <Pagination
+          onChange={(value) => setPage(value)}
           total={meta?.total}
+          pageSize={meta?.limit}
+          current={page}
         />
       </div>
     </>

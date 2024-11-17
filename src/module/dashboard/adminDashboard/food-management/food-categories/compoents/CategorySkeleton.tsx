@@ -3,17 +3,17 @@ import React from "react";
 
 const CategorySkeleton = () => {
   return (
-    <section className="flex gap-5 flex-wrap">
-        <Skeleton className="w-36 h-40 rounded-lg animate-pulse"></Skeleton>
-        <Skeleton className="w-36 h-40 rounded-lg animate-pulse"></Skeleton>
-        <Skeleton className="w-36 h-40 rounded-lg animate-pulse"></Skeleton>
-        <Skeleton className="w-36 h-40 rounded-lg animate-pulse"></Skeleton>
-        <Skeleton className="w-36 h-40 rounded-lg animate-pulse"></Skeleton>
-        <Skeleton className="w-36 h-40 rounded-lg animate-pulse"></Skeleton>
-        <Skeleton className="w-36 h-40 rounded-lg animate-pulse"></Skeleton>
-        <Skeleton className="w-36 h-40 rounded-lg animate-pulse"></Skeleton>
-        <Skeleton className="w-36 h-40 rounded-lg animate-pulse"></Skeleton>
-        <Skeleton className="w-36 h-40 rounded-lg animate-pulse"></Skeleton>
+    <section className="grid justify-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <Skeleton  className=" size-80 md:size-44 lg:size-56 rounded-lg animate-pulse"></Skeleton>
+        <Skeleton  className=" size-80 md:size-44 lg:size-56 rounded-lg animate-pulse"></Skeleton>
+        <Skeleton  className=" size-80 md:size-44 lg:size-56 rounded-lg animate-pulse"></Skeleton>
+        <Skeleton  className=" size-80 md:size-44 lg:size-56 rounded-lg animate-pulse"></Skeleton>
+        <Skeleton  className=" size-80 md:size-44 lg:size-56 rounded-lg animate-pulse"></Skeleton>
+        <Skeleton  className=" size-80 md:size-44 lg:size-56 rounded-lg animate-pulse"></Skeleton>
+        <Skeleton  className=" size-80 md:size-44 lg:size-56 rounded-lg animate-pulse"></Skeleton>
+        <Skeleton  className=" size-80 md:size-44 lg:size-56 rounded-lg animate-pulse"></Skeleton>
+        <Skeleton  className=" size-80 md:size-44 lg:size-56 rounded-lg animate-pulse"></Skeleton>
+        <Skeleton  className=" size-80 md:size-44 lg:size-56 rounded-lg animate-pulse"></Skeleton>
 
     </section>
   );

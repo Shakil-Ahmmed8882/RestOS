@@ -1,42 +1,36 @@
+import { AiOutlineDashboard } from "react-icons/ai";
 import { BuildingIcon, PencilIcon, ScaleIcon, TagIcon } from "../assets/Icons";
 import {
-  blogManagementItems,
   foodManagementItems,
-  orderManagementItems,
   recipeManagementItems,
-  userManagementItems,
+  
 } from "./dropdownContents";
+import { List, NotebookTabs, User2Icon, Users } from "lucide-react";
 
-export const adminRoutesArray = [
-  {
-    label: "User Management",
-    icon: PencilIcon,
-    items: userManagementItems,
-    key: "users",
-  },
+
+
+export const adminSidebarDirectRoutes =[
+  {label:"All Users", icon:Users, address: `/admin/dashboard/all-users`},
+  {label:"All Orders", icon:List, address: `/admin/dashboard/all-orders`},
+  {label:"All Blogs", icon:NotebookTabs, address: `/admin/dashboard/all-blog-posts`},
+]
+
+
+
+
+export const adminNestedRoutesArray = [
+  
   {
     label: "Food Management",
     icon: BuildingIcon,
     items: foodManagementItems,
     key: "foods",
   },
-  {
-    label: "Order Managemnt",
-    icon: ScaleIcon,
-    items: orderManagementItems,
-    key: "orders",
-  },
-  {
-    label: "Blog Management",
-    icon: PencilIcon,
-    items: blogManagementItems,
-    key: "blogs",
-  },
-  {
-    label: "Recipe Management",
-    icon: PencilIcon,
-    items: recipeManagementItems,
-    key: "recipes",
-  },
+  // {
+  //   label: "Recipe Management",
+  //   icon: PencilIcon,
+  //   items: recipeManagementItems,
+  //   key: "recipes",
+  // },
  
 ];

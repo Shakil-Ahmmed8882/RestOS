@@ -1,8 +1,9 @@
 import { useState } from "react";
 
 import React from "react";
-import { adminRoutesArray } from "../data/adminRoutesArray";
+import { adminNestedRoutesArray, adminSidebarDirectRoutes } from "../data/adminRoutesArray";
 import { DashboardSidebarItem } from "./DashboardSidebarItem.tsx";
+import MenuItem from "../components/MenuItem.tsx";
 
 
 
@@ -18,7 +19,9 @@ export const DashboardAdminRoutes = () => {
   return (
     <>
       <ul>
-        {adminRoutesArray.map(({ label, icon, items, key }) => (
+
+     
+        {adminNestedRoutesArray.map(({ label, icon, items, key }) => (
           <DashboardSidebarItem
             key={key}
             handleClick={() => handleDropdownClick(key)}
@@ -28,7 +31,19 @@ export const DashboardAdminRoutes = () => {
             sidebarDropdowns={items}
           />
         ))}
+
+
+              {/* User routes  */}
+      {adminSidebarDirectRoutes?.map((route) => (
+        <MenuItem
+          label={route.label}
+          icon={route.icon}
+          address={route.address}
+        />
+      ))}
       </ul>
     </>
   );
 };
+
+

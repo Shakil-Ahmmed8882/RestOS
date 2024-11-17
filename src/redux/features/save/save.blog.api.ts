@@ -5,7 +5,6 @@ const saveBlogApi = baseApi.injectEndpoints({
     getAllSavedBlogs: builder.query({
       query: (args) => {
         const params = new URLSearchParams();
-
         if (args) {
           args.forEach((item) => {
             // Check if the param name already exists before appending

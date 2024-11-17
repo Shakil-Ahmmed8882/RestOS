@@ -23,7 +23,7 @@ const MenuItem = ({ label, address, icon: Icon }) => {
         ) : (
           <span className={`${   isActive ? "font-bold bg-primary-color" : "bg-[#b9b9b9]"}  w-2 h-2 rounded-full`}></span>
         )}
-        <span className={`ml-3 ${isActive ? " text-primaryColor" : "text-[#bebebe]  group-hover:text-[#797979]"} transition-all duration-400`}>{label}</span>
+        <span className={`ml-3 ${isActive ? " text-primaryColor" : "text-[#a5a5a5]  group-hover:text-[#797979]"} transition-all duration-400`}>{label}</span>
       </li>
     </NavLink>
   );

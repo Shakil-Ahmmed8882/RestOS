@@ -57,6 +57,18 @@ const orderApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ["order-data"],
     }),
+
+    updateOrder: builder.mutation({
+      query: ({id,data}) => {
+        return {
+          url: `/orders/${id}`,
+          method: "PATCH",
+          body: data,
+        };
+      },
+      invalidatesTags: ["order-data"],
+    }),
+
     deleteOrder: builder.mutation({
       query: (id:string) => {
         return {
@@ -73,6 +85,7 @@ export const {
   useGetAllOrdersQuery,
   useCreateOrderMutation,
   useDeleteOrderMutation,
-  useGetAllOrderSummaryQuery
+  useGetAllOrderSummaryQuery,
+  useUpdateOrderMutation
 } = orderApi;
 export default orderApi;

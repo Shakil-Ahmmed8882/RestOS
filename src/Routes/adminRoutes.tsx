@@ -1,9 +1,9 @@
 import React from "react";
 import PurchasedFoodsLayout from "../module/dashboard/userDashboard/purchases/PurchasedFoodsLayout";
 
-import Allorders from "../module/dashboard/adminDashboard/order-management/allOrders/Allorders";
+import AllOrdersLayout from "../module/dashboard/adminDashboard/order-management/all-orders/AllOrders";
 import AddFood from "../module/dashboard/adminDashboard/food-management/add-food/AddFood";
-import FoodCategories from "../module/dashboard/adminDashboard/food-management/food-categories/FoodCategories";
+import { foodCategories } from "../demo-data/food";
 import DisCountAndOffers from "../module/dashboard/adminDashboard/food-management/discountsAndOffers.tsx/DisCountAndOffers";
 import FoodAnalytics from "../module/dashboard/adminDashboard/food-management/food-analytics/FoodAnalytics";
 import AllUsers from "../module/dashboard/adminDashboard/user-management/all-users/AllUsers";
@@ -58,7 +58,7 @@ export const adminPaths = [
   // // ORDERS MANAGEMENT
   {
     path: "all-orders",
-    element: <Allorders></Allorders>,
+    element: <AllOrdersLayout/>,
   },
   {
     path: "pending-orders",

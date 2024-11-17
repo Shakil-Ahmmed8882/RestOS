@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useUpdateFoodCategoryMutation } from "../../../../../../redux/features/food-category/foodCategory.api";
 import PopoverWrapper from "../../../../../../shared/ui/wrapper/PopoverWrapper";
 import RSForm from "../../../../../../shared/forms/RSForm";
@@ -48,6 +48,13 @@ const EditFoodCategory = ({
     } catch (error) {}
   };
 
+  useEffect(() => {
+    if (categoryId && item.image) {
+      // Ensure imagePreviews is always an array
+      setImagePreviews([item.image]);
+    }
+  }, [categoryId, item.image]);
+
   return (
     <div className="mt-6 md:mt-0">
       <PopoverWrapper
@@ -66,10 +73,21 @@ const EditFoodCategory = ({
         <div className="!w-[400px] h-screen bg-[white] shadow-lg p-5">
           <section className="mt-11">
             <RSForm onSubmit={onFoodCategorySubmit}>
-              <RSInput name="name" label="Category Name" />
-              <RSInput name="description" label="description" />
-              {/* <ImageUploader onImagesChange={handleImageChange} /> */}
-              <ImageUploader imagePreviews={imagePreviews} setImagePreviews={setImagePreviews} onImagesChange={handleImageChange} />
+              <RSInput
+                defaultvalue={item.name}
+                name="name"
+                label="Category Name"
+              />
+              <RSInput
+                defaultvalue={item.description}
+                name="description"
+                label="description"
+              />
+              <ImageUploader
+                imagePreviews={imagePreviews}
+                setImagePreviews={setImagePreviews}
+                onImagesChange={handleImageChange}
+              />
               <Button type="submit" className="bg-primaryColor text-[white]">
                 update
               </Button>

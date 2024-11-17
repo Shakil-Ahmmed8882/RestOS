@@ -187,7 +187,6 @@ const CommentComponent: React.FC<CommentComponentProps> = ({ blogId, comment }) 
               </h4>
               <h5 className="text-small tracking-tight text-default-400 mt-2">
                 <div className="flex justify-center items-center">
-           
                   {new Date(blogComment.createdAt).toLocaleString()}
                 </div>
               </h5>

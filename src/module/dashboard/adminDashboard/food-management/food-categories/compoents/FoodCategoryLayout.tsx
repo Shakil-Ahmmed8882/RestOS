@@ -10,6 +10,7 @@ import AddCategory from "../AddCategory";
 import CategoryButton from "./CategoryButton";
 import FoodCategoryList from "./FoodCategoryList";
 import { categories } from "./data";
+import CustomPagination from "../../../../../../shared/ui/CustomPagination";
 
 const FoodCategoryLayout: React.FC = () => {
   const navigate = useNavigate();
@@ -17,16 +18,24 @@ const FoodCategoryLayout: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const { data, isLoading, isFetching } = useGetAllFoodsCategoriesQuery<FoodsCategoryResponse & any>([
+  const [page, setPage] = useState(1);
+  const { data, isLoading, isFetching } = useGetAllFoodsCategoriesQuery<
+    FoodsCategoryResponse & any
+  >([
     {
       name: "searchTerm",
-      value: debouncedSearchTerm || (selectedCategory === "all" ? "" : selectedCategory),
+      value:
+        debouncedSearchTerm ||
+        (selectedCategory === "all" ? "" : selectedCategory),
     },
+    {
+      name: "page",
+      value: page,
+    },
+    { name: "limit", value: 5 },
   ]);
-  
 
-  
-  
+  const meta = data?.meta;
 
   useEffect(() => {
     const category = searchParams.get("category");
@@ -87,6 +96,13 @@ const FoodCategoryLayout: React.FC = () => {
           />
         </div>
       </div>
+
+      <CustomPagination
+        currentPage={page}
+        limit={meta?.limit}
+        onPageChange={setPage}
+        total={meta?.total}
+      />
     </div>
   );
 };

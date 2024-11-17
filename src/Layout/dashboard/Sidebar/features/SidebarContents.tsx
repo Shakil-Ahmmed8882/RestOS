@@ -6,14 +6,15 @@ import MenuItem from "../components/MenuItem";
 import { useNavigate } from "react-router-dom";
 
 import { DashboardUserRoutes } from "./UserRoutes";
-;
 import React from "react";
 import Logo from "../../../../shared/ui/Logo";
 import { DashboardAdminRoutes } from "./AdminRoutes";
-
+import { useAppSelector } from "../../../../redux/hooks";
+const userrole = {
+  role: import.meta.env.VITE_USER_ROLE,
+};
 export const SidebarContents = () => {
-  const [role, setRole] = useState("admin");
-
+  
 
   return (
     <>
@@ -35,17 +36,16 @@ export const SidebarContents = () => {
           {/* <Logo /> */}
           {/* <UserAvater /> */}
         </div>
-        
 
-        {role === "admin" ? (
+        {userrole.role === "ADMIN" ? (
           <>
-             <DashboardAdminRoutes />
+            <DashboardAdminRoutes />
           </>
         ) : (
           <>
             <div>
               <ul>
-          <DashboardUserRoutes />
+                <DashboardUserRoutes />
               </ul>
             </div>
           </>
