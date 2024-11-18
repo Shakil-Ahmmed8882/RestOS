@@ -5,9 +5,11 @@ import { CiSearch } from "react-icons/ci";
 interface SearchBarProps {
   onChange: (value: string) => void;
   placeholder?: string;
+  px?: string;
+
 }
 
-const SearchBar = ({ onChange, placeholder = "Search" }: SearchBarProps) => {
+const SearchBar = ({ onChange, placeholder = "Search" , px="px-2 " }: SearchBarProps) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -17,7 +19,7 @@ const SearchBar = ({ onChange, placeholder = "Search" }: SearchBarProps) => {
   };
 
   return (
-    <div className="px-2  focus-within:border-gray-400 rounded-lg transition-all duration-200 flex items-center gap-2">
+    <div className={`${px} focus-within:border-gray-400 rounded-lg transition-all duration-200 flex items-center gap-2`}>
       
       <SearchInput
         value={searchTerm}
@@ -50,3 +52,5 @@ const SearchInput = ({ onChange, value, placeholder }: SearchInputProps) => {
     />
   );
 };
+
+

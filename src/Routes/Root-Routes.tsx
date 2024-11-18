@@ -39,8 +39,8 @@ const router = createBrowserRouter([
   // ------------------ common dashboard routes ----------------------------
 
   {
-    path: "/dashboard/common",
-    element: <DashboardLayout />,
+    path: "/",
+    element: <Main />,
     children: routeGenerator(commonRoutes),
   },
 

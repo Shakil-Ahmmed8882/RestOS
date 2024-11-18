@@ -22,8 +22,12 @@ const ConditionalSigninOrUser = () => {
     const items = [
         {
             key: "dashboard",
-            label: <NavLink className={'flex hover:text-primaryColor p-3 py-3 '} to="/dashboard">Dashboard</NavLink>,
-            path: "/dashboard"
+            label: <NavLink className={'flex hover:text-primaryColor p-3 py-3 '} 
+            to={import.meta.env.VITE_USER_ROLE === "USER" ? "/dashboard" : "/admin/dashboard"}
+            >
+                
+                Dashboard</NavLink>,
+            path: import.meta.env.VITE_USER_ROLE == "USER"? "/dashboard": "/admin/dashboard"
         },
         {
             key: "signout",

@@ -56,8 +56,6 @@ const CommentsSidebar: React.FC<CommentsSidebarProps> = ({
     setInputValue(event.target.value);
   };
 
-
-console.log(user)
   // ADD COMMENTS 
   const handleComment = () => {
     
@@ -67,7 +65,7 @@ console.log(user)
         _id: new Date().getTime().toString(),  
         blog: blogId,
         user: {
-          _id: "672a2aa19a0d15f44b88473f",
+          _id: import.meta.env.VITE_TEST_USER_ID,
           name: user?.displayName,                 
           email:user?.email,  
           photo:user?.photoURL,  

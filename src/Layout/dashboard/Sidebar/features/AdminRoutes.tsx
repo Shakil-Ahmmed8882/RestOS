@@ -20,6 +20,13 @@ export const DashboardAdminRoutes = () => {
     <>
       <ul>
 
+
+      <MenuItem
+          label={"Dashboard"}
+          icon={""}
+          address={"/admin/dashboard"}
+        />
+
      
         {adminNestedRoutesArray.map(({ label, icon, items, key }) => (
           <DashboardSidebarItem

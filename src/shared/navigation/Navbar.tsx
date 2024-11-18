@@ -3,12 +3,15 @@ import Logo from "../ui/Logo";
 import { NavLink } from "react-router-dom";
 import { homePagePaths } from "../../Routes/homePageRoutes";
 import ConditionalSigninOrUser from "./ConditionalSigninOrUser";
+import GlobalSearch from "../ui/global-search/GlobalSearch";
 
 const Navbar = () => {
   return (
     <header className="flex justify-between w-full max-w-6xl rounded-b-lg backdrop-blur-sm bg-[#ffffff79] mx-auto items-center h-16">
       <Logo />
       <article className="hidden md:flex items-center gap-8">
+
+        <GlobalSearch/>
         {homePagePaths?.map((route) => {
           if (route && route.name && route.name !== "Sign In") {
             return (

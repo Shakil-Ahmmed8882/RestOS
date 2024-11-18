@@ -24,6 +24,7 @@ import {
   BsSearch,
   CiMenuFries,
 } from ".";
+import GlobalSearch from "../../../../shared/ui/global-search/GlobalSearch";
 
 export default function AppNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -58,16 +59,7 @@ export default function AppNavbar() {
       <NavbarContent justify="end">
         {/* Search Icon with Modal */}
         <NavbarItem>
-          <ModalWrapper
-            isActionButton={false}
-            size="4xl"
-            triggerElement={<BsSearch className="cursor-pointer size-5" />}
-          >
-            <SearchBar
-              onChange={(value) => setSearchTerm(value)}
-              placeholder="Search..."
-            />
-          </ModalWrapper>
+        <GlobalSearch/>
         </NavbarItem>
 
         {/* Notification Icon (visible on larger screens) */}

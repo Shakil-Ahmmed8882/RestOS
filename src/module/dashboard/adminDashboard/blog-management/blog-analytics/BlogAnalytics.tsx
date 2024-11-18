@@ -338,7 +338,7 @@ const metrics = [
   { title: "Downvotes", value: "102", color: "bg-red-100" },
 ];
 
-export default function BlogAnalytics() {
+export default function AdminAnalyticsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 

@@ -53,9 +53,7 @@ const FoodCategoryLayout: React.FC = () => {
     <div className="w-full bg-white mx-auto px-4 py-8">
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-2">
-          <h1 className="text-4xl text-light-gray italic font-bold">
-            Food Category
-          </h1>
+         
 
           <div className="md:flex items-center justify-between">
             <Input

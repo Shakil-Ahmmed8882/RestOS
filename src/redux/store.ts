@@ -11,6 +11,7 @@ import replyApi from "./features/reply/reply.api";
 import voteApi from "./features/vote/vote.api";
 import saveBlogApi from "./features/save/save.blog.api";
 import profileApi from "./features/profile/profile.api";
+import searchApi from "./features/search/search.api";
 
 export const store = configureStore({
   reducer: {
@@ -31,6 +32,7 @@ export const store = configureStore({
       voteApi.middleware,
       saveBlogApi.middleware,
       profileApi.middleware,
+      searchApi.middleware,
     ),
 });
 

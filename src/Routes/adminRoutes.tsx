@@ -14,7 +14,7 @@ import AllPurchsedOrders from "../module/dashboard/adminDashboard/order-manageme
 import AllBlogsLayout from "../module/dashboard/adminDashboard/blog-management/all-blogs/AllBlogsLayout";
 import BlogCategories from "../module/dashboard/adminDashboard/blog-management/blog-categories/BlogCategories";
 import AllBlogComments from "../module/dashboard/adminDashboard/blog-management/all-blog-comments/AllBlogComments";
-import BlogAnalytics from "../module/dashboard/adminDashboard/blog-management/blog-analytics/BlogAnalytics";
+import AdminAnalyticsPage from "../module/dashboard/adminDashboard/blog-management/blog-analytics/BlogAnalytics";
 import AddRecipe from "../module/frontFace/recipe/features/AddRecipe";
 import RecipeCategories from "../module/dashboard/adminDashboard/recipe-management/recipe-categories/RecipeCategories";
 import AllRecipies from "../module/dashboard/adminDashboard/recipe-management/all-recipies/AllRecipies";
@@ -24,6 +24,11 @@ import FoodCategoryLayout from "../module/dashboard/adminDashboard/food-manageme
 
 export const adminPaths = [
   // USER MANAGEMENT
+  {
+    path: "/admin/dashboard",
+    element: <AdminAnalyticsPage />, 
+  },
+  ,
   {
     path: "all-users",
     element: <AllUsers />,
@@ -88,7 +93,7 @@ export const adminPaths = [
   // },
   {
     path: "blog-analytics",
-    element: <BlogAnalytics />,
+    element: <AdminAnalyticsPage />,
   },
 
   // RECIPE MANAGEMENT
