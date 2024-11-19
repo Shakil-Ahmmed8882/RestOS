@@ -19,18 +19,20 @@ const MyBlogCard = ({blogData}) => {
             >
               <CardBody className="p-6">
                 <article className="md:flex gap-6">
+                  <div className="w-full h-full">
                   <Image
                     src={`${article?.image}`}
                     alt={article.title}
-                    className="rounded-lg w-80 object-cover"
-                  />
-                  <div className="flex flex-col justify-between">
-                    <div>
-                      <h3 className="font-bold text-xl mb-2">
+                    className="rounded-lg h-full w-full  object-cover"
+                    />
+                    </div>
+                  <div className="flex flex-col  justify-between">
+                    <div className="">
+                      <h3 className="font-bold mt-5 md:mt-0 text-xl mb-2">
                         {article.title}
                       </h3>
                       <p className="text-gray-600 text-[#8b8b8b] mb-2">
-                        {article.description}
+                        {article.description.slice(0,200)}.. 
                       </p>
                       <div className="flex gap-3 py-3">
                         <p className="text-primaryColor text-sm font-semibold">

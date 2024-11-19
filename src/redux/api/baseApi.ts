@@ -10,12 +10,14 @@ import { Tags } from ".";
 // import { logout, setUser } from "../features/auth/authSlice";
 
 const baseQuery = fetchBaseQuery({
-  // baseUrl: "http://localhost:5000/api/v1",
-  baseUrl: "http://localhost:5000/api/v1",
+  baseUrl: import.meta.env.VITE_BACKENT_URL,
   credentials: "include",
-  // Adding the token to headers for each request
+
+
+  
   prepareHeaders: (headers) => {
-    headers.set("Authorization", `${import.meta.env.VITE_TOKEN}`);
+    // add accessToken to headers for each request
+    headers.set("Authorization", `${localStorage.getItem("accessToken")}`);
     return headers;
   },
 });
@@ -27,29 +29,38 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 > = async (args, api, extraOptions): Promise<any> => {
   let result = await baseQuery(args, api, extraOptions);
 
-  // if (result.error?.status === 401) {
-  //   try {
-  //     const res = await fetch("http://localhost:5000/api/v1/auth/refresh-token", {
-  //       method: "POST",
-  //       credentials: "include",
-  //     });
-  //     const data = await res.json();
-  //     if (data?.data?.accessToken) {
-  //       const user = (api.getState() as RootState).auth.user;
-  //       api.dispatch(
-  //         setUser({
-  //           user: user,
-  //           token: data?.data?.accessToken,
-  //         })
-  //       );
-  //       result = await baseQuery(args, api, extraOptions);
-  //     } else {
-  //       api.dispatch(logout());
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
+  
+  // console.log("_______________________________________________")
+  // console.log(result.error)
+  // console.log("_______________________________________________")
+  if (result.error?.status === 401) {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_BACKENT_URL}/auths/refresh-token`, {
+        method: "POST",
+        credentials: "include",
+      });
+      const data = await res.json();
+      console.log(data)
+      if (data?.data?.accessToken) {
+
+        localStorage.setItem("accessToken",data?.data?.accessToken)
+        console.log(data?.data?.accessToken)
+        
+        // const user = (api.getState() as RootState).auth.user;
+        // api.dispatch(
+        //   setUser({
+        //     user: user,
+        //     token: data?.data?.accessToken,
+        //   })
+        // );
+        result = await baseQuery(args, api, extraOptions);
+      } else {
+        // api.dispatch(logout());
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return result;
 };

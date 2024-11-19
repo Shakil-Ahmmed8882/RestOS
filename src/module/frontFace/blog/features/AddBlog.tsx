@@ -19,13 +19,15 @@ import Instructions from "../components/Ingredient";
 import { categoryOptions, tagOptions } from "../blog.constants";
 import { useCreateBlogMutation } from "../../../../redux/features/blog/blog.api";
 import Spinner from "../../../../shared/ui/Spinner";
-import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../../../redux/hooks";
+import { selectUser } from "../../../../redux/features/auth/auth.slice";
 
 export default function AddBlog() {
 
 
   // State management part-1
   const methods = useForm();
+  const user = useAppSelector(selectUser);
   const { control, handleSubmit } = methods;
   const { fields, append, remove } = useFieldArray({
     control,
@@ -101,8 +103,8 @@ export default function AddBlog() {
       tags: [data.tags],
       instructions: validInstructions,
       author: {
-        user: import.meta.env.VITE_TEST_USER_ID,
-        name: "Chef Mario",
+        user: user?.userId,
+        name: user?.name,
       },
     };
     
@@ -127,10 +129,6 @@ export default function AddBlog() {
   }
   },[isBlogCreating, isBlogCreationSuccess])
 
-
-
-
-console.log(imagePreviews)
 
   
 

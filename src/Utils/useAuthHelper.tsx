@@ -5,3 +5,4 @@ export const useAuth = () => {
       const all = useContext(AuthContext)
       return all
 }
+

@@ -14,7 +14,11 @@ import AuthProvider from "./Providers/🛡️AuthProvider";
 import Providers from "./Providers/Provider";
 import { Toaster } from "react-hot-toast";
 import { Provider } from "react-redux";
-import { store } from "./redux/store";
+import { persistor, store } from "./redux/store";
+
+// redux persisit
+import { PersistGate } from "redux-persist/integration/react";
+
 
 const client = new QueryClient();
 
@@ -24,11 +28,14 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <Provider store={store}>
         <Providers>
           <QueryClientProvider client={client}>
-          <HelmetProvider>
-            <AuthProvider>
-              <RouterProvider router={router} />
-            </AuthProvider>
-          </HelmetProvider>
+            <HelmetProvider>
+              <AuthProvider>
+                {/*  */}
+                <PersistGate loading={null} persistor={persistor}>
+                  <RouterProvider router={router} />
+                </PersistGate>
+              </AuthProvider>
+            </HelmetProvider>
           </QueryClientProvider>
         </Providers>
       </Provider>

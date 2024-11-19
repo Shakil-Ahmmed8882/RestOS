@@ -44,7 +44,7 @@ const voteApi = baseApi.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: ["vote-data"],
+      invalidatesTags: ["vote-data","analytics-data"],
     }),
 
     removeVoteOnBlog: builder.mutation({
@@ -54,7 +54,7 @@ const voteApi = baseApi.injectEndpoints({
           method: "DELETE",
         };
       },
-      invalidatesTags: ["vote-data"],
+      invalidatesTags: ["vote-data","analytics-data"],
     }),
 
   }),

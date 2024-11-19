@@ -6,7 +6,10 @@ import toast from "react-hot-toast";
 // @ts-ignore
 import google_icon from "../../../assets/img/icons8-google-48.png";
 import { useAuth } from "../../../Utils/useAuthHelper";
-import { useCreateUserMutation } from "../../../redux/features/user/userApi";
+import { useLoginUserMutation } from "../../../redux/features/auth/auth.api";
+import { useAppDispatch } from "../../../redux/hooks";
+import { setUser } from "../../../redux/features/auth/auth.slice";
+import verifyToken from "../../../helpers/verifyToken";
 
 const GoogleSignInButton = () => {
   const { theme } = useTheme();
@@ -15,50 +18,49 @@ const GoogleSignInButton = () => {
   const { from } = location.state || { from: { pathname: "/" } };
   // @ts-ignore
   const { googleSignIn } = useAuth();
-  const [createUserInDB, { data }] = useCreateUserMutation();
-
-
-
+  const [LoginUserFromDB, { data }] = useLoginUserMutation();
+  const dispatch = useAppDispatch()
   const handleGoogleSignIn = () => {
-    googleSignIn()
-      .then((result) => {
-        // creating a token
-        // xios
-        //   .post("jwt", { email: user?.email })
-        //   .then((res) => console.log(res.data))
-        //   .catch((err) => console.log(err));
+    googleSignIn().then(async (result) => {
 
-        // storing user here
-        const currentUser = {
-          name: result?.user?.displayName,
-          email: result?.user?.email,
-          photo: result?.user?.photoURL,
-          role: "user",
-        };
 
-        // Navigate to the previous
-        // page & save user
-        goTo(from, { replace: true });
-        createUserInDB(currentUser);
+      // storing user here
+      const LoginUsercurrentUserToSaveInDB = {
+        name: result?.user?.displayName,
+        email: result?.user?.email,
+        photo: result?.user?.photoURL,
+      };
 
-        if (data) {
-          return toast.success("Successfully signed in");
+      try {
+        const response: any = await LoginUserFromDB(
+          LoginUsercurrentUserToSaveInDB
+        );
+       
+        if (response.data.success) {
+          const { accessToken } = response.data.data;
+          
+          const decodedUser = verifyToken(accessToken);
+          dispatch(setUser({user:decodedUser,token:accessToken}))
+          // Redirect user and notify success
+          goTo(from, { replace: true });
+          toast.success("Successfully signed in");
         }
-      })
-      .catch((err) => console.log(err.message));
+      } catch (err) {
+        console.log(err.message);
+      }
+    });
   };
-  
 
   return (
     <button
-            onClick={handleGoogleSignIn}
-            className={`flex justify-center items-center gap-2 ${
-              theme == "dark" ? "text-[white]" : ""
-            } py-9`}
-          >
-            <img className="w-8" src={google_icon} alt="" />
-            Sign in with google
-          </button>
+      onClick={handleGoogleSignIn}
+      className={`flex justify-center items-center gap-2 ${
+        theme == "dark" ? "text-[white]" : ""
+      } py-9`}
+    >
+      <img className="w-8" src={google_icon} alt="" />
+      Sign in with google
+    </button>
   );
 };
 

@@ -26,14 +26,14 @@ export const validate = (name, email, photo, password) => {
         return true;
       }
     
-      if (!/^(?=.*[A-Z]).*$/.test(password)) {
-        toast.error("Password must contain at least one capital letter.");
-        return true;
-      }
-      if (!/^[a-zA-Z0-9]*$/.test(password)) {
-        toast.error("Password must contain at least one special character.");
-        return true;
-      }
+      // if (!/^(?=.*[A-Z]).$/.test(password)) {
+      //   toast.error("Password must contain at least one capital letter.");
+      //   return true;
+      // }
+      // if (!/^[a-zA-Z0-9]*$/.test(password)) {
+      //   toast.error("Password must contain at least one special character.");
+      //   return true;
+      // }
     
       return false; 
     }

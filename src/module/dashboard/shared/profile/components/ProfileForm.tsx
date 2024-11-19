@@ -6,11 +6,12 @@ import { Button } from "@nextui-org/react";
 import { useAppDispatch } from "../../navabar";
 import { setProfileData } from "../../../../../redux/features/profile/profile.slice";
 import { useUpdateUserProfileMutation } from "../../../../../redux/features/profile/profile.api";
-
-
+import { useAppSelector } from "../../../../../redux/hooks";
+import { selectUser } from "../../../../../redux/features/auth/auth.slice";
 
 export default function ProfileForm({ data, calculateCompletionPercentage }) {
   const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
   const [updateUser] = useUpdateUserProfileMutation();
 
   //Default value of user
@@ -37,20 +38,20 @@ export default function ProfileForm({ data, calculateCompletionPercentage }) {
   const onsubmit = async (formData) => {
     const userData = {
       ...formData,
-      preferredMealTimes: [formData.preferredMealTimes],
-      paymentMethods: [formData.paymentMethods],
+      cuisinePreferences: [formData.cuisinePreferences],
+      favoriteRestaurants: [formData.favoriteRestaurants],
       socialMedia: {
         instagram: formData.instagram,
         facebook: formData.facebook,
         twitter: formData.twitter,
       },
     };
+
     dispatch(setProfileData(userData));
     calculateCompletionPercentage(formData);
 
     try {
-      const res = await updateUser({id:import.meta.env.VITE_TEST_USER_ID,data:userData});
-      
+      const res = await updateUser({ id: `${user?.userId}`, data: userData });
     } catch (error) {}
   };
 
