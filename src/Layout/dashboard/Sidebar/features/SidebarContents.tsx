@@ -10,11 +10,10 @@ import React from "react";
 import Logo from "../../../../shared/ui/Logo";
 import { DashboardAdminRoutes } from "./AdminRoutes";
 import { useAppSelector } from "../../../../redux/hooks";
-const userrole = {
-  role: import.meta.env.VITE_USER_ROLE,
-};
+import { selectUser } from "../../../../redux/features/auth/auth.slice";
+
 export const SidebarContents = () => {
-  
+  const user = useAppSelector(selectUser)  
 
   return (
     <>
@@ -37,7 +36,7 @@ export const SidebarContents = () => {
           {/* <UserAvater /> */}
         </div>
 
-        {userrole.role === "ADMIN" ? (
+        {user?.role === "ADMIN" ? (
           <>
             <DashboardAdminRoutes />
           </>

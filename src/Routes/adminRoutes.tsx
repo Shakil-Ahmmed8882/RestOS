@@ -21,6 +21,7 @@ import AllRecipies from "../module/dashboard/adminDashboard/recipe-management/al
 import AllFoodsLayout from "../module/dashboard/adminDashboard/food-management/all-foods/AllFoodsLayout";
 import EditFoodLayout from "../module/dashboard/adminDashboard/food-management/all-foods/edit-food/EditFoodLayout";
 import FoodCategoryLayout from "../module/dashboard/adminDashboard/food-management/food-categories/compoents/FoodCategoryLayout";
+import Profile from "../module/dashboard/shared/profile/Profile";
 
 export const adminPaths = [
   // USER MANAGEMENT
@@ -108,5 +109,9 @@ export const adminPaths = [
   {
     path: "recipe-categories",
     element: <RecipeCategories />,
+  },
+  {
+    path: "profile",
+    element: <Profile />,
   },
 ];

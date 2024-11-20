@@ -1,6 +1,6 @@
 // src/components/GlobalSearch/SearchResults.tsx
 
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Image } from "@nextui-org/react";
 
@@ -20,7 +20,12 @@ type SearchItem = {
   foodImage?: string;
 };
 
+
+
 const renderSearchResults = (results: SearchResult[], handleClose) => {
+
+  
+
   return results.map((result, index) => (
     <div key={index} className="mb-4">
       <h3 className="text-xl text-light-gray italic font-semibold capitalize mb-2">
@@ -34,9 +39,12 @@ const renderSearchResults = (results: SearchResult[], handleClose) => {
             className="flex items-center hover:bg-[#f3f3f3] p-3 cursor-pointer  space-x-2"
           >
             <Link
+            
               to={`/${
                 result.source === "blogs"
                   ? `blog/${item._id}`
+                  : result.source === "foodCategories"
+             ? `food-categories?category=${encodeURIComponent(item.name || "")}`
                   : `food/${item._id}`
               }`}
               className="flex items-center gap-3"

@@ -11,9 +11,13 @@ import CategoryButton from "./CategoryButton";
 import FoodCategoryList from "./FoodCategoryList";
 import { categories } from "./data";
 import CustomPagination from "../../../../../../shared/ui/CustomPagination";
+import { useAppSelector } from "../../../../../../redux/hooks";
+import { selectUser } from "../../../../../../redux/features/auth/auth.slice";
+import { USER_ROLE } from "../../../../../../constants";
 
 const FoodCategoryLayout: React.FC = () => {
   const navigate = useNavigate();
+  const user = useAppSelector(selectUser);
   const [searchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
@@ -53,8 +57,6 @@ const FoodCategoryLayout: React.FC = () => {
     <div className="w-full bg-white mx-auto px-4 py-8">
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-2">
-         
-
           <div className="md:flex items-center justify-between">
             <Input
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -62,9 +64,11 @@ const FoodCategoryLayout: React.FC = () => {
               className="mt-5 md:w-2/3"
               startContent={<SearchIcon />}
             />
-            <div className="text-right">
-              <AddCategory />
-            </div>
+            {user && user.role === USER_ROLE.ADMIN && (
+              <div className="text-right">
+                <AddCategory />
+              </div>
+            )}
           </div>
         </div>
 

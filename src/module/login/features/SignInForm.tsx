@@ -3,21 +3,20 @@ import React from "react";
 import { useTheme } from "next-themes";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import GoogleSignInButton from "./GoogleSignInButton";
-
-import toast from "react-hot-toast";
 import { useAuth } from "../../../Utils/useAuthHelper";
 import { useLoginUserMutation } from "../../../redux/features/auth/auth.api";
 import { useAppDispatch } from "../../../redux/hooks";
 import { setUser } from "../../../redux/features/auth/auth.slice";
 import verifyToken from "../../../helpers/verifyToken";
 import { USER_ROLE } from "../../../constants";
+import { toast } from "sonner";
 
 const SignInForm = () => {
   const [LoginUserFromDB] = useLoginUserMutation();
   const { theme } = useTheme();
-  const goTo = useNavigate();
-  const location = useLocation();
-  const { from } = location.state || { from: { pathname: "/" } };
+  const navigate = useNavigate();
+  // const location = useLocation();
+  // const { from } = location.state || { from: { pathname: "/" } };
   const dispatch = useAppDispatch();
   // @ts-ignore
   const { login } = useAuth();
@@ -26,6 +25,7 @@ const SignInForm = () => {
     e.preventDefault();
     const form = new FormData(e.target);
     const data = Object.fromEntries(form);
+    const loginToastId = toast.loading("Logging in..");
 
     // Login user to firebase
     login(data.email, data.password)
@@ -43,12 +43,11 @@ const SignInForm = () => {
           const decodedUser = verifyToken(accessToken);
           // Set {user:"",token:""} in local state
           dispatch(setUser({ user: decodedUser, token: accessToken }));
-          // goTo( from, { replace: true });
-          goTo(`/${decodedUser.role === USER_ROLE.ADMIN?"admin/dashboard":"user"}`);
-          toast.success("Successfully signed in");
+          navigate(`/${decodedUser.role === USER_ROLE.ADMIN?"admin":"user"}/dashboard`);
+          toast.success("Successfully signed in", {id: loginToastId,duration: 2000});
         }
       })
-      .catch((err) => toast.error(err.toString()));
+      .catch((err) => toast.error(err.toString()),{id:loginToastId, duration: 2000});
   };
 
   return (

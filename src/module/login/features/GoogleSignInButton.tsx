@@ -1,8 +1,7 @@
 // GoogleSignInButton.jsx
 import React from "react";
 import { useTheme } from "next-themes";
-import { useNavigate, useLocation } from "react-router-dom";
-import toast from "react-hot-toast";
+import { useNavigate, useLocation} from "react-router-dom";
 // @ts-ignore
 import google_icon from "../../../assets/img/icons8-google-48.png";
 import { useAuth } from "../../../Utils/useAuthHelper";
@@ -11,10 +10,11 @@ import { useAppDispatch } from "../../../redux/hooks";
 import { setUser } from "../../../redux/features/auth/auth.slice";
 import verifyToken from "../../../helpers/verifyToken";
 import { USER_ROLE } from "../../../constants";
+import { toast } from "sonner";
 
 const GoogleSignInButton = () => {
   const { theme } = useTheme();
-  const goTo = useNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
   const { from } = location.state || { from: { pathname: "/" } };
   // @ts-ignore
@@ -32,6 +32,8 @@ const GoogleSignInButton = () => {
         photo: result?.user?.photoURL,
       };
 
+      const loginToastId = toast.loading("Logging in..");
+
       try {
         const response: any = await LoginUserFromDB(
           LoginUsercurrentUserToSaveInDB
@@ -39,13 +41,12 @@ const GoogleSignInButton = () => {
        
         if (response.data.success) {
           const { accessToken } = response.data.data;
-          
           const decodedUser = verifyToken(accessToken);
           dispatch(setUser({user:decodedUser,token:accessToken}))
     
           // goTo( from, { replace: true });
-          goTo(`/${decodedUser.role === USER_ROLE.ADMIN?"admin/dashboard":"user"}`);
-          toast.success("Successfully signed in");
+          navigate(`/${decodedUser.role === USER_ROLE.ADMIN?"admin/dashboard":"user"}`);
+          toast.success("Successfully signed in", {id: loginToastId});
         }
       } catch (err) {
         console.log(err.message);

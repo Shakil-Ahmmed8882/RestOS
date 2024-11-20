@@ -6,13 +6,12 @@ import { HelmetProvider } from "react-helmet-async";
 
 import { RouterProvider } from "react-router-dom";
 import router from "./Routes/Root-Routes";
-
+import { Toaster } from 'sonner';
 // Tanstack query
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AuthProvider from "./Providers/🛡️AuthProvider";
 
 import Providers from "./Providers/Provider";
-import { Toaster } from "react-hot-toast";
 import { Provider } from "react-redux";
 import { persistor, store } from "./redux/store";
 

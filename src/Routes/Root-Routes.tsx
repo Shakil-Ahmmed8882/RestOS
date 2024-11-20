@@ -13,7 +13,7 @@ import {
   commonRoutes,
 } from ".";
 import RecipePage from "../../X";
-import ProtectedRoutes from "../shared/ui/Private";
+import ProtectedRoutes from "../shared/ui/PrivateRoutes";
 
 const router = createBrowserRouter([
   {

@@ -82,7 +82,6 @@ export default function AppNavbar() {
                 className="cursor-pointer"
               />
             }
-            items={items}
           />
         </NavbarItem>
 

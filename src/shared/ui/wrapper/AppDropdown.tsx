@@ -1,3 +1,12 @@
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../Utils/useAuthHelper";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import {
+  logout,
+  selectToken,
+  selectUser,
+} from "../../../redux/features/auth/auth.slice";
+
 import {
   Dropdown,
   DropdownTrigger,
@@ -5,31 +14,29 @@ import {
   DropdownItem,
   Button,
 } from "@nextui-org/react";
-import React, { ReactNode, FC, useState, useEffect } from "react";
+import React, { ReactNode } from "react";
+import { toast } from "sonner";
+import verifyToken from "../../../helpers/verifyToken";
+import { USER_ROLE } from "../../../constants";
 
 type DropdownProps = {
-  items: { key: string; label: string; path?: string }[];
   triggerElement: ReactNode | string;
 };
 
-export default function AppDropdown({ items, triggerElement }: DropdownProps) {
+export default function AppDropdown({ triggerElement }: DropdownProps) {
   const navigate = useNavigate();
-  const { user, logOut } = useAuth();
-  const [isLoggedOut, setIsLoggedOut] = useState(!user);
-
-  useEffect(() => {
-    if (!user) {
-      setIsLoggedOut(true);
-    } else {
-      setIsLoggedOut(false);
-    }
-  }, [user]);
+  const { logOut } = useAuth();
+  const token = useAppSelector(selectToken);
+  const dispatch = useAppDispatch();
+  const decodedUser = verifyToken(`${token}`);
+  const url = `${decodedUser.role === USER_ROLE.ADMIN ? "admin" : "user"}`;
 
   const handleSignOut = () => {
+    navigate("/");
     logOut()
       .then(() => {
         toast.success("Signed out");
-        setIsLoggedOut(true);
+        dispatch(logout());
       })
       .catch((err) => toast.error(err.toString()));
   };
@@ -43,30 +50,18 @@ export default function AppDropdown({ items, triggerElement }: DropdownProps) {
           triggerElement
         )}
       </DropdownTrigger>
-      <DropdownMenu aria-label="Dynamic Actions" items={items}>
-        {(item) => (
-          <DropdownItem
-            key={item.key}
-            color={item.key === "logout" ? "danger" : "default"}
-            className={item.key === "logout" ? "text-danger" : ""}
-            onClick={() => {
-              if (item.key === "logout") {
-                handleSignOut();
-                navigate("/");
-              } else if (item.path) {
-                navigate(item.path);
-              }
-            }}
-          >
-            {item.label}
-          </DropdownItem>
-        )}
+      <DropdownMenu aria-label="Dynamic Actions">
+        <DropdownItem onClick={() => navigate(`/${url}/dashboard/profile`)}>
+          Profile
+        </DropdownItem>
+        <DropdownItem
+          color={"danger"}
+          className={"text-danger"}
+          onClick={() => handleSignOut()}
+        >
+          Logout
+        </DropdownItem>
       </DropdownMenu>
     </Dropdown>
   );
 }
-
-import { Popover, Avatar } from "@nextui-org/react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../../Utils/useAuthHelper";
-import toast from "react-hot-toast";

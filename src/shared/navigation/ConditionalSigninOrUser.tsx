@@ -1,20 +1,24 @@
-// @ts-nocheck
+
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { useAuth } from "../../Utils/useAuthHelper";
 import RSDropdown from "../ui/RSDropdown";
 import UserAvatar from "../ui/Avatar";
-import toast from "react-hot-toast";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { logout, selectUser } from "../../redux/features/auth/auth.slice";
+import { logout, selectToken, selectUser } from "../../redux/features/auth/auth.slice";
+import verifyToken from "../../helpers/verifyToken";
+import { USER_ROLE } from "../../constants";
+import { useAuth } from "../../Utils/useAuthHelper";
 
 const ConditionalSigninOrUser = () => {
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
-  const [isLoggedOut, setIsLoggedOut] = useState(false);
+  
+  const {logout:firebaseUserLogout} = useAuth()
+  const url = `${user?.role === USER_ROLE.ADMIN ? "admin" : "user"}`;
 
   const handleSignOut = () => {
     dispatch(logout());
+    firebaseUserLogout()
   };
 
   const items = [
@@ -24,18 +28,12 @@ const ConditionalSigninOrUser = () => {
         <NavLink
           className={"flex hover:text-primaryColor p-3 py-3 "}
           to={
-            import.meta.env.VITE_USER_ROLE === "USER"
-              ? "/dashboard"
-              : "/admin/dashboard"
+            `${url}/dashboard`
           }
         >
           Dashboard
         </NavLink>
       ),
-      path:
-        import.meta.env.VITE_USER_ROLE == "USER"
-          ? "/dashboard"
-          : "/admin/dashboard",
     },
     {
       key: "signout",

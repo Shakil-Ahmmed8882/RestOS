@@ -19,6 +19,9 @@ import {
 import EditFoodCategory from "./EditCategory";
 import { ConfirmationModal } from "../../../../../../shared/modals/ConfirmationModal";
 import { useDeleteFoodCategoryMutation } from "../../../../../../redux/features/food-category/foodCategory.api";
+import { useAppSelector } from "../../../../../../redux/hooks";
+import { selectUser } from "../../../../../../redux/features/auth/auth.slice";
+import { USER_ROLE } from "../../../../../../constants";
 
 interface FoodCategoryCardProps {
   item: FoodItem;
@@ -27,6 +30,7 @@ interface FoodCategoryCardProps {
 const FoodCategoryCard: React.FC<FoodCategoryCardProps> = ({ item }) => {
   const [categoryId, setCategoryId] = useState("");
   const [deleteCategory] = useDeleteFoodCategoryMutation();
+  const user = useAppSelector(selectUser)
 
   const onFoodCategoryDelete = async (id: string) => {
     try {
@@ -69,7 +73,9 @@ const FoodCategoryCard: React.FC<FoodCategoryCardProps> = ({ item }) => {
               {item!.description.slice(0, 16)}..
             </p>
           </div>
-
+            
+            {
+              user?.role === USER_ROLE.ADMIN && 
           <div className="flex gap-4 items-center absolute right-4 bottom-11 invisible group-hover:visible group-hover:opacity-100 opacity-0 transition-all duration-300 translate-y-5 group-hover:translate-y-0">
             <ConfirmationModal
               isOpen={isOpen}
@@ -93,6 +99,8 @@ const FoodCategoryCard: React.FC<FoodCategoryCardProps> = ({ item }) => {
               setCategoryId={setCategoryId}
             />
           </div>
+
+            }
         </CardFooter>
       </Card>
     </motion.div>
