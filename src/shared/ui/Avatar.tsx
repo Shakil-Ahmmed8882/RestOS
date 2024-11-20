@@ -5,7 +5,7 @@ import { Avatar } from "@nextui-org/react";
 
 const UserAvatar = () => {
   const { user } = useAuth();
-
+  
   return (
     <>
       <Avatar
