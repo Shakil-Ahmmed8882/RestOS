@@ -29,7 +29,7 @@ const blogApi = baseApi.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: ["blog-data"],
+      invalidatesTags: ["blog-data","analytics-data"],
     }),
 
     updateBlog: builder.mutation({
@@ -40,7 +40,7 @@ const blogApi = baseApi.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: ["blog-data"],
+      invalidatesTags: ["blog-data","analytics-data"],
     }),
 
     deleteblog: builder.mutation({
@@ -50,7 +50,7 @@ const blogApi = baseApi.injectEndpoints({
           method: "DELETE",
         };
       },
-      invalidatesTags: ["blog-data"],
+      invalidatesTags: ["blog-data","analytics-data"],
     }),
   }),
 });

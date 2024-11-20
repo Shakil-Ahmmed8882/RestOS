@@ -34,7 +34,7 @@ const commentApi = baseApi.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: ["comment-data"],
+      invalidatesTags: ["comment-data","analytics-data"],
     }),
 
     updateCommentOnBlog: builder.mutation({
@@ -46,7 +46,7 @@ const commentApi = baseApi.injectEndpoints({
           body: {comment}
         };
       },
-      invalidatesTags: ["comment-data"],
+      invalidatesTags: ["comment-data","analytics-data"],
     }),
 
 
@@ -57,7 +57,7 @@ const commentApi = baseApi.injectEndpoints({
           method: "DELETE",
         };
       },
-      invalidatesTags: ["comment-data"],
+      invalidatesTags: ["comment-data","analytics-data"],
     }),
 
   }),

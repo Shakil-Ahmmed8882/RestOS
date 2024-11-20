@@ -5,7 +5,7 @@ import FAQ from "../module/frontFace/faq/features/FAQ";
 import BlogDetailPage from "../module/frontFace/blog/features/BlogDetails";
 import RecipePageLayout from "../module/frontFace/recipe/layout/RecipePageLayout";
 import RecipeDetailPage from "../module/frontFace/recipe/features/RecipeDetailsPage";
-import Private from "../shared/ui/Private";
+import ProtectedRoutes from "../shared/ui/Private";
 import FoodDetails from "../module/frontFace/foodDetails/FoodsDetail";
 import AllCategories from "../module/frontFace/all-categories/AllCategories";
 import AllTrendings from "../module/frontFace/all-trendings/AllTrendings";
@@ -30,9 +30,9 @@ export const homePagePaths = [
   {
     path: "/food-details/:id",
     element: (
-      <Private>
+      <ProtectedRoutes>
         <FoodDetails />
-      </Private>
+      </ProtectedRoutes>
     ),
   },
   //   faq

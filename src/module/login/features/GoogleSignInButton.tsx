@@ -10,6 +10,7 @@ import { useLoginUserMutation } from "../../../redux/features/auth/auth.api";
 import { useAppDispatch } from "../../../redux/hooks";
 import { setUser } from "../../../redux/features/auth/auth.slice";
 import verifyToken from "../../../helpers/verifyToken";
+import { USER_ROLE } from "../../../constants";
 
 const GoogleSignInButton = () => {
   const { theme } = useTheme();
@@ -41,8 +42,9 @@ const GoogleSignInButton = () => {
           
           const decodedUser = verifyToken(accessToken);
           dispatch(setUser({user:decodedUser,token:accessToken}))
-          // Redirect user and notify success
-          goTo(from, { replace: true });
+    
+          // goTo( from, { replace: true });
+          goTo(`/${decodedUser.role === USER_ROLE.ADMIN?"admin/dashboard":"user"}`);
           toast.success("Successfully signed in");
         }
       } catch (err) {

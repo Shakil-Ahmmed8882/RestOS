@@ -1,18 +1,22 @@
 // src/store/authSlice.js
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
+import { JwtPayload } from "jwt-decode";
 
 // User interface
-interface User {
+export interface TUser {
   userId: string;
   name: string;
-  email: string,
-  role: string,
+  email: string;
+  role: string;
+  photo: string;
+  iat: number;
+  exp: number;
 }
 
 // AuthState interface
 interface AuthState {
-  user: User | null;
+  user: TUser | null;
   token: string | null;
 }
 
@@ -44,6 +48,7 @@ export const { setUser, logout } = authSlice.actions;
 
 // Selector to get user from state
 export const selectUser = (state: RootState) => state.auth.user;
+export const selectToken = (state: RootState) => state.auth.token;
 
 // Export the reducer
 export default authSlice.reducer;

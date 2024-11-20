@@ -10,7 +10,7 @@ import MyBlogs from "../module/dashboard/userDashboard/my-blogs/MyBlogs";
 export const userPaths = [
   {
     name: "Dashboard",
-    path: "/dashboard",
+    path: "/user/dashboard",
     element: <UserDashboardLayout />,
   },
   {

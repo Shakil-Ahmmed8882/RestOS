@@ -11,7 +11,7 @@ const replyApi = baseApi.injectEndpoints({
           body: { replyText, blogId },
         };
       },
-      invalidatesTags: ["comment-data"],
+      invalidatesTags: ["comment-data","analytics-data"],
     }),
 
     updateReplyOnComment: builder.mutation({
@@ -32,7 +32,7 @@ const replyApi = baseApi.injectEndpoints({
           body: { replyText,blogId },
         };
       },
-      invalidatesTags: ["comment-data"],
+      invalidatesTags: ["comment-data","analytics-data"],
     }),
 
     deleteReplyOnComment: builder.mutation({
@@ -48,7 +48,7 @@ const replyApi = baseApi.injectEndpoints({
           method: "DELETE",
         };
       },
-      invalidatesTags: ["comment-data"],
+      invalidatesTags: ["comment-data","analytics-data"],
     }),
   }),
 });

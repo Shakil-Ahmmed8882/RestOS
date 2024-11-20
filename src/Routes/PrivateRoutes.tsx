@@ -2,16 +2,20 @@
 import React from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../Utils/useAuthHelper'
+import { useAppSelector } from '../redux/hooks'
+import { selectUser } from '../redux/features/auth/auth.slice'
 // import Loader from '../components/Shared/Loader'
 
 const PrivateRoute = ({ children }) => {
-  const { user, loading } = useAuth()
+  const user = useAppSelector(selectUser)
   
   const location = useLocation()
   
-  if (loading) return 'loading'
+  
+  console.log(user)
+
   if (user) return children
-  return <Navigate to='/sign-in' state={{ from: location }} replace='true' />
+  // return <Navigate to='/sign-in' state={{ from: location }} replace='true' />
 }
 
 export default PrivateRoute

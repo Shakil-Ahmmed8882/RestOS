@@ -10,6 +10,7 @@ import { useLoginUserMutation } from "../../../redux/features/auth/auth.api";
 import { useAppDispatch } from "../../../redux/hooks";
 import { setUser } from "../../../redux/features/auth/auth.slice";
 import verifyToken from "../../../helpers/verifyToken";
+import { USER_ROLE } from "../../../constants";
 
 const SignInForm = () => {
   const [LoginUserFromDB] = useLoginUserMutation();
@@ -42,7 +43,8 @@ const SignInForm = () => {
           const decodedUser = verifyToken(accessToken);
           // Set {user:"",token:""} in local state
           dispatch(setUser({ user: decodedUser, token: accessToken }));
-          goTo(from, { replace: true });
+          // goTo( from, { replace: true });
+          goTo(`/${decodedUser.role === USER_ROLE.ADMIN?"admin/dashboard":"user"}`);
           toast.success("Successfully signed in");
         }
       })

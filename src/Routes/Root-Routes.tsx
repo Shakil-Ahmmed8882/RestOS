@@ -13,7 +13,7 @@ import {
   commonRoutes,
 } from ".";
 import RecipePage from "../../X";
-
+import ProtectedRoutes from "../shared/ui/Private";
 
 const router = createBrowserRouter([
   {
@@ -25,13 +25,21 @@ const router = createBrowserRouter([
 
   // user dashboard
   {
-    path: "/dashboard",
-    element: <DashboardLayout />,
+    path: "/user/dashboard",
+    element: (
+      <ProtectedRoutes>
+        <DashboardLayout />
+      </ProtectedRoutes>
+    ),
     children: routeGenerator(userPaths),
   },
   {
     path: "/admin/dashboard",
-    element: <DashboardLayout />,
+    element: (
+      <ProtectedRoutes>
+        <DashboardLayout />
+      </ProtectedRoutes>
+    ),
     // <adminPrivate>..</adminPrivate>
     children: routeGenerator(adminPaths),
   },
@@ -43,7 +51,6 @@ const router = createBrowserRouter([
     element: <Main />,
     children: routeGenerator(commonRoutes),
   },
-
 
   {
     path: "/sign-in",

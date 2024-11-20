@@ -7,17 +7,21 @@ import {
 } from "@reduxjs/toolkit/query/react";
 // import { RootState } from "../store";
 import { Tags } from ".";
-// import { logout, setUser } from "../features/auth/authSlice";
+import { RootState } from "../store";
+import { setUser } from "../features/auth/auth.slice";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_BACKENT_URL,
   credentials: "include",
 
-
-  
-  prepareHeaders: (headers) => {
+  prepareHeaders: (headers, { getState }) => {
     // add accessToken to headers for each request
-    headers.set("Authorization", `${localStorage.getItem("accessToken")}`);
+
+    const token = (getState() as RootState).auth.token;
+    console.log(token)
+    if (token) {
+      headers.set("Authorization", `${token}`);
+    }
     return headers;
   },
 });
@@ -29,30 +33,26 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 > = async (args, api, extraOptions): Promise<any> => {
   let result = await baseQuery(args, api, extraOptions);
 
-  
-  // console.log("_______________________________________________")
-  // console.log(result.error)
-  // console.log("_______________________________________________")
   if (result.error?.status === 401) {
     try {
-      const res = await fetch(`${import.meta.env.VITE_BACKENT_URL}/auths/refresh-token`, {
-        method: "POST",
-        credentials: "include",
-      });
+      // if token access token has any issue get new accessToken
+      //  using refresh token and set it to the local state
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKENT_URL}/auths/refresh-token`,
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
       const data = await res.json();
-      console.log(data)
       if (data?.data?.accessToken) {
-
-        localStorage.setItem("accessToken",data?.data?.accessToken)
-        console.log(data?.data?.accessToken)
-        
-        // const user = (api.getState() as RootState).auth.user;
-        // api.dispatch(
-        //   setUser({
-        //     user: user,
-        //     token: data?.data?.accessToken,
-        //   })
-        // );
+        const user = (api.getState() as RootState).auth.user;
+        api.dispatch(
+          setUser({
+            user: user,
+            token: data?.data?.accessToken,
+          })
+        );
         result = await baseQuery(args, api, extraOptions);
       } else {
         // api.dispatch(logout());

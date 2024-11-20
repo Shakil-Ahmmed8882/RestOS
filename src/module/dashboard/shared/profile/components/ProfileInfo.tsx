@@ -10,6 +10,10 @@ export default function ProfileInfo({ setProfileCompletionPercentage }) {
 
   const { data, isLoading, isError } = useGetSingleUserQuery(undefined);
 
+
+  
+  
+
   useEffect(() => {
     if (data && data.data) {
       console.log(data.data);
