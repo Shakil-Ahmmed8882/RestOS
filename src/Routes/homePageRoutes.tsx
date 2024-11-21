@@ -12,6 +12,7 @@ import AllTrendings from "../module/frontFace/all-trendings/AllTrendings";
 import BlogLayout from "../module/frontFace/blog/layout/BlogLayout";
 import FoodCategoryLayout from "../module/dashboard/adminDashboard/food-management/food-categories/compoents/FoodCategoryLayout";
 import Container from "../shared/layouts/Container";
+import MenuLayoutPage from "../module/frontFace/menu/MenuLayoutPage";
 
 export const homePagePaths = [
   {
@@ -79,5 +80,10 @@ export const homePagePaths = [
     name: "",
     path: "/food-categories",
     element: <Container><FoodCategoryLayout/></Container>,
+  },
+  {
+    name: "",
+    path: "/menu",
+    element: <Container><MenuLayoutPage/></Container>,
   },
 ];
