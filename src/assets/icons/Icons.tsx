@@ -207,7 +207,7 @@ export const CommentIcon = ({className=''}) => {
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="currentColor"
-      className={`${className} size-6 text-[#727272] hover:text-[black] transition500`}
+      className={`${className} size-5 text-[#727272] hover:text-[black] transition500`}
     >
       <path
         strokeLinecap="round"
@@ -245,7 +245,7 @@ export const BookMarkIcon = ({ className }) => {
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="currentColor"
-      className={`${className} size-6 text-[#727272] hover:text-[black] transition500`}
+      className={`${className} !size-5 text-[#727272] hover:text-[black] transition500`}
     >
       <path
         strokeLinecap="round"

@@ -12,11 +12,13 @@ const ToggleIconButton = ({
   return (
     <button onClick={onClick} className="relative flex items-center">
       <DefaultIcon
-        className={`${!isActive ? "visible opacity-100" : "invisible opacity-0"} ${sizeClass} ${colorClass}`}
+        className={`!size-5 ${!isActive ? "visible opacity-100" : "invisible opacity-0"} ${sizeClass} ${colorClass}`}
       />
       <ActiveIcon
-        className={`${
-          isActive ? "visible opacity-100" : "invisible opacity-0"
+        className={`
+          !size-5
+          ${
+          isActive ? "visible opacity-100 text-primaryColor" : "invisible opacity-0"
         } ${transitionClass} absolute ${sizeClass}`}
       />
     </button>

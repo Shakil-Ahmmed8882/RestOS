@@ -78,7 +78,7 @@ export default function AddBlog() {
     try {
       const response = await generateDescription(
         imagePreviews[0],
-        "write a description for RestOs Blog describing the given image "
+        "write a description for RestOs Blog describing the given image don't use ** or any character for for title or any other format keep it simple plain text as description of blog relevtn to the given image. length of text keep 50 words straight and don't start with anything like this 'Here's a blog description based on the image:' just directly write description your focus is on writing blog description based on the given image."
       );
 
       methods.setValue("description", response);
