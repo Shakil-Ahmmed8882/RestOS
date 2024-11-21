@@ -32,7 +32,7 @@ export const SidebarContents = () => {
         ease-in-out`}
       >
         <div className="w-full rounded-xl text-[white] flex justify-between  gap-3 items-end px-4">
-          {/* <Logo /> */}
+          <Logo />
           {/* <UserAvater /> */}
         </div>
 

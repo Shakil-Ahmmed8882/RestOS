@@ -6,6 +6,8 @@ import FeaturedRecipes from "../module/dashboard/userDashboard/FeaturedRecipes/F
 import UserDashboardLayout from "../module/dashboard/userDashboard/dashboard/UserDashboardLayout";
 import Profile from "../module/dashboard/shared/profile/Profile";
 import MyBlogs from "../module/dashboard/userDashboard/my-blogs/MyBlogs";
+import SavedBlogsLayout from "../module/frontFace/saved-blogs/SavedBlogsLayout";
+
 
 export const userPaths = [
   {
@@ -20,21 +22,24 @@ export const userPaths = [
   },
   {
     name: "Featured Recipes",
-    path: "user/featured-recipes",
+    path: "featured-recipes",
     element: <FeaturedRecipes />,
   },
   {
     name: "Orders",
-    path: "user/orderlist",
+    path: "orderlist",
     element: <OrderAndPurchaseLayout />,
   },
   {
     name: "Purchases",
-    path: "user/purchasedList",
+    path: "purchasedList",
     element: <PurchasedFoodsLayout />,
   },
   {
-    path: "user/my-blogs",
+    path: "my-blogs",
     element: <MyBlogs />,
   },
+  {
+    path: "saved-blogs",
+    element: <SavedBlogsLayout/>,  },
 ];

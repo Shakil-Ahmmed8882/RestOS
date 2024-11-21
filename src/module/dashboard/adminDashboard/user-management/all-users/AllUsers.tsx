@@ -1,16 +1,12 @@
 import React, { useState } from "react";
-import { Pagination } from "antd";
 import UsersTable from "./components/UsersTable.tsx";
-import { Input, useDisclosure } from "@nextui-org/react";
+import { useDisclosure } from "@nextui-org/react";
 import {
   useDeleteUserMutation,
   useGetAllUsersQuery,
   useUpdateUserProfileMutation,
 } from "../../../../../redux/features/profile/profile.api";
-import { SearchIcon } from "../../../../../assets/icons/Icons.jsx";
-import { blogCategories } from "../../../../frontFace/blog/blog.constants.ts";
 import { useNavigate } from "react-router-dom";
-import SelectDropdown from "../../../../../shared/ui/SelectDropdown.tsx";
 import PageHeader from "../../../../../shared/ui/PageHeader.tsx";
 import useDebounce from "../../../../../🔗Hook/useDebounce.ts";
 import CustomPagination from "../../../../../shared/ui/CustomPagination.tsx";

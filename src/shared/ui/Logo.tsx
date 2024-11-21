@@ -9,7 +9,8 @@ import { Link } from "react-router-dom";
 const Logo = () => {
   const { theme } = useTheme();
   return (
-    <Link to={'/'} className="flex gap-1 items-center">
+    <Link to={'/'} className="flex gap-1 items-center text-[black]">
+      
       {/* <img className="w-[42px]" src={logo} alt="" />
       <p className="flex font-bold  items-center text-[19px]">
         <span className={` ${theme === "dark" ? "text-[white]" : ""}`}>

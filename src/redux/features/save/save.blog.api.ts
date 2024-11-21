@@ -1,3 +1,4 @@
+import { transform } from "framer-motion";
 import { baseApi } from "../../api/baseApi";
 
 const saveBlogApi = baseApi.injectEndpoints({
@@ -22,6 +23,7 @@ const saveBlogApi = baseApi.injectEndpoints({
       },
       providesTags: ["save-blog"],
     }),
+
     isBlogSaved: builder.query({
       query: (blogId: string) => {
         return {
@@ -58,6 +60,6 @@ export const {
   useSaveBlogMutation,
   useGetAllSavedBlogsQuery,
   useUnsaveBlogMutation,
-  useIsBlogSavedQuery
+  useIsBlogSavedQuery,
 } = saveBlogApi;
 export default saveBlogApi;
