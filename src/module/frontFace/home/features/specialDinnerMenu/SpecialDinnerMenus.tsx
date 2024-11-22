@@ -1,42 +1,86 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import pizza from "../../../../../assets/img/home/top-categories/Pizza.png";
+// import pizza from "../../../../../assets/img/home/top-categories/Pizza.png";
 import burgers from "../../../../../assets/img/home/top-categories/Burgers.png";
+import lemonade from "../../../../../assets/img/home/section3/lemonade.png";
+import drink2 from "../../../../../assets/img/home/section3/drink2.png";
+import pizza from "../../../../../assets/img/home/section3/pizza.png";
+import chicken from "../../../../../assets/img/home/section3/chicken.png";
+import soup from "../../../../../assets/img/home/section3/soup.png";
+import sweet from "../../../../../assets/img/home/section3/sweet.png";
+import wine from "../../../../../assets/img/home/section3/wine.png";
 import Vegetarian from "../../../../../assets/img/home/top-categories/Vegetarian.png";
 import Container from "../../../../../shared/layouts/Container";
 import useScroll from "../../../../../🔗Hook/useScroll";
 import AnimatedText from "../../../../../shared/animations/AnimateText";
 import ScrollButton from "../../components/ScrollButton";
-
 const dishes = [
+  
   {
-    name: "Three breakfast ideas to control your appetite all day",
-    description: "A delicious grilled salmon",
+    name: "Soup",
+    description: "Warm and hearty soup with rich flavors.",
+    image: soup,
+    thumb: soup,
+  },
+  {
+    name: "Drink Mix",
+    description: "A delightful mix of fruity and fizzy drinks.",
+    image: "https://i.pinimg.com/236x/e1/0d/b1/e10db1ba1627730a89d327ec5960ae55.jpg",
+    thumb: "https://i.pinimg.com/236x/e1/0d/b1/e10db1ba1627730a89d327ec5960ae55.jpg",
+  },
+  {
+    name: "Pizza",
+    description: "Classic cheesy pizza with delicious toppings.",
     image: pizza,
     thumb: pizza,
   },
   {
-    name: "Pasta Carbonara",
-    description: "Classic Italian pasta.",
+    name: "Drink Mix",
+    description: "A delightful mix of fruity and fizzy drinks.",
+    image: drink2,
+    thumb: drink2,
+  },
+  {
+    name: "Fried Chicken",
+    description: "Crispy and tender fried chicken pieces.",
+    image: chicken,
+    thumb: chicken,
+  },
+  {
+    name: "Sweet Desserts",
+    description: "Assortment of sweet treats to satisfy your cravings.",
+    image: sweet,
+    thumb: sweet,
+  },
+  {
+    name: "Wine",
+    description: "Fine wine to complement your meals.",
+    image: wine,
+    thumb: wine,
+  },
+  {
+    name: "Burgers",
+    description: "Juicy burgers stacked with fresh ingredients.",
     image: burgers,
     thumb: burgers,
   },
   {
-    name: "Steak Frites",
-    description: "Juicy steak served with crispy.",
-    image: Vegetarian,
-    thumb: Vegetarian,
+    name: "Lemonade",
+    description: "Refreshing citrus drink to quench your thirst.",
+    image: lemonade,
+    thumb: lemonade,
   },
 ];
+
 
 const Menu = () => {
   const [selectedDish, setSelectedDish] = useState(dishes[0]);
   const { scrollRef, handleScroll } = useScroll(150); // Increased scrollAmount for smoother scrolling
 
   return (
-    <div className="bg-[#fafbff]">
-      <Container className="md:flex flex-col-reverse overflow-hidden md:flex-row">
-        <div className="w-full md:p-10 md:flex relative">
+    <div className="bg-[#fff]">
+      <Container className="md:flex flex-col-reverse overflow-hidden md:flex-row !py-11">
+        <div className="w-full  md:flex relative">
           <AnimatePresence>
             <motion.img
               key={selectedDish.name}
@@ -89,7 +133,7 @@ const Menu = () => {
                   alt={dish.name}
                   className="size-6 sm:size-20 md:size-16  object-cover shadow-lg rounded-full mr-4"
                 />
-                <div>
+              <div>
                   <p className="hidden md:block text-sm  leading-6 description text-center mt-2">
                     {dish.description.substring(0, 50)}...
                   </p>

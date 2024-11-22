@@ -8,9 +8,9 @@ import hotdeals from "../../../../assets/img/home/hotdeals.png";
 
 const WhyRestOS = () => {
   return (
-    <div className="bg-white py-16">
+    <div className="bg-white !py-11 bg-[#fff]">
       <div className="max-w-7xl mx-auto text-center">
-        <h2 className="">Why RestOS?</h2>
+        <h2 className="font-semibold text-3xl text-light-gray italic">Why RestOS?</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {reasons.map((reason) => (
             <div key={reason.id} className="flex flex-col items-center p-6 bg-gray-100 rounded-lg">

@@ -20,7 +20,7 @@ const ScrollSlider = ({ children = <></>,items, renderItem, maxVisibleItems = 4,
   const isLastSlide = currentSlide >= items.length - maxVisibleItems;
 
   return (
-    <div className="py-8 relative max-w-6xl mx-auto">
+    <div className=" relative max-w-6xl mx-auto">
       <div className="flex items-center justify-between pb-8">
 
         {children}
@@ -52,7 +52,7 @@ const ScrollSlider = ({ children = <></>,items, renderItem, maxVisibleItems = 4,
           style={{ transform: `translateX(-${currentSlide * itemWidth}px)` }}
         >
           {items.map((item, index) => (
-            <div key={index} className="mx-3 relative" style={{ minWidth: itemWidth }}>
+            <div key={index} className="mx-3 relative bg-[white]" style={{ minWidth: itemWidth }}>
               {renderItem(item)}
             </div>
           ))}

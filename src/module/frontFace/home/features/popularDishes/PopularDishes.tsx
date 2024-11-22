@@ -8,7 +8,7 @@ import Container from "../../../../../shared/layouts/Container";
 const PopularDishes = () => {
   const renderDish = (dish) => (
     
-    <div className=" w-[300px] relative md:w-[300px] pt-12 bg-white rounded-lg shadow-lg overflow-hidden">
+    <div className=" w-[300px] relative md:w-[300px] !py-11 bg-white rounded-lg shadow-lg overflow-hidden">
       <img
         className="w-24 py-3 sm:w-32 mx-auto object-cover"
         src={dish.image}
@@ -34,16 +34,22 @@ const PopularDishes = () => {
   );
 
   return (
-    <Container className="hidden md:block">
+
+    <div className="bg-[#fffdf9]">
+
+    <Container className="hidden md:block !py-11">
       <ScrollSlider
         items={dishes}
         renderItem={renderDish}
         maxVisibleItems={5}
         itemWidth={300}
-      ><h2 className="">Popular Dishes</h2>
+      ><h2 className="font-semibold text-3xl text-light-gray italic">Popular Dishes</h2>
       </ScrollSlider>
 
     </Container>
+
+
+    </div>
   );
 };
 

@@ -5,7 +5,7 @@ import { FillStar } from '../../../../assets/icons';
 const TestimonialCard = ({ name, role, feedback, rating, image, handle }) => {
   return (
     <div className="
-     p-6  shadow-2xl shadow-[#e5e5e5] rounded-lg">
+     p-6  shadow-2xl shadow-[#e5e5e5] bg-[white] rounded-lg">
       {/* Rating */}
       <div className="flex items-center mb-4">
         

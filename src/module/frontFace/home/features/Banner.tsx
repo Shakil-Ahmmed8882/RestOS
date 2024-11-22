@@ -3,13 +3,12 @@ import chickenImage from "../../../../assets/img/home/chicken.png";
 import discountImage from "../../../../assets/img/home/discount.png";
 
 import { motion } from "framer-motion";
-import { Button } from "@nextui-org/react";
 import FoodSlide from "../components/banner/components/FoodSlide";
-import { Link, Navigate } from "react-router-dom";
+import { Link} from "react-router-dom";
 
 export default function Banner() {
   return (
-    <div className="bg-white lg:p-8 px-4">
+    <div className="bg-white px-4 md:px-0 !py-11">
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}

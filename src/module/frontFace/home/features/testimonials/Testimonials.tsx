@@ -39,7 +39,7 @@ const Testimonial = () => {
       role: "Project Manager",
       handle: "janesmith",
       feedback: {
-        title: "Efficient and reliable",
+        title: "Efficient and reliable services",
         text: "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Duis mollis, est non commodo luctus.",
       },
       rating: 4,
@@ -48,14 +48,17 @@ const Testimonial = () => {
   ];
 
   return (
-    <Container>
-      <h2 className="text-center">What pople say about us</h2>
+    <div className="bg-[#fffdf9]">
+    <Container className=" !py-11 pb-11  ">
+      <h2 className="font-semibold text-3xl text-light-gray italic text-center">How customer feels</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  justify-center items-center gap-8">
         {testimonials.map((testimonial) => (
           <TestimonialCard key={testimonial.id} {...testimonial} />
         ))}
       </div>
     </Container>
+
+    </div>
   );
 };
 

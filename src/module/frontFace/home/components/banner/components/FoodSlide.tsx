@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import StrawberryCheesecake from "../../../../../../assets/img/demo-image/StrawberryCheesecake.jpg";
 import food1 from "../../../../../../assets/img/demo-image/food1.jpg";
 import ChickenBiryani from "../../../../../../assets/img/demo-image/ChickenBiryani.jpg";
-import arinaraPastaWithPoachedEggs from "../../../../../../assets/img/demo-image/arinaraPastaWithPoachedEggs.jpg";
 import { Link } from "react-router-dom";
 const FoodSlide = () => {
   const foodItems = [

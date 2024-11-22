@@ -8,7 +8,7 @@ import Container from "../../../../../shared/layouts/Container";
 export default function PromoSection() {
   return (
     <section className="">
-      <Container className="md:grid md:grid-cols-2 md:gap-4">
+      <Container className="md:grid md:grid-cols-2 md:gap-4 !py-11">
       <div className="md:flex h-80 group bg-[#f7fff4] relative p-6 overflow-hidden rounded-lg ">
           <div>
           <h3 className="mt-4 text-lg font-bold text-blue-800">FRUIT</h3>
