@@ -23,9 +23,8 @@ const TopCategories = () => {
 
   return (
 
-    <section className="topCategory-section py-8 bg-[#f8f8f8]">
+    <section className=" py-8 bg-[white]">
     <Container>
-      <h2 className=" text-center ">Top Categories</h2>
       <div id="category-container" className="flex md:justify-start justify-center  items-center flex-wrap">
         {categories.slice(1, visibleCategories).map((category, index) => (
           <CategoryItem

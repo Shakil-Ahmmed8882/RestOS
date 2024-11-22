@@ -10,22 +10,18 @@ const Footer = () => {
   const { theme } = useTheme();
   return (
     <div
-      className={` py-20 relative bottom-0  ${
-        theme == "light" ? "bg-[#F7F7F7] " : "bg-[#000000]  text-[white]"
-      }`}
+      className={` py-20 relative bottom-0 bg-[#000] text-[#b2b2b2] `}
     >
       <footer className="footer pl-4 flex-wrap flex md:justify-between max-w-6xl mx-auto">
         <div className="w-[190px]">
-          <div className="flex gap-1 pb items-center">
-            {theme == "light" ? (
-              <img className="w-[42px]" src={lightClock} alt="" />
+          <div className="flex gap-1 pb-3 items-center">
+            {theme == "dark" ? (
+              <img className="w-[35px]" src={lightClock} alt="" />
             ) : (
-              <img className="w-[42px]" src={darkClock} alt="" />
+              <img className="w-[35px]" src={darkClock} alt="" />
             )}
-            <p className="flex font-bold items-center text-[19px]">
-              <span className={` ${theme === "dark" ? "text-[#dad8d8]" : ""}`}>
-                Rest
-              </span>
+            <p className="flex text-[white]  font-bold items-center text-[19px]">
+            Rest
               <span className="text-primaryColor text-[18px]">OS</span>
             </p>
           </div>
@@ -36,7 +32,7 @@ const Footer = () => {
         </div>
 
         <div className="footer-column w-[190px]">
-          <header className="footer-title">About Us</header>
+          <header className="font-bold pb-3 text-[white]">About Us</header>
           <a className="link link-hover">Our Story</a>
           <a className="link link-hover">Contact</a>
           <a className="link link-hover">Careers</a>
@@ -44,7 +40,7 @@ const Footer = () => {
         </div>
 
         <div className="footer-column w-[190px] ">
-          <header className="footer-title">Legal</header>
+          <header className="font-bold pb-3 text-[white]">Legal</header>
           <a className="link link-hover">Terms of Service</a>
           <a className="link link-hover">Privacy Policy</a>
           <a className="link link-hover">Cookies</a>

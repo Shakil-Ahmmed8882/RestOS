@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { useTheme } from "next-themes";
 import Loading from "../../../../shared/ui/loading/Loading";
 import React from "react";
-import "../../food/food.css"
+import "../../food/food.css";
 
 const MealsCategory = () => {
   const [data, setData] = useState();
@@ -20,15 +20,14 @@ const MealsCategory = () => {
     setLoading(false);
   }, []);
 
-  if (loading) return <Loading></Loading>
+  if (loading) return <Loading></Loading>;
 
   const mealData = data?.categories;
 
   return (
     <div
-      className={` pb-16  text-center md:text-left ${
-        theme == "dark" ? "bg-[#131313] text-[white]" : "bg-[#E6ECF6]"
-      }`}>
+      className={` pb-16  text-center md:text-left bg-[#fffbf3]`}
+    >
       <div>
         <h1 className="text-4xl font-bold text-center pt-20 py-4">
           Our Meals Collection
@@ -40,10 +39,11 @@ const MealsCategory = () => {
           <div
             key={idx}
             className={`pb-5 ${
-              theme === "dark" 
+              theme === "dark"
                 ? "text-primaryColor bg-[#26262663]  "
                 : "bg-[#ffffffce]"
-            } pl-1`}>
+            } pl-1`}
+          >
             <figure>
               <img
                 className="mx-auto md:mx-0 md:ml-4 w-[200px] "
@@ -52,36 +52,40 @@ const MealsCategory = () => {
               />
             </figure>
             <div className="card-body -mt-3 ">
-              <h2 className={` text-2xl font-bold ${theme == 'dark'?'text-[white]':"text-[black]"}`}>{meal?.strCategory}</h2>
+              <h2
+                className={` text-2xl font-bold ${
+                  theme == "dark" ? "text-[white]" : "text-[black]"
+                }`}
+              >
+                {meal?.strCategory}
+              </h2>
               <p
-                className={`${
-                  theme == "dark" ? "text-[#bdbdbd]" : "text-[#505050]"
-                }`}>
+                className={`text-[gray] text-lg`}
+              >
                 {meal.strCategoryDescription.slice(0, 120)}
               </p>
             </div>
-            <div className="rating pl-8 mb-3 -mt-3" >
+            <div className="rating pl-8 mb-3 -mt-3">
               <input
-
                 type="radio"
                 name="rating-2"
-                className="mask mask-star-2 bg-[#1f8d7d]"
+                className="mask mask-star-2 bg-primaryColor"
               />
               <input
                 type="radio"
                 name="rating-2"
-                className="mask mask-star-2 bg-[#1f8d7d]"
+                className="mask mask-star-2 bg-primaryColor"
                 // checked
               />
               <input
                 type="radio"
                 name="rating-2"
-                className="mask mask-star-2 bg-[#1f8d7d]"
+                className="mask mask-star-2 bg-primaryColor"
               />
               <input
                 type="radio"
                 name="rating-2"
-                className="mask mask-star-2 bg-[#1f8d7d]"
+                className="mask mask-star-2 bg-primaryColor"
               />
               <input
                 type="radio"

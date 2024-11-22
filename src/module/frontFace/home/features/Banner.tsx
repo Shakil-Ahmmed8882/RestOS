@@ -57,7 +57,7 @@ export default function Banner() {
           </div>
         </div>
       </motion.div>
-      <div className="mx-auto">
+      <div className="mx-auto hidden md:block">
       <FoodSlide />
 
       </div>

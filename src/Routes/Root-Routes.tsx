@@ -12,7 +12,7 @@ import {
   Page404,
   commonRoutes,
 } from ".";
-import RecipePage from "../../X";
+import X from "../../X";
 import ProtectedRoutes from "../shared/ui/PrivateRoutes";
 
 const router = createBrowserRouter([
@@ -68,7 +68,7 @@ const router = createBrowserRouter([
   // test route
   {
     path: "x",
-    element: <RecipePage />,
+    element: <X />,
   },
 ]);
 
