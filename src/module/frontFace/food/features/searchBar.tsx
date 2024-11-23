@@ -5,10 +5,11 @@
 
 import React from "react";
 
-const SearchBar = ({ theme, searchResult, setSearchResult, foodData, isFieldEmpty, setIsFieldEmpty }) => {
+const SearchBar = ({ theme, searchResult, setSearchResult, foodData, isFieldEmpty, setIsFieldEmpty, setSearchTerm }) => {
   const handleSearchFood = (e) => {
     const searchTerm = e.target.value.toLowerCase();
     setIsFieldEmpty(searchTerm === "");
+    setSearchTerm(e.target.value)
 
     const foundFoods = foodData.filter((food) =>
       food.foodName.toLowerCase().includes(searchTerm)
@@ -22,7 +23,7 @@ const SearchBar = ({ theme, searchResult, setSearchResult, foodData, isFieldEmpt
         onChange={handleSearchFood}
         type="text"
         placeholder="Search by food name"
-        className={`input w-full focus-within:outline-none  ${
+        className={`input w-full placeholder:text-[#5a5a5a] focus-within:outline-none  ${
           theme === "dark"
             ? "bg-[#20acd357] text-[white]"
             : "bg-[#ffffff75] text-[black]"

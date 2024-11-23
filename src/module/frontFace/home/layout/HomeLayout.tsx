@@ -22,7 +22,7 @@ const HomeLayout = () => {
       <SpecialDinnerMenus />
       <PopularDishes />
       <WhyRestOS />
-      <Testimonial />
+      {/* <Testimonial /> */}
     </div>
   );
 };

@@ -14,17 +14,21 @@ export default function Card({ food }) {
 
   return (
     <>
-      <div className="grid gap-4 relative group ">
-        
-        <img
+      <div className="grid gap-4 relative group bg-[white] rounded-lg">
+       
+
+
+       <div>
+         
+       <img
           src={foodImage}
           alt="Football"
-          width={450}
-          height={500}
-          className={`rounded-lg object-top h-48 md:h-80 object-cover w-full aspect-[3/4] group-hover:opacity-80 transition-opacity`}
+
+          className={`object-top size-44 rounded-r-xl object-cover group-hover:opacity-80 transition-opacity`}
         />
+       </div>
         <div
-          className={`grid gap-1 space-y-2  ${
+          className={`grid gap-1 space-y-2 px -3  ${
             theme == "dark" ? "text-[white]" : ""
           }`}
         >

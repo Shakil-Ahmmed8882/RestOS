@@ -91,11 +91,36 @@
 
 
           // ----------------- BLOG MANAGEMENT ----------------
-          -1. Create compoentnt, create redux api and load the data
-          -2. Show the statistics all blogs count, comment count, like and dislike counts
-          -3. Show the statistics all blogs count, comment count, like and dislike counts
-          -4. Search and Filter Options: ---------- by title, category, or author.
-          -5. Consider filters by status (published/draft), category, or date range.
+          -1. Create compoentnt, create redux api and load the data ✅
+          -2. Show the statistics all blogs count, comment count, like and dislike counts✅
+          -3. Show the statistics all blogs count, comment count, like and dislike counts✅
+          -4. Search and Filter Options: ---------- by title, category, or author.✅
+          -5. Consider filters by status (published/draft), category, or date range.✅
+
+
+
+          
+
+          // ----------------- FOOD ----------------
+          -1. polish food page and skeleton
+          -2. pagination
+          -3. redesign each food look
+          -4. 
+          -5. 
+
+          // ----------------- FOOD DETAILS ----------------
+          -1. redesign each food details page
+          -2. skeleton 
+          -3. food add to cart instead order 
+          
+          // ----------------- MY CART PAGE ----------------
+          -1. show all carts 
+          -2. increase & decrease quantity  
+          -3. chckeout option 
+
+          // ----------------- CHECKOUT PAGE TO ORDER BY PAYING THE BILLS ----------------
+          -1. create checkout page
+          
 
 
           -
