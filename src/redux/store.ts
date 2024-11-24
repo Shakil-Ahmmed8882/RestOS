@@ -15,6 +15,7 @@ import authApi from "./features/auth/auth.api";
 
 // Reducer
 import menuReducer from "./features/global/menuSlice";
+import cartReducer from "./features/global/cartSlice";
 import authReducer from "./features/auth/auth.slice";
 import commentReducer from "./features/comment/comment.slice";
 import profileReducer from "./features/profile/profile.slice";
@@ -46,6 +47,7 @@ export const store = configureStore({
     comment: commentReducer,
     profile: profileReducer,
     auth: persistAuthReducer,
+    cart: cartReducer,
   },
 
   // APIs Middleware connection ...

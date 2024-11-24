@@ -13,6 +13,7 @@ import BlogLayout from "../module/frontFace/blog/layout/BlogLayout";
 import FoodCategoryLayout from "../module/dashboard/adminDashboard/food-management/food-categories/compoents/FoodCategoryLayout";
 import Container from "../shared/layouts/Container";
 import MenuLayoutPage from "../module/frontFace/menu/MenuLayoutPage";
+import CartLayout from "../module/frontFace/cart/CartLayou";
 
 export const homePagePaths = [
   {
@@ -63,6 +64,10 @@ export const homePagePaths = [
   {
     path: "recipe/:id",
     element: <RecipeDetailPage />,
+  },
+  {
+    path: "cart/",
+    element: <CartLayout />,
   },
 
   // --------------- common routes ----------------

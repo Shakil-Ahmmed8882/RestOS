@@ -1,35 +1,49 @@
-// @ts-nocheck
-import PropTypes from "prop-types";
+import { motion } from "framer-motion";
+import {
+  Card,
+  CardBody,
+  Button,
+  Divider,
+  Chip,
+  Image,
+} from "@nextui-org/react";
+import { Clock, Users, ChefHat, MapPin, ShoppingBag, Star } from "lucide-react";
+
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { BsCartCheckFill } from "react-icons/bs";
-import { BsBookmarkCheckFill } from "react-icons/bs";
-import { BsCone } from "react-icons/bs";
-import { useTheme } from "next-themes";
-import { BiSolidBadgeCheck } from "react-icons/bi";
-import { BsCursorFill } from "react-icons/bs";
-import { BsCupStraw } from "react-icons/bs";
-import { BsFillArrowRightCircleFill } from "react-icons/bs";
-
-import "./food.css";
-
-import React from "react";
-// @ts-ignore
-import green_leaf from "../../../assets/img/greenloaf.png";
-import Swal from "sweetalert2";
-import { useState } from "react";
-import { BsFillGeoAltFill } from "react-icons/bs";
-
-import Loading from "../../../shared/ui/loading/Loading";
-import { useAuth } from "../../../Utils/useAuthHelper";
 import { useGetSinglefoodQuery } from "../../../redux/features/food/food.api";
 import { useCreateOrderMutation } from "../../../redux/features/order/orderApi";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { selectUser } from "../../../redux/features/auth/auth.slice";
+import Container from "../../../shared/layouts/Container";
+import FoodDetailsSkeleton from "./components/FoodDetailsSkeleton";
+import {
+  addToCart,
+  selectCartItems,
+} from "../../../redux/features/global/cartSlice";
+import { toast } from "sonner";
 
-const FoodDetails = () => {
+export default function FoodDetails() {
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 },
+  };
+
   const { id } = useParams();
-  const { theme } = useTheme();
-  const { user } = useAuth();
+  const user = useAppSelector(selectUser);
+  const dispatch = useAppDispatch();
 
-  const { data, isLoading } = useGetSinglefoodQuery(id);
+  const { data, isLoading: isFoodLoading } = useGetSinglefoodQuery(id);
   // @ts-ignore
   const [createOrder, { data: OData, isLoading: OIsloading }] =
     useCreateOrderMutation();
@@ -41,12 +55,8 @@ const FoodDetails = () => {
     return "/sign-in";
   }
 
-  if (isLoading) return <Loading></Loading>;
-
-  // const orderedData = getCurrentDate(isLoading, data?.data, user);
 
   const {
-    _id,
     foodName,
     foodImage,
     foodCategory,
@@ -54,208 +64,139 @@ const FoodDetails = () => {
     food_origin,
     description,
     made_by,
-    quantity,
     orders,
   } = data?.data || {};
 
-  // Drawer
-  const handleOrderPurchase = async () => {
-    if (isNaN(orders)) {
-      return alert("orders is not a number");
-    }
-    // adding new order to existed one
-    // setTotalOrders(orders + 1);
+  const cartItems = useAppSelector(selectCartItems);
 
-    if (totalOrders > quantity) {
-      return alert("This Product is not available");
-    }
+  const handleAddToCart = (e, food) => {
+    e.preventDefault();
+    e.stopPropagation();
 
-    if (totalOrders > quantity) {
-      return alert("This Product is not available");
-    }
-
-    const orderData = {
-      foodId: _id,
-      foodName,
-      foodImage,
-      price,
-      made_by,
-      email: user?.email,
-    };
-
-    createOrder(orderData);
-    console.log(orderData);
-    console.log(OData);
-
-    if (OData?.success) {
-      Swal.fire({
-        title: "Ordered.",
-        text: "Enjoy more...",
-        icon: "success",
+    const isItemInCart = cartItems.some((item) => item._id === food._id);
+    if (isItemInCart) {
+      const id = toast.error(`${food.foodName} is already in your cart!`, {
+        duration: 2000,
       });
-      goTo("/food");
     } else {
-      Swal.fire({
-        title: "Already added!",
-        icon: "error",
-      });
+      // If item isn't in cart, add it to the cart
+      dispatch(addToCart({ ...food, quantity: 1 }));
     }
-
-    //   // if (res.data.insertedId) {
-    //   //   xios
-    //   //     .patch(`modify-orders`, { orders: orders + 1, id: id })
-    //   //     .then((res) => {
-    //   //       if (res.data.modifiedCount > 0) {
-    //   //         return;
-    //   //       }
-    //   //     });
-    //   //   // Letting the user know order been added ..
-    //   //   Swal.fire({
-    //   //     title: "item has been ordered",
-    //   //     text: "Have a delicious food",
-    //   //     icon: "success",
-    //   //   });
-    //   //   goTo("/food");
-    //   // }
-    // });
   };
 
+  if (isFoodLoading) return <FoodDetailsSkeleton></FoodDetailsSkeleton>;
+
   return (
-    <div
-      className={`relative  mt-8 overflow-x-hidden ${
-        theme === "light" && "bg-[#f7f6f6]"
-      }  ${theme === "dark" && "bg-[#02080ad2] "}`}
-    >
-      <div className="max-w-6xl  mx-auto">
-        <div className="absolute  top-11 right-32"></div>
-        <div className="">
-          <div className=" md:flex md:flex-row-reverse gap-3">
-            <div className="flex-1 grid  md:h-[80vh] md:w-1/2 relative -top-0  bg-[#d8d6d64b] items-center">
-              <img
-                src={foodImage}
-                className=" object-cover w-full h-[200px] overflow-hidden md:h-full  rounded-xl"
-                alt=""
-              />
-              <div
-                className={`p-3 absolute  w-full  rounded-lg left-0 px-11 py-11 bottom-0 text-[white] ${
-                  theme == "dark" ? "bg-[light-gray]" : "bg-[#04110f8d]"
-                }`}
-              >
-                <BsCupStraw className="w-[100px] rotate-12 h-[100px] bg-[#ffffffcb] text-[black] rounded-full p-3 absolute -top-11 left-[40%] " />
+    <>
+      <Container className="md:px-4 py-8 pt-16 scale-90">
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="grid md:grid-cols-2 gap-8"
+        >
+          {/* Left Column - Image */}
+          <motion.div variants={item}>
+            <Card className="w-full h-full sm:h-[500px] md:h-[600px]  shadow-none">
+              <CardBody className="p-0 overflow-hidden">
+                <Image
+                  src={foodImage}
+                  alt="Truffle Risotto"
+                  className="w-full h-full  object-cover"
+                />
+              </CardBody>
+            </Card>
+          </motion.div>
+
+          {/* Right Column - Details */}
+          <div className="space-y-6">
+            <motion.div variants={item}>
+              <h1 className="text-4xl font-bold mb-2">{foodName}</h1>
+              <div className="flex items-center gap-2 py-1 text-default-500">
+                <ChefHat size={20} />
+                <span>{made_by}</span>
               </div>
-            </div>
-            <div className="relative flex-1">
-              <BsBookmarkCheckFill className="absolute right-6 top-6 text-2xl" />
+            </motion.div>
 
-              <div
-                className={` space-y-2 pl-3 flex flex-col   flex-1 mb-5 py-9 ${
-                  theme == "dark"
-                    ? " text-[#dcdcdccf]"
-                    : "bg-[#fff]  relative bg-blend-multiply w-full"
-                }`}
-              >
-                <h2
-                  className={`text-6xl  md:text-5xl lg:text-5xl font-bold md:py-3 
-              ${theme == "dark" ? "text-[white]" : "bg-[#ffffff2b]"}`}
+            <motion.div variants={item}>
+              <div className="flex gap-4 flex-wrap">
+                <Chip
+                  startContent={<MapPin size={18} />}
+                  variant="flat"
+                  className="text-primaryColor bg-primaryColor/5"
                 >
-                  {foodName}
-                </h2>
-                <div
-                  className={`${
-                    theme === "dark" ? "bg-[#2a2a2a]" : "bg-[white]"
-                  } shadow-lg w-2/3 p-3 rounded relative`}
+                  {food_origin}
+                </Chip>
+                <Chip
+                  startContent={<ShoppingBag size={18} />}
+                  variant="flat"
+                  className="text-primaryColor bg-primaryColor/5"
                 >
-                  <div className="text-2xl flex gap-1 items-center">
-                    <BiSolidBadgeCheck className="text-[#39e739]" />
-                    Get 20% discount
-                  </div>
-                  <BsCursorFill className="absolute text-5xl text-[#EA1179]  -top-5 rotate-12 right-1"></BsCursorFill>
-                </div>
-                <div
-                  className={`${
-                    theme === "dark" ? "text-[#a19e9e]" : "text-[gray] "
-                  }`}
+                  {`${orders} Orders`}
+                </Chip>
+                <Chip
+                  startContent={<Star size={18} />}
+                  variant="flat"
+                  className="text-primaryColor bg-primaryColor/5"
                 >
-                  <div className="space-y-1 mt-3  flex-1 text-[18px]">
-                    <p className=" font-normal ">category: {foodCategory}</p>
-                    <div className="flex items-centerr gap-1">
-                      <BsCartCheckFill className="text-[#FEBB38]" />
-                      <p className="">Delivery: ${price}</p>
-                    </div>
-                    <div className="flex gap-3">
-                      <div className="  rounded-lg flex items-center gap-2">
-                        <BsFillGeoAltFill className="text-deepPink" />
-                        <p className=" font-normal ">Origin: {food_origin}</p>
-                      </div>
+                  {foodCategory}
+                </Chip>
+              </div>
+            </motion.div>
 
-                      <div className=" rounded-lg flex items-center gap-2">
-                        <BsCone className="text-[#7afb7a] text-[22px]" />
-                        <p className=" font-normal ">Made by: {made_by} </p>
+            <motion.div variants={item}>
+              <Card className=" shadow-none">
+                <CardBody>
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-2">
+                      <Clock className="text-secondaryColor" size={24} />
+                      <div>
+                        <p className="text-sm text-default-500">
+                          Preparation Time
+                        </p>
+                        <p className="font-semibold">30 mins</p>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    className={`space-y-1 ${
-                      theme == "dark"
-                        ? "bg-[#37373786] text-white"
-                        : "bg-[#f5daa435]"
-                    } mt-4 p-3 rounded-lg flex-1 text-[20px]`}
-                  >
-                    <div className="flex items-center gap-2 mt-2">
-                      <img
-                        src={foodImage}
-                        className="w-[70px] h-[70px]  rounded-full"
-                        alt=""
-                      />
-                      <p className={` font-normal pb-5 w-full  text-[17px]`}>
-                        {description}
-                      </p>
+                    <div className="flex items-center gap-2">
+                      <Users className="text-secondaryColor" size={24} />
+                      <div>
+                        <p className="text-sm text-default-500">Servings</p>
+                        <p className="font-semibold">2-4 people</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <ChefHat className="text-secondaryColor" size={24} />
+                      <div>
+                        <p className="text-sm text-default-500">Difficulty</p>
+                        <p className="font-semibold">Medium</p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </CardBody>
+              </Card>
+            </motion.div>
 
-                {/* Drawer to purchase */}
-                <div className="drawer drawer-end z-10">
-                  <input
-                    id="my-drawer-4"
-                    type="checkbox"
-                    className="drawer-toggle"
-                  />
-                  <div className="drawer-content flex md:justify-end">
-                    {/* Page content here */}
-                    <label
-                      htmlFor="my-drawer-4"
-                      className="drawer-button hover:bg-transparent border-none outline-none flex bg-transparent w-[200px] text-[white] rounded-full items-center gap-2   cursor-pointer btn-primary"
-                    >
-                      {/* <img className="w-11" src={order_now} alt="" /> */}
-                      <button
-                        onClick={handleOrderPurchase}
-                        className="bg-primaryColor ml-auto mr-5 mt-6 p-5 flex gap-3 rounded-lg items-center text-[21px]"
-                      >
-                        Order
-                        <BsFillArrowRightCircleFill className="text-3xl" />
-                      </button>
-                    </label>
-                  </div>
-                </div>
-                {/* ============ */}
+            <motion.div variants={item}>
+              <Divider className="my-4" />
+              <h2 className="text-xl font-semibold mb-2">Description</h2>
+              <p className="text-default-500 leading-relaxed">{description}</p>
+            </motion.div>
+
+            <motion.div variants={item}>
+              <div className="flex items-center gap-4">
+                <span className="text-3xl font-bold">${price}</span>
+                <Button
+                  onClick={(e) => handleAddToCart(e, data.data)}
+                  size="lg"
+                  className="font-semibold  bg-primaryColor text-[white] rounded-full"
+                >
+                  Add to cart
+                </Button>
               </div>
-            </div>
+            </motion.div>
           </div>
-          <img
-            className="absolute top-96 md:top-32 md:-right-9 -right-20 rotate-6 w-96  -z-20 filter blur-3xl bg-blend-multiply"
-            src={green_leaf}
-            alt=""
-          />
-        </div>
-      </div>
-    </div>
+        </motion.div>
+      </Container>
+    </>
   );
-};
-
-FoodDetails.propTypes = {
-  data: PropTypes.object,
-  isLoading: PropTypes.bool,
-};
-
-export default FoodDetails;
+}

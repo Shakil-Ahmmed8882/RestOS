@@ -102,14 +102,13 @@
           
 
           // ----------------- FOOD ----------------
-          -1. polish food page and skeleton
-          -2. pagination
-          -3. redesign each food look
-          -4. 
-          -5. 
+          -1. polish food page and skeleton ✅
+          -2. pagination ✅
+          -3. redesign each food look ✅
+          -4. add category filtering  ✅
 
           // ----------------- FOOD DETAILS ----------------
-          -1. redesign each food details page
+          -1. redesign each food details page ✅
           -2. skeleton 
           -3. food add to cart instead order 
           
