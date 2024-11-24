@@ -14,6 +14,7 @@ import FoodCategoryLayout from "../module/dashboard/adminDashboard/food-manageme
 import Container from "../shared/layouts/Container";
 import MenuLayoutPage from "../module/frontFace/menu/MenuLayoutPage";
 import CartLayout from "../module/frontFace/cart/CartLayou";
+import CheckoutPage from "../module/frontFace/checkout/CheckoutLayout";
 
 export const homePagePaths = [
   {
@@ -68,6 +69,10 @@ export const homePagePaths = [
   {
     path: "cart/",
     element: <CartLayout />,
+  },
+  {
+    path: "checkout/",
+    element: <CheckoutPage />,
   },
 
   // --------------- common routes ----------------

@@ -5,6 +5,7 @@ import noDataFound from "../../assets/img/shared/no-data.gif"
 const NoDataFound = ({className=""}) => {
   return (
     <section className={`${className} flex justify-center -mt-11`}>
+
       <Image src={`${noDataFound}`} className="animate-pulse opacity-90"/>
     </section>
   );

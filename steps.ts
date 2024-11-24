@@ -113,9 +113,9 @@
           -3. food add to cart instead order 
           
           // ----------------- MY CART PAGE ----------------
-          -1. show all carts 
-          -2. increase & decrease quantity  
-          -3. chckeout option 
+          -1. show all carts  ✅
+          -2. increase & decrease quantity  ✅
+          -3. chckeout option ✅
 
           // ----------------- CHECKOUT PAGE TO ORDER BY PAYING THE BILLS ----------------
           -1. create checkout page
