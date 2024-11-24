@@ -3,7 +3,7 @@ import React from "react";
 
 const OrderSummary = ({ totalPrice }) => {
   return (
-    <div className="w-full lg:w-1/3 mt-11 md:mt-0  sticky top-0">
+    <div className="w-full lg:w-1/3 mt-11 md:mt-0">
       <Card className="w-full shadow-none md:shadow-md">
         <CardBody>
           <h2 className="text-2xl font-semibold mb-4">Order Summary</h2>

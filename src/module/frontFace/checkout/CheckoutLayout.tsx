@@ -9,6 +9,7 @@ import {
   RadioGroup,
   Divider,
   Image,
+  Spinner,
 } from "@nextui-org/react";
 import { CreditCard, ShoppingCartIcon as PaypalIcon } from "lucide-react";
 
@@ -21,15 +22,19 @@ import Container from "../../../shared/layouts/Container";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectUser } from "../../../redux/features/auth/auth.slice";
 import { useCreateOrderMutation } from "../../../redux/features/order/orderApi";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 export default function CheckoutPage() {
   const [selectedPayment, setSelectedPayment] = useState("credit-card");
   const cartItems = useSelector(selectCartItems);
   const totalPrice = useSelector(selectCartTotalPrice);
   const user = useAppSelector(selectUser);
+  const navigate = useNavigate();
   const tax = totalPrice * 0.1; // 10% tax
 
-  const [createOrder] = useCreateOrderMutation();
+  const [createOrder, { isLoading: isCreateOrderLoading }] =
+    useCreateOrderMutation();
 
   const schemaBasedShapedCartItemToStoreInDB = cartItems.map((item) => ({
     food: item._id,
@@ -42,19 +47,31 @@ export default function CheckoutPage() {
 
   const handleCreateOrder = async () => {
     console.log({ cartItems: schemaBasedShapedCartItemToStoreInDB });
-
+    const toastId = toast.success("Placing order...");
     try {
-      const res = await createOrder({
+      const res: any = await createOrder({
         cartItems: schemaBasedShapedCartItemToStoreInDB,
       });
 
-      console.log(res);
+      if (res.success) {
+        toast.success("Orders placed successfully", {
+          id: toastId,
+          duration: 2000,
+        });
+      }
+
+      navigate("/food");
     } catch (error: any) {
-      console.log(error);
+      toast.success("Couldn't place order", { id: toastId, duration: 200 });
     }
   };
   return (
     <InitialAnimateContainer>
+      {isCreateOrderLoading && (
+        <div className="fixed w-full h-screen bg-[#e9e9e97f] z-50 inset-0 flex justify-center items-center">
+          <Spinner color="success" />
+        </div>
+      )}
       <Container>
         <div className="min-h-screen w-full px-4 py-8">
           <h1 className="text-2xl font-bold mb-8">Checkout</h1>

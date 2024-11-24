@@ -21,7 +21,6 @@ import {
   useAppDispatch,
   toggleMenu,
   BsMenuApp,
-  BsSearch,
   CiMenuFries,
 } from ".";
 import GlobalSearch from "../../../../shared/ui/global-search/GlobalSearch";
@@ -49,7 +48,7 @@ export default function AppNavbar() {
       </NavbarContent>
 
       {/* Center Content */}
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
+      <NavbarContent className="hidden sm:flex gap-4 -ml-5" justify="center">
         <NavbarItem>
           <h2 className="font-bold text-light-gray italic">Dashboard</h2>
         </NavbarItem>
