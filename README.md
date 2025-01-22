@@ -88,7 +88,6 @@
 - Track order history and special offers
 
 <img src="https://i.ibb.co.com/DWfBZX8/Screenshot-52.png" alt="dashboard-imag-1" style="width:100%">
-<img src="https://i.ibb.co.com/dm4jG94/Screenshot-53.png" alt="dashboard-imag-2" style="width:100%">
 <img src="https://i.ibb.co.com/ZStskSs/Screenshot-49.png" alt="dashboard-imag-3" style="width:100%">
 
 ## Admin Capabilities
@@ -158,8 +157,6 @@
 - Food Details Page: Provides detailed information about each food item
   - Add to Order: Allows users to add items to their cart. Orders start as **Pending** until confirmed by the admin
  
-<img src="https://i.ibb.co.com/9Vc8VdJ/Screenshot-56.png" alt="Banner" style="width:100%">
-
 ### Blog
 - Blog Details Page: Shows blog content with commenting and interaction options
 - View Blocks: Users can view a list of published blocks
@@ -172,19 +169,18 @@
 - Save Blog: Users can save a blog post to view later
 - Mark as Favorite: Users can mark specific blog posts as favorites for quick access
 
-<img src="https://i.ibb.co.com/9Vc8VdJ/Screenshot-56.png" alt="Banner" style="width:100%">
+<img src="https://i.ibb.co.com/qxMTx9c/Screenshot-51.png" alt="Banner" style="width:100%">
 
 ### Recipe
 - View Recipes: Users can view a list of available recipes
 - View Recipe Details: Users can see details like ingredients, preparation steps, and additional notes
 - Favorite Recipes: Users can mark recipes as favorites for quick access
 
-<img src="https://i.ibb.co.com/9Vc8VdJ/Screenshot-56.png" alt="Banner" style="width:100%">
+
 
 ### FAQ
 - FAQ Page: Contains commonly asked questions and answers
   
-<img src="https://i.ibb.co.com/9Vc8VdJ/Screenshot-56.png" alt="Banner" style="width:100%">
 ### Authentication
 - User Avatar and Dropdown Menu: Once logged in, the Sign-Up button is replaced with the user's avatar
 
@@ -202,7 +198,6 @@
 - Purchased Orders: Displays all confirmed orders in a separate list
 - Settings Page: Allows users to manage personal account settings
 
-<img src="https://i.ibb.co.com/9Vc8VdJ/Screenshot-56.png" alt="Banner" style="width:100%">
 
 ### Admin Dashboard
 - User Overview: Total number of users, new sign-ups, and user engagement metrics
@@ -212,7 +207,7 @@
 - Recipe and Comment Moderation: Admins manage recipe comments and mark recipes as verified
 - Notifications: Notify users about order confirmations and approved content
 
-<img src="https://i.ibb.co.com/9Vc8VdJ/Screenshot-56.png" alt="Banner" style="width:100%">
+<img src="https://i.ibb.co.com/1RvP3L3/Screenshot-57.png" alt="Banner" style="width:100%">
 
 ## UI Inspiration
 - [Salero Redesign - Food Delivery Dashboard Design](https://dribbble.com/shots/19773207-Salero-Redesign-Food-Delivery-Dashboard-Design)
@@ -220,3 +215,12 @@
 - [Healthy buddha bowl lunch image](https://www.istockphoto.com/photo/healthy-buddha-bowl-lunch-with-grilled-chicken-quinoa-spinach-avocado-brussels-gm920931456-252987219)
 - [Cloud Application Platform | Render](https://render.com/)
 - [Eating a variety of foods Customizable Disproportionate Illustrations](https://storyset.com/illustration/eating-a-variety-of-foods/cuate)
+
+
+## Live Demo
+[Visit the Project](https://rest-os-client.vercel.app/)
+
+Thanks for exploring the project! 😊
+
+
+
