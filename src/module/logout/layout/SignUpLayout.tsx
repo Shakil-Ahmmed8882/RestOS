@@ -3,10 +3,9 @@ import { useTheme } from "next-themes";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
-import { validate } from "../../../Utils/Validate";
 import { useAuth } from "../../../Utils/useAuthHelper";
 import { imageUpload } from "../../../api/utils";
-import { useLoginUserMutation } from "../../../redux/features/auth/auth.api";
+import { useRegisterUserMutation } from "../../../redux/features/auth/auth.api";
 import verifyToken from "../../../helpers/verifyToken";
 import { useAppDispatch } from "../../../redux/hooks";
 import { setUser } from "../../../redux/features/auth/auth.slice";
@@ -24,7 +23,9 @@ const fadeUp = {
 const SignUpLayout = () => {
   const { theme } = useTheme();
   const dark = theme === "dark";
-  const [LoginUserFromDB] = useLoginUserMutation();
+
+  // ✅ Bug fix #1 — use registerUser, not loginUser
+  const [registerUserInDB] = useRegisterUserMutation();
   // @ts-ignore
   const { createUser, updateUserInfo } = useAuth();
   const navigate = useNavigate();
@@ -52,68 +53,89 @@ const SignUpLayout = () => {
 
     const form = new FormData(e.currentTarget);
     const data = Object.fromEntries(form);
-    const name = data.name as string;
-    const email = data.email as string;
+    const name = (data.name as string).trim();
+    const email = (data.email as string).trim();
     const password = data.password as string;
 
-    if (!photoFile) {
-      toast.error("Please upload a profile photo.");
-      return;
-    }
+    // ✅ Inline validation using sonner (consistent toast library)
+    if (!name) return toast.error("Please enter your name.");
+    if (!email) return toast.error("Please enter your email.");
+    if (!photoFile) return toast.error("Please upload a profile photo.");
+    if (!password || password.length < 6)
+      return toast.error("Password must be at least 6 characters.");
 
     setLoading(true);
     setUploadProgress(true);
     const toastId = toast.loading("Creating your account…");
 
     try {
+      // Step 1 — upload image to ImgBB
       const imageData = await imageUpload(photoFile);
       setUploadProgress(false);
-      const photo = imageData?.data?.display_url;
+      const photo: string = imageData?.data?.display_url;
 
-      const hasError = validate(name, email, photo, password);
-      if (hasError) {
-        toast.dismiss(toastId);
+      if (!photo) {
+        toast.error("Image upload failed. Try a different photo.", { id: toastId });
         setLoading(false);
         return;
       }
 
+      // Step 2 — create Firebase account
       await createUser(email, password);
+
+      // Step 3 — update Firebase display name + photo (await properly)
+      // ✅ Bug fix #2 — updateUserInfo must be awaited
       await updateUserInfo(name, photo);
 
-      const response: any = await LoginUserFromDB({ name, email, photo, password });
+      // Step 4 — register in your backend (use /auths/register, not /auths/login)
+      const response: any = await registerUserInDB({ name, email, photo, password });
 
       if (response?.data?.success) {
         const { accessToken } = response.data.data;
         const decodedUser = verifyToken(accessToken);
         dispatch(setUser({ user: decodedUser, token: accessToken }));
-        toast.success("Account created! Welcome to RestOS 🎉", { id: toastId, duration: 3000 });
-        navigate(`/${decodedUser.role === USER_ROLE.ADMIN ? "admin" : "user"}/dashboard`);
+        toast.success("Welcome to RestOS! 🎉", { id: toastId, duration: 3000 });
+        navigate(
+          `/${decodedUser.role === USER_ROLE.ADMIN ? "admin" : "user"}/dashboard`
+        );
       } else {
-        toast.error(response?.error?.data?.message ?? "Sign up failed.", { id: toastId });
+        const errMsg =
+          response?.error?.data?.message ??
+          response?.error?.error ??
+          "Sign up failed. Please try again.";
+        toast.error(errMsg, { id: toastId });
       }
     } catch (err: any) {
-      toast.error(err?.message ?? "Something went wrong.", { id: toastId });
+      // Firebase-specific error messages are readable
+      const msg =
+        err?.code === "auth/email-already-in-use"
+          ? "This email is already registered. Try signing in."
+          : err?.code === "auth/weak-password"
+          ? "Password is too weak. Use at least 6 characters."
+          : err?.message ?? "Something went wrong.";
+      toast.error(msg, { id: toastId });
     } finally {
       setLoading(false);
       setUploadProgress(false);
     }
   };
 
+  // ── Consistent color system matching SignInLayout (emerald/teal) ───────
   const inputCls = dark
     ? "bg-gray-800/80 border-gray-700 text-white placeholder:text-gray-500 focus:border-emerald-400 focus:bg-gray-800"
     : "bg-gray-50 border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-emerald-500 focus:bg-white";
   const labelCls = dark ? "text-gray-300" : "text-gray-600";
-  const dividerCls = dark ? "bg-gray-800" : "bg-gray-200";
 
   return (
     <div className={`min-h-screen md:flex ${dark ? "bg-gray-950" : "bg-gray-50"}`}>
-      {/* ── Left visual panel ── */}
+
+      {/* ── Left visual panel — matches SignInLayout emerald/teal palette ── */}
       <div
-        className={`hidden md:flex w-1/2 relative overflow-hidden flex-col justify-end
-          ${dark
-            ? "bg-gradient-to-br from-gray-900 via-violet-950 to-gray-900"
-            : "bg-gradient-to-br from-violet-600 via-purple-500 to-fuchsia-500"
-          }`}
+        className={`hidden md:flex w-1/2 relative overflow-hidden flex-col justify-end ${
+          dark
+            ? "bg-gray-900"
+            : "bg-gradient-to-br from-emerald-600 via-teal-500 to-cyan-400"
+        }`}
       >
         {/* dot pattern */}
         <div
@@ -149,7 +171,11 @@ const SignUpLayout = () => {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="space-y-4"
           >
-            <p className="text-5xl">🍽️</p>
+            <div className="flex gap-1">
+              {[...Array(5)].map((_, i) => (
+                <span key={i} className="text-yellow-300 text-xl">★</span>
+              ))}
+            </div>
             <h2 className="text-3xl font-extrabold text-white leading-tight">
               Join 50,000+<br />food lovers
             </h2>
@@ -175,11 +201,15 @@ const SignUpLayout = () => {
           </motion.div>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/20 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/20 to-transparent" />
       </div>
 
       {/* ── Right form panel ── */}
-      <div className={`flex items-center justify-center w-full md:w-1/2 px-8 lg:px-14 py-12 ${dark ? "bg-gray-950" : "bg-white"}`}>
+      <div
+        className={`flex items-center justify-center w-full md:w-1/2 px-8 lg:px-14 py-12 ${
+          dark ? "bg-gray-950" : "bg-white"
+        }`}
+      >
         <motion.div
           initial="hidden"
           animate="visible"
@@ -191,7 +221,7 @@ const SignUpLayout = () => {
               Create account
             </h1>
             <p className={`text-sm ${dark ? "text-gray-400" : "text-gray-500"}`}>
-              Start your RestOS journey today — it's free.
+              Start your RestOS journey today — it&apos;s free.
             </p>
           </motion.div>
 
@@ -201,11 +231,11 @@ const SignUpLayout = () => {
             onSubmit={handleSignUp}
             className="space-y-4"
           >
-            {/* Photo upload */}
+            {/* ── Photo upload ── */}
             <motion.div variants={fadeUp} custom={2} className="flex flex-col items-center gap-3">
               <div
                 onClick={() => fileInputRef.current?.click()}
-                className={`relative w-20 h-20 rounded-full cursor-pointer overflow-hidden border-2 transition-all duration-200 hover:scale-105 ${
+                className={`relative w-20 h-20 rounded-full cursor-pointer overflow-hidden border-2 transition-all duration-200 hover:scale-105 group ${
                   dark
                     ? "border-gray-600 bg-gray-800 hover:border-emerald-500"
                     : "border-gray-200 bg-gray-100 hover:border-emerald-400"
@@ -227,17 +257,16 @@ const SignUpLayout = () => {
                       key="placeholder"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="w-full h-full flex flex-col items-center justify-center"
+                      className="w-full h-full flex items-center justify-center"
                     >
                       <span className="text-2xl">📷</span>
                     </motion.div>
                   )}
                 </AnimatePresence>
-
-                {/* Upload overlay */}
-                <div className="absolute inset-0 bg-black/0 hover:bg-black/30 flex items-center justify-center transition-all duration-200">
-                  <span className="text-white text-xs font-medium opacity-0 hover:opacity-100 transition-opacity">
-                    Change
+                {/* hover overlay */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 flex items-center justify-center transition-all duration-200">
+                  <span className={`text-white text-[10px] font-semibold opacity-0 group-hover:opacity-100 transition-opacity`}>
+                    {photoPreview ? "Change" : "Upload"}
                   </span>
                 </div>
               </div>
@@ -256,18 +285,22 @@ const SignUpLayout = () => {
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
                   className={`text-xs font-medium transition-colors ${
-                    dark ? "text-emerald-400 hover:text-emerald-300" : "text-emerald-600 hover:text-emerald-500"
+                    dark
+                      ? "text-emerald-400 hover:text-emerald-300"
+                      : "text-emerald-600 hover:text-emerald-500"
                   }`}
                 >
                   {photoPreview ? "Change photo" : "Upload profile photo"}
                 </button>
                 {uploadProgress && (
-                  <p className="text-xs text-emerald-500 mt-0.5 animate-pulse">Uploading image…</p>
+                  <p className="text-[10px] text-emerald-500 mt-0.5 animate-pulse">
+                    Uploading to server…
+                  </p>
                 )}
               </div>
             </motion.div>
 
-            {/* Name */}
+            {/* ── Name ── */}
             <motion.div variants={fadeUp} custom={3} className="space-y-1.5">
               <label className={`block text-sm font-medium ${labelCls}`}>Full Name</label>
               <input
@@ -279,7 +312,7 @@ const SignUpLayout = () => {
               />
             </motion.div>
 
-            {/* Email */}
+            {/* ── Email ── */}
             <motion.div variants={fadeUp} custom={4} className="space-y-1.5">
               <label className={`block text-sm font-medium ${labelCls}`}>Email</label>
               <input
@@ -291,7 +324,7 @@ const SignUpLayout = () => {
               />
             </motion.div>
 
-            {/* Password */}
+            {/* ── Password ── */}
             <motion.div variants={fadeUp} custom={5} className="space-y-1.5">
               <label className={`block text-sm font-medium ${labelCls}`}>Password</label>
               <div className="relative">
@@ -307,7 +340,9 @@ const SignUpLayout = () => {
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
                   className={`absolute right-3.5 top-1/2 -translate-y-1/2 text-base transition-colors duration-200 ${
-                    dark ? "text-gray-500 hover:text-gray-300" : "text-gray-400 hover:text-gray-600"
+                    dark
+                      ? "text-gray-500 hover:text-gray-300"
+                      : "text-gray-400 hover:text-gray-600"
                   }`}
                 >
                   {showPassword ? "🙈" : "👁️"}
@@ -315,7 +350,7 @@ const SignUpLayout = () => {
               </div>
             </motion.div>
 
-            {/* Submit */}
+            {/* ── Submit — same emerald/teal gradient as SignIn ── */}
             <motion.button
               variants={fadeUp}
               custom={6}
@@ -323,7 +358,7 @@ const SignUpLayout = () => {
               whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={loading}
-              className="w-full rounded-xl bg-gradient-to-r from-violet-500 to-purple-600 py-3.5 text-sm font-semibold text-white shadow-md shadow-violet-500/20 hover:shadow-violet-500/40 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 py-3.5 text-sm font-semibold text-white shadow-md shadow-emerald-500/20 hover:shadow-emerald-500/40 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
@@ -333,7 +368,9 @@ const SignUpLayout = () => {
                   </svg>
                   {uploadProgress ? "Uploading photo…" : "Creating account…"}
                 </span>
-              ) : "Create Account"}
+              ) : (
+                "Create Account"
+              )}
             </motion.button>
           </motion.form>
 
@@ -358,9 +395,13 @@ const SignUpLayout = () => {
             className={`text-center text-[11px] ${dark ? "text-gray-600" : "text-gray-400"}`}
           >
             By creating an account you agree to our{" "}
-            <span className={`underline cursor-pointer ${dark ? "text-gray-500" : "text-gray-500"}`}>Terms</span>{" "}
+            <span className={`underline cursor-pointer ${dark ? "text-gray-500" : "text-gray-500"}`}>
+              Terms
+            </span>{" "}
             and{" "}
-            <span className={`underline cursor-pointer ${dark ? "text-gray-500" : "text-gray-500"}`}>Privacy Policy</span>.
+            <span className={`underline cursor-pointer ${dark ? "text-gray-500" : "text-gray-500"}`}>
+              Privacy Policy
+            </span>.
           </motion.p>
         </motion.div>
       </div>
