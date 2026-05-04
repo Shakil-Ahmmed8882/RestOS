@@ -1,5 +1,3 @@
-
-
 import React from "react";
 import Banner from "../features/Banner";
 import WhyRestOS from "../features/WhyRestOS";
@@ -10,19 +8,17 @@ import Testimonial from "../features/testimonials/Testimonials";
 import PromoSection from "../components/promo-section/PromoSection";
 
 const HomeLayout = () => {
-
-
   return (
     <div>
+      <title>RestOS || Home</title>
       <Container>
-        <title>RestOs || Home</title>
         <Banner />
       </Container>
       <PromoSection />
       <SpecialDinnerMenus />
       <PopularDishes />
       <WhyRestOS />
-      {/* <Testimonial /> */}
+      <Testimonial />
     </div>
   );
 };
