@@ -13,14 +13,13 @@ import { motion } from "framer-motion";
 // @ts-ignore
 import google_icon from "../../../assets/img/icons8-google-48.png";
 
-// ─── Dummy accounts ────────────────────────────────────────────────────────
-// These bypass Firebase and call the backend directly with name+email,
-// matching exactly how Google Sign-In works (no password sent to backend).
+// ─── Dummy roles — frontend-only, Firebase-bypass demo accounts ────────────
 const DUMMY_ROLES = [
   {
     label: "Admin",
     name: "Demo Admin",
     email: "admin@restos.com",
+    role: USER_ROLE.ADMIN,
     color: "from-emerald-500 to-teal-600",
     shadowColor: "shadow-emerald-500/30",
     icon: "🛡️",
@@ -30,6 +29,7 @@ const DUMMY_ROLES = [
     label: "User",
     name: "Demo User",
     email: "user@restos.com",
+    role: USER_ROLE.USER,
     color: "from-violet-500 to-purple-600",
     shadowColor: "shadow-violet-500/30",
     icon: "👤",
@@ -39,6 +39,7 @@ const DUMMY_ROLES = [
     label: "Delivery",
     name: "Demo Delivery",
     email: "delivery@restos.com",
+    role: USER_ROLE.USER,
     color: "from-orange-500 to-red-500",
     shadowColor: "shadow-orange-500/30",
     icon: "🚴",
@@ -66,29 +67,69 @@ const SignInForm = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  // ── Calls YOUR backend directly (same as Google Sign-In does).
-  // No Firebase account needed for demo roles.
-  const loginViaBackend = async (name: string, email: string, toastId: string | number) => {
-    const response: any = await LoginUserFromDB({ name, email });
-    if (response?.data?.success) {
-      const { accessToken } = response.data.data;
-      const decoded = verifyToken(accessToken);
-      dispatch(setUser({ user: decoded, token: accessToken }));
-      toast.success(`Welcome, ${name}!`, { id: toastId, duration: 2000 });
-      navigate(`/${decoded.role === USER_ROLE.ADMIN ? "admin" : "user"}/dashboard`);
-    } else {
-      const msg = response?.error?.data?.message ?? "Login failed. Check credentials.";
-      toast.error(msg, { id: toastId });
+  // ── Best-effort backend sync — never blocks Firebase auth ──────────────
+  const tryBackendLogin = async (
+    name: string,
+    email: string
+  ): Promise<{ token: string; user: any } | null> => {
+    if (!import.meta.env.VITE_BACKENT_URL) {
+      console.warn("[SignIn] VITE_BACKENT_URL missing — skipping backend sync");
+      return null;
+    }
+    try {
+      const response: any = await LoginUserFromDB({ name, email });
+      if (response?.data?.success) {
+        const { accessToken } = response.data.data;
+        const decoded = verifyToken(accessToken);
+        return { token: accessToken, user: decoded };
+      }
+      console.warn("[SignIn] Backend login returned non-success:", response);
+      return null;
+    } catch (err) {
+      console.warn("[SignIn] Backend login failed:", err);
+      return null;
     }
   };
 
-  // ── Dummy role quick-login ──────────────────────────────────────────────
+  // ── Apply auth — if backend syncs, use that; otherwise build a local session
+  const finishLogin = async (
+    name: string,
+    email: string,
+    photo: string | null,
+    role: string,
+    toastId: string | number
+  ) => {
+    const synced = await tryBackendLogin(name, email);
+    if (synced) {
+      dispatch(setUser({ user: synced.user, token: synced.token }));
+      toast.success(`Welcome back, ${name}!`, { id: toastId, duration: 2000 });
+      navigate(
+        `/${synced.user.role === USER_ROLE.ADMIN ? "admin" : "user"}/dashboard`
+      );
+      return;
+    }
+    // Backend unavailable — Firebase-only fallback session
+    const localUser = {
+      userId: email,
+      name,
+      email,
+      role,
+      photo: photo ?? "",
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
+    };
+    dispatch(setUser({ user: localUser, token: "firebase-only" }));
+    toast.success(`Welcome, ${name}!`, { id: toastId, duration: 2000 });
+    navigate(`/${role === USER_ROLE.ADMIN ? "admin" : "user"}/dashboard`);
+  };
+
+  // ── Dummy role quick-login (no Firebase, no real backend) ──────────────
   const handleDummyLogin = async (dummy: typeof DUMMY_ROLES[0]) => {
     if (loading) return;
     setLoading(true);
     const toastId = toast.loading(`Signing in as ${dummy.label}…`);
     try {
-      await loginViaBackend(dummy.name, dummy.email, toastId);
+      await finishLogin(dummy.name, dummy.email, null, dummy.role, toastId);
     } catch (err: any) {
       toast.error(err?.message ?? "Something went wrong", { id: toastId });
     } finally {
@@ -96,20 +137,34 @@ const SignInForm = () => {
     }
   };
 
-  // ── Manual email/password login ────────────────────────────────────────
+  // ── Manual email/password login via Firebase ───────────────────────────
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (loading) return;
     setLoading(true);
     const form = new FormData(e.currentTarget);
-    const email = form.get("email") as string;
+    const email = (form.get("email") as string).trim();
     const password = form.get("password") as string;
     const toastId = toast.loading("Signing in…");
     try {
       const res = await login(email, password);
-      await loginViaBackend(res.user.displayName ?? email, res.user.email, toastId);
+      const fbUser = res.user;
+      const name = fbUser.displayName ?? email.split("@")[0];
+      await finishLogin(name, fbUser.email ?? email, fbUser.photoURL, USER_ROLE.USER, toastId);
     } catch (err: any) {
-      toast.error(err?.message ?? "Invalid credentials", { id: toastId });
+      const msg =
+        err?.code === "auth/invalid-credential" || err?.code === "auth/wrong-password"
+          ? "Invalid email or password."
+          : err?.code === "auth/user-not-found"
+          ? "No account found with this email. Sign up first."
+          : err?.code === "auth/invalid-email"
+          ? "Please enter a valid email."
+          : err?.code === "auth/too-many-requests"
+          ? "Too many failed attempts. Try again later."
+          : err?.code === "auth/network-request-failed"
+          ? "Network error. Check your connection."
+          : err?.message ?? "Sign-in failed.";
+      toast.error(msg, { id: toastId });
     } finally {
       setLoading(false);
     }
@@ -122,9 +177,22 @@ const SignInForm = () => {
     const toastId = toast.loading("Signing in with Google…");
     try {
       const result = await googleSignIn();
-      await loginViaBackend(result.user.displayName, result.user.email, toastId);
+      const fbUser = result.user;
+      await finishLogin(
+        fbUser.displayName ?? "Google User",
+        fbUser.email,
+        fbUser.photoURL,
+        USER_ROLE.USER,
+        toastId
+      );
     } catch (err: any) {
-      toast.error(err?.message ?? "Google sign-in failed", { id: toastId });
+      const msg =
+        err?.code === "auth/popup-closed-by-user"
+          ? "Sign-in cancelled."
+          : err?.code === "auth/popup-blocked"
+          ? "Popup blocked by browser. Allow popups and try again."
+          : err?.message ?? "Google sign-in failed";
+      toast.error(msg, { id: toastId });
     } finally {
       setLoading(false);
     }
@@ -146,7 +214,6 @@ const SignInForm = () => {
         animate="visible"
         className="max-w-md w-full mx-auto space-y-7"
       >
-        {/* ── Header ── */}
         <motion.div variants={fadeUp} custom={0} className="space-y-1">
           <h1 className={`text-3xl font-bold tracking-tight ${dark ? "text-white" : "text-gray-900"}`}>
             Welcome back
@@ -156,7 +223,6 @@ const SignInForm = () => {
           </p>
         </motion.div>
 
-        {/* ── Recruiter quick login ── */}
         <motion.div variants={fadeUp} custom={1} className="space-y-2.5">
           <p className={`text-[11px] font-bold uppercase tracking-widest ${dividerTextCls}`}>
             ⚡ Reviewer quick access
@@ -174,7 +240,6 @@ const SignInForm = () => {
                 <span className="block text-2xl mb-1">{r.icon}</span>
                 <span className="block text-xs font-bold">{r.label}</span>
                 <span className="block text-[10px] opacity-75 mt-0.5">{r.description}</span>
-                {/* shine overlay */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 pointer-events-none" />
               </motion.button>
             ))}
@@ -184,14 +249,12 @@ const SignInForm = () => {
           </p>
         </motion.div>
 
-        {/* ── Divider ── */}
         <motion.div variants={fadeUp} custom={2} className="flex items-center gap-3">
           <div className={`flex-1 h-px ${dividerCls}`} />
           <span className={`text-xs ${dividerTextCls}`}>or sign in manually</span>
           <div className={`flex-1 h-px ${dividerCls}`} />
         </motion.div>
 
-        {/* ── Form ── */}
         <motion.form variants={fadeUp} custom={3} onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1.5">
             <label className={`block text-sm font-medium ${labelCls}`}>Email</label>
@@ -245,7 +308,6 @@ const SignInForm = () => {
           </motion.button>
         </motion.form>
 
-        {/* ── Google ── */}
         <motion.div variants={fadeUp} custom={4} className="space-y-3">
           <div className="flex items-center gap-3">
             <div className={`flex-1 h-px ${dividerCls}`} />
@@ -269,7 +331,6 @@ const SignInForm = () => {
           </motion.button>
         </motion.div>
 
-        {/* ── Footer ── */}
         <motion.p
           variants={fadeUp}
           custom={5}

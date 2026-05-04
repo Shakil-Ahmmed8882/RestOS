@@ -20,11 +20,14 @@ const fadeUp = {
   }),
 };
 
+// Default avatar fallback (svg data URI) — used when ImgBB key is missing or upload fails
+const DEFAULT_AVATAR =
+  "https://api.dicebear.com/7.x/initials/svg?backgroundColor=10b981&textColor=ffffff&seed=";
+
 const SignUpLayout = () => {
   const { theme } = useTheme();
   const dark = theme === "dark";
 
-  // ✅ Bug fix #1 — use registerUser, not loginUser
   const [registerUserInDB] = useRegisterUserMutation();
   // @ts-ignore
   const { createUser, updateUserInfo } = useAuth();
@@ -41,10 +44,57 @@ const SignUpLayout = () => {
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Photo must be smaller than 5MB.");
+      return;
+    }
     setPhotoFile(file);
     const reader = new FileReader();
     reader.onload = () => setPhotoPreview(reader.result as string);
     reader.readAsDataURL(file);
+  };
+
+  // ── Best-effort image upload — never blocks sign-up ───────────────────
+  const tryUploadPhoto = async (file: File | null, name: string): Promise<string> => {
+    const fallback = `${DEFAULT_AVATAR}${encodeURIComponent(name || "User")}`;
+    if (!file) return fallback;
+    if (!import.meta.env.VITE_IMGBB_API_KEY) {
+      console.warn("[SignUp] VITE_IMGBB_API_KEY missing — using fallback avatar");
+      return fallback;
+    }
+    try {
+      const imageData = await imageUpload(file);
+      return imageData?.data?.display_url || fallback;
+    } catch (err) {
+      console.warn("[SignUp] Image upload failed, using fallback:", err);
+      return fallback;
+    }
+  };
+
+  // ── Best-effort backend sync — never blocks Firebase auth ──────────────
+  const syncWithBackend = async (
+    name: string,
+    email: string,
+    photo: string,
+    password: string
+  ): Promise<{ token: string; user: any } | null> => {
+    if (!import.meta.env.VITE_BACKENT_URL) {
+      console.warn("[SignUp] VITE_BACKENT_URL missing — skipping backend sync");
+      return null;
+    }
+    try {
+      const response: any = await registerUserInDB({ name, email, photo, password });
+      if (response?.data?.success) {
+        const { accessToken } = response.data.data;
+        const decoded = verifyToken(accessToken);
+        return { token: accessToken, user: decoded };
+      }
+      console.warn("[SignUp] Backend register returned non-success:", response);
+      return null;
+    } catch (err) {
+      console.warn("[SignUp] Backend register failed:", err);
+      return null;
+    }
   };
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -57,62 +107,71 @@ const SignUpLayout = () => {
     const email = (data.email as string).trim();
     const password = data.password as string;
 
-    // ✅ Inline validation using sonner (consistent toast library)
+    // ── Inline validation ────────────────────────────────────────────────
     if (!name) return toast.error("Please enter your name.");
     if (!email) return toast.error("Please enter your email.");
-    if (!photoFile) return toast.error("Please upload a profile photo.");
     if (!password || password.length < 6)
       return toast.error("Password must be at least 6 characters.");
 
     setLoading(true);
-    setUploadProgress(true);
     const toastId = toast.loading("Creating your account…");
 
     try {
-      // Step 1 — upload image to ImgBB
-      const imageData = await imageUpload(photoFile);
+      // ── Step 1 — upload photo (best-effort, falls back to default avatar)
+      setUploadProgress(true);
+      const photo = await tryUploadPhoto(photoFile, name);
       setUploadProgress(false);
-      const photo: string = imageData?.data?.display_url;
 
-      if (!photo) {
-        toast.error("Image upload failed. Try a different photo.", { id: toastId });
-        setLoading(false);
-        return;
+      // ── Step 2 — create Firebase account (this is the source of truth)
+      const cred = await createUser(email, password);
+
+      // ── Step 3 — update Firebase profile (awaited)
+      try {
+        await updateUserInfo(name, photo);
+      } catch (e) {
+        console.warn("[SignUp] updateUserInfo failed (non-fatal):", e);
       }
 
-      // Step 2 — create Firebase account
-      await createUser(email, password);
+      // ── Step 4 — sync with backend (best-effort)
+      const synced = await syncWithBackend(name, email, photo, password);
 
-      // Step 3 — update Firebase display name + photo (await properly)
-      // ✅ Bug fix #2 — updateUserInfo must be awaited
-      await updateUserInfo(name, photo);
-
-      // Step 4 — register in your backend (use /auths/register, not /auths/login)
-      const response: any = await registerUserInDB({ name, email, photo, password });
-
-      if (response?.data?.success) {
-        const { accessToken } = response.data.data;
-        const decodedUser = verifyToken(accessToken);
-        dispatch(setUser({ user: decodedUser, token: accessToken }));
-        toast.success("Welcome to RestOS! 🎉", { id: toastId, duration: 3000 });
+      if (synced) {
+        // Backend returned a JWT — use the role from the token
+        dispatch(setUser({ user: synced.user, token: synced.token }));
+        toast.success(`Welcome to RestOS, ${name}! 🎉`, { id: toastId, duration: 3000 });
         navigate(
-          `/${decodedUser.role === USER_ROLE.ADMIN ? "admin" : "user"}/dashboard`
+          `/${synced.user.role === USER_ROLE.ADMIN ? "admin" : "user"}/dashboard`
         );
       } else {
-        const errMsg =
-          response?.error?.data?.message ??
-          response?.error?.error ??
-          "Sign up failed. Please try again.";
-        toast.error(errMsg, { id: toastId });
+        // Backend unavailable — store Firebase user locally as a fallback so the app still works
+        const firebaseUser = cred?.user;
+        const localUser = {
+          userId: firebaseUser?.uid ?? "local",
+          name,
+          email,
+          role: USER_ROLE.USER,
+          photo,
+          iat: Math.floor(Date.now() / 1000),
+          exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
+        };
+        dispatch(setUser({ user: localUser, token: "firebase-only" }));
+        toast.success(`Welcome, ${name}! 🎉`, { id: toastId, duration: 3000 });
+        navigate("/user/dashboard");
       }
     } catch (err: any) {
-      // Firebase-specific error messages are readable
+      // Firebase-specific error code mapping
       const msg =
         err?.code === "auth/email-already-in-use"
-          ? "This email is already registered. Try signing in."
+          ? "This email is already registered. Try signing in instead."
           : err?.code === "auth/weak-password"
           ? "Password is too weak. Use at least 6 characters."
-          : err?.message ?? "Something went wrong.";
+          : err?.code === "auth/invalid-email"
+          ? "Please enter a valid email address."
+          : err?.code === "auth/network-request-failed"
+          ? "Network error. Check your connection and try again."
+          : err?.code === "auth/operation-not-allowed"
+          ? "Email/Password sign-up is disabled in Firebase. Enable it in Firebase Console → Authentication → Sign-in method."
+          : err?.message ?? "Something went wrong. Please try again.";
       toast.error(msg, { id: toastId });
     } finally {
       setLoading(false);
@@ -137,7 +196,6 @@ const SignUpLayout = () => {
             : "bg-gradient-to-br from-emerald-600 via-teal-500 to-cyan-400"
         }`}
       >
-        {/* dot pattern */}
         <div
           className="absolute inset-0 opacity-10"
           style={{
@@ -146,7 +204,6 @@ const SignUpLayout = () => {
           }}
         />
 
-        {/* floating orbs */}
         <motion.div
           animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
@@ -163,7 +220,6 @@ const SignUpLayout = () => {
           className="absolute top-1/2 right-1/3 w-12 h-12 rounded-full bg-white/20"
         />
 
-        {/* content */}
         <div className="relative z-10 p-12 space-y-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -215,7 +271,6 @@ const SignUpLayout = () => {
           animate="visible"
           className="max-w-md w-full mx-auto space-y-6"
         >
-          {/* Header */}
           <motion.div variants={fadeUp} custom={0} className="space-y-1">
             <h1 className={`text-3xl font-bold tracking-tight ${dark ? "text-white" : "text-gray-900"}`}>
               Create account
@@ -231,7 +286,6 @@ const SignUpLayout = () => {
             onSubmit={handleSignUp}
             className="space-y-4"
           >
-            {/* ── Photo upload ── */}
             <motion.div variants={fadeUp} custom={2} className="flex flex-col items-center gap-3">
               <div
                 onClick={() => fileInputRef.current?.click()}
@@ -263,9 +317,8 @@ const SignUpLayout = () => {
                     </motion.div>
                   )}
                 </AnimatePresence>
-                {/* hover overlay */}
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 flex items-center justify-center transition-all duration-200">
-                  <span className={`text-white text-[10px] font-semibold opacity-0 group-hover:opacity-100 transition-opacity`}>
+                  <span className="text-white text-[10px] font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
                     {photoPreview ? "Change" : "Upload"}
                   </span>
                 </div>
@@ -290,17 +343,16 @@ const SignUpLayout = () => {
                       : "text-emerald-600 hover:text-emerald-500"
                   }`}
                 >
-                  {photoPreview ? "Change photo" : "Upload profile photo"}
+                  {photoPreview ? "Change photo" : "Upload profile photo (optional)"}
                 </button>
                 {uploadProgress && (
                   <p className="text-[10px] text-emerald-500 mt-0.5 animate-pulse">
-                    Uploading to server…
+                    Uploading photo…
                   </p>
                 )}
               </div>
             </motion.div>
 
-            {/* ── Name ── */}
             <motion.div variants={fadeUp} custom={3} className="space-y-1.5">
               <label className={`block text-sm font-medium ${labelCls}`}>Full Name</label>
               <input
@@ -312,7 +364,6 @@ const SignUpLayout = () => {
               />
             </motion.div>
 
-            {/* ── Email ── */}
             <motion.div variants={fadeUp} custom={4} className="space-y-1.5">
               <label className={`block text-sm font-medium ${labelCls}`}>Email</label>
               <input
@@ -324,7 +375,6 @@ const SignUpLayout = () => {
               />
             </motion.div>
 
-            {/* ── Password ── */}
             <motion.div variants={fadeUp} custom={5} className="space-y-1.5">
               <label className={`block text-sm font-medium ${labelCls}`}>Password</label>
               <div className="relative">
@@ -350,7 +400,6 @@ const SignUpLayout = () => {
               </div>
             </motion.div>
 
-            {/* ── Submit — same emerald/teal gradient as SignIn ── */}
             <motion.button
               variants={fadeUp}
               custom={6}
@@ -374,7 +423,6 @@ const SignUpLayout = () => {
             </motion.button>
           </motion.form>
 
-          {/* Footer */}
           <motion.p
             variants={fadeUp}
             custom={7}
