@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import {  AnimatePresence } from "framer-motion";
 
 import { useGetAllSearchResultsQuery } from "../../../redux/features/search/search.api";
-import useDebounce from "../../../🔗Hook/useDebounce";
+import useDebounce from "../../../Hook/useDebounce";
 import Container from "../../../shared/layouts/Container";
 import CustomPagination from "../../../shared/ui/CustomPagination";
 import RenderSearchResults from "./components/SearchResults";

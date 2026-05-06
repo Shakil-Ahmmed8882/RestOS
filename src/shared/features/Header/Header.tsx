@@ -16,7 +16,7 @@ import ThemeSwitcher from "./ThemeSwitcher";
 import { useTheme } from "next-themes";
 import { useAuth } from "../../../Utils/useAuthHelper";
 import toast from "react-hot-toast";
-import { useGetData } from "../../../🔗Hook/httpRequests";
+import { useGetData } from "../../../Hook/httpRequests";
 import React from "react";
 import Logo from "../../ui/Logo";
 

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Input, ScrollShadow } from "@nextui-org/react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import useDebounce from "../../../../../../🔗Hook/useDebounce";
+import useDebounce from "../../../../../../Hook/useDebounce";
 import { useGetAllFoodsCategoriesQuery } from "../../../../../../redux/features/food-category/foodCategory.api";
 import { FoodsCategoryResponse } from "../../../../../../types/foodCategory";
 import { SearchIcon } from "../../../../../../assets/icons/Icons";

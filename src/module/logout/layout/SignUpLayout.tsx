@@ -85,9 +85,8 @@ const SignUpLayout = () => {
     try {
       const response: any = await registerUserInDB({ name, email, photo, password });
       if (response?.data?.success) {
-        const { accessToken } = response.data.data;
-        const decoded = verifyToken(accessToken);
-        return { token: accessToken, user: decoded };
+        const { accessToken, user } = response.data.data;
+        return { token: accessToken, user };
       }
       console.warn("[SignUp] Backend register returned non-success:", response);
       return null;
@@ -136,7 +135,7 @@ const SignUpLayout = () => {
       const synced = await syncWithBackend(name, email, photo, password);
 
       if (synced) {
-        // Backend returned a JWT — use the role from the token
+        // Backend returned a JWT and user data — use both
         dispatch(setUser({ user: synced.user, token: synced.token }));
         toast.success(`Welcome to RestOS, ${name}! 🎉`, { id: toastId, duration: 3000 });
         navigate(

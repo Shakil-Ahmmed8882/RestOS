@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import useVisibleCategories from '../../hooks/useVisibleCategories';
-import useClickOutside from '../../../../../🔗Hook/useClickOutside';
+import useClickOutside from '../../../../../Hook/useClickOutside';
 import { categories } from '../../data';
 import CategoryItem from './CategoryItem';
 import DropdownMenu from './DropdownMenu';

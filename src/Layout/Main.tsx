@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Footer from "../module/shared/ui/Footer";
 import DrawerNavigation from "../shared/navigation/DrawerNavigation";
 import Navbar from "../shared/navigation/Navbar";
-import useHandleScroll from "../🔗Hook/useHandleScroll";
+import useHandleScroll from "../Hook/useHandleScroll";
 import { useSmoothScroll } from "../shared/smooth-scroll/useSmoothScroll";
 
 const Main = () => {

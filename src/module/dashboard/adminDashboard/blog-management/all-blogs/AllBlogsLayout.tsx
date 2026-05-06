@@ -13,7 +13,7 @@ import {
 import { blogCategories, blogStats } from "./data.tsx";
 import Statistics from "../../../../../shared/ui/stats/Statistics.tsx";
 import { getCategoryFromUrl } from "../../../../frontFace/blog/layout/BlogLayout.tsx";
-import useDebounce from "../../../../../🔗Hook/useDebounce.ts";
+import useDebounce from "../../../../../Hook/useDebounce.ts";
 import CustomPagination from "../../../../../shared/ui/CustomPagination.tsx";
 
 const AllBlogsLayout = () => {

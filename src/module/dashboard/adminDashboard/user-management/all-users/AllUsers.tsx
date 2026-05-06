@@ -8,7 +8,7 @@ import {
 } from "../../../../../redux/features/profile/profile.api";
 import { useNavigate } from "react-router-dom";
 import PageHeader from "../../../../../shared/ui/PageHeader.tsx";
-import useDebounce from "../../../../../🔗Hook/useDebounce.ts";
+import useDebounce from "../../../../../Hook/useDebounce.ts";
 import CustomPagination from "../../../../../shared/ui/CustomPagination.tsx";
 
 const AllUsersLayout = () => {

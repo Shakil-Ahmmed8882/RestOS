@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Drawer } from "antd";
 
 import CommentInput from "./CommentInput";
-import useDisableBodyScroll from "../../../../🔗Hook/useDisableBodyScroll";
+import useDisableBodyScroll from "../../../../Hook/useDisableBodyScroll";
 import { useAddCommentOnBlogMutation } from "../../../../redux/features/comment/comment.api";
 import { Spinner } from "@nextui-org/react";
 import CommentLayout from "../layout/CommentLayout";

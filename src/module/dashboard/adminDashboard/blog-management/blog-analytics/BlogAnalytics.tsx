@@ -14,7 +14,7 @@
 // import { ChevronDown, Search } from "lucide-react";
 // import dynamic from "next/dynamic";
 // import { useGetAllAnalyticsQuery } from "../../../../../redux/features/analytics/analytics.api";
-// import useDebounce from "../../../../../🔗Hook/useDebounce";
+// import useDebounce from "../../../../../Hook/useDebounce";
 
 // const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -322,7 +322,7 @@
 import React, { useState } from "react";
 import { Card, CardBody, CardHeader, Input, Skeleton } from "@nextui-org/react";
 import { Search } from "lucide-react";
-import useDebounce from "../../../../../🔗Hook/useDebounce";
+import useDebounce from "../../../../../Hook/useDebounce";
 import { useGetAllAnalyticsQuery } from "../../../../../redux/features/analytics/analytics.api";
 import MetricsCard from "./components/MetricsCard";
 import NotFound from "./components/NotFound";
@@ -373,15 +373,15 @@ export default function AdminAnalyticsPage() {
               className="max-w-full h-10"
             />
           </CardHeader>
-          {data?.data?.length <= 0 ? (
+          {isAnalyticsLoading ? (
+            <CardBody>
+              <Skeleton className="w-full h-screen" />
+            </CardBody>
+          ) : !data?.data || data.data.length === 0 ? (
             <NotFound />
           ) : (
             <CardBody>
-              {isAnalyticsLoading ? (
-                <Skeleton className="w-full h-screen" />
-              ) : (
-                <ActivityList data={data.data} />
-              )}
+              <ActivityList data={data.data} />
             </CardBody>
           )}
         </Card>

@@ -8,7 +8,7 @@ import SearchResults from "./SearchResults";
 import SearchInput from "./SearchInput";
 import SearchError from "./SearchError";
 import SearchLoading from "./SearchLoading";
-import useDebounce from "../../../🔗Hook/useDebounce";
+import useDebounce from "../../../Hook/useDebounce";
 import { useGetAllSearchResultsQuery } from "../../../redux/features/search/search.api";
 import ModalWrapper from "../wrapper/ModalWrapper";
 import CustomPagination from "../CustomPagination";

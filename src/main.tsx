@@ -9,7 +9,7 @@ import router from "./Routes/Root-Routes";
 import { Toaster } from 'sonner';
 // Tanstack query
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import AuthProvider from "./Providers/🛡️AuthProvider";
+import AuthProvider from "./Providers/AuthProvider";
 
 import Providers from "./Providers/Provider";
 import { Provider } from "react-redux";

@@ -9,7 +9,7 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import { auth } from "../Config/🔥 firebase.config";
+import { auth } from "../Config/firebase.config";
 
 
 // types.ts (or at the top of your file)

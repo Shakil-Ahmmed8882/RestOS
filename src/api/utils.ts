@@ -1,6 +1,6 @@
 // @ts-nocheck
 import axios from 'axios'
-import { useGetData } from '../🔗Hook/httpRequests'
+import { useGetData } from '../Hook/httpRequests'
 
 export const imageUpload = async image => {
   const formData = new FormData()

@@ -27,9 +27,20 @@ export default function AppDropdown({ triggerElement }: DropdownProps) {
   const navigate = useNavigate();
   const { logOut } = useAuth();
   const token = useAppSelector(selectToken);
+  const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
-  const decodedUser = verifyToken(`${token}`);
-  const url = `${decodedUser.role === USER_ROLE.ADMIN ? "admin" : "user"}`;
+
+  let decodedUser = user;
+  try {
+    if (token && token !== "firebase-only") {
+      decodedUser = verifyToken(`${token}`);
+    }
+  } catch (err) {
+    console.warn("Token decode failed:", err);
+  }
+
+  const userRole = decodedUser?.role || USER_ROLE.USER;
+  const url = `${userRole === USER_ROLE.ADMIN ? "admin" : "user"}`;
 
   const handleSignOut = () => {
     navigate("/");

@@ -1,6 +1,6 @@
 import React from "react";
 import { Close } from "../../assets/icons/Icons";
-import useStopScroll from "../../🔗Hook/useStopScroll";
+import useStopScroll from "../../Hook/useStopScroll";
 
 const RSModal = ({  setModalOpen, modalOpen, children }) => {
   useStopScroll(modalOpen); // Use the custom hook

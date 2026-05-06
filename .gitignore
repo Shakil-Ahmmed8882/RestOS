@@ -27,3 +27,4 @@ inpiration.js
 *.sln
 *.sw?
 .vercel
+.env*.local
