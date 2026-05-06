@@ -11,7 +11,7 @@ import { RootState } from "../store";
 import { setUser } from "../features/auth/auth.slice";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: import.meta.env.VITE_BACKENT_URL,
+  baseUrl: import.meta.env.VITE_DATABASEURL,
   credentials: "include",
 
   prepareHeaders: (headers, { getState }) => {
@@ -38,7 +38,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
       // if token access token has any issue get new accessToken
       //  using refresh token and set it to the local state
       const res = await fetch(
-        `${import.meta.env.VITE_BACKENT_URL}/auths/refresh-token`,
+        `${import.meta.env.VITE_DATABASEURL}/auths/refresh-token`,
         {
           method: "POST",
           credentials: "include",

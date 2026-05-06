@@ -17,15 +17,26 @@ const foodApi = baseApi.injectEndpoints({
     }),
 
 
+    getTopSellingFoods: builder.query({
+      query: () => ({ url: "/foods/top-selling-food", method: "GET" }),
+      transformResponse: (response: any) => ({
+        data: response?.data || [],
+        meta: response?.meta || {},
+      }),
+      providesTags: ["food-data"],
+    }),
+
     getSinglefood: builder.query({
       query: (id: string | undefined) => ({
         url: `/foods/${id}`,
         method: "GET",
       }),
+      transformResponse: (response: any) => {
+        return response?.data || {};
+      },
       providesTags: ["food-data"],
     }),
     getAllFoods: builder.query({
-      // send all of the args here
       query: (args) => {
         const params = new URLSearchParams();
 
@@ -38,6 +49,12 @@ const foodApi = baseApi.injectEndpoints({
           url: "/foods",
           method: "GET",
           params: params,
+        };
+      },
+      transformResponse: (response: any) => {
+        return {
+          data: response?.data || [],
+          meta: response?.meta || {},
         };
       },
       providesTags: ["food-data"],
@@ -70,6 +87,7 @@ const foodApi = baseApi.injectEndpoints({
 
 export const {
   useGetAllFoodsQuery,
+  useGetTopSellingFoodsQuery,
   useGetSinglefoodQuery,
   useUpdateFoodMutation,
   useDeleteFoodMutation,

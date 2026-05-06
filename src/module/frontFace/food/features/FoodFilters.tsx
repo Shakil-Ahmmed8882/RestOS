@@ -1,75 +1,99 @@
 import React from "react";
-import { RadioGroup, Radio, Card, CardBody, Divider } from "@nextui-org/react";
-import { Filter } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface FoodFiltersProps {
   handleCategoryChange: (category: string) => void;
-  selectedRange: string; // Current selected price range
-  isShowFilter: boolean; // Current selected price range
-  setSelectedRange: (range: string) => void; // Function to update selected price range
-  setIsShowFilter: (showFilter: boolean) => void; // Function to update selected price range
+  selectedRange: string;
+  setSelectedRange: (range: string) => void;
+  dark: boolean;
 }
 
 const FoodFilters: React.FC<FoodFiltersProps> = ({
   handleCategoryChange,
   selectedRange,
-  isShowFilter,
-  setIsShowFilter,
   setSelectedRange,
+  dark,
 }) => {
   const categories = ["All", "Indian", "Italian", "Chinese", "Mexican", "Thai"];
-
+  const priceRanges = [
+    { value: "0-25", label: "$0 - $25" },
+    { value: "25-50", label: "$25 - $50" },
+    { value: "50-100", label: "$50 - $100" },
+    { value: "100-500", label: "$100+" },
+  ];
 
   return (
-    <div className={`${isShowFilter ?"visible":"invisible md:visible"} col-span-1 absolute  left-0 z-50 w-96 md:sticky top-0 h-screen`}>
-      <Card className="p-3 shadow-sm">
-        <CardBody>
-          {/* Filter Header */}
-          <div className=" items-center hidden md:flex gap-2 mb-4">
-            <Filter className="w-5 h-5" />
-            <h2 className="text-lg font-semibold">Filters</h2>
-          </div>
+    <div className="space-y-6">
+      {/* Categories */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.1 }}
+      >
+        <h3 className={`text-sm font-bold uppercase tracking-wider mb-3 ${
+          dark ? "text-gray-300" : "text-gray-900"
+        }`}>
+          Cuisines
+        </h3>
+        <div className="space-y-2">
+          {categories.map((cat) => (
+            <motion.button
+              key={cat}
+              whileHover={{ x: 4 }}
+              onClick={() => handleCategoryChange(cat)}
+              className={`w-full text-left px-3 py-2.5 rounded-lg transition-all font-medium text-sm ${
+                dark
+                  ? "hover:bg-emerald-900/30 text-gray-300 hover:text-emerald-400"
+                  : "hover:bg-emerald-100 text-gray-700 hover:text-emerald-600"
+              }`}
+            >
+              {cat}
+            </motion.button>
+          ))}
+        </div>
+      </motion.div>
 
-          <Divider className="my-4" />
+      <div className={`${dark ? "bg-gray-800/50" : "bg-gray-100"} h-px`}></div>
 
-          <div className="space-y-4">
-            {/* Categories Section */}
-            <div>
-              <h3 className="font-medium mb-2">Categories</h3>
-              <RadioGroup>
-                {categories.map((cat) => (
-                  <Radio
-                    key={cat}
-                    value={cat}
-                    onClick={() => handleCategoryChange(cat)}
-                  >
-                    {cat}
-                  </Radio>
-                ))}
-              </RadioGroup>
-            </div>
-
-            <Divider className="my-4" />
-
-            {/* Price Range Section */}
-            <div>
-              <h3 className="font-medium mb-2">Price Range</h3>
-              <RadioGroup
-                value={selectedRange}
-                onChange={(e) => {
-                    setIsShowFilter(false)
-                    setSelectedRange(e.target.value)}
-                }
-              >
-                <Radio value="0-25">$0 - $25</Radio>
-                <Radio value="25-50">$25 - $50</Radio>
-                <Radio value="50-100">$50 - $100</Radio>
-                <Radio value="100+">$100+</Radio>
-              </RadioGroup>
-            </div>
-          </div>
-        </CardBody>
-      </Card>
+      {/* Price Range */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+      >
+        <h3 className={`text-sm font-bold uppercase tracking-wider mb-3 ${
+          dark ? "text-gray-300" : "text-gray-900"
+        }`}>
+          Price Range
+        </h3>
+        <div className="space-y-2">
+          {priceRanges.map((range) => (
+            <motion.button
+              key={range.value}
+              whileHover={{ x: 4 }}
+              onClick={() => setSelectedRange(range.value)}
+              className={`w-full text-left px-3 py-2.5 rounded-lg transition-all font-medium text-sm flex items-center ${
+                selectedRange === range.value
+                  ? dark
+                    ? "bg-emerald-600 text-white"
+                    : "bg-emerald-500 text-white"
+                  : dark
+                  ? "hover:bg-gray-800/50 text-gray-300"
+                  : "hover:bg-gray-200 text-gray-700"
+              }`}
+            >
+              <span
+                className={`w-4 h-4 rounded-full border-2 mr-2 flex-shrink-0 ${
+                  selectedRange === range.value
+                    ? `${dark ? "bg-white border-white" : "bg-white border-white"}`
+                    : `${dark ? "border-gray-500" : "border-gray-300"}`
+                }`}
+              ></span>
+              {range.label}
+            </motion.button>
+          ))}
+        </div>
+      </motion.div>
     </div>
   );
 };

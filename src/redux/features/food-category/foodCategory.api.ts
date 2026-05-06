@@ -25,21 +25,19 @@ const foodCategoryApi = baseApi.injectEndpoints({
       providesTags: ["food-category-data"],
     }),
     getAllFoodsCategories: builder.query({
-      // send all of the args here
       query: (args) => {
         const params = new URLSearchParams();
-
         if (args) {
           args.forEach((item: { name: string; value: string }) => {
             params.append(item.name, item.value as string);
           });
         }
-        return {
-          url: "/food-categories",
-          method: "GET",
-          params: params,
-        };
+        return { url: "/food-categories", method: "GET", params };
       },
+      transformResponse: (response: any) => ({
+        data: response?.data || [],
+        meta: response?.meta || {},
+      }),
       providesTags: ["food-category-data"],
     }),
     updateFoodCategory: builder.mutation({

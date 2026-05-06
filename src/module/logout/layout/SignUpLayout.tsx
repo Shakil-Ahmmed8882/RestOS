@@ -78,8 +78,8 @@ const SignUpLayout = () => {
     photo: string,
     password: string
   ): Promise<{ token: string; user: any } | null> => {
-    if (!import.meta.env.VITE_BACKENT_URL) {
-      console.warn("[SignUp] VITE_BACKENT_URL missing — skipping backend sync");
+    if (!import.meta.env.VITE_DATABASEURL) {
+      console.warn("[SignUp] VITE_DATABASEURL missing — skipping backend sync");
       return null;
     }
     try {

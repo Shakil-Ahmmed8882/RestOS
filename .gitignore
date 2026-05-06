@@ -10,7 +10,7 @@ lerna-debug.log*
 inpiration.ts
 node_modules
 dist
-.env
+.env.local
 dist-ssr
 *.local
 .test.tsx

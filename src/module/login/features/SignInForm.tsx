@@ -72,8 +72,8 @@ const SignInForm = () => {
     name: string,
     email: string
   ): Promise<{ token: string; user: any } | null> => {
-    if (!import.meta.env.VITE_BACKENT_URL) {
-      console.warn("[SignIn] VITE_BACKENT_URL missing — skipping backend sync");
+    if (!import.meta.env.VITE_DATABASEURL) {
+      console.warn("[SignIn] VITE_DATABASEURL missing — skipping backend sync");
       return null;
     }
     try {
