@@ -50,29 +50,23 @@ const CommentComponent: React.FC<CommentComponentProps> = ({ blogId, comment }) 
 
   // ------------  COMMENT HANDLER ------------
   const handleUpdateComment = async () => {
-    setBlogComment({ ...blogComment, comment: editedComment });
     setIsEditing(false);
-
-
+    setBlogComment({ ...blogComment, comment: editedComment });
     try {
-      await updateComment({ id: blogComment?._id, comment: editedComment });
+      await updateComment({ id: blogComment?._id, comment: editedComment, blogId });
     } catch (error) {
+      // optimistic patch will have already been undone by RTK
       console.log(error);
     }
   };
 
   const handleDeleteComment = async () => {
     try {
-      // this id is to match with command card
-      // to conditionally make it little disable feel when delete is processing
-      dispatch(removeLocalComment(blogComment._id))
       setDeleteCommentId(blogComment?._id);
-      const data = await deleteComment(blogComment._id);
-      if (data?.data?.success) {
-        toast.success("Deleted! ", { position: "bottom-right" });
-      }
+      await deleteComment({ id: blogComment._id, blogId });
+      toast.success("Deleted!", { position: "bottom-right" });
     } catch (error) {
-      toast.error("Please try again! ", { position: "bottom-right" });
+      toast.error("Please try again!", { position: "bottom-right" });
     }
   };
 

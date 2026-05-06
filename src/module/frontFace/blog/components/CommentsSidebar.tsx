@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Drawer } from "antd";
-
+import { motion, AnimatePresence } from "framer-motion";
 import CommentInput from "./CommentInput";
 import useDisableBodyScroll from "../../../../Hook/useDisableBodyScroll";
-import { useAddCommentOnBlogMutation } from "../../../../redux/features/comment/comment.api";
-import { Spinner } from "@nextui-org/react";
-import CommentLayout from "../layout/CommentLayout";
-import { useAppDispatch } from "../../../../redux/hooks";
-import { addLocalComment } from "../../../../redux/features/comment/comment.slice";
+import {
+  useAddCommentOnBlogMutation,
+  useGetAllCommentsOnSingleBlogQuery,
+} from "../../../../redux/features/comment/comment.api";
+import CommentComponent from "./Comment";
 import { useAuth } from "../../../../Utils/useAuthHelper";
-
+import { Spinner } from "@nextui-org/react";
 
 interface CommentsSidebarProps {
   isVisible: boolean;
@@ -22,113 +22,122 @@ const CommentsSidebar: React.FC<CommentsSidebarProps> = ({
   blogId,
   onClose,
 }) => {
-
-
-
-  // State management 
-  const dispatch = useAppDispatch()
-  const {user} = useAuth()
-
-
-
-  // API call
-  const [addComment, { data, isLoading:createCommentLoading }] = useAddCommentOnBlogMutation();
-
-  // To store the comment text
+  const { user } = useAuth();
   const [inputValue, setInputValue] = useState("");
-  // Create a reference for the input field
   const inputRef = useRef<HTMLInputElement>(null);
   useDisableBodyScroll(isVisible);
 
-  // Focus the input field when the drawer is visible
+  const [addComment, { isLoading: submitting }] = useAddCommentOnBlogMutation();
+
+  // Load comments directly from RTK Query cache — no Redux slice needed
+  const { data: comments = [], isLoading: commentsLoading } =
+    useGetAllCommentsOnSingleBlogQuery(blogId, { skip: !blogId || blogId === "null" });
+
   useEffect(() => {
     if (isVisible) {
-      setTimeout(() => {
-        if (inputRef.current) {
-          inputRef.current.focus();
-          console.log("Input focused");
-        }
-      }, 100);
+      setTimeout(() => inputRef.current?.focus(), 120);
     }
   }, [isVisible]);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
-  };
+  const handleComment = async () => {
+    if (!inputValue.trim()) return;
 
-  // ADD COMMENTS 
-  const handleComment = () => {
-    
-    if (inputValue.trim()) {
-      // Simulating the local comment data
-      const commentData = {
-        _id: new Date().getTime().toString(),  
-        blog: blogId,
-        user: {
-          _id: import.meta.env.VITE_TEST_USER_ID,
-          name: user?.displayName,                 
-          email:user?.email,  
-          photo:user?.photoURL,  
-        },
-        comment: inputValue,
-        replies: [],  
-        createdAt: new Date().toISOString(), 
-        updatedAt: new Date().toISOString(), 
-      };
+    // Build the optimistic entry shown instantly in the UI (pending state)
+    const optimisticEntry = {
+      _id: `optimistic-${Date.now()}`,
+      _pending: true,
+      blog: blogId,
+      user: {
+        _id: "local",
+        name: user?.displayName ?? "You",
+        email: user?.email ?? "",
+        photo: user?.photoURL ?? "",
+      },
+      comment: inputValue.trim(),
+      replies: [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
 
-      const remoteCommentData = {
-        blog: blogId,
-        comment: inputValue,
-      };
-  
-      try {
-        // Dispatch the action to add the comment optimistically
-        dispatch(addLocalComment(commentData));
-  
-        // Call the API to add the comment to the backend
-        addComment(remoteCommentData);
-  
-        // Clear the input field after successfully submitting the comment
-        setInputValue("");
-      } catch (error) {
-        console.log("Error while adding comment:", error);
-      }
+    const remotePayload = {
+      blog: blogId,
+      comment: inputValue.trim(),
+      _optimisticEntry: optimisticEntry,
+    };
+
+    setInputValue("");
+    try {
+      await addComment(remotePayload).unwrap();
+    } catch {
+      // RTK will undo the optimistic patch automatically
     }
-
-
-  };
-
-  const handleCancel = () => {
-    setInputValue(""); 
   };
 
   return (
-    <div >
-      <Drawer
-        title={` Comments `}
-        className={`${createCommentLoading?"!bg-[#fafafa]":""}`}
-        placement="right"
-        onClose={onClose}
-        open={isVisible}
-        width={400}
-      >
-        <div className="mb-8 bg-[#fff]">
-          <CommentInput
-            inputValue={inputValue}
-            onChange={handleInputChange}
-            onCancel={handleCancel}
-            onComment={handleComment}
-            isCommentingDisabled={!inputValue.trim()}
-            inputRef={inputRef}
-          />
-        </div>
-        <div className="flex flex-col justify-between max-h-screen scroll-my-0">
-          <div className="space-y-4">
-            <CommentLayout blogId={blogId}/>
+    <Drawer
+      title="Comments"
+      placement="right"
+      onClose={onClose}
+      open={isVisible}
+      width={420}
+      bodyStyle={{ padding: 0, display: "flex", flexDirection: "column" }}
+    >
+      {/* Input at top */}
+      <div className="border-b border-gray-100 bg-white">
+        <CommentInput
+          inputValue={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onCancel={() => setInputValue("")}
+          onComment={handleComment}
+          isCommentingDisabled={!inputValue.trim() || submitting}
+          inputRef={inputRef}
+        />
+        {submitting && (
+          <div className="flex items-center gap-2 px-4 pb-3 text-xs text-gray-400">
+            <Spinner size="sm" color="success" />
+            Posting…
           </div>
-        </div>
-      </Drawer>
-    </div>
+        )}
+      </div>
+
+      {/* Comments list */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-2">
+        {commentsLoading ? (
+          <div className="flex justify-center py-10">
+            <Spinner color="success" />
+          </div>
+        ) : comments.length === 0 ? (
+          <div className="text-center py-16 text-gray-400 text-sm">
+            No comments yet. Be the first!
+          </div>
+        ) : (
+          <AnimatePresence initial={false}>
+            {comments.map((comment: any) => (
+              <motion.div
+                key={comment._id}
+                layout
+                initial={{ opacity: 0, y: -10 }}
+                animate={{
+                  opacity: comment._pending ? 0.6 : 1,
+                  y: 0,
+                  // pending comments get a subtle pulsing left border
+                  borderLeftWidth: comment._pending ? 3 : 0,
+                  borderLeftColor: "#10b981",
+                }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.25 }}
+                className={`${comment._pending ? "border-l-2 border-emerald-400 pl-2 rounded-l animate-pulse" : ""}`}
+              >
+                <CommentComponent
+                  blogId={blogId}
+                  comment={comment}
+                />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        )}
+      </div>
+    </Drawer>
   );
 };
 
