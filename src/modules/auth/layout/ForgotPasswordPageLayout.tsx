@@ -1,5 +1,5 @@
 import { ForgotPasswordForm } from "@/modules/auth/sections/forgot-password/ForgotPasswordForm";
-import { AuthVisualPanel } from "@/modules/auth/sections/AuthVisualPanel";
+
 
 export function ForgotPasswordPageLayout() {
   return (

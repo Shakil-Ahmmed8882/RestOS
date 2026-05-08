@@ -5,13 +5,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ShowIf } from "@/components/common/ShowIf";
 import { useForgotPassword } from "@/modules/auth/hooks/useForgotPassword";
-import { SuccessModal } from "@/modules/auth/sections/forgot-password/SuccessModal";
+import { SuccessAuthModal } from "@/modules/auth/sections/forgot-password/SuccessModal";
 
 export function ForgotPasswordForm() {
   const { register, handleSubmit, errors, successEmail, setSuccessEmail, onSubmit, forgotLoading } = useForgotPassword();
 
   if (successEmail) {
-    return <SuccessModal email={successEmail} onClose={() => setSuccessEmail(null)} />;
+    return <SuccessAuthModal email={successEmail} onClose={() => setSuccessEmail(null)} />;
   }
 
   return (

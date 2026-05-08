@@ -2,16 +2,18 @@
 
 import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ShowIf } from "@/components/common/ShowIf";
 import { useSignUp } from "@/modules/auth/hooks/useSignUp";
+import { AuthInput } from "@/modules/auth/components/AuthInput";
+import { useMultipageModalSelector } from "@/components/rest-os-ui/modal/multipage-modal/provider/MultipageModalContext";
 
 export function SignUpForm() {
   const { register, handleSubmit, errors, showPassword, setShowPassword, photoPreview, fileInputRef, handlePhotoChange, onSubmit, registerLoading } = useSignUp();
+  const { goTo } = useMultipageModalSelector();
 
   return (
-    <div className="mx-auto w-full max-w-md space-y-6">
+    <div className="w-full  space-y-6">
       <div className="space-y-1">
         <h1 className="text-3xl font-bold tracking-tight">Create account</h1>
         <p className="text-sm text-muted-foreground">Start your RestOS journey today — it&apos;s free.</p>

@@ -3,23 +3,14 @@
 import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button";
-import { useAuthModal } from "@/modules/auth/context/AuthModalContext";
+
 
 interface SuccessModalProps {
   email: string;
   onClose?: () => void;
 }
 
-export function SuccessModal({ email, onClose }: SuccessModalProps) {
-  const { setStep } = useAuthModal();
-
-  const handleBackToSignIn = () => {
-    if (onClose) {
-      onClose();
-    } else {
-      setStep("sign-in");
-    }
-  };
+export function SuccessAuthModal({ email, onClose }: SuccessModalProps) {
 
   return (
     <motion.div

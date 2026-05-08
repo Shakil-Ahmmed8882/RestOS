@@ -23,6 +23,12 @@ import { ShowIf } from "@/components/common/ShowIf";
 import { USER_ROLE } from "@/constants/roles";
 import { signOutFirebase } from "@/modules/auth/services/firebase-auth.service";
 import { cn } from "@/lib/utils";
+import { MultipageModal } from "../rest-os-ui/modal/multipage-modal/MultipageModal";
+
+
+import { ForgotPasswordPageLayout } from "@/modules/auth/layout/ForgotPasswordPageLayout";
+import { SignInForm } from "@/modules/auth/sections/sign-in/SignInForm";
+import { SignUpForm } from "@/modules/auth/sections/sign-up/SignUpForm";
 
 const NAV = [
   { label: "Home", href: "/" },
@@ -38,7 +44,9 @@ export function PublicHeader() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const user = useAppSelector((s) => s.auth.user);
-  const cartCount = useAppSelector((s) => s.cart.items.reduce((n, i) => n + i.quantity, 0));
+  const cartCount = useAppSelector((s) =>
+    s.cart.items.reduce((n, i) => n + i.quantity, 0),
+  );
   const { theme, setTheme } = useTheme();
 
   const handleLogout = async () => {
@@ -55,8 +63,13 @@ export function PublicHeader() {
     router.push("/");
   };
 
-  const dashboardHref = user?.role === USER_ROLE.ADMIN ? "/admin/dashboard" : "/user/dashboard";
+  const dashboardHref =
+    user?.role === USER_ROLE.ADMIN ? "/admin/dashboard" : "/user/dashboard";
 
+
+    
+    const [openAuthModal, setOpenAuthModal] = useState(false);
+    const [initialAuthPage, setInitialAuthPage] = useState<"sign-in" | "sign-up">("sign-in");
   return (
     <header className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800/60 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/70">
       <div className="flex h-16 items-center justify-between gap-4">
@@ -74,7 +87,9 @@ export function PublicHeader() {
               href={item.href}
               className={cn(
                 "text-sm font-medium transition-colors hover:text-foreground",
-                pathname === item.href ? "text-foreground" : "text-muted-foreground",
+                pathname === item.href
+                  ? "text-foreground"
+                  : "text-muted-foreground",
               )}
             >
               {item.label}
@@ -88,7 +103,13 @@ export function PublicHeader() {
               <Icon icon="solar:magnifer-linear" className="h-5 w-5" />
             </Link>
           </Button>
-          <Button asChild variant="ghost" size="icon" aria-label="Cart" className="relative">
+          <Button
+            asChild
+            variant="ghost"
+            size="icon"
+            aria-label="Cart"
+            className="relative"
+          >
             <Link href="/cart">
               <Icon icon="solar:bag-3-linear" className="h-5 w-5" />
               {cartCount > 0 && (
@@ -104,18 +125,36 @@ export function PublicHeader() {
             aria-label="Toggle theme"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
           >
-            <Icon icon={theme === "dark" ? "solar:sun-linear" : "solar:moon-linear"} className="h-5 w-5" />
+            <Icon
+              icon={theme === "dark" ? "solar:sun-linear" : "solar:moon-linear"}
+              className="h-5 w-5"
+            />
           </Button>
 
           <ShowIf
             condition={!!user}
             fallback={
               <div className="hidden gap-2 sm:flex">
-                <Button asChild variant="ghost" size="sm">
-                  <Link href="/sign-in">Sign in</Link>
+                <Button
+                  onClick={() => {
+                    setInitialAuthPage("sign-in");
+                    setOpenAuthModal(true);
+                  }}
+                  variant="ghost"
+                  size="sm"
+                  className="flex-1"
+                >
+                  Sign in
                 </Button>
-                <Button asChild size="sm">
-                  <Link href="/sign-up">Sign up</Link>
+                <Button
+                  onClick={() => {
+                    setInitialAuthPage("sign-up");
+                    setOpenAuthModal(true);
+                  }}
+                  size="sm"
+                  className="flex-1"
+                >
+                  Sign up
                 </Button>
               </div>
             }
@@ -124,37 +163,78 @@ export function PublicHeader() {
               <DropdownMenuTrigger asChild>
                 <button className="rounded-full focus:outline-none focus:ring-2 focus:ring-ring">
                   <Avatar className="h-9 w-9">
-                    <AvatarImage src={user?.photoURL ?? undefined} alt={user?.name ?? "user"} />
-                    <AvatarFallback>{user?.name?.[0]?.toUpperCase() ?? "U"}</AvatarFallback>
+                    <AvatarImage
+                      src={user?.photoURL ?? undefined}
+                      alt={user?.name ?? "user"}
+                    />
+                    <AvatarFallback>
+                      {user?.name?.[0]?.toUpperCase() ?? "U"}
+                    </AvatarFallback>
                   </Avatar>
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuLabel className="space-y-0.5">
-                  <p className="text-sm font-semibold">{user?.name ?? "Account"}</p>
-                  <p className="truncate text-xs text-muted-foreground">{user?.email}</p>
+                  <p className="text-sm font-semibold">
+                    {user?.name ?? "Account"}
+                  </p>
+                  <p className="truncate text-xs text-muted-foreground">
+                    {user?.email}
+                  </p>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => router.push(dashboardHref)}>
-                  <Icon icon="solar:widget-linear" className="mr-2 h-4 w-4" /> Dashboard
+                  <Icon icon="solar:widget-linear" className="mr-2 h-4 w-4" />{" "}
+                  Dashboard
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => router.push("/user/dashboard/profile")}>
-                  <Icon icon="solar:user-linear" className="mr-2 h-4 w-4" /> Profile
+                <DropdownMenuItem
+                  onClick={() => router.push("/user/dashboard/profile")}
+                >
+                  <Icon icon="solar:user-linear" className="mr-2 h-4 w-4" />{" "}
+                  Profile
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout}>
-                  <Icon icon="solar:logout-2-linear" className="mr-2 h-4 w-4" /> Sign out
+                  <Icon icon="solar:logout-2-linear" className="mr-2 h-4 w-4" />{" "}
+                  Sign out
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </ShowIf>
 
-          <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setOpen((v) => !v)} aria-label="Menu">
-            <Icon icon={open ? "solar:close-circle-linear" : "solar:hamburger-menu-linear"} className="h-5 w-5" />
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            onClick={() => setOpen((v) => !v)}
+            aria-label="Menu"
+          >
+            <Icon
+              icon={
+                open
+                  ? "solar:close-circle-linear"
+                  : "solar:hamburger-menu-linear"
+              }
+              className="h-5 w-5"
+                  />
           </Button>
         </div>
       </div>
-
+      <MultipageModal
+        open={openAuthModal}
+        onOpenChange={setOpenAuthModal}
+        initialPageId={initialAuthPage}
+      >
+        <MultipageModal.Page id="sign-in">
+          <SignInForm />
+        </MultipageModal.Page>
+        <MultipageModal.Page id="sign-up">
+          <SignUpForm />
+        </MultipageModal.Page>
+        <MultipageModal.Page id="forgot-password">
+          <ForgotPasswordPageLayout />
+        </MultipageModal.Page>
+      </MultipageModal>
       <AnimatePresence>
         {open && (
           <motion.nav
@@ -176,22 +256,35 @@ export function PublicHeader() {
               ))}
               <ShowIf condition={!user}>
                 <div className="mt-2 flex gap-2 pt-2">
-                  <Button asChild variant="outline" size="sm" className="flex-1">
-                    <Link href="/sign-in" onClick={() => setOpen(false)}>
-                      Sign in
-                    </Link>
-                  </Button>
-                  <Button asChild size="sm" className="flex-1">
-                    <Link href="/sign-up" onClick={() => setOpen(false)}>
-                      Sign up
-                    </Link>
-                  </Button>
+                   <Button
+                  onClick={() => {
+                    setInitialAuthPage("sign-in");
+                    setOpenAuthModal(true);
+                  }}
+                  variant="ghost"
+                  size="sm"
+                  className="flex-1"
+                >
+                  Sign in
+                </Button>
+                <Button
+                  onClick={() => {
+                    setInitialAuthPage("sign-up");
+                    setOpenAuthModal(true);
+                  }}
+                  size="sm"
+                  className="flex-1"
+                >
+                  Sign up
+                </Button>
                 </div>
               </ShowIf>
             </Container>
+                
           </motion.nav>
         )}
       </AnimatePresence>
     </header>
   );
 }
+
