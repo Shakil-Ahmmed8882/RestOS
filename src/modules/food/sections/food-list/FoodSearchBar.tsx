@@ -1,39 +1,31 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+
+import { useState } from "react";
 import { Icon } from "@iconify/react";
-import gsap from "gsap";
 import { Input } from "@/components/ui/input";
 import { useFoodFilter } from "@/modules/food/providers/FoodFilterProvider";
 
+
+
 const TABS = [
-  { label: "Delivery", icon: "solar:delivery-linear", value: "delivery" },
-  { label: "Pick-up", icon: "solar:running-2-linear", value: "pickup" },
-  { label: "pandamart", icon: "solar:bag-2-linear", value: "pandamart" },
-  { label: "Shops", icon: "solar:shop-2-linear", value: "shops" },
+  { label: "Trending", icon: "solar:fire-linear", value: "trending" },
+  { label: "Offers", icon: "solar:sale-linear", value: "offers" },
+  { label: "Explore All", icon: "solar:magnifer-linear", value: "all" },
 ] as const;
 
 export function FoodSearchBar() {
   const { filters, setSearch } = useFoodFilter();
-  const searchRef = useRef<HTMLDivElement>(null);
+  
   const [activeTab, setActiveTab] = useState<"delivery" | "pickup" | "pandamart" | "shops">("delivery");
 
-  useEffect(() => {
-    if (!searchRef.current) return;
-    gsap.from(searchRef.current, {
-      y: -20,
-      opacity: 0,
-      duration: 0.5,
-      ease: "power2.out",
-    });
-  }, []);
-
+  
   return (
-    <div ref={searchRef} className="bg-background dark:bg-background w-full pb-8">
+    <div className="dark:bg-background w-full pb-8">
       {/* Tabs and Search in Same Row */}
       <div className="border-b border-gray-200 dark:border-gray-800">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-8">
+        <div className="">
+          <div className="flex items-center gap-8 w-full justify-between">
             {/* Tabs */}
             <div className="flex items-center gap-8">
               {TABS.map((tab) => (

@@ -1,3 +1,5 @@
+
+
 "use client";
 
 import { useRef, useState } from "react";
@@ -5,7 +7,6 @@ import { Icon } from "@iconify/react";
 import { useFoodFilter } from "@/modules/food/providers/FoodFilterProvider";
 import { BaseImage } from "@/components/rest-os-ui/images/BaseImage";
 import { MultipageModal } from "@/components/rest-os-ui/modal/multipage-modal/MultipageModal";
-import { useMultipageModalContextHelper } from "@/components/rest-os-ui/modal/multipage-modal/provider/MultipageModalContext";
 
 const FEATURED_RESTAURANTS = [
   {
@@ -268,7 +269,7 @@ export function FoodPromoSection() {
     <div className="space-y-8 bg-background pb-6 w-full">
       {/* Get 25% Off Banner */}
       <div className="w-full ">
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary/20 to-primary/10 dark:from-primary/30 dark:to-primary/20 p-6 md:p-8 border border-primary/30 dark:border-primary/40">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary/40 to-primary/10 dark:from-primary/30 dark:to-primary/20 p-6 md:p-8 border border-primary/30 dark:border-primary/40">
           <div className="flex items-center justify-between">
             <div className="z-10">
               <h2 className="text-2xl font-bold text-foreground">
@@ -276,13 +277,14 @@ export function FoodPromoSection() {
               </h2>
               <p className="text-sm text-muted-foreground">Min. order Tk 250</p>
             </div>
-            <div className="absolute right-0 top-0 -z-0 text-6xl opacity-20">
+            <div className="absolute right-0 top-0 -z-0 text-6xl opacity-30">
               🎁
             </div>
           </div>
 
           {/* Featured Restaurants Carousel */}
           <div className="mt-6 relative">
+            
             <div
               ref={featuredRef}
               className="flex gap-4 overflow-x-hidden scrollbar-thin scroll-smooth pb-2"
@@ -294,42 +296,21 @@ export function FoodPromoSection() {
                   onClick={() => handleRestaurantClick(restaurant)}
                 >
                   <div className="relative overflow-hidden rounded-2xl bg-muted h-32">
-                    <img
-                      src={restaurant.image}
+
+                     <BaseImage
+                                            src={restaurant.image}
                       alt={restaurant.name}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      className="object-cover h-full w-full transition-transform duration-500 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors" />
+                    
+                    <div className=" absolute inset-0 bg-gradient-to-t from-primary/60  to-transparent dark:from-[black] dark:via-black/60 dark:to-transparent"/>
                   </div>
-                  <div className="mt-2">
-                    <p className="font-semibold text-sm text-foreground line-clamp-1">
-                      {restaurant.name}
-                    </p>
-                    <div className="flex items-center gap-1 mt-1">
-                      <Icon
-                        icon="solar:star-bold"
-                        className="h-3.5 w-3.5 text-yellow-500"
-                      />
-                      <span className="text-xs font-semibold text-foreground">
-                        {restaurant.rating}
-                      </span>
-                      <span className="text-xs text-muted-foreground">
-                        ({restaurant.reviews})
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1 mt-1 text-xs text-muted-foreground">
-                      <span>{restaurant.deliveryTime}</span>
-                      <span>•</span>
-                      <span>{restaurant.priceRange}</span>
-                      <span>•</span>
-                      <span>{restaurant.category}</span>
-                    </div>
-                  </div>
+                
                 </div>
               ))}
             </div>
 
-            {/* Navigation Arrows */}
+            
             <button
               onClick={() => scroll(featuredRef, "left")}
               className="absolute -left-4 top-1/3 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-card dark:bg-card shadow-lg hover:shadow-xl transition-shadow dark:hover:shadow-primary/50"
@@ -424,19 +405,20 @@ export function FoodPromoSection() {
                     <BaseImage
                       src={deal.image}
                       alt={deal.name}
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="object-cover h-full w-full transition-transform duration-500 group-hover:scale-105"
                     />
+                    <div className=" absolute inset-0 bg-gradient-to-t from-white via-white/60 to-transparent dark:from-black dark:via-black/60 dark:to-transparent"/>
 
-                    {/* Dark Overlay with Text - Using Primary Color */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary to-primary/80 opacity-85 flex flex-col items-start justify-end p-4">
-                      <div className="text-white">
-                        <h3 className="text-xl font-bold">{deal.name}</h3>
-                        <p className="text-sm opacity-90">{deal.subtitle}</p>
+                    {/* Gradient Overlay - White for light theme, Black for dark theme */}
+                    <div className="absolute bottom-0 left-0 right-0 h-full  flex flex-col items-start justify-end p-4">
+                      <div>
+                        <h3 className="text-xl font-bold text-primary">{deal.name}</h3>
+                        <p className="text-sm text-gray-700 dark:text-gray-300">{deal.subtitle}</p>
                       </div>
                     </div>
 
-                    {/* Badge */}
-                    <div className="absolute top-3 right-3 bg-foreground text-primary-foreground px-3 py-1 rounded-full text-xs font-bold">
+                    {/* Badge - White background with primary text */}
+                    <div className="absolute top-3 right-3 bg-white text-primary px-3 py-1 rounded-full text-xs font-bold shadow-md">
                       {deal.badge}
                     </div>
                   </div>
@@ -488,11 +470,13 @@ export function FoodPromoSection() {
             <div className="space-y-4">
               {selectedItem.type === "restaurant" ? (
                 <>
-                  <img
+                 <BaseImage
                     src={(selectedItem.data as typeof FEATURED_RESTAURANTS[0]).image}
                     alt={(selectedItem.data as typeof FEATURED_RESTAURANTS[0]).name}
+                
                     className="w-full h-64 object-cover rounded-xl"
-                  />
+                    />
+                  
                   <div>
                     <h2 className="text-2xl font-bold text-gray-900">
                       {(selectedItem.data as typeof FEATURED_RESTAURANTS[0]).name}

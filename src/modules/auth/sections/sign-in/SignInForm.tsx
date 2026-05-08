@@ -12,15 +12,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ShowIf } from "@/components/common/ShowIf";
 import { signInSchema, type SignInInput } from "@/modules/auth/schemas/auth.schema";
-import { signInWithEmail, signInWithGoogle } from "@/modules/auth/services/firebase-auth.service";
-import { useAuthFlow } from "@/modules/auth/hooks/useAuthFlow";
-import { USER_ROLE } from "@/constants/roles";
-import { DemoRolesGrid } from "@/modules/auth/sections/sign-in/DemoRolesGrid";
+import { useAuth } from "@/modules/auth/hooks/useAuth";
 
 export function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const { finalize, tryBackendLogin } = useAuthFlow();
+  const { login, loginLoading } = useAuth();
 
   const {
     register,
@@ -29,79 +25,21 @@ export function SignInForm() {
   } = useForm<SignInInput>({ resolver: zodResolver(signInSchema) });
 
   const onSubmit = async (data: SignInInput) => {
-    if (loading) return;
-    setLoading(true);
     const toastId = toast.loading("Signing in…");
-    try {
-      const cred = await signInWithEmail(data.email, data.password);
-      const fbUser = cred.user;
-      const name = fbUser.displayName ?? data.email.split("@")[0];
-      const synced = await tryBackendLogin({ name, email: fbUser.email ?? data.email });
-      if (synced) {
-        finalize(synced.user, synced.token);
-      } else {
-        finalize(
-          {
-            id: fbUser.uid,
-            email: fbUser.email ?? data.email,
-            name,
-            role: USER_ROLE.USER,
-            photoURL: fbUser.photoURL,
-          },
-          "firebase-only",
-        );
-      }
-      toast.success(`Welcome back, ${name}!`, { id: toastId });
-    } catch (err: any) {
-      const msg =
-        err?.code === "auth/invalid-credential" || err?.code === "auth/wrong-password"
-          ? "Invalid email or password."
-          : err?.code === "auth/user-not-found"
-          ? "No account found with this email."
-          : err?.code === "auth/too-many-requests"
-          ? "Too many failed attempts. Try again later."
-          : err?.message ?? "Sign-in failed.";
-      toast.error(msg, { id: toastId });
-    } finally {
-      setLoading(false);
+    const result = await login({
+      email: data.email,
+      password: data.password,
+    });
+
+    if (result.success) {
+      toast.success(`Welcome back!`, { id: toastId });
+    } else {
+      toast.error(result.error, { id: toastId });
     }
   };
 
-  const handleGoogleSignIn = async () => {
-    if (loading) return;
-    setLoading(true);
-    const toastId = toast.loading("Signing in with Google…");
-    try {
-      const cred = await signInWithGoogle();
-      const fbUser = cred.user;
-      const synced = await tryBackendLogin({
-        name: fbUser.displayName ?? "Google User",
-        email: fbUser.email ?? "",
-      });
-      if (synced) finalize(synced.user, synced.token);
-      else
-        finalize(
-          {
-            id: fbUser.uid,
-            email: fbUser.email ?? "",
-            name: fbUser.displayName ?? "Google User",
-            role: USER_ROLE.USER,
-            photoURL: fbUser.photoURL,
-          },
-          "firebase-only",
-        );
-      toast.success("Signed in!", { id: toastId });
-    } catch (err: any) {
-      const msg =
-        err?.code === "auth/popup-closed-by-user"
-          ? "Sign-in cancelled."
-          : err?.code === "auth/popup-blocked"
-          ? "Popup blocked. Allow popups and try again."
-          : err?.message ?? "Google sign-in failed.";
-      toast.error(msg, { id: toastId });
-    } finally {
-      setLoading(false);
-    }
+  const handleGoogleSignIn = () => {
+    toast.info("Google OAuth coming soon!");
   };
 
   return (
@@ -114,14 +52,6 @@ export function SignInForm() {
       <div className="space-y-1">
         <h1 className="text-3xl font-bold tracking-tight">Welcome back</h1>
         <p className="text-sm text-muted-foreground">Sign in to your RestOS account</p>
-      </div>
-
-      <DemoRolesGrid disabled={loading} />
-
-      <div className="flex items-center gap-3">
-        <div className="h-px flex-1 bg-border" />
-        <span className="text-xs text-muted-foreground">or sign in manually</span>
-        <div className="h-px flex-1 bg-border" />
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -157,9 +87,13 @@ export function SignInForm() {
           </ShowIf>
         </div>
 
-        <Button type="submit" className="w-full" loading={loading} size="lg">
+        <Button type="submit" className="w-full" loading={loginLoading} size="lg">
           Sign in
         </Button>
+
+        <Link href="/forgot-password" className="text-center text-sm font-medium text-primary hover:underline">
+          Forgot password?
+        </Link>
       </form>
 
       <div className="space-y-3">
@@ -169,7 +103,7 @@ export function SignInForm() {
           <div className="h-px flex-1 bg-border" />
         </div>
 
-        <Button type="button" variant="outline" className="w-full" size="lg" onClick={handleGoogleSignIn} disabled={loading}>
+        <Button type="button" variant="outline" className="w-full" size="lg" onClick={handleGoogleSignIn} disabled={loginLoading}>
           <Icon icon="logos:google-icon" className="h-5 w-5" />
           Continue with Google
         </Button>

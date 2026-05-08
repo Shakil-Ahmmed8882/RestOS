@@ -12,18 +12,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ShowIf } from "@/components/common/ShowIf";
 import { signUpSchema, type SignUpInput } from "@/modules/auth/schemas/auth.schema";
-import { signUpWithEmail, updateFirebaseUser } from "@/modules/auth/services/firebase-auth.service";
-import { useAuthFlow } from "@/modules/auth/hooks/useAuthFlow";
-import { USER_ROLE } from "@/constants/roles";
-
-const DEFAULT_AVATAR = "https://api.dicebear.com/7.x/initials/svg?backgroundColor=10b981&textColor=ffffff&seed=";
+import { useAuth } from "@/modules/auth/hooks/useAuth";
 
 export function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { finalize, tryBackendRegister } = useAuthFlow();
+  const { register: registerUser, registerLoading } = useAuth();
 
   const {
     register,
@@ -34,63 +30,29 @@ export function SignUpForm() {
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error("Photo must be smaller than 5MB.");
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("Photo must be smaller than 10MB.");
       return;
     }
+    setPhotoFile(file);
     const reader = new FileReader();
     reader.onload = () => setPhotoPreview(reader.result as string);
     reader.readAsDataURL(file);
   };
 
   const onSubmit = async (data: SignUpInput) => {
-    if (loading) return;
-    setLoading(true);
     const toastId = toast.loading("Creating your account…");
-    const photo = photoPreview ?? `${DEFAULT_AVATAR}${encodeURIComponent(data.name)}`;
+    const result = await registerUser({
+      name: data.name,
+      email: data.email,
+      password: data.password,
+      photo: photoFile || undefined,
+    });
 
-    try {
-      const cred = await signUpWithEmail(data.email, data.password);
-      try {
-        await updateFirebaseUser(data.name, photo);
-      } catch {
-        /* non-fatal */
-      }
-
-      const synced = await tryBackendRegister({
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        photo,
-      });
-
-      if (synced) {
-        finalize(synced.user, synced.token);
-      } else {
-        finalize(
-          {
-            id: cred.user.uid,
-            email: data.email,
-            name: data.name,
-            role: USER_ROLE.USER,
-            photoURL: photo,
-          },
-          "firebase-only",
-        );
-      }
+    if (result.success) {
       toast.success(`Welcome to RestOS, ${data.name}! 🎉`, { id: toastId });
-    } catch (err: any) {
-      const msg =
-        err?.code === "auth/email-already-in-use"
-          ? "This email is already registered."
-          : err?.code === "auth/weak-password"
-          ? "Password is too weak."
-          : err?.code === "auth/invalid-email"
-          ? "Please enter a valid email."
-          : err?.message ?? "Something went wrong.";
-      toast.error(msg, { id: toastId });
-    } finally {
-      setLoading(false);
+    } else {
+      toast.error(result.error, { id: toastId });
     }
   };
 
@@ -168,7 +130,7 @@ export function SignUpForm() {
           </ShowIf>
         </div>
 
-        <Button type="submit" className="w-full" size="lg" loading={loading}>
+        <Button type="submit" className="w-full" size="lg" loading={registerLoading}>
           Create account
         </Button>
       </form>
