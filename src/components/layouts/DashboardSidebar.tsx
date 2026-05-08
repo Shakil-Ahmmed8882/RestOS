@@ -27,8 +27,8 @@ export function DashboardSidebar({
 }) {
   const pathname = usePathname();
   return (
-    <aside className="hidden h-screen w-64 shrink-0 flex-col border-r border-border bg-card md:flex">
-      <div className="flex h-16 items-center gap-2 border-b border-border px-5">
+    <aside className="hidden h-screen w-64 shrink-0 flex-col border-r border-gray-200 dark:border-gray-800 bg-card md:flex">
+      <div className="flex h-16 items-center gap-2 border-b border-gray-200 dark:border-gray-800 px-5">
         <span className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground">
           <Icon icon="solar:chef-hat-bold-duotone" className="h-5 w-5" />
         </span>
@@ -62,7 +62,7 @@ export function DashboardSidebar({
         ))}
       </nav>
 
-      <div className="border-t border-border px-4 py-4">
+      <div className="border-t border-gray-200 dark:border-gray-800 px-4 py-4">
         <Link href="/" className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground">
           <Icon icon="solar:home-2-linear" className="h-4 w-4" />
           Back to website

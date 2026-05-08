@@ -18,10 +18,10 @@ export const CardSkeletonV2 = () => {
 	);
 };
 
-export const CardSkeletonV2List = ({ className = "" }: { className?: string }) => {
+export const CardSkeletonV2List = ({ count = 6, className = "" }: { count?: number; className?: string }) => {
 	return (
 		<div className={`${className} grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 `}>
-			{Array.from({ length: 6 }).map((_, index) => (
+			{Array.from({ length: count }).map((_, index) => (
 				<CardSkeletonV2 key={index} />
 			))}
 		</div>

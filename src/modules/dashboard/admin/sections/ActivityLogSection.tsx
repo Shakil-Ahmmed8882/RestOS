@@ -18,7 +18,7 @@ export function ActivityLogSection() {
       ) : (
         <ul className="space-y-3">
           {events.map((e, i) => (
-            <li key={i} className="flex items-start gap-3 border-b border-border pb-3 last:border-b-0">
+            <li key={i} className="flex items-start gap-3 border-b border-gray-200 dark:border-gray-800 pb-3 last:border-b-0">
               <Icon icon="solar:bolt-linear" className="mt-1 h-4 w-4 text-primary" />
               <div className="flex-1">
                 <p className="text-sm font-medium">{e.message}</p>

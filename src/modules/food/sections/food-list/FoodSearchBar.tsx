@@ -29,42 +29,45 @@ export function FoodSearchBar() {
   }, []);
 
   return (
-    <div ref={searchRef} className="sticky top-0 z-50 bg-white">
-      {/* Tabs */}
-      <div className="border-b border-gray-200">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div ref={searchRef} className="sticky top-0 z-50 bg-background dark:bg-background">
+      {/* Tabs and Search in Same Row */}
+      <div className="border-b border-gray-200 dark:border-gray-800">
+        <div className="">
           <div className="flex items-center gap-8">
-            {TABS.map((tab) => (
-              <button
-                key={tab.value}
-                onClick={() => setActiveTab(tab.value)}
-                className={`flex items-center gap-2 px-2 py-4 text-sm font-medium transition-colors border-b-2 ${
-                  activeTab === tab.value
-                    ? "border-pink-500 text-pink-600"
-                    : "border-transparent text-gray-600 hover:text-gray-900"
-                }`}
-              >
-                <Icon icon={tab.icon} className="h-5 w-5" />
-                {tab.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
+            {/* Tabs */}
+            <div className="flex items-center gap-8">
+              {TABS.map((tab) => (
+                <button
+                  key={tab.value}
+                  onClick={() => setActiveTab(tab.value)}
+                  className={`flex items-center gap-2 px-2 py-4 text-sm font-medium transition-colors border-b-2 whitespace-nowrap ${
+                    activeTab === tab.value
+                      ? "border-primary text-primary"
+                      : "border-transparent text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <Icon icon={tab.icon} className="h-5 w-5" />
+                  {tab.label}
+                </button>
+              ))}
+            </div>
 
-      {/* Search Bar */}
-      <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
-        <div className="relative">
-          <Icon
-            icon="solar:magnifer-linear"
-            className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400"
-          />
-          <Input
-            value={filters.search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search for restaurants, cuisines, and dishes"
-            className="border-gray-200 pl-12 pr-4 py-2.5 text-sm focus-visible:ring-pink-500"
-          />
+            {/* Search Bar */}
+            <div className="flex-1">
+              <div className="relative">
+                <Icon
+                  icon="solar:magnifer-linear"
+                  className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground"
+                />
+                <Input
+                  value={filters.search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search for restaurants, cuisines, and dishes"
+                  className="border-gray-200 dark:border-gray-800 bg-background pl-12 pr-4 py-2.5 text-sm focus-visible:ring-primary dark:bg-background"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

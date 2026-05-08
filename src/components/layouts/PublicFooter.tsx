@@ -34,7 +34,7 @@ const SECTIONS = [
 
 export function PublicFooter() {
   return (
-    <footer className="mt-16 border-t border-border/60 bg-card">
+    <footer className="mt-16 border-t border-gray-200 dark:border-gray-800/60 bg-card">
       <Container className="grid gap-10 py-12 md:grid-cols-4">
         <div className="space-y-3">
           <div className="flex items-center gap-2">
@@ -75,7 +75,7 @@ export function PublicFooter() {
           </div>
         ))}
       </Container>
-      <div className="border-t border-border/60">
+      <div className="border-t border-gray-200 dark:border-gray-800/60">
         <Container className="flex flex-col items-center justify-between gap-2 py-5 text-xs text-muted-foreground sm:flex-row">
           <p>© {new Date().getFullYear()} RestOS. All rights reserved.</p>
           <p>Made with ♥ for food lovers.</p>

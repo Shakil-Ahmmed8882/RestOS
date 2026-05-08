@@ -3,7 +3,7 @@ import { BaseSkeleton } from "@/components/rest-os-ui/placeholder/skeletons/Base
 
 export function FoodCardSkeleton() {
   return (
-    <div className="flex w-full flex-col gap-3">
+    <div className="flex w-full flex-col gap-3 ">
       {/* Main Image Shape - Large rounded corners like the SS */}
       <BaseSkeleton className="aspect-[1.6/1] w-full rounded-[2.2rem]" />
 
@@ -26,3 +26,5 @@ export function FoodCardSkeleton() {
     </div>
   );
 }
+
+export const CardSkeletonList = Array.from({ length: 6 }).map((_, i) => <FoodCardSkeleton key={i} />);

@@ -30,7 +30,7 @@ export function DashboardTopbar({ title }: { title?: string }) {
   };
 
   return (
-    <header className="sticky top-0 z-10 flex h-16 items-center justify-between gap-4 border-b border-border bg-background/80 px-6 backdrop-blur">
+    <header className="sticky top-0 z-10 flex h-16 items-center justify-between gap-4 border-b border-gray-200 dark:border-gray-800 bg-background/80 px-6 backdrop-blur">
       <h1 className="text-lg font-semibold tracking-tight">{title ?? "Dashboard"}</h1>
       <div className="flex items-center gap-2">
         <Button variant="ghost" size="icon" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label="Toggle theme">
@@ -39,7 +39,7 @@ export function DashboardTopbar({ title }: { title?: string }) {
         <Button variant="ghost" size="icon" aria-label="Notifications">
           <Icon icon="solar:bell-linear" className="h-5 w-5" />
         </Button>
-        <div className="flex items-center gap-3 rounded-full border border-border bg-card py-1 pl-1 pr-3">
+        <div className="flex items-center gap-3 rounded-full border border-gray-200 dark:border-gray-800 bg-card py-1 pl-1 pr-3">
           <Avatar className="h-7 w-7">
             <AvatarImage src={user?.photoURL ?? undefined} />
             <AvatarFallback>{user?.name?.[0]?.toUpperCase() ?? "U"}</AvatarFallback>

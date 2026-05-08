@@ -111,7 +111,7 @@ export function SignUpForm() {
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="relative h-20 w-20 overflow-hidden rounded-full border-2 border-border transition hover:border-primary"
+            className="relative h-20 w-20 overflow-hidden rounded-full border-2 border-gray-200 dark:border-gray-800 transition hover:border-primary"
           >
             {photoPreview ? (
               <img src={photoPreview} alt="Preview" className="h-full w-full object-cover" />

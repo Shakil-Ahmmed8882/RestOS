@@ -58,8 +58,8 @@ export function PublicHeader() {
   const dashboardHref = user?.role === USER_ROLE.ADMIN ? "/admin/dashboard" : "/user/dashboard";
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/70">
-      <Container className="flex h-16 items-center justify-between gap-4">
+    <header className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800/60 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/70">
+      <div className="flex h-16 items-center justify-between gap-4">
         <Link href="/" className="flex items-center gap-2">
           <span className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground">
             <Icon icon="solar:chef-hat-bold-duotone" className="h-5 w-5" />
@@ -153,7 +153,7 @@ export function PublicHeader() {
             <Icon icon={open ? "solar:close-circle-linear" : "solar:hamburger-menu-linear"} className="h-5 w-5" />
           </Button>
         </div>
-      </Container>
+      </div>
 
       <AnimatePresence>
         {open && (
@@ -161,7 +161,7 @@ export function PublicHeader() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden border-t border-border/60 bg-background md:hidden"
+            className="overflow-hidden border-t border-gray-200 dark:border-gray-800/60 bg-background md:hidden"
           >
             <Container className="flex flex-col gap-1 py-3">
               {NAV.map((item) => (

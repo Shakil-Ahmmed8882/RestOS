@@ -110,7 +110,7 @@ export function FoodHeroSection() {
 
       <Container className="relative z-10">
         <div ref={contentRef} className="max-w-3xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-border/50 bg-card/50 px-4 py-2 backdrop-blur-sm">
+          <div className="inline-flex items-center gap-2 rounded-full border border-gray-200 dark:border-gray-800/50 bg-card/50 px-4 py-2 backdrop-blur-sm">
             <Icon icon="solar:star-bold" className="h-4 w-4 text-yellow-500" />
             <p className="text-xs font-medium text-muted-foreground">Premium Quality Meals</p>
           </div>
@@ -128,7 +128,7 @@ export function FoodHeroSection() {
               <Icon icon="solar:magnifer-linear" className="h-5 w-5" />
               Start Exploring
             </button>
-            <button className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-6 py-3 font-semibold text-foreground transition-all hover:bg-accent">
+            <button className="inline-flex items-center gap-2 rounded-lg border border-gray-200 dark:border-gray-800 bg-background px-6 py-3 font-semibold text-foreground transition-all hover:bg-accent">
               <Icon icon="solar:fire-bold" className="h-5 w-5 text-orange-500" />
               View Trending
             </button>
@@ -136,7 +136,7 @@ export function FoodHeroSection() {
         </div>
 
         <div ref={statsRef} className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
-          <div className="stat-item rounded-lg border border-border/50 bg-card/50 p-4 backdrop-blur-sm md:p-6">
+          <div className="stat-item rounded-lg border border-gray-200 dark:border-gray-800/50 bg-card/50 p-4 backdrop-blur-sm md:p-6">
             <Icon icon="solar:card-bold" className="h-5 w-5 text-primary" />
             <p className="mt-2 text-sm text-muted-foreground">Total Dishes</p>
             <p className="mt-1 text-2xl font-bold md:text-3xl">
@@ -144,7 +144,7 @@ export function FoodHeroSection() {
             </p>
           </div>
 
-          <div className="stat-item rounded-lg border border-border/50 bg-card/50 p-4 backdrop-blur-sm md:p-6">
+          <div className="stat-item rounded-lg border border-gray-200 dark:border-gray-800/50 bg-card/50 p-4 backdrop-blur-sm md:p-6">
             <Icon icon="solar:star-bold" className="h-5 w-5 text-yellow-500" />
             <p className="mt-2 text-sm text-muted-foreground">Avg Rating</p>
             <p className="mt-1 text-2xl font-bold md:text-3xl">
@@ -152,7 +152,7 @@ export function FoodHeroSection() {
             </p>
           </div>
 
-          <div className="stat-item rounded-lg border border-border/50 bg-card/50 p-4 backdrop-blur-sm md:p-6">
+          <div className="stat-item rounded-lg border border-gray-200 dark:border-gray-800/50 bg-card/50 p-4 backdrop-blur-sm md:p-6">
             <Icon icon="solar:delivery-bold" className="h-5 w-5 text-blue-500" />
             <p className="mt-2 text-sm text-muted-foreground">Avg Delivery</p>
             <p className="mt-1 text-2xl font-bold md:text-3xl">
@@ -160,7 +160,7 @@ export function FoodHeroSection() {
             </p>
           </div>
 
-          <div className="stat-item rounded-lg border border-border/50 bg-card/50 p-4 backdrop-blur-sm md:p-6">
+          <div className="stat-item rounded-lg border border-gray-200 dark:border-gray-800/50 bg-card/50 p-4 backdrop-blur-sm md:p-6">
             <Icon icon="solar:users-group-rounded-bold" className="h-5 w-5 text-green-500" />
             <p className="mt-2 text-sm text-muted-foreground">Happy Users</p>
             <p className="mt-1 text-2xl font-bold md:text-3xl">

@@ -119,7 +119,7 @@ function ButtonSkeleton({
 // ============================================
 export function CardSkeleton({ showImage = true }: { showImage?: boolean }) {
 	return (
-		<div className="bg-card rounded-lg border border-border p-4 space-y-4">
+		<div className="bg-card rounded-lg border border-gray-200 dark:border-gray-800 p-4 space-y-4">
 			{showImage && <ImageSkeleton aspectRatio="video" />}
 			<div className="space-y-2">
 				<BaseSkeleton className="h-6 w-3/4" />
@@ -162,7 +162,7 @@ function ListItemSkeleton({
 	showAction?: boolean;
 }) {
 	return (
-		<div className="flex items-center gap-3 p-3 rounded-lg border border-border">
+		<div className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 dark:border-gray-800">
 			{showAvatar && <AvatarSkeleton size="md" />}
 			<div className="flex-1 space-y-2">
 				<BaseSkeleton className="h-4 w-1/2" />
@@ -247,7 +247,7 @@ function FormSkeleton({ fields = 4 }: { fields?: number }) {
 // ============================================
 function NavbarSkeleton() {
 	return (
-		<div className="bg-card border-b border-border p-4">
+		<div className="bg-card border-b border-gray-200 dark:border-gray-800 p-4">
 			<div className="container mx-auto flex items-center justify-between">
 				<BaseSkeleton className="h-8 w-32" />
 				<div className="hidden md:flex items-center gap-6">
@@ -270,7 +270,7 @@ function NavbarSkeleton() {
 // ============================================
 export function SidebarSkeleton({ items = 6 }: { items?: number }) {
 	return (
-		<div className="!w-full bg-card border-r border-border p-4 space-y-2">
+		<div className="!w-full bg-card border-r border-gray-200 dark:border-gray-800 p-4 space-y-2">
 			<BaseSkeleton className="h-8 w-32 mb-6" />
 			{Array.from({ length: items }).map((_, i) => (
 				<div key={i} className="flex items-center gap-3 p-2 rounded-md">
@@ -303,7 +303,7 @@ function BreadcrumbSkeleton({ items = 3 }: { items?: number }) {
 // ============================================
 function StatCardSkeleton() {
 	return (
-		<div className="bg-card rounded-lg border border-border p-6 space-y-3">
+		<div className="bg-card rounded-lg border border-gray-200 dark:border-gray-800 p-6 space-y-3">
 			<div className="flex items-center justify-between">
 				<BaseSkeleton className="h-4 w-24" />
 				<BaseSkeleton className="h-5 w-5 rounded-md" />
@@ -332,7 +332,7 @@ function StatsGridSkeleton({ count = 4 }: { count?: number }) {
 // ============================================
 function ChartSkeleton({ type = "bar" }: { type?: "bar" | "line" | "pie" }) {
 	return (
-		<div className="bg-card rounded-lg border border-border p-6 space-y-4">
+		<div className="bg-card rounded-lg border border-gray-200 dark:border-gray-800 p-6 space-y-4">
 			<div className="flex items-center justify-between">
 				<BaseSkeleton className="h-5 w-32" />
 				<BaseSkeleton className="h-8 w-24 rounded-md" />
@@ -361,7 +361,7 @@ function ChartSkeleton({ type = "bar" }: { type?: "bar" | "line" | "pie" }) {
 // ============================================
 function ProfileHeaderSkeleton() {
 	return (
-		<div className="bg-card rounded-lg border border-border overflow-hidden">
+		<div className="bg-card rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
 			{/* Cover Image */}
 			<BaseSkeleton className="h-48 w-full" />
 			{/* Profile Info */}
@@ -398,7 +398,7 @@ export function PostSkeleton({
 	showComment?: boolean;
 }) {
 	return (
-		<div className="bg-card rounded-lg border border-border p-4 md:p-6 space-y-4">
+		<div className="bg-card rounded-lg border border-gray-200 dark:border-gray-800 p-4 md:p-6 space-y-4">
 			{/* Header */}
 			<div className="flex items-start gap-3">
 				<AvatarSkeleton size="lg" />
@@ -432,7 +432,7 @@ export function PostSkeleton({
 			{showImage && <ImageSkeleton aspectRatio="video" />}
 
 			{/* Actions */}
-			<div className="flex items-center justify-between pt-2 border-t border-border">
+			<div className="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-gray-800">
 				<div className="flex items-center gap-4 md:gap-6">
 					<div className="flex items-center gap-2">
 						<BaseSkeleton className="h-5 w-5 rounded-full" />
@@ -488,7 +488,7 @@ function CommentSkeleton({ isReply = false }: { isReply?: boolean }) {
 // ============================================
 function NotificationSkeleton() {
 	return (
-		<div className="flex items-start gap-3 p-4 border-b border-border hover:bg-muted/50">
+		<div className="flex items-start gap-3 p-4 border-b border-gray-200 dark:border-gray-800 hover:bg-muted/50">
 			<AvatarSkeleton size="md" />
 			<div className="flex-1 space-y-2">
 				<ParagraphSkeleton lines={2} />
@@ -504,8 +504,8 @@ function NotificationSkeleton() {
 // ============================================
 function NotificationListSkeleton({ count = 5 }: { count?: number }) {
 	return (
-		<div className="bg-card rounded-lg border border-border overflow-hidden">
-			<div className="p-4 border-b border-border">
+		<div className="bg-card rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
+			<div className="p-4 border-b border-gray-200 dark:border-gray-800">
 				<BaseSkeleton className="h-5 w-32" />
 			</div>
 			{Array.from({ length: count }).map((_, i) => (
@@ -532,7 +532,7 @@ function StorySkeleton() {
 // ============================================
 function StoriesRowSkeleton({ count = 6 }: { count?: number }) {
 	return (
-		<div className="bg-card rounded-lg border border-border p-4">
+		<div className="bg-card rounded-lg border border-gray-200 dark:border-gray-800 p-4">
 			<div className="flex gap-3 overflow-x-auto">
 				{Array.from({ length: count }).map((_, i) => (
 					<StorySkeleton key={i} />
@@ -577,7 +577,7 @@ function ChatConversationSkeleton({ messages = 6 }: { messages?: number }) {
 // ============================================
 function ProductCardSkeleton() {
 	return (
-		<div className="bg-card rounded-lg border border-border overflow-hidden">
+		<div className="bg-card rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
 			<ImageSkeleton aspectRatio="square" />
 			<div className="p-4 space-y-3">
 				<BaseSkeleton className="h-5 w-3/4" />
@@ -639,7 +639,7 @@ function AccordionSkeleton({ items = 4 }: { items?: number }) {
 	return (
 		<div className="space-y-2">
 			{Array.from({ length: items }).map((_, i) => (
-				<div key={i} className="bg-card rounded-lg border border-border p-4">
+				<div key={i} className="bg-card rounded-lg border border-gray-200 dark:border-gray-800 p-4">
 					<div className="flex items-center justify-between">
 						<BaseSkeleton className="h-5 w-48" />
 						<BaseSkeleton className="h-5 w-5" />
@@ -655,7 +655,7 @@ function AccordionSkeleton({ items = 4 }: { items?: number }) {
 // ============================================
 function ModalSkeleton() {
 	return (
-		<div className="bg-card rounded-lg border border-border p-6 space-y-4 max-w-md mx-auto">
+		<div className="bg-card rounded-lg border border-gray-200 dark:border-gray-800 p-6 space-y-4 max-w-md mx-auto">
 			<div className="flex items-center justify-between">
 				<BaseSkeleton className="h-6 w-48" />
 				<BaseSkeleton className="h-6 w-6 rounded-md" />
@@ -674,7 +674,7 @@ function ModalSkeleton() {
 // ============================================
 function CalendarSkeleton() {
 	return (
-		<div className="bg-card rounded-lg border border-border p-4 space-y-4">
+		<div className="bg-card rounded-lg border border-gray-200 dark:border-gray-800 p-4 space-y-4">
 			<div className="flex items-center justify-between">
 				<BaseSkeleton className="h-6 w-32" />
 				<div className="flex gap-2">
@@ -696,7 +696,7 @@ function CalendarSkeleton() {
 // ============================================
 function VideoPlayerSkeleton() {
 	return (
-		<div className="relative bg-card rounded-lg border border-border overflow-hidden">
+		<div className="relative bg-card rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
 			<BaseSkeleton className="aspect-video w-full" />
 			<div className="absolute bottom-0 left-0 right-0 p-4 space-y-2">
 				<BaseSkeleton className="h-1 w-full rounded-full" />
@@ -1065,7 +1065,7 @@ export function SidebarSkeletonLayout() {
 			</div>
 
 			{/* Divider */}
-			<div className="border-t border-border" />
+			<div className="border-t border-gray-200 dark:border-gray-800" />
 
 			{/* Suggested Communities Section */}
 			<div className="space-y-3">
@@ -1095,7 +1095,7 @@ export function SidebarSkeletonLayout() {
 			</div>
 
 			{/* Divider */}
-			<div className="border-t border-border" />
+			<div className="border-t border-gray-200 dark:border-gray-800" />
 
 			{/* My Friends Section */}
 			<div className="space-y-3">
@@ -1129,7 +1129,7 @@ export function SidebarSkeletonLayout() {
 			</div>
 
 			{/* Divider */}
-			<div className="border-t border-border" />
+			<div className="border-t border-gray-200 dark:border-gray-800" />
 
 			{/* Featured Friends Section */}
 			<div className="space-y-3">

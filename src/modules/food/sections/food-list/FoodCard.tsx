@@ -36,11 +36,11 @@ export function FoodCard({ food }: { food: FoodItem }) {
         {/* Favorite Button */}
         <button
           onClick={handleFavorite}
-          className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-sm transition-transform active:scale-90"
+          className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-card shadow-sm transition-transform active:scale-90 dark:bg-card"
         >
           <Icon
             icon={isFavorite ? "solar:heart-bold" : "solar:heart-linear"}
-            className={`h-5 w-5 ${isFavorite ? "text-red-500" : "text-gray-900"}`}
+            className={`h-5 w-5 ${isFavorite ? "text-red-500" : "text-foreground"}`}
           />
         </button>
       </Link>
@@ -48,17 +48,17 @@ export function FoodCard({ food }: { food: FoodItem }) {
       {/* Content */}
       <div className="flex flex-col px-1">
         <div className="flex items-center justify-between gap-2">
-          <h3 className="truncate text-xl font-bold text-gray-900">
-            {displayName} — <span className="font-medium text-gray-700">{food.location ?? "Gulshan"}</span>
+          <h3 className="truncate text-xl font-bold text-foreground">
+            {displayName} — <span className="font-medium text-muted-foreground">{food.preparationTime ?? "Tk"}</span>
           </h3>
           <div className="flex items-center gap-1">
-            <Icon icon="solar:star-bold" className="h-4 w-4 text-orange-500" />
-            <span className="text-sm font-bold text-gray-800">{displayRating.toFixed(1)}</span>
-            <span className="text-sm text-gray-500">({food.orders ?? '2000+'})</span>
+            <Icon icon="solar:star-bold" className="h-4 w-4 text-yellow-500" />
+            <span className="text-sm font-bold text-foreground">{displayRating.toFixed(1)}</span>
+            <span className="text-sm text-muted-foreground">({food.orders ?? '2000+'})</span>
           </div>
         </div>
 
-        <div className="mt-1 flex items-center gap-2 text-sm text-gray-500">
+        <div className="mt-1 flex items-center gap-2 text-sm text-muted-foreground">
           <span>{food.preparationTime || "35-55"} min</span>
           <span>•</span>
           <span className="flex text-lg leading-none">৳৳৳</span>
@@ -68,15 +68,15 @@ export function FoodCard({ food }: { food: FoodItem }) {
 
         {/* Promo Badges */}
         <div className="mt-2 flex flex-col gap-1.5">
-          <div className="flex items-center gap-1.5 text-sm font-medium text-pink-600">
+          <div className="flex items-center gap-1.5 text-sm font-medium text-primary">
              <Icon icon="solar:delivery-bold" className="h-4 w-4" />
-             <span className="line-through text-gray-400">Tk 51</span>
+             <span className="line-through text-muted-foreground">Tk {food.price}</span>
              <span>Free for first order</span>
           </div>
-          
-          <div className="w-fit rounded-full bg-pink-100 px-3 py-1 text-xs font-semibold text-pink-700">
+
+          <div className="w-fit rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary dark:bg-primary/20">
             <Icon icon="solar:ticket-bold" className="mr-1 inline h-3 w-3" />
-            Tk. 150 off Tk. 600: ...
+            {food.discount || "20% OFF on all orders"}
           </div>
         </div>
       </div>

@@ -39,3 +39,11 @@ export interface FoodFilterState {
   minRating?: number | null;
   isVegetarian?: boolean;
 }
+
+
+export interface TReview {
+    customer_name: string;
+    rating: number;
+    comment: string;
+    date: string;
+  }

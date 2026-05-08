@@ -8,7 +8,7 @@ export function BaseSkeleton({ className, ...props }: React.HTMLAttributes<HTMLD
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-md bg-muted/60 animate-pulse",
+        "relative overflow-hidden rounded-md bg-muted/60 animate-pulse bg-gray-100",
         // The shimmer overlay
         "before:absolute before:inset-0 before:-translate-x-full",
         "before:animate-[shimmer_2s_infinite]",

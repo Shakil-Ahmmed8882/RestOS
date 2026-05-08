@@ -7,7 +7,7 @@ import { ReduxProvider } from "@/redux/provider";
 export function AppProviders({ children }: { children: React.ReactNode }) {
   return (
     <ReduxProvider>
-      <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
         {children}
         <Toaster position="top-right" richColors />
       </ThemeProvider>
