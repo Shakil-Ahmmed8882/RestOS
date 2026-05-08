@@ -33,7 +33,9 @@ export interface FoodItem {
 export interface FoodFilterState {
   search: string;
   category: string;
-  sort: "price-asc" | "price-desc" | "rating" | "newest";
+  sort: "price-asc" | "price-desc" | "rating" | "newest" | "fastest" | "distance";
   page: number;
   limit: number;
+  minRating?: number | null;
+  isVegetarian?: boolean;
 }

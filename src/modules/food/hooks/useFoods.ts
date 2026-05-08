@@ -10,22 +10,26 @@ const SORT_MAP: Record<string, string> = {
   "price-asc": "price",
   "price-desc": "-price",
   rating: "-averageRating",
+  fastest: "preparationTime",
+  distance: "distance",
 };
 
 export function useFoods() {
   const { filters } = useFoodFilter();
-  const debouncedSearch = useDebounce(filters.search, 350);
+  const debouncedSearch = useDebounce(filters.search, 300);
 
   const queryArgs = useMemo(() => {
-    const args: { name: string; value: string }[] = [
-      { name: "page", value: String(filters.page) },
-      { name: "limit", value: String(filters.limit) },
-      { name: "sort", value: SORT_MAP[filters.sort] || "-createdAt" },
-    ];
-    if (debouncedSearch) args.push({ name: "searchTerm", value: debouncedSearch });
-    if (filters.category && filters.category !== "all") args.push({ name: "foodCategory", value: filters.category });
-    return args;
-  }, [filters.page, filters.limit, filters.sort, filters.category, debouncedSearch]);
+    const params: Record<string, string> = {
+      page: String(filters.page),
+      limit: String(filters.limit),
+      sort: SORT_MAP[filters.sort] || "-createdAt",
+    };
+    if (debouncedSearch?.trim()) params.searchTerm = debouncedSearch.trim();
+    if (filters.category && filters.category !== "all") params.foodCategory = filters.category;
+    if (filters.minRating) params.minRating = String(filters.minRating);
+    if (filters.isVegetarian) params.isVegetarian = "true";
+    return params;
+  }, [filters.page, filters.limit, filters.sort, filters.category, filters.minRating, filters.isVegetarian, debouncedSearch]);
 
   return useGetAllFoodsQuery(queryArgs);
 }

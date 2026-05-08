@@ -9,10 +9,20 @@ interface FoodFilterContextValue {
   setCategory: (value: string) => void;
   setSort: (value: FoodFilterState["sort"]) => void;
   setPage: (value: number) => void;
+  setRating: (value: number | null) => void;
+  setVegetarian: (value: boolean) => void;
   reset: () => void;
 }
 
-const DEFAULT: FoodFilterState = { search: "", category: "all", sort: "newest", page: 1, limit: 12 };
+const DEFAULT: FoodFilterState = {
+  search: "",
+  category: "all",
+  sort: "newest",
+  page: 1,
+  limit: 12,
+  minRating: null,
+  isVegetarian: false,
+};
 
 const FoodFilterContext = createContext<FoodFilterContextValue | null>(null);
 
@@ -26,6 +36,8 @@ export function FoodFilterProvider({ children }: { children: React.ReactNode }) 
       setCategory: (category) => setFilters((p) => ({ ...p, category, page: 1 })),
       setSort: (sort) => setFilters((p) => ({ ...p, sort, page: 1 })),
       setPage: (page) => setFilters((p) => ({ ...p, page })),
+      setRating: (minRating) => setFilters((p) => ({ ...p, minRating, page: 1 })),
+      setVegetarian: (isVegetarian) => setFilters((p) => ({ ...p, isVegetarian, page: 1 })),
       reset: () => setFilters(DEFAULT),
     }),
     [filters],

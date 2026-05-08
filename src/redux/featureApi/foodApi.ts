@@ -1,13 +1,7 @@
 import { baseApi } from "@/redux/featureApi/baseApi";
 import { API_CACHE_TAGS } from "@/cache/API_CACHE_KEY";
 
-type QueryArg = { name: string; value: string }[] | undefined;
-
-const buildParams = (args: QueryArg) => {
-  const params = new URLSearchParams();
-  args?.forEach((it) => params.append(it.name, it.value));
-  return params;
-};
+type QueryArg = Record<string, string> | undefined;
 
 const foodApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -26,7 +20,7 @@ const foodApi = baseApi.injectEndpoints({
       providesTags: [API_CACHE_TAGS.FOOD_DETAILS],
     }),
     getAllFoods: builder.query<{ data: unknown[]; meta: Record<string, unknown> }, QueryArg>({
-      query: (args) => ({ url: "/foods", method: "GET", params: buildParams(args) }),
+      query: (params) => ({ url: "/foods", method: "GET", params: params }),
       transformResponse: (res: any) => ({ data: res?.data || [], meta: res?.meta || {} }),
       providesTags: [API_CACHE_TAGS.FOOD_LIST],
     }),

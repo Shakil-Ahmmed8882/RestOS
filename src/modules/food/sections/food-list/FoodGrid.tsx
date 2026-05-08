@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { CustomSuspense } from "@/components/common/CustomSuspense";
@@ -20,41 +20,42 @@ export function FoodGrid() {
 
   useEffect(() => {
     if (!gridRef.current || items.length === 0) return;
-
     const ctx = gsap.context(() => {
-      const cards = gridRef.current?.querySelectorAll(".food-card");
-      if (!cards) return;
-
-      gsap.from(cards, {
+      gsap.from(".food-card", {
         scrollTrigger: {
           trigger: gridRef.current,
-          start: "top 60%",
+          start: "top 80%",
           toggleActions: "play none none reverse",
         },
-        y: 60,
         opacity: 0,
-        stagger: 0.08,
-        duration: 0.6,
-        ease: "back.out(1.7)",
+        y: 20,
+        duration: 0.4,
+        stagger: 0.05,
       });
     }, gridRef);
-
     return () => ctx.revert();
   }, [items.length]);
 
   return (
     <CustomSuspense isLoading={isLoading} fallback={<FoodGridSkeleton />}>
       <NoResultFoundWrapper data={items} title="No dishes match your filters" description="Try changing the search or category.">
-        <motion.div
-          ref={gridRef}
-          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-        >
-          {items.map((food) => (
-            <div key={food._id} className="food-card">
-              <FoodCard food={food} />
-            </div>
-          ))}
-        </motion.div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            ref={gridRef}
+            key={items.length}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 "
+          >
+            {items.map((food) => (
+              <div key={food._id} className="food-card">
+                <FoodCard food={food} />
+              </div>
+            ))}
+          </motion.div>
+        </AnimatePresence>
       </NoResultFoundWrapper>
     </CustomSuspense>
   );
