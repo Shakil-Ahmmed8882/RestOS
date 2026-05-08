@@ -19,26 +19,17 @@ export function AuthVisualPanel({ quote, caption, tags }: AuthVisualPanelProps) 
         }}
       />
       <motion.div
-        animate={{ y: [0, -18, 0] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
         className="absolute right-12 top-16 h-28 w-28 rounded-full bg-white/10 backdrop-blur-sm"
       />
       <motion.div
-        animate={{ y: [0, 14, 0] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
         className="absolute left-8 top-40 h-16 w-16 rounded-full bg-white/10 backdrop-blur-sm"
       />
       <motion.div
-        animate={{ y: [0, -10, 0] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2 }}
         className="absolute left-1/2 top-24 h-10 w-10 rounded-full bg-white/20"
       />
 
       <div className="relative z-10 space-y-6 p-12">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
           className="space-y-4"
         >
           <div className="flex gap-1">
@@ -53,9 +44,6 @@ export function AuthVisualPanel({ quote, caption, tags }: AuthVisualPanelProps) 
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
           className="flex flex-wrap gap-2"
         >
           {tags.map((tag) => (

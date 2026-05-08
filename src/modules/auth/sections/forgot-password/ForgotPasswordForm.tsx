@@ -49,10 +49,7 @@ export function ForgotPasswordForm() {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
+    <div
       className="mx-auto w-full max-w-md space-y-7 px-8 py-10 lg:px-14"
     >
       <div className="space-y-1">
@@ -70,13 +67,14 @@ export function ForgotPasswordForm() {
             type="email"
             placeholder="you@example.com"
             {...register("email")}
+            className="placeholder:text-gray-400"
           />
           <ShowIf condition={!!errors.email}>
             <p className="text-xs text-destructive">{errors.email?.message}</p>
           </ShowIf>
         </div>
 
-        <Button type="submit" className="w-full" loading={forgotLoading} size="lg">
+        <Button type="submit" className="w-full text-white" loading={forgotLoading} size="lg">
           Send reset link
         </Button>
       </form>
@@ -87,6 +85,6 @@ export function ForgotPasswordForm() {
           Sign in →
         </Link>
       </p>
-    </motion.div>
+    </div>
   );
 }

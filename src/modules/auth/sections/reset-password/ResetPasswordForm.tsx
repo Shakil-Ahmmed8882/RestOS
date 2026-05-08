@@ -102,7 +102,7 @@ export function ResetPasswordForm() {
         </div>
 
         <Link href="/sign-in" className="block w-full">
-          <Button className="w-full" size="lg">
+          <Button className="w-full text-white" size="lg">
             Sign in
           </Button>
         </Link>
@@ -111,10 +111,7 @@ export function ResetPasswordForm() {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
+    <div
       className="mx-auto w-full max-w-md space-y-7 px-8 py-10 lg:px-14"
     >
       <div className="space-y-1">
@@ -133,7 +130,7 @@ export function ResetPasswordForm() {
               type={showPassword ? "text" : "password"}
               placeholder="••••••••"
               {...register("password")}
-              className="pr-10"
+              className="placeholder:text-gray-400"
             />
             <button
               type="button"
@@ -171,7 +168,7 @@ export function ResetPasswordForm() {
           </ShowIf>
         </div>
 
-        <Button type="submit" className="w-full" loading={resetLoading} size="lg">
+        <Button type="submit" className="w-full text-white" loading={resetLoading} size="lg">
           Reset password
         </Button>
       </form>
@@ -182,6 +179,6 @@ export function ResetPasswordForm() {
           sign in
         </Link>
       </p>
-    </motion.div>
+    </div>
   );
 }

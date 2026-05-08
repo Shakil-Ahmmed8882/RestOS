@@ -31,10 +31,10 @@ export function SignInForm() {
       password: data.password,
     });
 
-    if (result.success) {
+    if (result?.success) {
       toast.success(`Welcome back!`, { id: toastId });
     } else {
-      toast.error(result.error, { id: toastId });
+      toast.error(result?.error, { id: toastId });
     }
   };
 
@@ -43,10 +43,7 @@ export function SignInForm() {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
+    <div
       className="mx-auto w-full max-w-md space-y-7 px-8 py-10 lg:px-14"
     >
       <div className="space-y-1">
@@ -71,7 +68,7 @@ export function SignInForm() {
               type={showPassword ? "text" : "password"}
               placeholder="••••••••"
               {...register("password")}
-              className="pr-10"
+              className="placeholder:text-gray-400"
             />
             <button
               type="button"
@@ -87,7 +84,7 @@ export function SignInForm() {
           </ShowIf>
         </div>
 
-        <Button type="submit" className="w-full" loading={loginLoading} size="lg">
+        <Button type="submit" className="w-full text-white" loading={loginLoading} size="lg">
           Sign in
         </Button>
 
@@ -115,6 +112,6 @@ export function SignInForm() {
           Sign up free →
         </Link>
       </p>
-    </motion.div>
+    </div>
   );
 }

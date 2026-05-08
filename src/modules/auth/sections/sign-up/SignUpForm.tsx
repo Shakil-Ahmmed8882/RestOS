@@ -57,10 +57,7 @@ export function SignUpForm() {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
+    <div
       className="mx-auto w-full max-w-md space-y-6 px-8 py-12 lg:px-14"
     >
       <div className="space-y-1">
@@ -93,7 +90,7 @@ export function SignUpForm() {
 
         <div className="space-y-1.5">
           <Label htmlFor="name">Full Name</Label>
-          <Input id="name" placeholder="John Doe" {...register("name")} />
+          <Input id="name" placeholder="John Doe" {...register("name")} className="placeholder:text-gray-400"/>
           <ShowIf condition={!!errors.name}>
             <p className="text-xs text-destructive">{errors.name?.message}</p>
           </ShowIf>
@@ -101,7 +98,7 @@ export function SignUpForm() {
 
         <div className="space-y-1.5">
           <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="you@example.com" {...register("email")} />
+          <Input id="email" type="email" placeholder="you@example.com" {...register("email")} className="placeholder:text-gray-400"/>
           <ShowIf condition={!!errors.email}>
             <p className="text-xs text-destructive">{errors.email?.message}</p>
           </ShowIf>
@@ -115,7 +112,7 @@ export function SignUpForm() {
               type={showPassword ? "text" : "password"}
               placeholder="Min. 6 characters"
               {...register("password")}
-              className="pr-10"
+              className="placeholder:text-gray-400"
             />
             <button
               type="button"
@@ -130,7 +127,7 @@ export function SignUpForm() {
           </ShowIf>
         </div>
 
-        <Button type="submit" className="w-full" size="lg" loading={registerLoading}>
+        <Button type="submit" className="w-full text-white" size="lg" loading={registerLoading}>
           Create account
         </Button>
       </form>
@@ -145,6 +142,6 @@ export function SignUpForm() {
         By creating an account you agree to our <span className="underline">Terms</span> and{" "}
         <span className="underline">Privacy Policy</span>.
       </p>
-    </motion.div>
+    </div>
   );
 }
