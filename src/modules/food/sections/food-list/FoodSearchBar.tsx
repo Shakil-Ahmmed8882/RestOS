@@ -1,14 +1,22 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Icon } from "@iconify/react";
 import gsap from "gsap";
 import { Input } from "@/components/ui/input";
 import { useFoodFilter } from "@/modules/food/providers/FoodFilterProvider";
 
+const TABS = [
+  { label: "Delivery", icon: "solar:delivery-linear", value: "delivery" },
+  { label: "Pick-up", icon: "solar:running-2-linear", value: "pickup" },
+  { label: "pandamart", icon: "solar:bag-2-linear", value: "pandamart" },
+  { label: "Shops", icon: "solar:shop-2-linear", value: "shops" },
+] as const;
+
 export function FoodSearchBar() {
   const { filters, setSearch } = useFoodFilter();
   const searchRef = useRef<HTMLDivElement>(null);
+  const [activeTab, setActiveTab] = useState<"delivery" | "pickup" | "pandamart" | "shops">("delivery");
 
   useEffect(() => {
     if (!searchRef.current) return;
@@ -21,8 +29,31 @@ export function FoodSearchBar() {
   }, []);
 
   return (
-    <div ref={searchRef} className="sticky top-0 z-50 border-b bg-white shadow-sm">
-      <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+    <div ref={searchRef} className="sticky top-0 z-50 bg-white">
+      {/* Tabs */}
+      <div className="border-b border-gray-200">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-8">
+            {TABS.map((tab) => (
+              <button
+                key={tab.value}
+                onClick={() => setActiveTab(tab.value)}
+                className={`flex items-center gap-2 px-2 py-4 text-sm font-medium transition-colors border-b-2 ${
+                  activeTab === tab.value
+                    ? "border-pink-500 text-pink-600"
+                    : "border-transparent text-gray-600 hover:text-gray-900"
+                }`}
+              >
+                <Icon icon={tab.icon} className="h-5 w-5" />
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Search Bar */}
+      <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
         <div className="relative">
           <Icon
             icon="solar:magnifer-linear"
@@ -32,7 +63,7 @@ export function FoodSearchBar() {
             value={filters.search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search for restaurants, cuisines, and dishes"
-            className="border-gray-200 pl-12 pr-4 py-3 text-base focus-visible:ring-pink-500"
+            className="border-gray-200 pl-12 pr-4 py-2.5 text-sm focus-visible:ring-pink-500"
           />
         </div>
       </div>

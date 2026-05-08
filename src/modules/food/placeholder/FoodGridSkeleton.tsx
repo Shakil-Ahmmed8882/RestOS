@@ -1,27 +1,28 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { BaseSkeleton } from "@/components/rest-os-ui/placeholder/skeletons/BaseSkeleton";
 
-export function FoodGridSkeleton({ count = 12 }: { count?: number }) {
+
+export function FoodCardSkeleton() {
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className="space-y-4 overflow-hidden rounded-lg border">
-          <Skeleton className="aspect-[3/4] w-full rounded-none" />
-          <div className="space-y-3 p-4">
-            <Skeleton className="h-5 w-5/6" />
-            <Skeleton className="h-3 w-full" />
-            <div className="flex gap-1.5">
-              <Skeleton className="h-5 w-16" />
-              <Skeleton className="h-5 w-16" />
-              <Skeleton className="h-5 w-16" />
-            </div>
-            <Skeleton className="h-3 w-20" />
-            <div className="space-y-2 border-t pt-3">
-              <Skeleton className="h-5 w-24" />
-              <Skeleton className="h-9 w-full" />
-            </div>
-          </div>
+    <div className="flex w-full flex-col gap-3">
+      {/* Main Image Shape - Large rounded corners like the SS */}
+      <BaseSkeleton className="aspect-[1.6/1] w-full rounded-[2.2rem]" />
+
+      <div className="flex flex-col gap-2.5 px-1">
+        {/* Title and Rating Line */}
+        <div className="flex items-center justify-between">
+          <BaseSkeleton className="h-7 w-3/5 rounded-lg" />
+          <BaseSkeleton className="h-5 w-20 rounded-lg" />
         </div>
-      ))}
+
+        {/* Info Line (Time, Price, Category) */}
+        <BaseSkeleton className="h-4 w-1/2 rounded-md" />
+
+        {/* Offers Section */}
+        <div className="mt-1 flex flex-col gap-2">
+          <BaseSkeleton className="h-4 w-44 rounded-md" />
+          <BaseSkeleton className="h-7 w-36 rounded-full" />
+        </div>
+      </div>
     </div>
   );
 }

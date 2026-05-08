@@ -2,7 +2,7 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   darkMode: "class",
-  content: ["./src/**/*.{ts,tsx}"],
+  content: ["./src/**/*.{ts,tsx}", "./src/components/**/*.{ts,tsx}"],
   theme: {
     container: { center: true, padding: "1rem", screens: { "2xl": "1400px" } },
     extend: {
@@ -51,9 +51,16 @@ const config: Config = {
           from: { height: "0" },
           to: { height: "var(--radix-accordion-content-height)" },
         },
+        
         "accordion-up": {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
+        },
+
+        shimmer: {
+          '100%': {
+            transform: 'translateX(100%)',
+          },
         },
       },
       animation: {
