@@ -82,8 +82,8 @@ function Root(props: RootProps) {
 									animate="center"
 									exit="exit"
 									tabIndex={-1}
-									// className={`${className} relative w-full rounded-2xl px-9 pt-12 pb-6 bg-white shadow-2xl pointer-events-auto my-auto outline-none ${activePage.props.maxWidth ?? "max-w-[750px]"}`}
-									className={`${className} relative w-full rounded-2xl p-7 bg-white shadow-2xl pointer-events-auto my-auto outline-none ${activePage.props.maxWidth ?? "max-w-[750px]"}`}
+									// className={`${className} relative w-full rounded-2xl px-9 pt-12 pb-6 bg-background dark:bg-slate-900 shadow-2xl dark:shadow-primary/20 pointer-events-auto my-auto outline-none border border-border dark:border-slate-800 ${activePage.props.maxWidth ?? "max-w-[750px]"}`}
+									className={`${className} relative w-full rounded-2xl p-7 bg-background  pointer-events-auto my-auto outline-none   ${activePage.props.maxWidth ?? "max-w-[750px]"}`}
 									onClick={(e: React.MouseEvent) => e.stopPropagation()}
 								>
 									{/* Back button — visible when there is history */}
@@ -91,7 +91,7 @@ function Root(props: RootProps) {
 										<button
 											type="button"
 											onClick={goBack}
-											className="!mb-3  z-10 flex items-center gap-1 rounded-full px-3 py-1 text-[12px] font-medium text-[#141414] bg-[#f5f5f5] hover:bg-[#f0f0f0] transition-colors cursor-pointer font-proxima-nova "
+											className="!mb-3 z-10 flex items-center gap-1 rounded-full px-3 py-1 text-[12px] font-medium text-foreground bg-muted dark:bg-slate-800 hover:bg-muted/80 dark:hover:bg-slate-700 transition-colors cursor-pointer"
 											aria-label="Go back"
 										>
 											<ChevronLeft className="size-3.5" /> <span>{activePage.props.backTitle}</span>

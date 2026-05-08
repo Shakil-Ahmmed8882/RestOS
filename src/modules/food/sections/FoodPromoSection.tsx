@@ -7,6 +7,7 @@ import { Icon } from "@iconify/react";
 import { useFoodFilter } from "@/modules/food/providers/FoodFilterProvider";
 import { BaseImage } from "@/components/rest-os-ui/images/BaseImage";
 import { MultipageModal } from "@/components/rest-os-ui/modal/multipage-modal/MultipageModal";
+import { PromoDetailsModal } from "@/modules/food/components/PromoDetailsModal";
 
 const FEATURED_RESTAURANTS = [
   {
@@ -407,7 +408,7 @@ export function FoodPromoSection() {
                       alt={deal.name}
                       className="object-cover h-full w-full transition-transform duration-500 group-hover:scale-105"
                     />
-                    <div className=" absolute inset-0 bg-gradient-to-t from-white via-white/60 to-transparent dark:from-black dark:via-black/60 dark:to-transparent"/>
+                    <div className=" absolute inset-0 bg-gradient-to-t from-white via-white/60 to-transparent dark:from-primary/10 dark:via-black/60 dark:to-transparent"/>
 
                     {/* Gradient Overlay - White for light theme, Black for dark theme */}
                     <div className="absolute bottom-0 left-0 right-0 h-full  flex flex-col items-start justify-end p-4">
@@ -467,95 +468,7 @@ export function FoodPromoSection() {
       <MultipageModal open={modalOpen} onOpenChange={setModalOpen} initialPageId="details">
         <MultipageModal.Page id="details" backTitle="Back">
           {selectedItem && (
-            <div className="space-y-4">
-              {selectedItem.type === "restaurant" ? (
-                <>
-                 <BaseImage
-                    src={(selectedItem.data as typeof FEATURED_RESTAURANTS[0]).image}
-                    alt={(selectedItem.data as typeof FEATURED_RESTAURANTS[0]).name}
-                
-                    className="w-full h-64 object-cover rounded-xl"
-                    />
-                  
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-900">
-                      {(selectedItem.data as typeof FEATURED_RESTAURANTS[0]).name}
-                    </h2>
-                    <div className="flex items-center gap-3 mt-2">
-                      <div className="flex items-center gap-1">
-                        <Icon icon="solar:star-bold" className="h-5 w-5 text-yellow-500" />
-                        <span className="font-semibold">
-                          {(selectedItem.data as typeof FEATURED_RESTAURANTS[0]).rating}
-                        </span>
-                      </div>
-                      <span className="text-gray-600">
-                        ({(selectedItem.data as typeof FEATURED_RESTAURANTS[0]).reviews} reviews)
-                      </span>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-3 gap-4 py-4">
-                    <div className="text-center">
-                      <p className="text-sm text-gray-600">Delivery Time</p>
-                      <p className="font-semibold">
-                        {(selectedItem.data as typeof FEATURED_RESTAURANTS[0]).deliveryTime}
-                      </p>
-                    </div>
-                    <div className="text-center">
-                      <p className="text-sm text-gray-600">Price Range</p>
-                      <p className="font-semibold">
-                        {(selectedItem.data as typeof FEATURED_RESTAURANTS[0]).priceRange}
-                      </p>
-                    </div>
-                    <div className="text-center">
-                      <p className="text-sm text-gray-600">Category</p>
-                      <p className="font-semibold">
-                        {(selectedItem.data as typeof FEATURED_RESTAURANTS[0]).category}
-                      </p>
-                    </div>
-                  </div>
-                  <button className="w-full py-3 bg-primary text-white rounded-lg font-semibold hover:opacity-90 transition-opacity">
-                    Order Now
-                  </button>
-                </>
-              ) : (
-                <>
-                  <img
-                    src={(selectedItem.data as typeof DAILY_DEALS[0]).image}
-                    alt={(selectedItem.data as typeof DAILY_DEALS[0]).name}
-                    className="w-full h-64 object-cover rounded-xl"
-                  />
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-900">
-                      {(selectedItem.data as typeof DAILY_DEALS[0]).name}
-                    </h2>
-                    <p className="text-gray-600 mt-2">
-                      {(selectedItem.data as typeof DAILY_DEALS[0]).subtitle}
-                    </p>
-                    <div className="mt-4">
-                      <p className="text-sm text-gray-600 mb-2">Valid codes:</p>
-                      <div className="flex gap-2 flex-wrap">
-                        {(selectedItem.data as typeof DAILY_DEALS[0]).tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-semibold"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="border-t border-gray-200 pt-4">
-                    <p className="text-sm text-gray-600 mb-3">
-                      Get this amazing deal now! Limited time offer.
-                    </p>
-                    <button className="w-full py-3 bg-primary text-white rounded-lg font-semibold hover:opacity-90 transition-opacity">
-                      Claim Deal
-                    </button>
-                  </div>
-                </>
-              )}
-            </div>
+            <PromoDetailsModal type={selectedItem.type} data={selectedItem.data} />
           )}
         </MultipageModal.Page>
       </MultipageModal>

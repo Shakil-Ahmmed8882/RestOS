@@ -18,15 +18,15 @@ export function SignInForm() {
 
   return (
     <div
-      className="w-full space-y-7 p-5"
+      className="w-full space-y-7 p-8 bg-white dark:bg-[#121212]  rounded-2xl"
     >
-      <div className="space-y-1">
-        <h1 className="text-3xl font-bold tracking-tight">Welcome back</h1>
+      <div className="space-y-2">
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">Welcome back</h1>
         <p className="text-sm text-muted-foreground">Sign in to your RestOS account</p>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div className="space-y-1.5">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
           <AuthInput id="email" type="email" placeholder="you@example.com" {...register("email")} />
           <ShowIf condition={!!errors.email}>
@@ -34,7 +34,7 @@ export function SignInForm() {
           </ShowIf>
         </div>
 
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <Label htmlFor="password">Password</Label>
           <div className="relative">
             <AuthInput

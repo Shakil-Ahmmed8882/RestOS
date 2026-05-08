@@ -39,12 +39,6 @@ export function ResetPasswordForm() {
             Your password has been successfully reset. You can now sign in with your new password.
           </p>
         </div>
-
-        <Link href="/sign-in" className="block w-full">
-          <Button className="w-full text-white" size="lg">
-            Sign in
-          </Button>
-        </Link>
       </motion.div>
     );
   }

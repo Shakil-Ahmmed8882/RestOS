@@ -25,10 +25,9 @@ import { signOutFirebase } from "@/modules/auth/services/firebase-auth.service";
 import { cn } from "@/lib/utils";
 import { MultipageModal } from "../rest-os-ui/modal/multipage-modal/MultipageModal";
 
-
-import { ForgotPasswordPageLayout } from "@/modules/auth/layout/ForgotPasswordPageLayout";
 import { SignInForm } from "@/modules/auth/sections/sign-in/SignInForm";
 import { SignUpForm } from "@/modules/auth/sections/sign-up/SignUpForm";
+import { ForgotPasswordForm } from "@/modules/auth/sections/forgot-password/ForgotPasswordForm";
 
 const NAV = [
   { label: "Home", href: "/" },
@@ -232,7 +231,7 @@ export function PublicHeader() {
           <SignUpForm />
         </MultipageModal.Page>
         <MultipageModal.Page id="forgot-password">
-          <ForgotPasswordPageLayout />
+          <ForgotPasswordForm />
         </MultipageModal.Page>
       </MultipageModal>
       <AnimatePresence>
