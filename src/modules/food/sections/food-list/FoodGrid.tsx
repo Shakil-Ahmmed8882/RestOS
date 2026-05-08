@@ -1,14 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Icon } from "@iconify/react";
 import { CustomSuspense } from "@/components/common/CustomSuspense";
 import { NoResultFoundWrapper } from "@/components/common/NoResultFoundWrapper";
 import { FoodCard } from "@/modules/food/sections/food-list/FoodCard";
 import { useFoods } from "@/modules/food/hooks/useFoods";
 import { useFoodFilter } from "@/modules/food/providers/FoodFilterProvider";
-import { FoodCardSkeleton } from "../../placeholder/FoodGridSkeleton";
 import { CardSkeletonV2List } from "@/components/rest-os-ui/placeholder/skeletons/CardSkeletons";
 
 export function FoodGrid() {
@@ -31,7 +29,7 @@ export function FoodGrid() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+              className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
             >
               {items.map((food) => (
                 <div key={food._id} className="food-card">

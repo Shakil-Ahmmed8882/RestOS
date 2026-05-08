@@ -4,7 +4,7 @@ import { type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft } from "lucide-react";
-import { useScrollLock } from "@/components/reusable-ui-blocks/utils/scroll/useScrollLock";
+import { useScrollLock } from "@/components/rest-os-ui/utils/scroll/useScrollLock";
 import {
 	MultipageModalProvider,
 	useMultipageModalContextHelper,

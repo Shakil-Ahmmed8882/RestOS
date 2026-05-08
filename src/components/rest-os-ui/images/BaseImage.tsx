@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 
-import defaultImage from "@/components/reusable-ui-blocks/images/assets/placeholde_image.png";
+import defaultImage from "@/components/rest-os-ui/images/assets/placeholde_image.png";
 import { BaseImageProps } from "./types/baseimage.type";
 import { ShowIf } from "../guard/ShowIf";
 

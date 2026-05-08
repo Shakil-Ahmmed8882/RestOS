@@ -29,10 +29,10 @@ export function FoodSearchBar() {
   }, []);
 
   return (
-    <div ref={searchRef} className="sticky top-0 z-50 bg-background dark:bg-background">
+    <div ref={searchRef} className="bg-background dark:bg-background w-full pb-8">
       {/* Tabs and Search in Same Row */}
       <div className="border-b border-gray-200 dark:border-gray-800">
-        <div className="">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-8">
             {/* Tabs */}
             <div className="flex items-center gap-8">

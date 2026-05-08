@@ -13,7 +13,7 @@ const config: Config = {
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
+          DEFAULT: "hsl(var(--primary) / 1)",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {

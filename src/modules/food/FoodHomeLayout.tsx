@@ -8,15 +8,15 @@ import { FoodPromoSection } from "@/modules/food/sections/FoodPromoSection";
 export function FoodHomeLayout() {
   return (
     <ErrorBoundary>
-      <div className="min-h-screen bg-background text-foreground dark:bg-background">
+      <div className="min-h-screen bg-background text-foreground dark:bg-background scrollbar-thin">
         <FoodFilterProvider>
           <FoodSearchBar />
-          <div className=" ">
-            <div className="flex gap-4 -mx-4 sm:-mx-6 lg:-mx-8 items-start">
-              <div className="w-72 flex-shrink-0  sticky top-14 self-start">
+          <div className="">
+            <div className="flex gap-4 items-start">
+              <div className="w-72 flex-shrink-0 sticky top-[120px] self-start z-40">
                 <FoodSidebar />
               </div>
-              <div className="flex-1 ">
+              <div className="flex-1 min-w-0">
                 <div className="space-y-6 py-6">
                   <FoodPromoSection />
                   <FoodGrid />

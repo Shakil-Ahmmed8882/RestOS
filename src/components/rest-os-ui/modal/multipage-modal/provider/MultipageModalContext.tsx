@@ -1,9 +1,9 @@
 "use client";
 
-import { makeSelectorContext } from "@/modules/shared/context/makeSelectorContext";
-import { useContextSelector } from "@/modules/shared/context/useContextSelector";
+import { makeSelectorContext } from "@/components/rest-os-ui/shared-context/makeSelectorContext";
 import type { MultipageModalControls } from "../types";
 import { useMultipageModal } from "./useMultipageModal";
+import { useContextSelector } from "@/components/rest-os-ui/shared-context/useContextSelector";
 
 // ── Context + Provider ──────────────────────────────────────────────────────
 
