@@ -1,78 +1,36 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { setupListeners } from "@reduxjs/toolkit/query";
+import { baseApi } from "@/redux/featureApi/baseApi";
+import authReducer from "@/redux/slices/authSlice";
+import cartReducer from "@/redux/slices/cartSlice";
 
-// api
-import { baseApi } from "./api/baseApi";
-import foodApi from "./features/food/food.api";
-import userApi from "./features/user/userApi";
-import orderApi from "./features/order/orderApi";
-import commentApi from "./features/comment/comment.api";
-import replyApi from "./features/reply/reply.api";
-import voteApi from "./features/vote/vote.api";
-import saveBlogApi from "./features/save/save.blog.api";
-import profileApi from "./features/profile/profile.api";
-import searchApi from "./features/search/search.api";
-import authApi from "./features/auth/auth.api";
+import "@/redux/featureApi/authApi";
+import "@/redux/featureApi/userApi";
+import "@/redux/featureApi/foodApi";
+import "@/redux/featureApi/foodCategoryApi";
+import "@/redux/featureApi/orderApi";
+import "@/redux/featureApi/blogApi";
+import "@/redux/featureApi/commentApi";
+import "@/redux/featureApi/replyApi";
+import "@/redux/featureApi/recipeApi";
+import "@/redux/featureApi/voteApi";
+import "@/redux/featureApi/saveApi";
+import "@/redux/featureApi/searchApi";
+import "@/redux/featureApi/analyticsApi";
+import "@/redux/featureApi/profileApi";
 
-// Reducer
-import menuReducer from "./features/global/menuSlice";
-import cartReducer from "./features/global/cartSlice";
-import authReducer from "./features/auth/auth.slice";
-import commentReducer from "./features/comment/comment.slice";
-import profileReducer from "./features/profile/profile.slice";
+export const makeStore = () =>
+  configureStore({
+    reducer: {
+      [baseApi.reducerPath]: baseApi.reducer,
+      auth: authReducer,
+      cart: cartReducer,
+    },
+    middleware: (getDefault) => getDefault().concat(baseApi.middleware),
+  });
 
-// redux persisi
-import {
-  persistStore,
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-} from "redux-persist";
-import storage from "redux-persist/lib/storage";
+export type AppStore = ReturnType<typeof makeStore>;
+export type RootState = ReturnType<AppStore["getState"]>;
+export type AppDispatch = AppStore["dispatch"];
 
-const persistConfig = {
-  key: "auth",
-  storage,
-};
-
-const persistAuthReducer = persistReducer(persistConfig, authReducer);
-
-export const store = configureStore({
-  reducer: {
-    [baseApi.reducerPath]: baseApi.reducer,
-    menu: menuReducer,
-    comment: commentReducer,
-    profile: profileReducer,
-    auth: persistAuthReducer,
-    cart: cartReducer,
-  },
-
-  // APIs Middleware connection ...
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }).concat(
-      foodApi.middleware,
-      userApi.middleware,
-      orderApi.middleware,
-      commentApi.middleware,
-      replyApi.middleware,
-      voteApi.middleware,
-      saveBlogApi.middleware,
-      profileApi.middleware,
-      searchApi.middleware,
-      authApi.middleware
-    ),
-});
-
-// Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-export type AppDispatch = typeof store.dispatch;
-
-export const persistor = persistStore(store);
+export const setupStoreListeners = setupListeners;

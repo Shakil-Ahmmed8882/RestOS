@@ -1,7 +1,0 @@
-/*
-
-
-
-Reusable modal components
-
-*/
