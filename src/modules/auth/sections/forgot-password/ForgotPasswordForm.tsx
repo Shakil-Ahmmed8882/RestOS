@@ -1,51 +1,17 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { motion } from "framer-motion";
-import { toast } from "sonner";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ShowIf } from "@/components/common/ShowIf";
-import { useAuth } from "@/modules/auth/hooks/useAuth";
+import { useForgotPassword } from "@/modules/auth/hooks/useForgotPassword";
 import { SuccessModal } from "@/modules/auth/sections/forgot-password/SuccessModal";
 
-const forgotPasswordSchema = z.object({
-  email: z.string().email("Please enter a valid email."),
-});
-
-type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
-
 export function ForgotPasswordForm() {
-  const [successEmail, setSuccessEmail] = useState<string | null>(null);
-  const { requestPasswordReset, forgotLoading } = useAuth();
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ForgotPasswordInput>({
-    resolver: zodResolver(forgotPasswordSchema),
-  });
-
-  const onSubmit = async (data: ForgotPasswordInput) => {
-    const toastId = toast.loading("Sending reset link…");
-    const result = await requestPasswordReset({ email: data.email });
-
-    if (result.success) {
-      setSuccessEmail(result.email);
-      toast.success("Reset link sent!", { id: toastId });
-    } else {
-      toast.error(result.error, { id: toastId });
-    }
-  };
+  const { register, handleSubmit, errors, successEmail, setSuccessEmail, onSubmit, forgotLoading } = useForgotPassword();
 
   if (successEmail) {
-    return <SuccessModal email={successEmail} />;
+    return <SuccessModal email={successEmail} onClose={() => setSuccessEmail(null)} />;
   }
 
   return (
@@ -79,12 +45,6 @@ export function ForgotPasswordForm() {
         </Button>
       </form>
 
-      <p className="text-center text-sm text-muted-foreground">
-        Remember your password?{" "}
-        <Link href="/sign-in" className="font-semibold text-primary hover:underline">
-          Sign in →
-        </Link>
-      </p>
     </div>
   );
 }

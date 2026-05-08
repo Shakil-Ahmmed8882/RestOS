@@ -1,45 +1,17 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ShowIf } from "@/components/common/ShowIf";
-import { signInSchema, type SignInInput } from "@/modules/auth/schemas/auth.schema";
-import { useAuth } from "@/modules/auth/hooks/useAuth";
+import { useSignIn } from "@/modules/auth/hooks/useSignIn";
 
 export function SignInForm() {
-  const [showPassword, setShowPassword] = useState(false);
-  const { login, loginLoading } = useAuth();
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SignInInput>({ resolver: zodResolver(signInSchema) });
-
-  const onSubmit = async (data: SignInInput) => {
-    const toastId = toast.loading("Signing in…");
-    const result = await login({
-      email: data.email,
-      password: data.password,
-    });
-
-    if (result?.success) {
-      toast.success(`Welcome back!`, { id: toastId });
-    } else {
-      toast.error(result?.error, { id: toastId });
-    }
-  };
+  const { register, handleSubmit, errors, showPassword, setShowPassword, onSubmit, loginLoading } = useSignIn();
 
   const handleGoogleSignIn = () => {
-    toast.info("Google OAuth coming soon!");
+    // Google OAuth coming soon
   };
 
   return (
@@ -87,10 +59,6 @@ export function SignInForm() {
         <Button type="submit" className="w-full text-white" loading={loginLoading} size="lg">
           Sign in
         </Button>
-
-        <Link href="/forgot-password" className="text-center text-sm font-medium text-primary hover:underline">
-          Forgot password?
-        </Link>
       </form>
 
       <div className="space-y-3">
@@ -105,13 +73,6 @@ export function SignInForm() {
           Continue with Google
         </Button>
       </div>
-
-      <p className="text-center text-sm text-muted-foreground">
-        Don&apos;t have an account?{" "}
-        <Link href="/sign-up" className="font-semibold text-primary hover:underline">
-          Sign up free →
-        </Link>
-      </p>
     </div>
   );
 }

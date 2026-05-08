@@ -1,21 +1,32 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button";
+import { useAuthModal } from "@/modules/auth/context/AuthModalContext";
 
 interface SuccessModalProps {
   email: string;
+  onClose?: () => void;
 }
 
-export function SuccessModal({ email }: SuccessModalProps) {
+export function SuccessModal({ email, onClose }: SuccessModalProps) {
+  const { setStep } = useAuthModal();
+
+  const handleBackToSignIn = () => {
+    if (onClose) {
+      onClose();
+    } else {
+      setStep("sign-in");
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3 }}
-      className="mx-auto w-full max-w-md space-y-6 px-8 py-12 lg:px-14"
+      className="mx-auto w-full max-w-md space-y-6"
     >
       <div className="flex justify-center">
         <motion.div
@@ -49,11 +60,9 @@ export function SuccessModal({ email }: SuccessModalProps) {
         <p className="text-sm text-muted-foreground text-center">
           The link will expire in 10 minutes for security reasons.
         </p>
-        <Link href="/sign-in" className="block w-full">
-          <Button variant="outline" className="w-full" size="lg">
-            Back to sign in
-          </Button>
-        </Link>
+        <Button onClick={handleBackToSignIn} variant="outline" className="w-full" size="lg">
+          Back to sign in
+        </Button>
       </div>
     </motion.div>
   );
