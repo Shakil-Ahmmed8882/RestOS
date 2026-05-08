@@ -1,0 +1,55 @@
+"use client";
+
+import { useState } from "react";
+import { Icon } from "@iconify/react";
+import { Container } from "@/components/layouts/Container";
+import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
+import { CustomSuspense } from "@/components/common/CustomSuspense";
+import { NoResultFoundWrapper } from "@/components/common/NoResultFoundWrapper";
+import { BlogCard } from "@/modules/blog/sections/blog-list/BlogCard";
+import { useGetAllBlogsQuery } from "@/redux/featureApi/blogApi";
+import { useDebounce } from "@/hooks/useDebounce";
+import type { BlogItem } from "@/modules/blog/types/blog.types";
+
+export function BlogGrid() {
+  const [search, setSearch] = useState("");
+  const debounced = useDebounce(search, 350);
+  const args = debounced ? [{ name: "search", value: debounced }] : undefined;
+  const { data, isLoading } = useGetAllBlogsQuery(args);
+  const items: BlogItem[] = (data?.data as BlogItem[]) ?? [];
+
+  return (
+    <Container className="py-10">
+      <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight md:text-4xl">Blog</h1>
+          <p className="mt-1 text-sm text-muted-foreground">Stories, tips, and recipes from the food community.</p>
+        </div>
+        <div className="relative w-full md:w-80">
+          <Icon icon="solar:magnifer-linear" className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search articles…" className="pl-9" />
+        </div>
+      </div>
+
+      <CustomSuspense
+        isLoading={isLoading}
+        fallback={
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <Skeleton key={i} className="aspect-[16/10] rounded-xl" />
+            ))}
+          </div>
+        }
+      >
+        <NoResultFoundWrapper data={items} title="No posts yet">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {items.map((b) => (
+              <BlogCard key={b._id} blog={b} />
+            ))}
+          </div>
+        </NoResultFoundWrapper>
+      </CustomSuspense>
+    </Container>
+  );
+}
