@@ -91,11 +91,11 @@ export function PublicHeader() {
           <Button asChild variant="ghost" size="icon" aria-label="Cart" className="relative">
             <Link href="/cart">
               <Icon icon="solar:bag-3-linear" className="h-5 w-5" />
-              <ShowIf condition={cartCount > 0}>
+              {cartCount > 0 && (
                 <span className="absolute -right-1 -top-1 grid h-5 w-5 place-items-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
                   {cartCount}
                 </span>
-              </ShowIf>
+              )}
             </Link>
           </Button>
           <Button
