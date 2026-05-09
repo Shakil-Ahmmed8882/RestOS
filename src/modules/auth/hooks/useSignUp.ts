@@ -41,10 +41,10 @@ export function useSignUp() {
       photo: photoFile || undefined,
     });
 
-    if (result.success) {
+    if (result && result.success) {
       toast.success(`Welcome to RestOS, ${data.name}! 🎉`);
     } else {
-      toast.error(result.error);
+      toast.error(result?.error || "Failed to register");
     }
   };
 

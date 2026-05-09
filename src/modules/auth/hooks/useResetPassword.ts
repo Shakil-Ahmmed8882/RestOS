@@ -55,12 +55,12 @@ export function useResetPassword() {
       userId,
     });
 
-    if (result.success) {
+    if (result && result.success) {
       setSuccess(true);
       toast.success("Password reset successfully!");
       setTimeout(() => router.push("/"), 2000);
     } else {
-      toast.error(result.error);
+      toast.error(result?.error || "Failed to reset password");
     }
   };
 
