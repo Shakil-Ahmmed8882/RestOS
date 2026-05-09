@@ -4,11 +4,11 @@
 // Shows a "Cost Breakdown by Roles" card matching the Figma reference,
 // plus a couple of variant cards to prove the component is fully configurable.
 
-// import {
-// 	DonutBreakdownChart,
-// 	type DonutSlice,
-// 	type SliceStyleMap,
-// } from "@/components/reusable-ui-blocks/charts/donut-breakdown-chart";
+import {
+	DonutBreakdownChart,
+	type DonutSlice,
+	type SliceStyleMap,
+} from "@/components/rest-os-ui/charts/donut-breakdown-chart";
 
 // Slice ids — using a string union keeps the `styles` map fully type-safe:
 // TypeScript will error if a key is missing or unknown.
