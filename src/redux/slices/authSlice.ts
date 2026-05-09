@@ -4,16 +4,17 @@ export interface AuthUser {
   id: string;
   email: string;
   name?: string;
-  role?: "admin" | "user";
+  role?: "ADMIN" | "USER";
   photoURL?: string | null;
 }
 
 interface AuthState {
   user: AuthUser | null;
   token: string | null;
+  refreshToken: string | null;
 }
 
-const initialState: AuthState = { user: null, token: null };
+const initialState: AuthState = { user: null, token: null, refreshToken: null };
 
 export const authSlice = createSlice({
   name: "auth",
@@ -21,14 +22,16 @@ export const authSlice = createSlice({
   reducers: {
     setCredentials: (
       state,
-      action: PayloadAction<{ user: AuthUser; token: string }>,
+      action: PayloadAction<{ user: AuthUser; token: string; refreshToken: string }>,
     ) => {
       state.user = action.payload.user;
       state.token = action.payload.token;
+      state.refreshToken = action.payload.refreshToken;
     },
     clearCredentials: (state) => {
       state.user = null;
       state.token = null;
+      state.refreshToken = null;
     },
   },
 });

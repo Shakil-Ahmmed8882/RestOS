@@ -3,15 +3,23 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { useAppDispatch } from "@/redux/hooks";
-import { setCredentials, type AuthUser } from "@/redux/slices/authSlice";
+import { setCredentials, clearCredentials, type AuthUser } from "@/redux/slices/authSlice";
 import { useLoginUserMutation, useRegisterUserMutation } from "@/redux/featureApi/authApi";
 import { verifyToken } from "@/lib/verifyToken";
 import { USER_ROLE } from "@/constants/roles";
 
 const writeAccessTokenCookie = (token: string) => {
   if (typeof document === "undefined") return;
-  document.cookie = `accessToken=${token}; path=/; max-age=${60 * 60 * 24}`;
-  if (typeof window !== "undefined") window.localStorage.setItem("accessToken", token);
+  const isSecure = typeof window !== "undefined" && window.location.protocol === "https:";
+  document.cookie = [
+    `accessToken=${token}`,
+    "path=/",
+    `max-age=${60 * 60 * 24}`,
+    "SameSite=Strict",
+    isSecure ? "Secure" : "",
+  ]
+    .filter(Boolean)
+    .join("; ");
 };
 
 export function useAuthFlow() {
@@ -21,8 +29,8 @@ export function useAuthFlow() {
   const [loginUser] = useLoginUserMutation();
   const [registerUser] = useRegisterUserMutation();
 
-  const finalize = (user: AuthUser, token: string) => {
-    dispatch(setCredentials({ user, token }));
+  const finalize = (user: AuthUser, token: string, refreshToken = "") => {
+    dispatch(setCredentials({ user, token, refreshToken }));
     writeAccessTokenCookie(token);
     const redirect = params.get("redirect");
     const target = redirect ?? `/${user.role === USER_ROLE.ADMIN ? "admin" : "user"}/dashboard`;
@@ -31,16 +39,17 @@ export function useAuthFlow() {
 
   const tryBackendLogin = async (
     payload: { name: string; email: string },
-  ): Promise<{ token: string; user: AuthUser } | null> => {
+  ): Promise<{ token: string; refreshToken: string; user: AuthUser } | null> => {
     if (!process.env.NEXT_PUBLIC_API_BASE_URL) return null;
     try {
       const res: any = await loginUser(payload as any);
       if (res?.data?.success) {
-        const { accessToken } = res.data.data;
+        const { accessToken, refreshToken } = res.data.data;
         const decoded = verifyToken(accessToken);
         if (decoded) {
           return {
             token: accessToken,
+            refreshToken: refreshToken ?? "",
             user: {
               id: decoded.userId,
               email: decoded.email,
@@ -61,7 +70,7 @@ export function useAuthFlow() {
     const toastId = toast.loading(`Signing in as ${demo.name}…`);
     const synced = await tryBackendLogin({ name: demo.name, email: demo.email });
     if (synced) {
-      finalize(synced.user, synced.token);
+      finalize(synced.user, synced.token, synced.refreshToken);
       toast.success(`Welcome, ${demo.name}!`, { id: toastId });
       return;
     }
@@ -77,14 +86,15 @@ export function useAuthFlow() {
     email: string;
     password: string;
     photo?: string;
-  }): Promise<{ token: string; user: AuthUser } | null> => {
+  }): Promise<{ token: string; refreshToken: string; user: AuthUser } | null> => {
     if (!process.env.NEXT_PUBLIC_API_BASE_URL) return null;
     try {
       const res: any = await registerUser(payload as any);
       if (res?.data?.success) {
-        const { accessToken, user } = res.data.data;
+        const { accessToken, refreshToken, user } = res.data.data;
         return {
           token: accessToken,
+          refreshToken: refreshToken ?? "",
           user: {
             id: user._id ?? user.id ?? user.email,
             email: user.email,

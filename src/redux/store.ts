@@ -1,5 +1,17 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+  createTransform,
+} from "redux-persist";
+import storage from "redux-persist/lib/storage";
 import { baseApi } from "@/redux/featureApi/baseApi";
 import authReducer from "@/redux/slices/authSlice";
 import cartReducer from "@/redux/slices/cartSlice";
@@ -19,15 +31,47 @@ import "@/redux/featureApi/searchApi";
 import "@/redux/featureApi/analyticsApi";
 import "@/redux/featureApi/profileApi";
 
-export const makeStore = () =>
-  configureStore({
-    reducer: {
-      [baseApi.reducerPath]: baseApi.reducer,
-      auth: authReducer,
-      cart: cartReducer,
-    },
-    middleware: (getDefault) => getDefault().concat(baseApi.middleware),
+// Obfuscation transform — tokens are base64-encoded at rest in localStorage.
+// For production apps that require stronger guarantees, replace with AES encryption.
+const authEncryptTransform = createTransform(
+  (inboundState) => btoa(unescape(encodeURIComponent(JSON.stringify(inboundState)))),
+  (outboundState: unknown) => {
+    try {
+      return JSON.parse(decodeURIComponent(escape(atob(outboundState as string))));
+    } catch {
+      return null;
+    }
+  },
+  { whitelist: ["auth"] },
+);
+
+const authPersistConfig = {
+  key: "auth",
+  storage,
+  whitelist: ["user", "token", "refreshToken"],
+  transforms: [authEncryptTransform],
+};
+
+const rootReducer = combineReducers({
+  [baseApi.reducerPath]: baseApi.reducer,
+  auth: persistReducer(authPersistConfig, authReducer),
+  cart: cartReducer,
+});
+
+export const makeStore = () => {
+  const store = configureStore({
+    reducer: rootReducer,
+    middleware: (getDefault) =>
+      getDefault({
+        serializableCheck: {
+          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        },
+      }).concat(baseApi.middleware),
   });
+  return store;
+};
+
+export const makePersistor = (store: ReturnType<typeof makeStore>) => persistStore(store);
 
 export type AppStore = ReturnType<typeof makeStore>;
 export type RootState = ReturnType<AppStore["getState"]>;

@@ -81,18 +81,18 @@ export function RelatedFoodCard({ food }: { food: FoodItem }) {
 
           {/* Badges */}
           <div className="absolute left-3 top-3 space-y-2">
-            {food.discountPercent > 0 && (
+            {food?.discountPercent && food.discountPercent > 0 && (
               <Badge variant="destructive" className="text-xs">
                 {food.discountPercent}% OFF
               </Badge>
             )}
-            {food.isVeg && (
+            {food?.isVeg && (
               <Badge className="bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-200 text-xs">
                 <Icon icon="solar:leaf-linear" className="mr-1 h-3 w-3" />
                 Veg
               </Badge>
             )}
-            {food.isSpicy && (
+            {food?.isSpicy && (
               <Badge className="bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-200 text-xs">
                 <Icon icon="solar:fire-linear" className="mr-1 h-3 w-3" />
               </Badge>

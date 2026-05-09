@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/redux/hooks";
-import { setCredentials, type AuthUser } from "@/redux/slices/authSlice";
+import { setCredentials, clearCredentials, type AuthUser } from "@/redux/slices/authSlice";
 import {
   useLoginUserMutation,
   useRegisterUserMutation,
@@ -24,41 +24,54 @@ export function useAuth() {
   const [forgotPassword, forgotState] = useForgotPasswordMutation();
   const [resetPassword, resetState] = useResetPasswordMutation();
 
+  // Set access token as a non-httpOnly cookie (required for Next.js middleware) with security flags.
   const writeAccessTokenCookie = (token: string) => {
     if (typeof document === "undefined") return;
-    document.cookie = `accessToken=${token}; path=/; max-age=${60 * 60 * 24}`;
-    if (typeof window !== "undefined") window.localStorage.setItem("accessToken", token);
+    const isSecure = window.location.protocol === "https:";
+    document.cookie = [
+      `accessToken=${token}`,
+      "path=/",
+      `max-age=${60 * 60 * 24}`, // 24 hours
+      "SameSite=Strict",
+      isSecure ? "Secure" : "",
+    ]
+      .filter(Boolean)
+      .join("; ");
+  };
+
+  const clearAccessTokenCookie = () => {
+    if (typeof document === "undefined") return;
+    document.cookie = "accessToken=; path=/; max-age=0; SameSite=Strict";
   };
 
   const getDashboardUrl = (role: string): string => {
     return role === USER_ROLE.ADMIN ? "/admin/dashboard" : "/user/dashboard";
   };
 
-  const handleLoginSuccess = (accessToken: string, name: string) => {
+  const handleAuthSuccess = (accessToken: string, refreshToken: string) => {
     const decoded = verifyToken(accessToken);
-    if (decoded) {
-      const user: AuthUser = {
-        id: decoded.userId,
-        email: decoded.email,
-        name: decoded.name || name,
-        role: decoded.role,
-        photoURL: decoded.photo ?? null,
-      };
-      dispatch(setCredentials({ user, token: accessToken }));
-      writeAccessTokenCookie(accessToken);
-      return user;
-    }
-    return null;
+    if (!decoded) return null;
+
+    const user: AuthUser = {
+      id: decoded.userId,
+      email: decoded.email,
+      name: decoded.name,
+      role: decoded.role as AuthUser["role"],
+      photoURL: decoded.photo ?? null,
+    };
+
+    dispatch(setCredentials({ user, token: accessToken, refreshToken }));
+    writeAccessTokenCookie(accessToken);
+    return user;
   };
 
   return {
-    // Login mutation
     login: async (payload: LoginPayload) => {
       try {
         const response = await loginUser(payload).unwrap();
         if (response.success && response.data.accessToken) {
-          const user = handleLoginSuccess(response.data.accessToken, "");
-          if (user) router.push(getDashboardUrl(user.role));
+          const user = handleAuthSuccess(response.data.accessToken, response.data.refreshToken);
+          if (user) router.push(getDashboardUrl(user.role!));
           return { success: true, data: response.data };
         }
       } catch (error: any) {
@@ -66,13 +79,12 @@ export function useAuth() {
       }
     },
 
-    // Register mutation
     register: async (payload: SignUpPayload) => {
       try {
         const response = await registerUser(payload).unwrap();
-        if (response.success && response.data.accessToken && response.data.user) {
-          const user = handleLoginSuccess(response.data.accessToken, payload.name);
-          if (user) router.push(getDashboardUrl(user.role));
+        if (response.success && response.data.accessToken) {
+          const user = handleAuthSuccess(response.data.accessToken, response.data.refreshToken);
+          if (user) router.push(getDashboardUrl(user.role!));
           return { success: true, data: response.data };
         }
       } catch (error: any) {
@@ -80,31 +92,30 @@ export function useAuth() {
       }
     },
 
-    // Forgot password mutation
     requestPasswordReset: async (payload: ForgotPasswordPayload) => {
       try {
         const response = await forgotPassword(payload).unwrap();
-        if (response.success) {
-          return { success: true, email: payload.email };
-        }
+        if (response.success) return { success: true, email: payload.email };
       } catch (error: any) {
         return { success: false, error: error?.data?.message || error?.message || "Request failed" };
       }
     },
 
-    // Reset password mutation
     resetUserPassword: async (payload: ResetPasswordPayload) => {
       try {
         const response = await resetPassword(payload).unwrap();
-        if (response.success) {
-          return { success: true };
-        }
+        if (response.success) return { success: true };
       } catch (error: any) {
         return { success: false, error: error?.data?.message || error?.message || "Reset failed" };
       }
     },
 
-    // Loading states
+    logout: () => {
+      dispatch(clearCredentials());
+      clearAccessTokenCookie();
+      router.push("/");
+    },
+
     isLoading: loginState.isLoading || registerState.isLoading || forgotState.isLoading || resetState.isLoading,
     loginLoading: loginState.isLoading,
     registerLoading: registerState.isLoading,
