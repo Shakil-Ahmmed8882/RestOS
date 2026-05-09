@@ -26,20 +26,17 @@ export function DeleteConfirmModal(props: DeleteShiftScheduleProps) {
 		onClose,
 		open = true,
 	} = props;
+	// TODO: Implement GenericModalWrapper component
+	if (!open) return null;
 	return (
-		<GenericModalWrapper open={open} onOpenChange={onClose}>
-			<GenericModalWrapper.Content className="!max-w-[510px]">
+		<div className="fixed inset-0 bg-black/50 flex items-center justify-center">
+			<div className="bg-white rounded-lg p-6 max-w-[510px] w-full mx-4">
 				<div className="flex flex-col gap-6 justify-center w-full text-center">
 					{/* Title + description */}
 					<div className="flex flex-col gap-2 w-full">
-						<Heading
-							as="h2"
-							align="center"
-							weight="bold"
-							className="font-proxima-nova !text-[40px] !leading-[1.2] text-[#141414]"
-						>
+						<h2 className="font-proxima-nova text-[40px] leading-[1.2] text-[#141414] font-bold">
 							{title}
-						</Heading>
+						</h2>
 						<p className="font-proxima-nova text-base leading-6 text-[#666] text-center w-full">
 							{message}
 						</p>
@@ -47,32 +44,23 @@ export function DeleteConfirmModal(props: DeleteShiftScheduleProps) {
 
 					{/* Buttons */}
 					<div className="flex gap-6 w-full">
-						<BaseButton
-							intent="bordered"
-							fullWidth
-							shape="round"
-							size="lg"
-							className="!py-4 font-proxima-nova font-semibold"
+						<button
+							className="flex-1 border border-[#141414] rounded-full py-4 font-proxima-nova font-semibold disabled:opacity-50"
 							onClick={onConfirm}
-							isLoading={loading}
 							disabled={loading}
 						>
 							{confirmLabel}
-						</BaseButton>
+						</button>
 
-						<BaseButton
-							intent="primary"
-							fullWidth
-							shape="round"
-							size="lg"
-							className="!py-4 font-proxima-nova font-semibold"
+						<button
+							className="flex-1 bg-primary text-white rounded-full py-4 font-proxima-nova font-semibold"
 							onClick={onClose}
 						>
 							{cancelLabel}
-						</BaseButton>
+						</button>
 					</div>
 				</div>
-			</GenericModalWrapper.Content>
-		</GenericModalWrapper>
+			</div>
+		</div>
 	);
 }
