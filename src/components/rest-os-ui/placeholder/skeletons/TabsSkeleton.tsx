@@ -1,7 +1,7 @@
 // ============================================
 // TABS SKELETON
 
-import { HorizontalScroller } from "../../../ui/HorizontalScroller";
+// import { HorizontalScroller } from "../../../ui/HorizontalScroller";
 import { BaseSkeleton } from "./BaseSkeleton";
 import { ParagraphSkeleton } from "./ParagraphSkeleton";
 
@@ -16,7 +16,7 @@ export function TabsSkeleton({
 	className?: string;
 }) {
 	return (
-		<HorizontalScroller>
+		<div>
 			{/* <Frame className="space-y-4 w-full !py-0 !pb-2 !border-none rounded-lg"> */}
 			<div className="flex items-center  gap-3  overflow-x-hidden ">
 				{Array.from({ length: count }).map((_, i) => (
@@ -27,6 +27,6 @@ export function TabsSkeleton({
 			{/* Tab Content */}
 			{paragraph && <ParagraphSkeleton lines={3} />}
 			{/* </Frame> */}
-		</HorizontalScroller>
+		</div>
 	);
 }

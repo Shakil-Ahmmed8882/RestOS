@@ -29,7 +29,7 @@ export const TabsItem = React.forwardRef<HTMLDivElement, TabsItemProps>((props, 
 				if (tabValue === "all") return ["all"];
 				const filtered = activeTabs.includes("all") ? [] : activeTabs;
 				if (filtered.includes(tabValue)) {
-					const next = filtered.filter((t) => t !== tabValue);
+					const next = filtered.filter((t: string) => t !== tabValue);
 					return next.length === 0 ? activeTabs : next;
 				}
 				return [...filtered, tabValue];
@@ -40,7 +40,7 @@ export const TabsItem = React.forwardRef<HTMLDivElement, TabsItemProps>((props, 
 		})();
 
 		// nothing changed — skip state churn and the onClick callback
-		if (newTabs.length === activeTabs.length && newTabs.every((t, i) => t === activeTabs[i])) {
+		if (newTabs.length === activeTabs.length && newTabs.every((t: string, i: number) => t === activeTabs[i])) {
 			return;
 		}
 

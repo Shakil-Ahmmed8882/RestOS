@@ -1,13 +1,15 @@
 "use client";
 
-import { makeSelectorContext } from "@/modules/shared/context/makeSelectorContext";
-import { useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { TabsItem } from "./TabItem";
 import { TabsContextType, TabsProps, TabsProviderProps } from "./tabs.type";
 import { TabsSkeleton } from "../placeholder/skeletons/TabsSkeleton";
-import { useContextSelector } from "@/components/reusable-ui-blocks/shared-context/useContextSelector";
 
-export const { Context, Provider } = makeSelectorContext<TabsContextType>("Tabs");
+export const Context = createContext<TabsContextType | undefined>(undefined);
+
+function Provider({ value, children }: { value: TabsContextType; children: React.ReactNode }) {
+	return <Context.Provider value={value}>{children}</Context.Provider>;
+}
 
 // -------------------------------
 // TabsProvider with controlled/uncontrolled support
@@ -54,7 +56,13 @@ export const Tabs = ({ loading = false, children, ...rest }: TabsProps) => {
 // return UI & States
 // -------------------------------
 Tabs.Item = TabsItem;
-export const useTabs = () => useContextSelector(Context, "Tabs", (ctx) => ctx);
+export const useTabs = () => {
+	const context = useContext(Context);
+	if (!context) {
+		throw new Error("useTabs must be used within TabsProvider");
+	}
+	return context;
+};
 
 /* ============================ HOW TO USE ============================
 

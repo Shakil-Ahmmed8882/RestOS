@@ -9,6 +9,8 @@ import { CardSkeletonV2List } from "./CardSkeletons";
 import { cn } from "@/lib/utils";
 // import { TCommonProps } from "@/types/global.type";
 
+type TCommonProps = { className?: string };
+
 // ============================================
 // AVATAR SKELETON
 // ============================================
