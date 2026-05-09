@@ -1,0 +1,268 @@
+"use client";
+
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import { Icon } from "@iconify/react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { useTheme } from "next-themes";
+import { Button } from "@/components/ui/button";
+import { Container } from "@/components/layouts/Container";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { clearCredentials } from "@/redux/slices/authSlice";
+import { ShowIf } from "@/components/common/ShowIf";
+import { USER_ROLE } from "@/constants/roles";
+import { signOutFirebase } from "@/modules/auth/services/firebase-auth.service";
+import { cn } from "@/lib/utils";
+import { useMultipageModalSelector } from "@/components/rest-os-ui/modal/multipage-modal/provider/MultipageModalContext";
+
+const NAV = [
+  { label: "Home", href: "/" },
+  // { label: "Food", href: "/food" },
+  { label: "Blog", href: "/blog" },
+  // { label: "Recipes", href: "/recipe/new" },
+  // { label: "FAQ", href: "/faq" },
+];
+
+export function PublicHeader() {
+  const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((s) => s.auth.user);
+  const cartCount = useAppSelector((s) =>
+    s.cart.items.reduce((n, i) => n + i.quantity, 0),
+  );
+  const { theme, setTheme } = useTheme();
+  const { goTo } = useMultipageModalSelector();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await signOutFirebase();
+    } catch {
+      /* ignore */
+    }
+    dispatch(clearCredentials());
+    if (typeof document !== "undefined") {
+      document.cookie = "accessToken=; path=/; max-age=0";
+      window.localStorage.removeItem("accessToken");
+    }
+    router.push("/");
+  };
+
+  const dashboardHref =
+    user?.role === USER_ROLE.ADMIN ? "/admin/dashboard" : "/user/dashboard";
+  return (
+    <header className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800/60 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/70">
+      <div className="flex h-16 items-center justify-between gap-4">
+       <Logo/>
+
+        <nav className="hidden items-center gap-6 md:flex">
+          {NAV.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
+                "text-sm font-medium transition-colors hover:text-foreground",
+                pathname === item.href
+                  ? "text-foreground"
+                  : "text-muted-foreground",
+              )}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="flex items-center gap-2">
+          <Button asChild variant="ghost" size="icon" aria-label="Search">
+            <Link href="/menu">
+              <Icon icon="solar:magnifer-linear" className="h-5 w-5" />
+            </Link>
+          </Button>
+          <Button
+            asChild
+            variant="ghost"
+            size="icon"
+            aria-label="Cart"
+            className="relative"
+          >
+            <Link href="/cart">
+              <Icon icon="solar:bag-3-linear" className="h-5 w-5" />
+              {cartCount > 0 && (
+                <span className="absolute -right-1 -top-1 grid h-5 w-5 place-items-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+          </Button>
+          {mounted && (
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Toggle theme"
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            >
+              <Icon
+                icon={theme === "dark" ? "solar:sun-linear" : "solar:moon-linear"}
+                className="h-5 w-5"
+              />
+            </Button>
+          )}
+
+          <ShowIf
+            condition={!!user}
+            fallback={
+              <div className="hidden gap-2 sm:flex">
+                <Button
+                  onClick={() => goTo("sign-in")}
+                  variant="ghost"
+                  size="sm"
+                  className="flex-1"
+                >
+                  Sign in
+                </Button>
+                <Button
+                  onClick={() => goTo("sign-up")}
+                  size="sm"
+                  className="flex-1"
+                >
+                  Sign up
+                </Button>
+              </div>
+            }
+          >
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="rounded-full focus:outline-none focus:ring-2 focus:ring-ring">
+                  <Avatar className="h-9 w-9">
+                    <AvatarImage
+                      src={user?.photoURL ?? undefined}
+                      alt={user?.name ?? "user"}
+                    />
+                    <AvatarFallback>
+                      {user?.name?.[0]?.toUpperCase() ?? "U"}
+                    </AvatarFallback>
+                  </Avatar>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 border-none bg-white dark:bg-black">
+                <DropdownMenuLabel className="space-y-0.5">
+                  <p className="text-sm font-semibold">
+                    {user?.name ?? "Account"}
+                  </p>
+                  <p className="truncate text-xs text-muted-foreground">
+                    {user?.email}
+                  </p>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {/* <DropdownMenuItem className="cursor-pointer" onClick={() => router.push(dashboardHref)}>
+                  <Icon icon="solar:widget-linear" className="mr-2 h-4 w-4" />{" "}
+                  Dashboard
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer"
+                  onClick={() => router.push("/user/dashboard/profile")}
+                >
+                  <Icon icon="solar:user-linear" className="mr-2 h-4 w-4" />{" "}
+                  Profile
+                </DropdownMenuItem> */}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
+                  <Icon icon="solar:logout-2-linear" className="mr-2 h-4 w-4" />{" "}
+                  Sign out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </ShowIf>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            onClick={() => setOpen((v) => !v)}
+            aria-label="Menu"
+          >
+            <Icon
+              icon={
+                open
+                  ? "solar:close-circle-linear"
+                  : "solar:hamburger-menu-linear"
+              }
+              className="h-5 w-5"
+                  />
+          </Button>
+        </div>
+      </div>
+      <AnimatePresence>
+        {open && (
+          <motion.nav
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="overflow-hidden border-t border-gray-200 dark:border-gray-800/60 bg-background md:hidden"
+          >
+            <Container className="flex flex-col gap-1 py-3">
+              {NAV.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className="rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent"
+                >
+                  {item.label}
+                </Link>
+              ))}
+              <ShowIf condition={!user}>
+                <div className="mt-2 flex gap-2 pt-2">
+                  <Button
+                    onClick={() => goTo("sign-in")}
+                    variant="ghost"
+                    size="sm"
+                    className="flex-1"
+                  >
+                    Sign in
+                  </Button>
+                  <Button
+                    onClick={() => goTo("sign-up")}
+                    size="sm"
+                    className="flex-1"
+                  >
+                    Sign up
+                  </Button>
+                </div>
+              </ShowIf>
+            </Container>
+                
+          </motion.nav>
+        )}
+      </AnimatePresence>
+    </header>
+  );
+}
+
+
+
+export const Logo = () => {
+  return (
+     <Link href="/" className="flex items-center gap-2">
+          <span className="grid h-7 w-7 p-1 place-items-center rounded-full bg-primary text-white">
+            <Icon icon="solar:chef-hat-bold-duotone" className="h-5 w-5" />
+          </span>
+          <span className="text-lg font-semibold tracking-tight">RestOS</span>
+        </Link>
+  )
+}

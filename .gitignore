@@ -13,6 +13,10 @@ dist
 .env.local
 dist-ssr
 *.local
+.next
+out
+*.tsbuildinfo
+next-env.d.ts
 .test.tsx
 inpiration.js
 
@@ -28,3 +32,4 @@ inpiration.js
 *.sw?
 .vercel
 .env*.local
+.claude

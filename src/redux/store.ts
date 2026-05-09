@@ -1,26 +1,5 @@
-import { configureStore } from "@reduxjs/toolkit";
-
-// api
-import { baseApi } from "./api/baseApi";
-import foodApi from "./features/food/food.api";
-import userApi from "./features/user/userApi";
-import orderApi from "./features/order/orderApi";
-import commentApi from "./features/comment/comment.api";
-import replyApi from "./features/reply/reply.api";
-import voteApi from "./features/vote/vote.api";
-import saveBlogApi from "./features/save/save.blog.api";
-import profileApi from "./features/profile/profile.api";
-import searchApi from "./features/search/search.api";
-import authApi from "./features/auth/auth.api";
-
-// Reducer
-import menuReducer from "./features/global/menuSlice";
-import cartReducer from "./features/global/cartSlice";
-import authReducer from "./features/auth/auth.slice";
-import commentReducer from "./features/comment/comment.slice";
-import profileReducer from "./features/profile/profile.slice";
-
-// redux persisi
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import { setupListeners } from "@reduxjs/toolkit/query";
 import {
   persistStore,
   persistReducer,
@@ -30,49 +9,72 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
+  createTransform,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import { baseApi } from "@/redux/featureApi/baseApi";
+import authReducer from "@/redux/slices/authSlice";
+import cartReducer from "@/redux/slices/cartSlice";
 
-const persistConfig = {
+import "@/redux/featureApi/authApi";
+import "@/redux/featureApi/userApi";
+import "@/redux/featureApi/foodApi";
+import "@/redux/featureApi/foodCategoryApi";
+import "@/redux/featureApi/orderApi";
+import "@/redux/featureApi/blogApi";
+import "@/redux/featureApi/commentApi";
+import "@/redux/featureApi/replyApi";
+import "@/redux/featureApi/recipeApi";
+import "@/redux/featureApi/voteApi";
+import "@/redux/featureApi/saveApi";
+import "@/redux/featureApi/searchApi";
+import "@/redux/featureApi/analyticsApi";
+import "@/redux/featureApi/profileApi";
+
+// Obfuscation transform — tokens are base64-encoded at rest in localStorage.
+// For production apps that require stronger guarantees, replace with AES encryption.
+const authEncryptTransform = createTransform(
+  (inboundState) => btoa(unescape(encodeURIComponent(JSON.stringify(inboundState)))),
+  (outboundState: unknown) => {
+    try {
+      return JSON.parse(decodeURIComponent(escape(atob(outboundState as string))));
+    } catch {
+      return null;
+    }
+  },
+  { whitelist: ["auth"] },
+);
+
+const authPersistConfig = {
   key: "auth",
   storage,
+  whitelist: ["user", "token", "refreshToken"],
+  transforms: [authEncryptTransform],
 };
 
-const persistAuthReducer = persistReducer(persistConfig, authReducer);
-
-export const store = configureStore({
-  reducer: {
-    [baseApi.reducerPath]: baseApi.reducer,
-    menu: menuReducer,
-    comment: commentReducer,
-    profile: profileReducer,
-    auth: persistAuthReducer,
-    cart: cartReducer,
-  },
-
-  // APIs Middleware connection ...
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }).concat(
-      foodApi.middleware,
-      userApi.middleware,
-      orderApi.middleware,
-      commentApi.middleware,
-      replyApi.middleware,
-      voteApi.middleware,
-      saveBlogApi.middleware,
-      profileApi.middleware,
-      searchApi.middleware,
-      authApi.middleware
-    ),
+const rootReducer = combineReducers({
+  [baseApi.reducerPath]: baseApi.reducer,
+  auth: persistReducer(authPersistConfig, authReducer),
+  cart: cartReducer,
 });
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-export type AppDispatch = typeof store.dispatch;
+export const makeStore = () => {
+  const store = configureStore({
+    reducer: rootReducer,
+    middleware: (getDefault) =>
+      getDefault({
+        serializableCheck: {
+          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        },
+      }).concat(baseApi.middleware),
+  });
+  return store;
+};
 
-export const persistor = persistStore(store);
+export const makePersistor = (store: ReturnType<typeof makeStore>) => persistStore(store);
+
+export type AppStore = ReturnType<typeof makeStore>;
+export type RootState = ReturnType<AppStore["getState"]>;
+export type AppDispatch = AppStore["dispatch"];
+
+export const setupStoreListeners = setupListeners;
