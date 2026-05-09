@@ -28,7 +28,7 @@ export function useForgotPassword() {
   const onSubmit = async (data: ForgotPasswordInput) => {
     const result = await requestPasswordReset({ email: data.email });
 
-    if (result && result.success) {
+    if (result && result.success && result.email) {
       setSuccessEmail(result.email);
       toast.success("Reset link sent!");
     } else {
