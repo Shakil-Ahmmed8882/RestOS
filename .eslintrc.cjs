@@ -21,7 +21,11 @@ module.exports = {
   rules: {
     'react-refresh/only-export-components': 'off',
     '@typescript-eslint/no-unused-vars': 'warn',
+    '@typescript-eslint/no-explicit-any': 'warn',
+    '@typescript-eslint/ban-ts-comment': 'warn',
     'react/display-name': 'off',
     'react/prop-types': 'off',
+    'react/jsx-no-undef': 'warn',
+    '@next/next/no-img-element': 'warn',
   },
 }
