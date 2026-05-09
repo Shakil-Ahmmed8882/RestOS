@@ -28,11 +28,11 @@ export function useForgotPassword() {
   const onSubmit = async (data: ForgotPasswordInput) => {
     const result = await requestPasswordReset({ email: data.email });
 
-    if (result.success) {
+    if (result && result.success) {
       setSuccessEmail(result.email);
       toast.success("Reset link sent!");
     } else {
-      toast.error(result.error);
+      toast.error(result?.error || "Failed to send reset link");
     }
   };
 
