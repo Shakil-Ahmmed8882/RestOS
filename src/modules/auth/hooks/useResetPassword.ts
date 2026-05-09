@@ -58,7 +58,7 @@ export function useResetPassword() {
     if (result.success) {
       setSuccess(true);
       toast.success("Password reset successfully!");
-      setTimeout(() => router.push("/sign-in"), 2000);
+      setTimeout(() => router.push("/"), 2000);
     } else {
       toast.error(result.error);
     }

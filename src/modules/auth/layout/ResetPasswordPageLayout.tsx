@@ -7,7 +7,6 @@ export function ResetPasswordPageLayout() {
       <div className="flex w-full items-center justify-center md:w-1/2">
         <ResetPasswordForm />
       </div>
-      
     </div>
   );
 }

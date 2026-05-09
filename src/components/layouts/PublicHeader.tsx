@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
@@ -23,11 +23,7 @@ import { ShowIf } from "@/components/common/ShowIf";
 import { USER_ROLE } from "@/constants/roles";
 import { signOutFirebase } from "@/modules/auth/services/firebase-auth.service";
 import { cn } from "@/lib/utils";
-import { MultipageModal } from "../rest-os-ui/modal/multipage-modal/MultipageModal";
-
-import { SignInForm } from "@/modules/auth/sections/sign-in/SignInForm";
-import { SignUpForm } from "@/modules/auth/sections/sign-up/SignUpForm";
-import { ForgotPasswordForm } from "@/modules/auth/sections/forgot-password/ForgotPasswordForm";
+import { useMultipageModalSelector } from "@/components/rest-os-ui/modal/multipage-modal/provider/MultipageModalContext";
 
 const NAV = [
   { label: "Home", href: "/" },
@@ -39,6 +35,7 @@ const NAV = [
 
 export function PublicHeader() {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -47,6 +44,11 @@ export function PublicHeader() {
     s.cart.items.reduce((n, i) => n + i.quantity, 0),
   );
   const { theme, setTheme } = useTheme();
+  const { goTo } = useMultipageModalSelector();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -64,11 +66,6 @@ export function PublicHeader() {
 
   const dashboardHref =
     user?.role === USER_ROLE.ADMIN ? "/admin/dashboard" : "/user/dashboard";
-
-
-    
-    const [openAuthModal, setOpenAuthModal] = useState(false);
-    const [initialAuthPage, setInitialAuthPage] = useState<"sign-in" | "sign-up">("sign-in");
   return (
     <header className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800/60 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/70">
       <div className="flex h-16 items-center justify-between gap-4">
@@ -118,27 +115,26 @@ export function PublicHeader() {
               )}
             </Link>
           </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label="Toggle theme"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          >
-            <Icon
-              icon={theme === "dark" ? "solar:sun-linear" : "solar:moon-linear"}
-              className="h-5 w-5"
-            />
-          </Button>
+          {mounted && (
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Toggle theme"
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            >
+              <Icon
+                icon={theme === "dark" ? "solar:sun-linear" : "solar:moon-linear"}
+                className="h-5 w-5"
+              />
+            </Button>
+          )}
 
           <ShowIf
             condition={!!user}
             fallback={
               <div className="hidden gap-2 sm:flex">
                 <Button
-                  onClick={() => {
-                    setInitialAuthPage("sign-in");
-                    setOpenAuthModal(true);
-                  }}
+                  onClick={() => goTo("sign-in")}
                   variant="ghost"
                   size="sm"
                   className="flex-1"
@@ -146,10 +142,7 @@ export function PublicHeader() {
                   Sign in
                 </Button>
                 <Button
-                  onClick={() => {
-                    setInitialAuthPage("sign-up");
-                    setOpenAuthModal(true);
-                  }}
+                  onClick={() => goTo("sign-up")}
                   size="sm"
                   className="flex-1"
                 >
@@ -219,21 +212,6 @@ export function PublicHeader() {
           </Button>
         </div>
       </div>
-      <MultipageModal
-        open={openAuthModal}
-        onOpenChange={setOpenAuthModal}
-        initialPageId={initialAuthPage}
-      >
-        <MultipageModal.Page id="sign-in">
-          <SignInForm />
-        </MultipageModal.Page>
-        <MultipageModal.Page id="sign-up">
-          <SignUpForm />
-        </MultipageModal.Page>
-        <MultipageModal.Page id="forgot-password">
-          <ForgotPasswordForm />
-        </MultipageModal.Page>
-      </MultipageModal>
       <AnimatePresence>
         {open && (
           <motion.nav
@@ -255,27 +233,21 @@ export function PublicHeader() {
               ))}
               <ShowIf condition={!user}>
                 <div className="mt-2 flex gap-2 pt-2">
-                   <Button
-                  onClick={() => {
-                    setInitialAuthPage("sign-in");
-                    setOpenAuthModal(true);
-                  }}
-                  variant="ghost"
-                  size="sm"
-                  className="flex-1"
-                >
-                  Sign in
-                </Button>
-                <Button
-                  onClick={() => {
-                    setInitialAuthPage("sign-up");
-                    setOpenAuthModal(true);
-                  }}
-                  size="sm"
-                  className="flex-1"
-                >
-                  Sign up
-                </Button>
+                  <Button
+                    onClick={() => goTo("sign-in")}
+                    variant="ghost"
+                    size="sm"
+                    className="flex-1"
+                  >
+                    Sign in
+                  </Button>
+                  <Button
+                    onClick={() => goTo("sign-up")}
+                    size="sm"
+                    className="flex-1"
+                  >
+                    Sign up
+                  </Button>
                 </div>
               </ShowIf>
             </Container>

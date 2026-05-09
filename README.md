@@ -1,3 +1,4 @@
+
 # RestOS
 
 **REST OS** (Restored Operating System) is a comprehensive platform designed for restaurant management and customer engagement. It includes user-facing features like browsing, ordering, and reviewing food items, as well as an admin panel for managing orders, users, and content. This documentation provides a clear breakdown of all features, routes, and user flows in the system, supporting efficient navigation, development, and future expansion.

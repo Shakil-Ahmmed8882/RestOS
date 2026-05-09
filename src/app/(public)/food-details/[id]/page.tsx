@@ -1,5 +1,5 @@
-import { FoodDetailsSection } from "@/modules/food/sections/food-details/FoodDetailsSection";
+import { FoodDetailsHomeLayout } from "@/modules/food/FoodDetailsHomeLayout";
 
 export default function Page({ params }: { params: { id: string } }) {
-  return <FoodDetailsSection id={params.id} />;
+  return <FoodDetailsHomeLayout id={params.id} />;
 }

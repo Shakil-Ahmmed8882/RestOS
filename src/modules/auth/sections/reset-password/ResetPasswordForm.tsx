@@ -1,5 +1,7 @@
 "use client";
 
+
+
 import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button";
@@ -9,7 +11,21 @@ import { ShowIf } from "@/components/common/ShowIf";
 import { useResetPassword } from "@/modules/auth/hooks/useResetPassword";
 
 export function ResetPasswordForm() {
-  const { register, handleSubmit, errors, showPassword, setShowPassword, showConfirm, setShowConfirm, success, onSubmit, resetLoading } = useResetPassword();
+
+
+  const { 
+    register, 
+    handleSubmit, 
+    errors, 
+    showPassword, 
+    setShowPassword, 
+    showConfirm, 
+    setShowConfirm, 
+    success, 
+    onSubmit, 
+    resetLoading 
+  } = useResetPassword();
+
 
   if (success) {
     return (

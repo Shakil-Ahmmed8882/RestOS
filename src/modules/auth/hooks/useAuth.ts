@@ -14,6 +14,7 @@ import {
   type ResetPasswordPayload,
 } from "@/redux/featureApi/authApi";
 import { verifyToken } from "@/lib/verifyToken";
+import { USER_ROLE } from "@/constants/roles";
 
 export function useAuth() {
   const router = useRouter();
@@ -27,6 +28,10 @@ export function useAuth() {
     if (typeof document === "undefined") return;
     document.cookie = `accessToken=${token}; path=/; max-age=${60 * 60 * 24}`;
     if (typeof window !== "undefined") window.localStorage.setItem("accessToken", token);
+  };
+
+  const getDashboardUrl = (role: string): string => {
+    return role === USER_ROLE.ADMIN ? "/admin/dashboard" : "/user/dashboard";
   };
 
   const handleLoginSuccess = (accessToken: string, name: string) => {
@@ -53,7 +58,7 @@ export function useAuth() {
         const response = await loginUser(payload).unwrap();
         if (response.success && response.data.accessToken) {
           const user = handleLoginSuccess(response.data.accessToken, "");
-          if (user) router.push("/user/dashboard");
+          if (user) router.push(getDashboardUrl(user.role));
           return { success: true, data: response.data };
         }
       } catch (error: any) {
@@ -67,7 +72,7 @@ export function useAuth() {
         const response = await registerUser(payload).unwrap();
         if (response.success && response.data.accessToken && response.data.user) {
           const user = handleLoginSuccess(response.data.accessToken, payload.name);
-          if (user) router.push("/user/dashboard");
+          if (user) router.push(getDashboardUrl(user.role));
           return { success: true, data: response.data };
         }
       } catch (error: any) {

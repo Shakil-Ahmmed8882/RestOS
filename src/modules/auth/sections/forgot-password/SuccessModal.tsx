@@ -41,10 +41,10 @@ export function SuccessAuthModal({ email, onClose }: SuccessModalProps) {
         </p>
       </div>
 
-      <div className="space-y-3 bg-green-400 dark:bg-green-950 rounded-lg p-4 ">
-        <p className=" font-medium text-primary dark:text-green-400">💡 Pro tip:</p>
-        <p className=" leading-loose text-green-400 dark:text-green-400">
-          If you don&apos;t see the email, please check your <b>spam</b> or <b>junk</b> folder. <br/> Sometimes reset emails end up there!
+      <div className="space-y-3 bg-green-50 dark:bg-green-950 rounded-lg p-4 ">
+        <p className=" font-medium  dark:text-green-400">💡 Pro tip:</p>
+        <p className="  text-green-500 dark:text-green-400">
+          If you don&apos;t see the email, please check your <b className="font-bold text-black">spam</b> or <b className="font-bold text-black">junk</b> folder. <br/> Sometimes reset emails end up there!
         </p>
       </div>
 
@@ -52,8 +52,13 @@ export function SuccessAuthModal({ email, onClose }: SuccessModalProps) {
           The link will expire in 10 minutes for security reasons.
         </p>
       <div className="space-y-3">
-        <Button onClick={() => goBack()} className="w-full rounded-full text-white" size="lg">
-          Back to sign in
+        <Button
+          onClick={() => window.open("https://mail.google.com", "_blank")}
+          className="w-full rounded-full text-white"
+          size="lg"
+        >
+          <Icon icon="solar:mailbox-linear" className="mr-2 h-5 w-5" />
+          Check your email
         </Button>
       </div>
     </motion.div>

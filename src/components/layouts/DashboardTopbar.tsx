@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
@@ -10,10 +11,15 @@ import { clearCredentials } from "@/redux/slices/authSlice";
 import { signOutFirebase } from "@/modules/auth/services/firebase-auth.service";
 
 export function DashboardTopbar({ title }: { title?: string }) {
+  const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
   const user = useAppSelector((s) => s.auth.user);
   const dispatch = useAppDispatch();
   const router = useRouter();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -33,9 +39,11 @@ export function DashboardTopbar({ title }: { title?: string }) {
     <header className="sticky top-0 z-10 flex h-16 items-center justify-between gap-4 border-b border-gray-200 dark:border-gray-800 bg-background/80 px-6 backdrop-blur">
       <h1 className="text-lg font-semibold tracking-tight">{title ?? "Dashboard"}</h1>
       <div className="flex items-center gap-2">
-        <Button variant="ghost" size="icon" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label="Toggle theme">
-          <Icon icon={theme === "dark" ? "solar:sun-linear" : "solar:moon-linear"} className="h-5 w-5" />
-        </Button>
+        {mounted && (
+          <Button variant="ghost" size="icon" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label="Toggle theme">
+            <Icon icon={theme === "dark" ? "solar:sun-linear" : "solar:moon-linear"} className="h-5 w-5" />
+          </Button>
+        )}
         <Button variant="ghost" size="icon" aria-label="Notifications">
           <Icon icon="solar:bell-linear" className="h-5 w-5" />
         </Button>
