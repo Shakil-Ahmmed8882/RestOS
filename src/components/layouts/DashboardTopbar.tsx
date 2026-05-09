@@ -8,10 +8,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { clearCredentials } from "@/redux/slices/authSlice";
-import { signOutFirebase } from "@/modules/auth/services/firebase-auth.service";
+
 
 export function DashboardTopbar({ title }: { title?: string }) {
   const [mounted, setMounted] = useState(false);
+
   const { theme, setTheme } = useTheme();
   const user = useAppSelector((s) => s.auth.user);
   const dispatch = useAppDispatch();
@@ -22,17 +23,14 @@ export function DashboardTopbar({ title }: { title?: string }) {
   }, []);
 
   const handleLogout = async () => {
-    try {
-      await signOutFirebase();
-    } catch {
-      /* ignore */
-    }
+    
     dispatch(clearCredentials());
     if (typeof document !== "undefined") {
       document.cookie = "accessToken=; path=/; max-age=0";
       window.localStorage.removeItem("accessToken");
     }
-    router.push("/sign-in");
+    router.push("/");
+    
   };
 
   return (

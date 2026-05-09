@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Icon } from "@iconify/react";
 import { cn } from "@/lib/utils";
+import { Logo } from "./PublicHeader";
 
 export interface DashboardNavItem {
   label: string;
@@ -27,16 +28,8 @@ export function DashboardSidebar({
 }) {
   const pathname = usePathname();
   return (
-    <aside className="hidden h-screen w-64 shrink-0 flex-col border-r border-gray-200 dark:border-gray-800 bg-card md:flex">
-      <div className="flex h-16 items-center gap-2 border-b border-gray-200 dark:border-gray-800 px-5">
-        <span className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground">
-          <Icon icon="solar:chef-hat-bold-duotone" className="h-5 w-5" />
-        </span>
-        <div>
-          <p className="text-sm font-bold leading-tight">RestOS</p>
-          <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{brand}</p>
-        </div>
-      </div>
+    <aside className="hidden h-screen sticky top-0 w-64 shrink-0 flex-col border-r border-gray-200 dark:border-gray-800 bg-card md:flex">
+      <Logo/>
 
       <nav className="flex-1 space-y-6 overflow-y-auto px-3 py-5">
         {groups.map((group) => (
@@ -50,7 +43,7 @@ export function DashboardSidebar({
                   href={item.href}
                   className={cn(
                     "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition",
-                    active ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-accent hover:text-foreground",
+                    active ? "bg-primary text-white" : "text-muted-foreground hover:bg-accent hover:text-foreground",
                   )}
                 >
                   <Icon icon={item.icon} className="h-4 w-4" />

@@ -22,7 +22,7 @@ export function DataTable<TData, TValue>({
   const table = useReactTable({ data, columns, getCoreRowModel: getCoreRowModel() });
 
   return (
-    <Card className="overflow-hidden">
+    <Card className="overflow-hidden border dark:border-gray-800 ">
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-muted/40">

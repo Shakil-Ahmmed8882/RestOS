@@ -7,7 +7,7 @@ import { BaseSkeleton } from "./BaseSkeleton";
 
 import { CardSkeletonV2List } from "./CardSkeletons";
 import { cn } from "@/lib/utils";
-import { TCommonProps } from "@/types/global.type";
+// import { TCommonProps } from "@/types/global.type";
 
 // ============================================
 // AVATAR SKELETON

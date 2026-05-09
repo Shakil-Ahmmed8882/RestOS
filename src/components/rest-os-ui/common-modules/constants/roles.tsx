@@ -1,12 +1,12 @@
 import type { ReactNode } from "react";
-import { LayoutGrid } from "lucide-react";
-import { HousekeeperIcon } from "@/components/icon/svg/HousekeeperIcon";
-import { MaintenanceIcon } from "@/components/icon/svg/MaintenanceIcon";
-import { QaIcon } from "@/components/icon/svg/QaIcon";
-import { PoolMaintenanceIcon } from "@/components/icon/svg/PoolMaintenanceIcon";
-import { PestControlIcon } from "@/components/icon/svg/PestControlIcon";
-import { LaundryIcon } from "@/components/icon/svg/LaundryIcon";
-import { FrontDeskIcon } from "@/components/icon/svg/FrontDeskIcon";
+import { LayoutGrid, Briefcase, Wrench, CheckSquare, Droplet, Bug, Shirt, DoorOpen } from "lucide-react";
+// import { HousekeeperIcon } from "@/components/icon/svg/HousekeeperIcon";
+// import { MaintenanceIcon } from "@/components/icon/svg/MaintenanceIcon";
+// import { QaIcon } from "@/components/icon/svg/QaIcon";
+// import { PoolMaintenanceIcon } from "@/components/icon/svg/PoolMaintenanceIcon";
+// import { PestControlIcon } from "@/components/icon/svg/PestControlIcon";
+// import { LaundryIcon } from "@/components/icon/svg/LaundryIcon";
+// import { FrontDeskIcon } from "@/components/icon/svg/FrontDeskIcon";
 
 export const ALL_ID = "all";
 
@@ -31,67 +31,67 @@ export const RolesData: ActivityTab[] = [
 	{
 		id: "manager",
 		value: "Manager",
-		icon: <FrontDeskIcon width={20} height={20} />,
+		icon: <Briefcase size={20} strokeWidth={1.5} />,
 		role: "manager",
 	},
 	{
 		id: "frontDesks",
 		value: "Front Desk",
-		icon: <FrontDeskIcon width={20} height={20} />,
+		icon: <DoorOpen size={20} strokeWidth={1.5} />,
 		role: "front_desk",
 	},
 	{
 		id: "housekeeper",
 		value: "Housekeeper",
-		icon: <HousekeeperIcon width={20} height={20} />,
+		icon: <Briefcase size={20} strokeWidth={1.5} />,
 		role: "housekeeper",
 	},
 	{
 		id: "maintenance",
 		value: "Maintenance",
-		icon: <MaintenanceIcon width={20} height={20} />,
+		icon: <Wrench size={20} strokeWidth={1.5} />,
 		role: "maintenance",
 	},
 	{
 		id: "pip",
 		value: "PIP",
-		icon: <MaintenanceIcon width={20} height={20} />,
+		icon: <Wrench size={20} strokeWidth={1.5} />,
 		role: "pip",
 	},
 	{
 		id: "houseman",
 		value: "Houseman",
-		icon: <HousekeeperIcon width={20} height={20} />,
+		icon: <Briefcase size={20} strokeWidth={1.5} />,
 		role: "houseman",
 	},
 	{
 		id: "qualityAssurance",
 		value: "QA",
-		icon: <QaIcon width={20} height={20} />,
+		icon: <CheckSquare size={20} strokeWidth={1.5} />,
 		role: "qc",
 	},
 	{
 		id: "poolMaintenance",
 		value: "Pool Maintenance",
-		icon: <PoolMaintenanceIcon width={20} height={20} />,
+		icon: <Droplet size={20} strokeWidth={1.5} />,
 		role: "pool_worker",
 	},
 	{
 		id: "security",
 		value: "Security",
-		icon: <PoolMaintenanceIcon width={20} height={20} />,
+		icon: <Droplet size={20} strokeWidth={1.5} />,
 		role: "security",
 	},
 	{
 		id: "laundry",
 		value: "Laundry",
-		icon: <LaundryIcon width={20} height={20} />,
+		icon: <Shirt size={20} strokeWidth={1.5} />,
 		role: "laundry",
 	},
 	{
 		id: "pestControl",
 		value: "Pest Control",
-		icon: <PestControlIcon width={20} height={20} />,
+		icon: <Bug size={20} strokeWidth={1.5} />,
 		role: "pest_control",
 	},
 ];

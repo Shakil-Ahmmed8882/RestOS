@@ -4,6 +4,7 @@ import { API_CACHE_TAGS } from "@/cache/API_CACHE_KEY";
 type QueryArg = { name: string; value: string }[] | undefined;
 
 const profileApi = baseApi.injectEndpoints({
+  overrideExisting: true,
   endpoints: (builder) => ({
     getSingleUser: builder.query<unknown, void>({
       query: () => ({ url: "/users/single-user", method: "GET" }),

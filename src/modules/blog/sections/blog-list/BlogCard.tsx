@@ -11,7 +11,7 @@ import type { BlogItem } from "@/modules/blog/types/blog.types";
 export function BlogCard({ blog }: { blog: BlogItem }) {
   return (
     <Card className="group overflow-hidden">
-      <Link href={`/blog/${blog._id}`} className="block">
+      {/* <Link href={`/blog/${blog._id}`} className="block"> */}
         <BaseImage
           src={blog.image ?? null}
           alt={blog.title}
@@ -20,7 +20,7 @@ export function BlogCard({ blog }: { blog: BlogItem }) {
           containerClassName="aspect-[16/10] w-full"
           className="transition group-hover:scale-105"
         />
-      </Link>
+      {/* </Link> */}
       <div className="space-y-3 p-5">
         {blog.category ? <Badge variant="secondary">{blog.category}</Badge> : null}
         <Link href={`/blog/${blog._id}`} className="block">

@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Icon } from "@iconify/react";
 import { Container } from "@/components/layouts/Container";
 import { Input } from "@/components/ui/input";
-import { Skeleton } from "@/components/ui/skeleton";
 import { CustomSuspense } from "@/components/common/CustomSuspense";
 import { NoResultFoundWrapper } from "@/components/common/NoResultFoundWrapper";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
@@ -12,12 +11,13 @@ import { BlogCard } from "@/modules/blog/sections/blog-list/BlogCard";
 import { useGetAllBlogsQuery } from "@/redux/featureApi/blogApi";
 import { useDebounce } from "@/hooks/useDebounce";
 import type { BlogItem } from "@/modules/blog/types/blog.types";
+import { CardSkeletonV2List } from "@/components/rest-os-ui/placeholder/skeletons/CardSkeletons";
 
 export function BlogGrid() {
   const [search, setSearch] = useState("");
   const debounced = useDebounce(search, 350);
   const args = debounced ? [{ name: "search", value: debounced }] : undefined;
-  const { data, isLoading } = useGetAllBlogsQuery(args);
+  const { data, isLoading, isFetching } = useGetAllBlogsQuery(args);
   const items: BlogItem[] = Array.isArray(data?.data) ? data.data : [];
 
   return (
@@ -35,14 +35,8 @@ export function BlogGrid() {
         </div>
 
       <CustomSuspense
-        isLoading={isLoading}
-        fallback={
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <Skeleton key={i} className="aspect-[16/10] rounded-xl" />
-            ))}
-          </div>
-        }
+        isLoading={isLoading   || isFetching}
+        fallback={<CardSkeletonV2List count={6} />}
       >
         <NoResultFoundWrapper data={items} title="No posts yet">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

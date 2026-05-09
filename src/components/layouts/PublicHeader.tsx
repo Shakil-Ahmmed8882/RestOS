@@ -27,10 +27,10 @@ import { useMultipageModalSelector } from "@/components/rest-os-ui/modal/multipa
 
 const NAV = [
   { label: "Home", href: "/" },
-  { label: "Food", href: "/food" },
+  // { label: "Food", href: "/food" },
   { label: "Blog", href: "/blog" },
-  { label: "Recipes", href: "/recipe/new" },
-  { label: "FAQ", href: "/faq" },
+  // { label: "Recipes", href: "/recipe/new" },
+  // { label: "FAQ", href: "/faq" },
 ];
 
 export function PublicHeader() {
@@ -69,12 +69,7 @@ export function PublicHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800/60 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/70">
       <div className="flex h-16 items-center justify-between gap-4">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground">
-            <Icon icon="solar:chef-hat-bold-duotone" className="h-5 w-5" />
-          </span>
-          <span className="text-lg font-semibold tracking-tight">RestOS</span>
-        </Link>
+       <Logo/>
 
         <nav className="hidden items-center gap-6 md:flex">
           {NAV.map((item) => (
@@ -165,7 +160,7 @@ export function PublicHeader() {
                   </Avatar>
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuContent align="end" className="w-56 border-none bg-white dark:bg-black">
                 <DropdownMenuLabel className="space-y-0.5">
                   <p className="text-sm font-semibold">
                     {user?.name ?? "Account"}
@@ -175,18 +170,18 @@ export function PublicHeader() {
                   </p>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => router.push(dashboardHref)}>
+                {/* <DropdownMenuItem className="cursor-pointer" onClick={() => router.push(dashboardHref)}>
                   <Icon icon="solar:widget-linear" className="mr-2 h-4 w-4" />{" "}
                   Dashboard
                 </DropdownMenuItem>
-                <DropdownMenuItem
+                <DropdownMenuItem className="cursor-pointer"
                   onClick={() => router.push("/user/dashboard/profile")}
                 >
                   <Icon icon="solar:user-linear" className="mr-2 h-4 w-4" />{" "}
                   Profile
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout}>
+                <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
                   <Icon icon="solar:logout-2-linear" className="mr-2 h-4 w-4" />{" "}
                   Sign out
                 </DropdownMenuItem>
@@ -259,3 +254,15 @@ export function PublicHeader() {
   );
 }
 
+
+
+export const Logo = () => {
+  return (
+     <Link href="/" className="flex items-center gap-2">
+          <span className="grid h-7 w-7 p-1 place-items-center rounded-full bg-primary text-white">
+            <Icon icon="solar:chef-hat-bold-duotone" className="h-5 w-5" />
+          </span>
+          <span className="text-lg font-semibold tracking-tight">RestOS</span>
+        </Link>
+  )
+}

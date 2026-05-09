@@ -9,8 +9,13 @@ import { AuthInput } from "@/modules/auth/components/AuthInput";
 import { useMultipageModalSelector } from "@/components/rest-os-ui/modal/multipage-modal/provider/MultipageModalContext";
 
 export function SignInForm() {
-  const { register, handleSubmit, errors, showPassword, setShowPassword, onSubmit, loginLoading } = useSignIn();
+  const { register, handleSubmit, errors, showPassword, setShowPassword, onSubmit, loginLoading, setValue } = useSignIn();
   const { goTo } = useMultipageModalSelector();
+
+  const handleAdminSignIn = () => {
+    setValue("email", "admin8882@gmail.com");
+    setValue("password", "admin8882");
+  };
 
   const handleGoogleSignIn = () => {
     // Google OAuth coming soon
@@ -69,11 +74,13 @@ export function SignInForm() {
           <div className="h-px flex-1 bg-border" />
         </div>
 
-        <Button type="button" variant="outline" className="w-full border-gray-400 rounded-full" size="lg" onClick={handleGoogleSignIn} disabled={loginLoading}>
+        {/* <Button type="button" variant="outline" className="w-full border-gray-400 rounded-full" size="lg" onClick={handleGoogleSignIn} disabled={loginLoading}>
           <Icon icon="logos:google-icon" className="h-5 w-5" />
           Continue with Google
+        </Button> */}
+       <Button type="button" className="w-full text-white bg-primary/10 hover:bg-primary/20 text-primary rounded-full" loading={loginLoading} size="lg" onClick={handleAdminSignIn}>
+          Admin
         </Button>
-
         <div className="pt-2 text-center space-y-2">
           <p className="text-sm text-muted-foreground">
             Don&apos;t have an account?{" "}

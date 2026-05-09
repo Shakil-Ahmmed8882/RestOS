@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { Container } from "@/components/layouts/Container";
+import { Logo } from "./PublicHeader";
 
 const SECTIONS = [
   {
@@ -37,12 +38,7 @@ export function PublicFooter() {
     <footer className="mt-16 border-t border-gray-200 dark:border-gray-800/60 bg-card">
       <Container className="grid gap-10 py-12 md:grid-cols-4">
         <div className="space-y-3">
-          <div className="flex items-center gap-2">
-            <span className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground">
-              <Icon icon="solar:chef-hat-bold-duotone" className="h-5 w-5" />
-            </span>
-            <span className="text-lg font-semibold">RestOS</span>
-          </div>
+          <Logo/>
           <p className="max-w-xs text-sm text-muted-foreground">
             Discover restaurant-grade food, recipes, and stories — all in one place.
           </p>

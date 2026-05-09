@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Icon } from "@iconify/react";
 import { Input } from "@/components/ui/input";
 import { useFoodFilter } from "@/modules/food/providers/FoodFilterProvider";
+import { AuthInput } from "@/modules/auth/components/AuthInput";
 
 
 
@@ -25,9 +26,9 @@ export function FoodSearchBar() {
       {/* Tabs and Search in Same Row */}
       <div className="border-b border-gray-200 dark:border-gray-800">
         <div className="">
-          <div className="flex items-center gap-8 w-full justify-between">
+          <div className="flex items-center gap-8 w-full justify-end">
             {/* Tabs */}
-            <div className="flex items-center gap-8">
+            {/* <div className="flex items-center gap-8">
               {TABS.map((tab) => (
                 <button
                   key={tab.value}
@@ -42,20 +43,20 @@ export function FoodSearchBar() {
                   {tab.label}
                 </button>
               ))}
-            </div>
+            </div> */}
 
             {/* Search Bar */}
-            <div className="flex-1">
-              <div className="relative">
+            <div className="w-1/2 py-4 ">
+              <div className="relative ">
                 <Icon
                   icon="solar:magnifer-linear"
                   className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground"
                 />
-                <Input
+                <AuthInput
                   value={filters.search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search for restaurants, cuisines, and dishes"
-                  className="border-gray-200 dark:border-gray-800 bg-background pl-12 pr-4 py-2.5 text-sm focus-visible:ring-primary dark:bg-background"
+                  className="border-gray-200 rounded-full dark:border-gray-800 bg-background pl-12 pr-4 py-2.5 text-sm focus-visible:ring-primary dark:bg-background"
                 />
               </div>
             </div>

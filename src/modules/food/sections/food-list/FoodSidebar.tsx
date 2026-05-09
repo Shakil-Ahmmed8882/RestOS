@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import {  useRef, useState } from "react";
+
 import { Icon } from "@iconify/react";
-import gsap from "gsap";
-import { Button } from "@/components/ui/button";
 import { useFoodFilter } from "@/modules/food/providers/FoodFilterProvider";
 import { useGetAllFoodsCategoriesQuery } from "@/redux/featureApi/foodCategoryApi";
 
@@ -32,10 +31,9 @@ const OFFERS = [
 ] as const;
 
 export function FoodSidebar() {
-  const { filters, setSort, setCategory, reset, setRating, setVegetarian } = useFoodFilter();
+  const { filters, setSort, setCategory, reset} = useFoodFilter();
   const { data } = useGetAllFoodsCategoriesQuery(undefined);
   const sidebarRef = useRef<HTMLDivElement>(null);
-  const [activeTab, setActiveTab] = useState<"all" | "filters">("all");
   const categories = (data?.data as { _id: string; name: string }[]) ?? [];
 
   const hasActiveFilters = filters.search || filters.category !== "all" || filters.sort !== "newest";
@@ -79,7 +77,7 @@ export function FoodSidebar() {
           <div className="border-t border-gray-200 dark:border-gray-800" />
 
           {/* Quick Filters Section */}
-          <div>
+          {/* <div>
             <h3 className="mb-2 text-xs font-bold text-foreground uppercase">QUICK FILTERS</h3>
             <div className="space-y-1.5">
               {QUICK_FILTERS.map((filter) => (
@@ -93,12 +91,12 @@ export function FoodSidebar() {
                 </label>
               ))}
             </div>
-          </div>
+          </div> */}
 
           <div className="border-t border-gray-200 dark:border-gray-800" />
 
           {/* Dietary Preferences */}
-          <div>
+          {/* <div>
             <h3 className="mb-2 text-xs font-bold text-foreground uppercase">DIETARY</h3>
             <div className="space-y-1.5">
               {DIETARY_FILTERS.map((filter) => (
@@ -112,12 +110,12 @@ export function FoodSidebar() {
                 </label>
               ))}
             </div>
-          </div>
+          </div> */}
 
           <div className="border-t border-gray-200 dark:border-gray-800" />
 
           {/* Offers Section */}
-          <div>
+          {/* <div>
             <h3 className="mb-2 text-xs font-bold text-foreground uppercase">OFFERS</h3>
             <div className="space-y-1.5">
               {OFFERS.map((offer) => (
@@ -131,12 +129,12 @@ export function FoodSidebar() {
                 </label>
               ))}
             </div>
-          </div>
+          </div> */}
 
           <div className="border-t border-gray-200 dark:border-gray-800" />
 
           {/* Cuisines Section */}
-          <div>
+          {/* <div>
             <h3 className="mb-2 text-xs font-bold text-foreground uppercase">CUISINES</h3>
             <div className="space-y-1.5">
               {categories.map((cat) => (
@@ -154,12 +152,12 @@ export function FoodSidebar() {
                 </label>
               ))}
             </div>
-          </div>
+          </div> */}
 
           <div className="border-t border-gray-200 dark:border-gray-800" />
 
           {/* Price Range */}
-          <div>
+          {/* <div>
             <h3 className="mb-2 text-xs font-bold text-foreground uppercase">PRICE RANGE</h3>
             <div className="space-y-2">
               <div className="flex gap-2">
@@ -183,10 +181,10 @@ export function FoodSidebar() {
                 ))}
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Reset Button at Bottom */}
-          {hasActiveFilters && (
+          {/* {hasActiveFilters && (
             <button
               onClick={reset}
               className="w-full rounded border border-gray-200 px-3 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 mt-4"
@@ -194,7 +192,7 @@ export function FoodSidebar() {
               <Icon icon="solar:restart-linear" className="h-4 w-4" />
               Reset Filters
             </button>
-          )}
+          )} */}
         </div>
       </div>
     </aside>

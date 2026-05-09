@@ -40,6 +40,10 @@ const foodApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [API_CACHE_TAGS.FOOD_DETAILS],
     }),
+    getFoodCategories: builder.query<{ data: any[] }, void>({
+      query: () => ({ url: "/food-categories", method: "GET" }),
+      transformResponse: (res: any) => ({ data: res?.data || [] }),
+    }),
   }),
 });
 
@@ -51,5 +55,6 @@ export const {
   useUpdateFoodMutation,
   useDeleteFoodMutation,
   useAddFoodReviewMutation,
+  useGetFoodCategoriesQuery,
 } = foodApi;
 export default foodApi;

@@ -4,13 +4,13 @@ import { EditFoodLayout } from "@/modules/dashboard/admin/food/sections/EditFood
 export const metadata = { title: "Edit Food — Admin Dashboard" };
 
 type Props = {
-  params: {
+  params: Promise<{
     foodId: string;
-  };
+  }>;
 };
 
-export default function Page(props: Props) {
-  const { params } = props;
+export default async function Page(props: Props) {
+  const { foodId } = await props.params;
 
   return (
     <>
@@ -18,7 +18,7 @@ export default function Page(props: Props) {
         title="Edit Food"
         description="Update food item details"
       />
-      <EditFoodLayout foodId={params.foodId} />
+      <EditFoodLayout foodId={foodId} />
     </>
   );
 }

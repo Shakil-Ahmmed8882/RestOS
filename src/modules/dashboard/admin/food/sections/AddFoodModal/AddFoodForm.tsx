@@ -5,19 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useCreateFood } from "@/modules/dashboard/admin/food/hooks/useCreateFood";
-
-const FOOD_CATEGORIES = [
-  "Mexican",
-  "British",
-  "Italian",
-  "Thai",
-  "Indian",
-  "American",
-  "Chinese",
-  "Japanese",
-  "French",
-  "Mediterranean",
-];
+import { useGetFoodCategoriesQuery } from "@/redux/featureApi/foodApi";
 
 type Props = {
   onSuccess: () => void;
@@ -25,6 +13,9 @@ type Props = {
 
 export function AddFoodForm(props: Props) {
   const { onSuccess } = props;
+  const { data: categoriesData } = useGetFoodCategoriesQuery();
+  const categories = categoriesData?.data || [];
+
   const {
     register,
     handleSubmit,
@@ -96,66 +87,115 @@ export function AddFoodForm(props: Props) {
       {/* Food Name & Category */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <label htmlFor="name" className="text-sm font-medium">
+          <label htmlFor="foodName" className="text-sm font-medium">
             Food Name <span className="text-red-500">*</span>
           </label>
           <Input
-            id="name"
+            id="foodName"
             placeholder="e.g., Tacos"
-            {...register("name")}
+            {...register("foodName")}
             disabled={creating}
           />
-          {errors.name && (
-            <p className="text-xs text-red-500">{errors.name.message}</p>
+          {errors.foodName && (
+            <p className="text-xs text-red-500">{errors.foodName.message}</p>
           )}
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="category" className="text-sm font-medium">
+          <label htmlFor="foodCategory" className="text-sm font-medium">
             Category <span className="text-red-500">*</span>
           </label>
           <select
-            id="category"
-            {...register("category")}
+            id="foodCategory"
+            {...register("foodCategory")}
             disabled={creating}
             className="w-full px-3 py-2 border border-input rounded-md bg-background text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <option value="">Select category</option>
-            {FOOD_CATEGORIES.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
+            {categories.map((cat: any) => (
+              <option key={cat._id} value={cat.name}>
+                {cat.name}
               </option>
             ))}
           </select>
-          {errors.category && (
-            <p className="text-xs text-red-500">{errors.category.message}</p>
+          {errors.foodCategory && (
+            <p className="text-xs text-red-500">{errors.foodCategory.message}</p>
           )}
         </div>
       </div>
 
-      {/* Price */}
-      <div className="space-y-2">
-        <label htmlFor="price" className="text-sm font-medium">
-          Price <span className="text-red-500">*</span>
-        </label>
-        <div className="relative">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-            $
-          </span>
-          <Input
-            id="price"
-            type="number"
-            placeholder="0.00"
-            step="0.01"
-            min="0"
-            {...register("price")}
-            disabled={creating}
-            className="pl-7"
-          />
+      {/* Price & Quantity */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <label htmlFor="price" className="text-sm font-medium">
+            Price <span className="text-red-500">*</span>
+          </label>
+          <div className="relative">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+              $
+            </span>
+            <Input
+              id="price"
+              type="text"
+              placeholder="0.00"
+              {...register("price")}
+              disabled={creating}
+              className="pl-7"
+            />
+          </div>
+          {errors.price && (
+            <p className="text-xs text-red-500">{errors.price.message}</p>
+          )}
         </div>
-        {errors.price && (
-          <p className="text-xs text-red-500">{errors.price.message}</p>
-        )}
+
+        <div className="space-y-2">
+          <label htmlFor="quantity" className="text-sm font-medium">
+            Quantity <span className="text-red-500">*</span>
+          </label>
+          <Input
+            id="quantity"
+            type="text"
+            placeholder="e.g., 100"
+            {...register("quantity")}
+            disabled={creating}
+          />
+          {errors.quantity && (
+            <p className="text-xs text-red-500">{errors.quantity.message}</p>
+          )}
+        </div>
+      </div>
+
+      {/* Made By & Food Origin */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <label htmlFor="made_by" className="text-sm font-medium">
+            Chef/Cook Name <span className="text-red-500">*</span>
+          </label>
+          <Input
+            id="made_by"
+            placeholder="e.g., Chef Maria"
+            {...register("made_by")}
+            disabled={creating}
+          />
+          {errors.made_by && (
+            <p className="text-xs text-red-500">{errors.made_by.message}</p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <label htmlFor="food_origin" className="text-sm font-medium">
+            Food Origin <span className="text-red-500">*</span>
+          </label>
+          <Input
+            id="food_origin"
+            placeholder="e.g., Mexico"
+            {...register("food_origin")}
+            disabled={creating}
+          />
+          {errors.food_origin && (
+            <p className="text-xs text-red-500">{errors.food_origin.message}</p>
+          )}
+        </div>
       </div>
 
       {/* Description */}
@@ -171,20 +211,9 @@ export function AddFoodForm(props: Props) {
           rows={3}
           className="resize-none"
         />
-      </div>
-
-      {/* Available Toggle */}
-      <div className="flex items-center gap-3 p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-900">
-        <input
-          type="checkbox"
-          id="isAvailable"
-          {...register("isAvailable")}
-          disabled={creating}
-          className="w-4 h-4 rounded"
-        />
-        <label htmlFor="isAvailable" className="text-sm cursor-pointer font-medium">
-          Available for ordering
-        </label>
+        {errors.description && (
+          <p className="text-xs text-red-500">{errors.description.message}</p>
+        )}
       </div>
 
       {/* Submit Button */}
@@ -201,7 +230,7 @@ export function AddFoodForm(props: Props) {
         ) : (
           <>
             <Icon icon="solar:plus-circle-linear" className="h-4 w-4 mr-2" />
-            Add Food Item
+            Add Food
           </>
         )}
       </Button>

@@ -36,7 +36,7 @@ export function AllFoodsLayout() {
   const { data, isLoading } = useGetAllFoodsQuery(queryParams);
   const [deleteFood, { isLoading: deleting }] = useDeleteFoodMutation();
 
-  const foods: FoodItem[] = Array.isArray(data?.data) ? data.data : [];
+  const foods: FoodItem[] = Array.isArray(data?.data) ? (data.data as FoodItem[]) : [];
   const metadata = data?.meta || { total: foods.length, page: currentPage, limit: 12 };
   const totalPages = Math.ceil((metadata.total || 0) / (metadata.limit || 12));
 

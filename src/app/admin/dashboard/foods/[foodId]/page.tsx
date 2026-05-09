@@ -3,13 +3,13 @@ import { FoodDetailLayout } from "@/modules/dashboard/admin/food/sections/FoodDe
 export const metadata = { title: "Food Details — Admin Dashboard" };
 
 type Props = {
-  params: {
+  params: Promise<{
     foodId: string;
-  };
+  }>;
 };
 
-export default function Page(props: Props) {
-  const { params } = props;
+export default async function Page(props: Props) {
+  const { foodId } = await props.params;
 
-  return <FoodDetailLayout foodId={params.foodId} />;
+  return <FoodDetailLayout foodId={foodId} />;
 }

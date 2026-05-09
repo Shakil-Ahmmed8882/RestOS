@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+
 import type { FoodItem } from "@/modules/dashboard/admin/food/types/food.types";
 
 type Props = {

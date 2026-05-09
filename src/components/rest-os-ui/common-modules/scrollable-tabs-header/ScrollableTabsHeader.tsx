@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
-import {
-	HorizontalScroller,
-	type HorizontalScrollerHandle,
-} from "@/components/ui/HorizontalScroller";
-import { Tabs, useTabs } from "@/components/reusable-ui-blocks/tabs/TabsProvider";
-import type { Tab } from "@/components/reusable-ui-blocks/tabs/tabs.type";
+// import {
+// 	HorizontalScroller,
+// 	type HorizontalScrollerHandle,
+// } from "@/components/ui/HorizontalScroller";
+// import { Tabs, useTabs } from "@/components/reusable-ui-blocks/tabs/TabsProvider";
+// import type { Tab } from "@/components/reusable-ui-blocks/tabs/tabs.type";
 import { RolesData } from "../constants/roles";
 
 type ScrollableTabsHeaderProps = {

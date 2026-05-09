@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { cn, getInitials } from "@/lib/utils";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+// import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 import { AvatarSize, BaseAvatarProps } from "./types/avatar.type";
 
@@ -63,14 +63,15 @@ export const BaseAvatar = (props: BaseAvatarProps) => {
 		</div>
 	);
 
-	if (!tooltip || !name) return base;
-
-	return (
-		<TooltipProvider delayDuration={100}>
-			<Tooltip>
-				<TooltipTrigger asChild>{base}</TooltipTrigger>
-				<TooltipContent>{name}</TooltipContent>
-			</Tooltip>
-		</TooltipProvider>
-	);
+	return base;
+	// Tooltip component not available - disabled for now
+	// if (!tooltip || !name) return base;
+	// return (
+	// 	<TooltipProvider delayDuration={100}>
+	// 		<Tooltip>
+	// 			<TooltipTrigger asChild>{base}</TooltipTrigger>
+	// 			<TooltipContent>{name}</TooltipContent>
+	// 		</Tooltip>
+	// 	</TooltipProvider>
+	// );
 };

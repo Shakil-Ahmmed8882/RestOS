@@ -6,15 +6,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { signInSchema, type SignInInput } from "@/modules/auth/schemas/auth.schema";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
+import { useMultipageModalSelector } from "@/components/rest-os-ui/modal/multipage-modal/provider/MultipageModalContext";
 
 export function useSignIn() {
   const [showPassword, setShowPassword] = useState(false);
   const { login, loginLoading } = useAuth();
+  const {close} = useMultipageModalSelector(); 
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<SignInInput>({ resolver: zodResolver(signInSchema) });
 
   const onSubmit = async (data: SignInInput) => {
@@ -25,6 +28,7 @@ export function useSignIn() {
 
     if (result?.success) {
       toast.success(`Welcome back!`);
+      close();
     } else {
       toast.error(result?.error);
     }
@@ -38,5 +42,6 @@ export function useSignIn() {
     setShowPassword,
     onSubmit,
     loginLoading,
+    setValue,
   };
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+// import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 import { BaseAvatar } from "./BaseAvatar";
 import { AvatarSize, GroupAvatarsProps } from "./types/avatar.type";
@@ -104,14 +104,15 @@ const OverflowChip = ({
 		</div>
 	);
 
-	if (!tooltip || !tooltipLabel) return chip;
-
-	return (
-		<TooltipProvider delayDuration={100}>
-			<Tooltip>
-				<TooltipTrigger asChild>{chip}</TooltipTrigger>
-				<TooltipContent>{tooltipLabel}</TooltipContent>
-			</Tooltip>
-		</TooltipProvider>
-	);
+	return chip;
+	// Tooltip component not available - disabled for now
+	// if (!tooltip || !tooltipLabel) return chip;
+	// return (
+	// 	<TooltipProvider delayDuration={100}>
+	// 		<Tooltip>
+	// 			<TooltipTrigger asChild>{chip}</TooltipTrigger>
+	// 			<TooltipContent>{tooltipLabel}</TooltipContent>
+	// 		</Tooltip>
+	// 	</TooltipProvider>
+	// );
 };
