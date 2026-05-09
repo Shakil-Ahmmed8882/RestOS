@@ -39,11 +39,13 @@ export function useUpdateFood(foodId: string) {
     try {
       const formData = new FormData();
       formData.append("data", JSON.stringify({
-        name: data.name,
+        foodName: data.foodName,
         description: data.description,
         price: data.price,
-        category: data.category,
-        isAvailable: data.isAvailable,
+        foodCategory: data.foodCategory,
+        quantity: data.quantity,
+        made_by: data.made_by,
+        food_origin: data.food_origin,
       }));
 
       if (imageFile) {
