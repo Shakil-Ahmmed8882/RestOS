@@ -13,7 +13,7 @@ export const AuthInput = forwardRef<HTMLInputElement, AuthInputProps>(
     <Input
       ref={ref}
       className={cn(
-        "placeholder:text-gray-400 border-gray-400 rounded-full",
+        "placeholder:text-gray-400 border-gray-400 dark:border-gray-700 rounded-full",
         className
       )}
       {...props}

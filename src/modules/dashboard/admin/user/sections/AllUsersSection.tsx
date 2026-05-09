@@ -9,10 +9,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/modules/dashboard/shared/sections/DataTable";
-import { MultipageModal } from "@/components/rest-os-ui/modal/multipage-modal/MultipageModal";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useGetAllUsersQuery, useDeleteUserMutation } from "@/redux/featureApi/userApi";
-import { UserAnalyticsSection } from "@/modules/dashboard/admin/sections/UserAnalyticsSection";
-import { AddUserFormBasic } from "@/modules/dashboard/admin/sections/AddUserForm";
+import { UserAnalyticsSection } from "@/modules/dashboard/admin/user/sections/UserAnalyticsSection";
+import { AddUserForm } from "@/modules/dashboard/admin/user/sections/AddUserForm";
+import { MultipageModal } from "@/components/rest-os-ui/modal/multipage-modal/MultipageModal";
 
 interface UserRow {
   _id: string;
@@ -142,9 +148,9 @@ export function AllUsersSection() {
 
       <DataTable columns={columns} data={rows} isLoading={isLoading} emptyMessage="No users yet." />
 
-      <MultipageModal open={addUserOpen} onOpenChange={setAddUserOpen} initialPageId="basic-info">
-        <MultipageModal.Page id="basic-info"  maxWidth="max-w-[600px]">
-          <AddUserFormBasic />
+      <MultipageModal open={addUserOpen} initialPageId="basic-info" onOpenChange={setAddUserOpen} >
+        <MultipageModal.Page id="basic-info" >
+          <AddUserForm />
         </MultipageModal.Page>
       </MultipageModal>
     </>

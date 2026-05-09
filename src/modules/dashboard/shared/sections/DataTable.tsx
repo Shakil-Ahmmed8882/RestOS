@@ -4,6 +4,7 @@ import { Icon } from "@iconify/react";
 import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table";
 import { Card } from "@/components/ui/card";
 import { ShowIf } from "@/components/common/ShowIf";
+import { TableSkeleton } from "@/modules/dashboard/shared/components/TableSkeleton";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -37,37 +38,32 @@ export function DataTable<TData, TValue>({
           </thead>
           <tbody>
             <ShowIf
-              condition={!isLoading && data.length > 0}
-              fallback={
-                <tr>
-                  <td colSpan={columns.length} className="px-4 py-10 text-center text-muted-foreground">
-                    <ShowIf
-                      condition={!!isLoading}
-                      fallback={
-                        <div className="flex flex-col items-center gap-2">
-                          <Icon icon="solar:inbox-linear" className="h-10 w-10 text-muted-foreground/60" />
-                          <span>{emptyMessage}</span>
-                        </div>
-                      }
-                    >
-                      <div className="flex items-center justify-center gap-2">
-                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                        Loading…
-                      </div>
-                    </ShowIf>
-                  </td>
-                </tr>
-              }
+              condition={!isLoading}
+              fallback={<TableSkeleton columns={columns.length} />}
             >
-              {table.getRowModel().rows.map((row) => (
-                <tr key={row.id} className="border-t border-gray-200 dark:border-gray-800">
-                  {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} className="px-4 py-3">
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+              <ShowIf
+                condition={data.length > 0}
+                fallback={
+                  <tr>
+                    <td colSpan={columns.length} className="px-4 py-10 text-center">
+                      <div className="flex flex-col items-center gap-2">
+                        <Icon icon="solar:inbox-linear" className="h-10 w-10 text-muted-foreground/60" />
+                        <span className="text-muted-foreground">{emptyMessage}</span>
+                      </div>
                     </td>
-                  ))}
-                </tr>
-              ))}
+                  </tr>
+                }
+              >
+                {table.getRowModel().rows.map((row) => (
+                  <tr key={row.id} className="border-t border-gray-200 dark:border-gray-800">
+                    {row.getVisibleCells().map((cell) => (
+                      <td key={cell.id} className="px-4 py-3">
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </ShowIf>
             </ShowIf>
           </tbody>
         </table>

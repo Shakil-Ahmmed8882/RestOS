@@ -5,7 +5,7 @@ type QueryArg = Record<string, string> | undefined;
 
 const foodApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    createFood: builder.mutation<unknown, Record<string, unknown>>({
+    createFood: builder.mutation<unknown, FormData>({
       query: (data) => ({ url: "/foods/create-food", method: "POST", body: data }),
       invalidatesTags: [API_CACHE_TAGS.FOOD_LIST],
     }),
@@ -24,13 +24,21 @@ const foodApi = baseApi.injectEndpoints({
       transformResponse: (res: any) => ({ data: res?.data || [], meta: res?.meta || {} }),
       providesTags: [API_CACHE_TAGS.FOOD_LIST],
     }),
-    updateFood: builder.mutation<unknown, { id: string; data: Record<string, unknown> }>({
+    updateFood: builder.mutation<unknown, { id: string; data: FormData }>({
       query: ({ id, data }) => ({ url: `/foods/${id}`, method: "PATCH", body: data }),
       invalidatesTags: [API_CACHE_TAGS.FOOD_LIST, API_CACHE_TAGS.FOOD_DETAILS],
     }),
     deleteFood: builder.mutation<unknown, string>({
       query: (id) => ({ url: `/foods/${id}`, method: "DELETE" }),
       invalidatesTags: [API_CACHE_TAGS.FOOD_LIST],
+    }),
+    addFoodReview: builder.mutation<unknown, { foodId: string; rating: number; comment?: string }>({
+      query: ({ foodId, rating, comment }) => ({
+        url: `/foods/${foodId}/review`,
+        method: "POST",
+        body: { rating, comment },
+      }),
+      invalidatesTags: [API_CACHE_TAGS.FOOD_DETAILS],
     }),
   }),
 });
@@ -42,5 +50,6 @@ export const {
   useGetAllFoodsQuery,
   useUpdateFoodMutation,
   useDeleteFoodMutation,
+  useAddFoodReviewMutation,
 } = foodApi;
 export default foodApi;
