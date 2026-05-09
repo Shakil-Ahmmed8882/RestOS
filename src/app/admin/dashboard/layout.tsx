@@ -1,15 +1,22 @@
+import { Container } from "@/components/layouts/Container";
 import { DashboardSidebar } from "@/components/layouts/DashboardSidebar";
 import { DashboardTopbar } from "@/components/layouts/DashboardTopbar";
 import { ADMIN_NAV } from "@/modules/dashboard/admin/AdminSidebarNav";
 
-export default function AdminDashboardLayout({ children }: { children: React.ReactNode }) {
+export default function AdminDashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <div className="flex min-h-screen bg-muted/20">
-      <DashboardSidebar brand="Admin" groups={ADMIN_NAV} variant="admin" />
-      <div className="flex w-full min-w-0 flex-col">
-        <DashboardTopbar title="Admin dashboard" />
-        <main className="flex-1 px-6 py-6">{children}</main>
+    <Container>
+      <div className="flex min-h-screen bg-muted/20">
+        <DashboardSidebar brand="Admin" groups={ADMIN_NAV} variant="admin" />
+        <div className="flex w-full min-w-0 flex-col">
+          <DashboardTopbar title="Admin dashboard" />
+          <main className="flex-1 px-6 py-6">{children}</main>
+        </div>
       </div>
-    </div>
+    </Container>
   );
 }

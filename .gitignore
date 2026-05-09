@@ -32,3 +32,4 @@ inpiration.js
 *.sw?
 .vercel
 .env*.local
+.claude

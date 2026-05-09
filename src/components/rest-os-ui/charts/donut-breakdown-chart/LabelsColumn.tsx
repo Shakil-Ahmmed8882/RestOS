@@ -34,7 +34,7 @@ export function LabelsColumn<TId extends string>(props: LabelsColumnProps<TId>) 
 							className="size-2 rounded-full shrink-0"
 							style={{ backgroundColor: dotColor }}
 						/>
-						<span className="font-proxima-nova text-[20px] leading-normal text-[#141414] truncate">
+						<span className="font-proxima-nova text-[18px] leading-normal text-[#141414] dark:text-gray-100 truncate">
 							{slice.label}
 						</span>
 					</motion.li>
