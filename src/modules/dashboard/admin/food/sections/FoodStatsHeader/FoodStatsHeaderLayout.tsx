@@ -8,8 +8,8 @@ export function FoodStatsHeaderLayout() {
   const { data: usersData } = useGetAllUsersQuery(undefined);
   const { data: foodsData } = useGetAllFoodsQuery({ limit: "1" });
 
-  const users = Array.isArray(usersData?.data) ? usersData.data : [];
-  const foodsMeta = foodsData?.meta;
+  const users = Array.isArray((usersData as any)?.data) ? (usersData as any).data : [];
+  const foodsMeta = (foodsData as any)?.meta;
 
   const totalUsers = users.length || 0;
   const totalFoods = foodsMeta?.total || 0;

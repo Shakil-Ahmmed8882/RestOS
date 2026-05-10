@@ -38,7 +38,7 @@ export function AllFoodsLayout() {
 
   const foods: FoodItem[] = Array.isArray(data?.data) ? (data.data as FoodItem[]) : [];
   const metadata = data?.meta || { total: foods.length, page: currentPage, limit: 12 };
-  const totalPages = Math.ceil((metadata.total || 0) / (metadata.limit || 12));
+  const totalPages = Math.ceil(((metadata.total as number) || 0) / ((metadata.limit as number) || 12));
 
   const handleSearch = (query: string) => {
     const params = new URLSearchParams();

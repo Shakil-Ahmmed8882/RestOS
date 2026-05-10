@@ -20,9 +20,7 @@ export function ReviewsList(props: Props) {
             <div>
               <p className="font-semibold">{review.customer_name || "Anonymous"}</p>
               <p className="text-xs text-muted-foreground">
-                {review.date || review.createdAt
-                  ? new Date(review.date || review.createdAt).toLocaleDateString()
-                  : "Recently"}
+                {review.date || review.createdAt ? new Date(review.date || review.createdAt || "").toLocaleDateString() : "Recently"}
               </p>
             </div>
             <div className="flex gap-1">

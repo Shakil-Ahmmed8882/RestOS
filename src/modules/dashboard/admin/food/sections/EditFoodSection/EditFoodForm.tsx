@@ -47,11 +47,13 @@ export function EditFoodForm(props: Props) {
       const foodCategory = food.foodCategory || food.category;
       const foodDescription = food.description;
 
-      setValue("name", foodName || "");
-      setValue("price", food.price || 0);
-      setValue("category", foodCategory || "");
+      setValue("foodName", foodName || "");
+      setValue("price", food.price?.toString() || "0");
+      setValue("foodCategory", foodCategory || "");
       setValue("description", foodDescription || "");
-      setValue("isAvailable", food.isAvailable ?? true);
+      setValue("quantity", food.quantity?.toString() || "");
+      setValue("made_by", food.made_by || "");
+      setValue("food_origin", food.food_origin || "");
 
       if (food.foodImage || food.image) {
         setImagePreview(food.foodImage || food.image || null);
@@ -116,10 +118,10 @@ export function EditFoodForm(props: Props) {
         <label className="text-sm font-medium">Food Name *</label>
         <Input
           placeholder="e.g., Margherita Pizza"
-          {...register("name")}
+          {...register("foodName")}
           disabled={updating}
         />
-        {errors.name && <p className="text-sm text-destructive">{errors.name.message}</p>}
+        {errors.foodName && <p className="text-sm text-destructive">{errors.foodName.message}</p>}
       </div>
 
       {/* Price and Category */}
@@ -129,9 +131,8 @@ export function EditFoodForm(props: Props) {
           <div className="relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
             <Input
-              type="number"
+              type="text"
               placeholder="0.00"
-              step="0.01"
               {...register("price")}
               disabled={updating}
               className="pl-7"
@@ -143,7 +144,7 @@ export function EditFoodForm(props: Props) {
         <div className="space-y-2">
           <label className="text-sm font-medium">Category *</label>
           <select
-            {...register("category")}
+            {...register("foodCategory")}
             disabled={updating}
             className="w-full px-3 py-2 border border-input rounded-md bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
@@ -154,7 +155,41 @@ export function EditFoodForm(props: Props) {
               </option>
             ))}
           </select>
-          {errors.category && <p className="text-sm text-destructive">{errors.category.message}</p>}
+          {errors.foodCategory && <p className="text-sm text-destructive">{errors.foodCategory.message}</p>}
+        </div>
+      </div>
+
+      {/* Quantity, Made By, Food Origin */}
+      <div className="grid grid-cols-3 gap-4">
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Quantity *</label>
+          <Input
+            type="text"
+            placeholder="e.g., 10"
+            {...register("quantity")}
+            disabled={updating}
+          />
+          {errors.quantity && <p className="text-sm text-destructive">{errors.quantity.message}</p>}
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Chef/Cook *</label>
+          <Input
+            placeholder="e.g., John Doe"
+            {...register("made_by")}
+            disabled={updating}
+          />
+          {errors.made_by && <p className="text-sm text-destructive">{errors.made_by.message}</p>}
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Food Origin *</label>
+          <Input
+            placeholder="e.g., Italian"
+            {...register("food_origin")}
+            disabled={updating}
+          />
+          {errors.food_origin && <p className="text-sm text-destructive">{errors.food_origin.message}</p>}
         </div>
       </div>
 
@@ -167,20 +202,6 @@ export function EditFoodForm(props: Props) {
           disabled={updating}
           rows={3}
         />
-      </div>
-
-      {/* Available Toggle */}
-      <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-zinc-900/30 rounded-lg">
-        <input
-          type="checkbox"
-          id="isAvailable"
-          {...register("isAvailable")}
-          disabled={updating}
-          className="w-4 h-4"
-        />
-        <label htmlFor="isAvailable" className="text-sm cursor-pointer">
-          Available for order
-        </label>
       </div>
 
       {/* Submit Button */}

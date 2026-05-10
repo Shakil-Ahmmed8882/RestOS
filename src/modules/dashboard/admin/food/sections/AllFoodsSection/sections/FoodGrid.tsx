@@ -48,7 +48,7 @@ export function FoodGrid(props: Props) {
                 <div className="flex items-center gap-2 text-xs">
                   <Icon icon="solar:star-bold" className="h-4 w-4 text-yellow-500" />
                   <span className="font-medium">{rating.toFixed(1)}</span>
-                  <span className="text-muted-foreground">({food.reviews?.length || 0} reviews)</span>
+                  <span className="text-muted-foreground">({food.reviewCount || 0} reviews)</span>
                 </div>
               )}
 
