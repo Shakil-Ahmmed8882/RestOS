@@ -13,7 +13,7 @@ export function SignUpForm() {
   const { goTo, goBack } = useMultipageModalSelector();
 
   return (
-    <div className="w-full space-y-7 p-8 bg-white dark:bg-[#121212] rounded-2xl">
+    <div className="w-full space-y-7 p-8 bg-theme rounded-2xl">
       <div className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight text-foreground">Create account</h1>
         <p className="text-sm text-muted-foreground">Start your RestOS journey today — it&apos;s free.</p>
@@ -42,17 +42,17 @@ export function SignUpForm() {
 
           {photoPreview ? (
             <div className="space-y-2">
-              <div className="relative inline-block">
+              <div className="relative ">
                 <img
                   src={photoPreview}
                   alt="Profile preview"
                   className="h-32 w-32 rounded-lg object-cover border border-gray-200 dark:border-gray-800"
                 />
               </div>
-              <button
+               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="text-sm font-medium text-primary hover:underline"
+                className="text-[12px] mt-3 p-3 py-2 rounded-full bg-primary/10  font-medium text-primary hover:underline"
               >
                 Change photo
               </button>

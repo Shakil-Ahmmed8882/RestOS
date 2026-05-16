@@ -19,7 +19,7 @@ const userApi = baseApi.injectEndpoints({
       query: (id) => ({ url: `/users/${id}`, method: "GET" }),
       providesTags: [API_CACHE_TAGS.USER_PROFILE],
     }),
-    createUser: builder.mutation<unknown, FormData>({
+    adminCreateUser: builder.mutation<unknown, FormData>({
       query: (data) => ({ url: "/users/create-user", method: "POST", body: data }),
       invalidatesTags: [API_CACHE_TAGS.USER_LIST],
     }),
@@ -31,8 +31,27 @@ const userApi = baseApi.injectEndpoints({
       query: ({ id, data }) => ({ url: `/users/${id}`, method: "PATCH", body: data }),
       invalidatesTags: [API_CACHE_TAGS.USER_LIST, API_CACHE_TAGS.USER_PROFILE],
     }),
+    updateUserRoleStatus: builder.mutation<
+      unknown,
+      { id: string; data: { role?: "USER" | "ADMIN"; status?: "ACTIVE" | "BLOCKED" } }
+    >({
+      query: ({ id, data }) => ({
+        url: `/users/${id}/role-status`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: [API_CACHE_TAGS.USER_LIST, API_CACHE_TAGS.USER_PROFILE],
+    }),
   }),
 });
 
-export const { useGetAllUsersQuery, useGetSingleUserQuery, useCreateUserMutation, useDeleteUserMutation, useUpdateUserMutation } = userApi;
+export const {
+  useGetAllUsersQuery,
+  useLazyGetAllUsersQuery,
+  useGetSingleUserQuery,
+  useAdminCreateUserMutation,
+  useDeleteUserMutation,
+  useUpdateUserMutation,
+  useUpdateUserRoleStatusMutation,
+} = userApi;
 export default userApi;
