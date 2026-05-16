@@ -5,14 +5,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { userCreateSchema, type UserCreateInput } from "@/modules/dashboard/admin/user/schemas/user-create.schema";
-import { useCreateUserMutation } from "@/redux/featureApi/userApi";
+import { useAdminCreateUserMutation } from "@/redux/featureApi/userApi";
 
 export function useCreateUser(onSuccess?: () => void) {
   const [showPassword, setShowPassword] = useState(false);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [createUser, { isLoading: creating }] = useCreateUserMutation();
+  const [createUser, { isLoading: creating }] = useAdminCreateUserMutation();
 
   const {
     register,

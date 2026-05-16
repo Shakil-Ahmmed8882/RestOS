@@ -4,13 +4,18 @@ import { Icon } from "@iconify/react";
 import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table";
 import { Card } from "@/components/ui/card";
 import { ShowIf } from "@/components/common/ShowIf";
-import { DataTableSkeleton } from "@/modules/dashboard/shared/components/DataTableSkeleton";
+import {
+  DataTableSkeleton,
+  type SkeletonColumnConfig,
+} from "@/modules/dashboard/shared/components/DataTableSkeleton";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   isLoading?: boolean;
   emptyMessage?: string;
+  skeletonConfig?: SkeletonColumnConfig[];
+  skeletonRows?: number;
 }
 
 export function DataTable<TData, TValue>({
@@ -18,8 +23,17 @@ export function DataTable<TData, TValue>({
   data,
   isLoading,
   emptyMessage = "No records found.",
+  skeletonConfig,
+  skeletonRows,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({ data, columns, getCoreRowModel: getCoreRowModel() });
+
+  const fallbackConfig: SkeletonColumnConfig[] = skeletonConfig ??
+    columns.map((_, i) => {
+      if (i === 0) return { type: "user" };
+      if (i === columns.length - 1) return { type: "actions" };
+      return { type: "text" };
+    });
 
   return (
     <Card className="overflow-hidden border dark:border-gray-800">
@@ -42,19 +56,21 @@ export function DataTable<TData, TValue>({
           <tbody>
             <ShowIf
               condition={!isLoading}
-              fallback={<DataTableSkeleton columns={columns.length} />}
+              fallback={
+                <DataTableSkeleton columnConfig={fallbackConfig} rows={skeletonRows} />
+              }
             >
               <ShowIf
                 condition={data.length > 0}
                 fallback={
                   <tr>
-                    <td colSpan={columns.length} className="px-4 py-10 text-center">
+                    <td colSpan={columns.length} className="px-4 py-12 text-center">
                       <div className="flex flex-col items-center gap-2">
                         <Icon
                           icon="solar:inbox-linear"
-                          className="h-10 w-10 text-muted-foreground/60"
+                          className="h-10 w-10 text-muted-foreground/40"
                         />
-                        <span className="text-muted-foreground">{emptyMessage}</span>
+                        <span className="text-sm text-muted-foreground">{emptyMessage}</span>
                       </div>
                     </td>
                   </tr>

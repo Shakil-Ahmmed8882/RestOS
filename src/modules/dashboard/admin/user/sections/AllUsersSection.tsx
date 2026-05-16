@@ -173,6 +173,13 @@ export function AllUsersSection() {
         data={displayRows}
         isLoading={isLoading}
         emptyMessage="No users yet."
+        skeletonConfig={[
+          { type: "user" },
+          { type: "badge" },
+          { type: "text", width: 72 },
+          { type: "actions", count: 2 },
+        ]}
+        skeletonRows={8}
       />
 
       <MultipageModal open={addUserOpen} onOpenChange={setAddUserOpen} initialPageId="add-user">
