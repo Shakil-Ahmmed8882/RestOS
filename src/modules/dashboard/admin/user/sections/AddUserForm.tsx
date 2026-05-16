@@ -5,9 +5,22 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { ShowIf } from "@/components/common/ShowIf";
 import { AuthInput } from "@/modules/auth/components/AuthInput";
-import { useCreateUser } from "@/modules/dashboard/admin/user/hooks/useCreateUser";
+import {
+  useCreateUser,
+  type UseCreateUserCallbacks,
+} from "@/modules/dashboard/admin/user/hooks/useCreateUser";
+import { useMultipageModalSelector } from "@/components/rest-os-ui/modal/multipage-modal/provider/MultipageModalContext";
 
-export function AddUserForm() {
+interface Props {
+  /** Page id to navigate to after a successful create (inside MultipageModal). */
+  successPageId?: string;
+  /** Lifecycle hooks — parent splices the new user into its local list. */
+  callbacks?: UseCreateUserCallbacks;
+}
+
+export function AddUserForm({ successPageId = "add-user-success", callbacks }: Props) {
+  const { goTo } = useMultipageModalSelector();
+
   const {
     register,
     handleSubmit,
@@ -19,7 +32,13 @@ export function AddUserForm() {
     handlePhotoChange,
     onSubmit,
     creating,
-  } = useCreateUser();
+  } = useCreateUser({
+    onCreated: callbacks?.onCreated,
+    onSuccess: () => {
+      callbacks?.onSuccess?.();
+      goTo(successPageId);
+    },
+  });
 
   return (
     <div className="w-full bg-theme rounded-2xl overflow-hidden shadow-2xl border border-gray-100 dark:border-white/[0.06]">
@@ -46,12 +65,7 @@ export function AddUserForm() {
           <Label htmlFor="name" className="text-sm font-medium text-gray-700 dark:text-gray-300">
             Full Name
           </Label>
-          <AuthInput
-            id="name"
-            type="text"
-            placeholder="John Doe"
-            {...register("name")}
-          />
+          <AuthInput id="name" type="text" placeholder="John Doe" {...register("name")} />
           <ShowIf condition={!!errors.name}>
             <p className="flex items-center gap-1.5 text-xs text-red-500 mt-1">
               <Icon icon="solar:danger-circle-linear" className="h-3.5 w-3.5 flex-shrink-0" />

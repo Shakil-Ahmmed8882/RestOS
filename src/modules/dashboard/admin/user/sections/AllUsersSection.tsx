@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Icon } from "@iconify/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -11,12 +11,21 @@ import { DataTable } from "@/modules/dashboard/shared/sections/DataTable";
 import { RoleSelector } from "@/modules/dashboard/admin/user/components/RoleSelector";
 import { MultipageModal } from "@/components/rest-os-ui/modal/multipage-modal/MultipageModal";
 import {
-  useGetAllUsersQuery,
+  useLazyGetAllUsersQuery,
   useDeleteUserMutation,
   useUpdateUserRoleStatusMutation,
 } from "@/redux/featureApi/userApi";
 import { UserAnalyticsSection } from "@/modules/dashboard/admin/user/sections/UserAnalyticsSection";
 import { AddUserForm } from "@/modules/dashboard/admin/user/sections/AddUserForm";
+import { AddUserSuccess } from "@/modules/dashboard/admin/user/sections/AddUserSuccess";
+import {
+  InfiniteScrollSentinel,
+  useInfiniteScrollController,
+  type FetchPage,
+} from "@/components/rest-os-ui/infinite-scroll";
+import { BaseSkeleton } from "@/components/rest-os-ui/placeholder/skeletons/BaseSkeleton";
+
+const PAGE_SIZE = 10;
 
 interface UserRow {
   _id: string;
@@ -30,41 +39,81 @@ interface UserRow {
 export function AllUsersSection() {
   const router = useRouter();
   const [addUserOpen, setAddUserOpen] = useState(false);
-  const { data, isLoading } = useGetAllUsersQuery(undefined);
+  const [triggerGetUsers] = useLazyGetAllUsersQuery();
   const [deleteUser, { isLoading: deleting }] = useDeleteUserMutation();
   const [updateRoleStatus] = useUpdateUserRoleStatusMutation();
   const [optimisticRoles, setOptimisticRoles] = useState<Record<string, string>>({});
 
-  const rows: UserRow[] = Array.isArray((data as any)?.data)
-    ? (data as any)?.data
-    : (data as any)?.data?.result ?? [];
+  const fetchUsersPage: FetchPage<UserRow> = useCallback(
+    async (page) => {
+      const response: any = await triggerGetUsers(
+        [
+          { name: "page", value: String(page) },
+          { name: "limit", value: String(PAGE_SIZE) },
+        ],
+        false,
+      ).unwrap();
 
-  const displayRows = rows.map((row) => ({
-    ...row,
-    role: optimisticRoles[row._id] ?? row.role,
-  }));
+      const payload = response?.data;
+      const items: UserRow[] = Array.isArray(payload)
+        ? payload
+        : payload?.result ?? [];
+
+      const meta = payload?.meta;
+      const hasMore =
+        typeof meta?.totalPages === "number"
+          ? page < meta.totalPages
+          : items.length === PAGE_SIZE;
+
+      return { items, hasMore };
+    },
+    [triggerGetUsers],
+  );
+
+  const {
+    items,
+    status,
+    error,
+    hasMore,
+    loadMore,
+    retry,
+    prependItem,
+    removeItem,
+  } = useInfiniteScrollController<UserRow>({ fetchPage: fetchUsersPage });
+
+  const isInitialLoading = status === "loading" && items.length === 0;
+  const isLoadingMore = status === "loading" && items.length > 0;
+
+  const displayRows = useMemo(
+    () =>
+      items.map((row) => ({
+        ...row,
+        role: optimisticRoles[row._id] ?? row.role,
+      })),
+    [items, optimisticRoles],
+  );
 
   const handleViewUser = (userId: string) => {
     router.push(`/admin/dashboard/all-users/${userId}`);
   };
 
   const handleRoleChange = async (userId: string, newRole: "USER" | "ADMIN") => {
-    const originalRole = rows.find((r) => r._id === userId)?.role;
+    const originalRole = items.find((r) => r._id === userId)?.role;
 
     setOptimisticRoles((prev) => ({ ...prev, [userId]: newRole }));
 
     try {
       await updateRoleStatus({ id: userId, data: { role: newRole } }).unwrap();
       toast.success(`Role updated to ${newRole.toLowerCase()}`);
-    } catch (error: any) {
+    } catch (e: any) {
       setOptimisticRoles((prev) => {
         const next = { ...prev };
         if (originalRole) next[userId] = originalRole;
         else delete next[userId];
         return next;
       });
-      toast.error(error?.data?.message ?? "Failed to update role");
-      throw error;
+      toast.error(e?.data?.message ?? "Failed to update role");
+      throw e;
     }
   };
 
@@ -134,6 +183,7 @@ export function AllUsersSection() {
                 try {
                   await deleteUser(row.original._id).unwrap();
                   toast.success("User deleted");
+                  removeItem((u) => u._id === row.original._id);
                 } catch (e: any) {
                   toast.error(e?.data?.message ?? "Failed to delete");
                 }
@@ -151,7 +201,7 @@ export function AllUsersSection() {
         ),
       },
     ],
-    [deleteUser, deleting, router],
+    [deleteUser, deleting, router, removeItem],
   );
 
   return (
@@ -171,7 +221,7 @@ export function AllUsersSection() {
       <DataTable
         columns={columns}
         data={displayRows}
-        isLoading={isLoading}
+        isLoading={isInitialLoading}
         emptyMessage="No users yet."
         skeletonConfig={[
           { type: "user" },
@@ -179,12 +229,57 @@ export function AllUsersSection() {
           { type: "text", width: 72 },
           { type: "actions", count: 2 },
         ]}
-        skeletonRows={8}
+        skeletonRows={PAGE_SIZE}
       />
 
-      <MultipageModal open={addUserOpen} onOpenChange={setAddUserOpen} initialPageId="add-user">
+      {isLoadingMore && (
+        <div className="mt-3 flex items-center justify-center gap-3 rounded-xl bg-white dark:bg-zinc-900/50 px-4 py-3">
+          <BaseSkeleton className="h-4 w-4 rounded-full" />
+          <span className="text-xs text-muted-foreground">Loading more users...</span>
+        </div>
+      )}
+
+      {status === "error" && (
+        <div className="mt-3 flex items-center justify-between gap-3 rounded-xl bg-red-50 dark:bg-red-500/10 px-4 py-3">
+          <span className="text-xs text-red-600 dark:text-red-400">
+            {(error as any)?.data?.message ?? "Failed to load more users."}
+          </span>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={retry}
+            className="h-7 text-xs text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-500/20"
+          >
+            Retry
+          </Button>
+        </div>
+      )}
+
+      <InfiniteScrollSentinel
+        onIntersect={loadMore}
+        enabled={hasMore && status === "idle"}
+        observer={{ rootMargin: "300px" }}
+      />
+
+      <MultipageModal
+        open={addUserOpen}
+        onOpenChange={setAddUserOpen}
+        initialPageId="add-user"
+      >
         <MultipageModal.Page id="add-user" maxWidth="max-w-[700px]">
-          <AddUserForm />
+          <AddUserForm
+            successPageId="add-user-success"
+            callbacks={{
+              // Post-success optimistic update: splice the confirmed
+              // server row into the top of the local list instead of
+              // refetching / invalidating the cache.
+              onCreated: (user) => prependItem(user as UserRow),
+            }}
+          />
+        </MultipageModal.Page>
+
+        <MultipageModal.Page id="add-user-success" maxWidth="max-w-[500px]">
+          <AddUserSuccess />
         </MultipageModal.Page>
       </MultipageModal>
     </>

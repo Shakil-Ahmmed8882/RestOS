@@ -4,10 +4,30 @@ import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { userCreateSchema, type UserCreateInput } from "@/modules/dashboard/admin/user/schemas/user-create.schema";
+import {
+  userCreateSchema,
+  type UserCreateInput,
+} from "@/modules/dashboard/admin/user/schemas/user-create.schema";
 import { useAdminCreateUserMutation } from "@/redux/featureApi/userApi";
+import {
+  normalizeCreatedUser,
+  type CreatedUserRow,
+} from "@/redux/featureApi/optimistic/user";
 
-export function useCreateUser(onSuccess?: () => void) {
+export interface UseCreateUserCallbacks {
+  /**
+   * Called after the server confirms creation, with the normalised row.
+   * This is where the consumer splices the new user into its local list
+   * — replacing what would otherwise be a refetch / invalidate.
+   */
+  onCreated?: (user: CreatedUserRow) => void;
+  /** Called after the entire flow succeeds (e.g. navigate to success page). */
+  onSuccess?: () => void;
+}
+
+export function useCreateUser(callbacks: UseCreateUserCallbacks = {}) {
+  const { onCreated, onSuccess } = callbacks;
+
   const [showPassword, setShowPassword] = useState(false);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
@@ -42,17 +62,19 @@ export function useCreateUser(onSuccess?: () => void) {
       formData.append("password", data.password);
       if (photoFile) formData.append("photo", photoFile);
 
-      const res = await createUser(formData).unwrap();
+      const response = await createUser(formData).unwrap();
 
-      console.log({res})
-      
+      // Post-success optimistic update: splice the confirmed row into
+      // the consumer's local list instead of triggering a refetch.
+      const createdUser = normalizeCreatedUser(response);
+      if (createdUser) onCreated?.(createdUser);
+
       toast.success("User created successfully!");
       reset();
       setPhotoPreview(null);
       setPhotoFile(null);
       onSuccess?.();
     } catch (error: any) {
-      console.log({error})
       toast.error(error?.data?.message ?? "Failed to create user");
     }
   };
