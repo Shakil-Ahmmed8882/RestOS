@@ -21,15 +21,13 @@ export function useCreateUser() {
     handleSubmit,
     formState: { errors },
     reset,
-    watch,
-    setValue,
   } = useForm<UserCreateInput>({ resolver: zodResolver(userCreateSchema) });
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.size > 10 * 1024 * 1024) {
-      toast.error("Photo must be smaller than 10MB.");
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Photo must be smaller than 5MB.");
       return;
     }
     setPhotoFile(file);
@@ -44,10 +42,6 @@ export function useCreateUser() {
       formData.append("name", data.name);
       formData.append("email", data.email);
       formData.append("password", data.password);
-      formData.append("role", data.role);
-      formData.append("status", data.status);
-      if (data.contactNumber) formData.append("contactNumber", data.contactNumber);
-      if (data.location) formData.append("location", data.location);
       if (photoFile) formData.append("photo", photoFile);
 
       const result = await createUser(formData).unwrap();
@@ -75,7 +69,5 @@ export function useCreateUser() {
     handlePhotoChange,
     onSubmit,
     creating,
-    watch,
-    setValue,
   };
 }

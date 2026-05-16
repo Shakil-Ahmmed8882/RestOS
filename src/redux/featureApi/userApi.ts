@@ -31,8 +31,26 @@ const userApi = baseApi.injectEndpoints({
       query: ({ id, data }) => ({ url: `/users/${id}`, method: "PATCH", body: data }),
       invalidatesTags: [API_CACHE_TAGS.USER_LIST, API_CACHE_TAGS.USER_PROFILE],
     }),
+    updateUserRoleStatus: builder.mutation<
+      unknown,
+      { id: string; data: { role?: "USER" | "ADMIN"; status?: "ACTIVE" | "BLOCKED" } }
+    >({
+      query: ({ id, data }) => ({
+        url: `/users/${id}/role-status`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: [API_CACHE_TAGS.USER_LIST, API_CACHE_TAGS.USER_PROFILE],
+    }),
   }),
 });
 
-export const { useGetAllUsersQuery, useGetSingleUserQuery, useCreateUserMutation, useDeleteUserMutation, useUpdateUserMutation } = userApi;
+export const {
+  useGetAllUsersQuery,
+  useGetSingleUserQuery,
+  useCreateUserMutation,
+  useDeleteUserMutation,
+  useUpdateUserMutation,
+  useUpdateUserRoleStatusMutation,
+} = userApi;
 export default userApi;

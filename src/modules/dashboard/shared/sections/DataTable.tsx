@@ -4,7 +4,7 @@ import { Icon } from "@iconify/react";
 import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table";
 import { Card } from "@/components/ui/card";
 import { ShowIf } from "@/components/common/ShowIf";
-import { TableSkeleton } from "@/modules/dashboard/shared/components/TableSkeleton";
+import { DataTableSkeleton } from "@/modules/dashboard/shared/components/DataTableSkeleton";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -22,14 +22,17 @@ export function DataTable<TData, TValue>({
   const table = useReactTable({ data, columns, getCoreRowModel: getCoreRowModel() });
 
   return (
-    <Card className="overflow-hidden border dark:border-gray-800 ">
+    <Card className="overflow-hidden border dark:border-gray-800">
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-muted/40">
             {table.getHeaderGroups().map((hg) => (
               <tr key={hg.id}>
                 {hg.headers.map((header) => (
-                  <th key={header.id} className="px-4 py-3 text-left font-semibold text-muted-foreground">
+                  <th
+                    key={header.id}
+                    className="px-4 py-3 text-left font-semibold text-muted-foreground"
+                  >
                     {flexRender(header.column.columnDef.header, header.getContext())}
                   </th>
                 ))}
@@ -39,7 +42,7 @@ export function DataTable<TData, TValue>({
           <tbody>
             <ShowIf
               condition={!isLoading}
-              fallback={<TableSkeleton columns={columns.length} />}
+              fallback={<DataTableSkeleton columns={columns.length} />}
             >
               <ShowIf
                 condition={data.length > 0}
@@ -47,7 +50,10 @@ export function DataTable<TData, TValue>({
                   <tr>
                     <td colSpan={columns.length} className="px-4 py-10 text-center">
                       <div className="flex flex-col items-center gap-2">
-                        <Icon icon="solar:inbox-linear" className="h-10 w-10 text-muted-foreground/60" />
+                        <Icon
+                          icon="solar:inbox-linear"
+                          className="h-10 w-10 text-muted-foreground/60"
+                        />
                         <span className="text-muted-foreground">{emptyMessage}</span>
                       </div>
                     </td>
@@ -55,7 +61,10 @@ export function DataTable<TData, TValue>({
                 }
               >
                 {table.getRowModel().rows.map((row) => (
-                  <tr key={row.id} className="border-t border-gray-200 dark:border-gray-800">
+                  <tr
+                    key={row.id}
+                    className="border-t border-gray-200 dark:border-gray-800 hover:bg-gray-50/50 dark:hover:bg-white/[0.02] transition-colors"
+                  >
                     {row.getVisibleCells().map((cell) => (
                       <td key={cell.id} className="px-4 py-3">
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}

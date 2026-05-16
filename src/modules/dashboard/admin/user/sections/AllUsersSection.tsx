@@ -6,19 +6,17 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/modules/dashboard/shared/sections/DataTable";
+import { RoleSelector } from "@/modules/dashboard/admin/user/components/RoleSelector";
+import { MultipageModal } from "@/components/rest-os-ui/modal/multipage-modal/MultipageModal";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { useGetAllUsersQuery, useDeleteUserMutation } from "@/redux/featureApi/userApi";
+  useGetAllUsersQuery,
+  useDeleteUserMutation,
+  useUpdateUserRoleStatusMutation,
+} from "@/redux/featureApi/userApi";
 import { UserAnalyticsSection } from "@/modules/dashboard/admin/user/sections/UserAnalyticsSection";
 import { AddUserForm } from "@/modules/dashboard/admin/user/sections/AddUserForm";
-import { MultipageModal } from "@/components/rest-os-ui/modal/multipage-modal/MultipageModal";
 
 interface UserRow {
   _id: string;
@@ -27,7 +25,6 @@ interface UserRow {
   role?: string;
   photo?: string;
   createdAt?: string;
-  status?: string;
 }
 
 export function AllUsersSection() {
@@ -35,12 +32,40 @@ export function AllUsersSection() {
   const [addUserOpen, setAddUserOpen] = useState(false);
   const { data, isLoading } = useGetAllUsersQuery(undefined);
   const [deleteUser, { isLoading: deleting }] = useDeleteUserMutation();
+  const [updateRoleStatus] = useUpdateUserRoleStatusMutation();
+  const [optimisticRoles, setOptimisticRoles] = useState<Record<string, string>>({});
+
   const rows: UserRow[] = Array.isArray((data as any)?.data)
     ? (data as any)?.data
     : (data as any)?.data?.result ?? [];
 
+  const displayRows = rows.map((row) => ({
+    ...row,
+    role: optimisticRoles[row._id] ?? row.role,
+  }));
+
   const handleViewUser = (userId: string) => {
     router.push(`/admin/dashboard/all-users/${userId}`);
+  };
+
+  const handleRoleChange = async (userId: string, newRole: "USER" | "ADMIN") => {
+    const originalRole = rows.find((r) => r._id === userId)?.role;
+
+    setOptimisticRoles((prev) => ({ ...prev, [userId]: newRole }));
+
+    try {
+      await updateRoleStatus({ id: userId, data: { role: newRole } }).unwrap();
+      toast.success(`Role updated to ${newRole.toLowerCase()}`);
+    } catch (error: any) {
+      setOptimisticRoles((prev) => {
+        const next = { ...prev };
+        if (originalRole) next[userId] = originalRole;
+        else delete next[userId];
+        return next;
+      });
+      toast.error(error?.data?.message ?? "Failed to update role");
+      throw error;
+    }
   };
 
   const columns = useMemo<ColumnDef<UserRow>[]>(
@@ -58,8 +83,8 @@ export function AllUsersSection() {
               <AvatarFallback>{row.original.name?.[0]?.toUpperCase() ?? "U"}</AvatarFallback>
             </Avatar>
             <div>
-              <p className="font-medium">{row.original.name}</p>
-              <p className="text-xs text-muted-foreground">{row.original.email}</p>
+              <p className="font-medium text-gray-900 dark:text-white">{row.original.name}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">{row.original.email}</p>
             </div>
           </button>
         ),
@@ -68,18 +93,10 @@ export function AllUsersSection() {
         header: "Role",
         accessorKey: "role",
         cell: ({ row }) => (
-          <Badge variant={row.original.role === "ADMIN" ? "default" : "secondary"}>
-            {row.original.role?.toLowerCase() ?? "user"}
-          </Badge>
-        ),
-      },
-      {
-        header: "Status",
-        accessorKey: "status",
-        cell: ({ row }) => (
-          <Badge variant={row.original.status === "ACTIVE" ? "default" : "destructive"}>
-            {row.original.status?.toLowerCase() ?? "active"}
-          </Badge>
+          <RoleSelector
+            currentRole={(row.original.role?.toUpperCase() as "USER" | "ADMIN") ?? "USER"}
+            onRoleChange={(newRole) => handleRoleChange(row.original._id, newRole)}
+          />
         ),
       },
       {
@@ -104,8 +121,9 @@ export function AllUsersSection() {
               size="icon"
               onClick={() => handleViewUser(row.original._id)}
               title="View details"
+              className="h-8 w-8 hover:bg-gray-100 dark:hover:bg-white/[0.08]"
             >
-              <Icon icon="solar:eye-linear" className="h-4 w-4" />
+              <Icon icon="solar:eye-linear" className="h-4 w-4 text-gray-600 dark:text-gray-400" />
             </Button>
             <Button
               variant="ghost"
@@ -122,8 +140,12 @@ export function AllUsersSection() {
               }}
               disabled={deleting}
               title="Delete user"
+              className="h-8 w-8 hover:bg-red-50 dark:hover:bg-red-500/10"
             >
-              <Icon icon="solar:trash-bin-trash-linear" className="h-4 w-4 text-destructive" />
+              <Icon
+                icon="solar:trash-bin-trash-linear"
+                className="h-4 w-4 text-red-500 dark:text-red-400"
+              />
             </Button>
           </div>
         ),
@@ -136,20 +158,25 @@ export function AllUsersSection() {
     <>
       <UserAnalyticsSection />
 
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-end mb-6">
         <Button
           onClick={() => setAddUserOpen(true)}
-          className="rounded-full text-white"
+          className="rounded-full text-white shadow-sm hover:shadow-md transition-all"
         >
-          <Icon icon="solar:plus-circle-linear" className="h-5 w-5 mr-2" />
+          <Icon icon="solar:plus-circle-linear" className="h-4 w-4 mr-2" />
           Add User
         </Button>
       </div>
 
-      <DataTable columns={columns} data={rows} isLoading={isLoading} emptyMessage="No users yet." />
+      <DataTable
+        columns={columns}
+        data={displayRows}
+        isLoading={isLoading}
+        emptyMessage="No users yet."
+      />
 
-      <MultipageModal open={addUserOpen} initialPageId="basic-info" onOpenChange={setAddUserOpen} >
-        <MultipageModal.Page id="basic-info" >
+      <MultipageModal open={addUserOpen} onOpenChange={setAddUserOpen} initialPageId="add-user">
+        <MultipageModal.Page id="add-user" maxWidth="max-w-[700px]">
           <AddUserForm />
         </MultipageModal.Page>
       </MultipageModal>

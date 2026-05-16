@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { userCreateSchema, type UserCreateInput } from "@/modules/dashboard/admin/user/schemas/user-create.schema";
 import { useCreateUserMutation } from "@/redux/featureApi/userApi";
 
-export function useCreateUser() {
+export function useCreateUser(onSuccess?: () => void) {
   const [showPassword, setShowPassword] = useState(false);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
@@ -19,15 +19,13 @@ export function useCreateUser() {
     handleSubmit,
     formState: { errors },
     reset,
-    watch,
-    setValue,
   } = useForm<UserCreateInput>({ resolver: zodResolver(userCreateSchema) });
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.size > 10 * 1024 * 1024) {
-      toast.error("Photo must be smaller than 10MB.");
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Photo must be smaller than 5MB.");
       return;
     }
     setPhotoFile(file);
@@ -42,19 +40,19 @@ export function useCreateUser() {
       formData.append("name", data.name);
       formData.append("email", data.email);
       formData.append("password", data.password);
-      formData.append("role", data.role);
-      formData.append("status", data.status);
-      if (data.contactNumber) formData.append("contactNumber", data.contactNumber);
-      if (data.location) formData.append("location", data.location);
       if (photoFile) formData.append("photo", photoFile);
 
-      await createUser(formData).unwrap();
+      const res = await createUser(formData).unwrap();
 
+      console.log({res})
+      
       toast.success("User created successfully!");
       reset();
       setPhotoPreview(null);
       setPhotoFile(null);
+      onSuccess?.();
     } catch (error: any) {
+      console.log({error})
       toast.error(error?.data?.message ?? "Failed to create user");
     }
   };
@@ -70,7 +68,5 @@ export function useCreateUser() {
     handlePhotoChange,
     onSubmit,
     creating,
-    watch,
-    setValue,
   };
 }
