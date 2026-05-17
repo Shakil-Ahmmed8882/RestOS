@@ -75,7 +75,7 @@ export function CategoryCard(props: Props) {
             {category.description}
           </p>
         )}
-        <div className="pt-2 flex items-center justify-between text-[11px] text-muted-foreground/80">
+        <div className=" flex items-center justify-between text-[11px] text-muted-foreground/80">
           <span className="inline-flex items-center gap-1">
             <Icon icon="solar:calendar-linear" className="h-3.5 w-3.5" />
             {formatDate(category.createdAt)}
