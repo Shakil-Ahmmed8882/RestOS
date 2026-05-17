@@ -52,7 +52,7 @@ export function SignInForm() {
 
   const handleDemoSignIn = async (account: (typeof DEMO_ACCOUNTS)[number]) => {
     if (!account.email || !account.password) {
-      toast.error(`Demo credentials are not configured.`);
+      toast.error(`Demo credentials are not configured.`, { duration: 2000 });
       return;
     }
 
@@ -60,10 +60,10 @@ export function SignInForm() {
     try {
       const result = await login({ email: account.email, password: account.password });
       if (result?.success) {
-        toast.success(`Welcome, demo ${account.label.toLowerCase()}!`);
+        toast.success(`Welcome, demo ${account.label.toLowerCase()}!`, { duration: 2000 });
         close();
       } else {
-        toast.error(result?.error ?? `Failed to sign in as demo ${account.label}.`);
+        toast.error(result?.error ?? `Failed to sign in as demo ${account.label}.`, { duration: 2000 });
       }
     } finally {
       setDemoLoadingLabel(null);

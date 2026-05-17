@@ -11,26 +11,50 @@ const buildParams = (args: QueryArg) => {
 
 const foodCategoryApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    createFoodCategory: builder.mutation<unknown, Record<string, unknown>>({
-      query: (data) => ({ url: "/food-categories/create-category", method: "POST", body: data }),
-      invalidatesTags: [API_CACHE_TAGS.FOOD_CATEGORIES],
+    createFoodCategory: builder.mutation<unknown, FormData>({
+      query: (data) => ({
+        url: "/food-categories/create-category",
+        method: "POST",
+        body: data,
+      }),
+      // Cache is updated optimistically via redux/featureApi/optimistic/foodCategory.
+      // No invalidation here — that would trigger a full refetch and race with the patch.
     }),
     getSingleFoodCategory: builder.query<unknown, string | undefined>({
       query: (id) => ({ url: `/food-categories/${id}`, method: "GET" }),
       providesTags: [API_CACHE_TAGS.FOOD_CATEGORIES],
     }),
-    getAllFoodsCategories: builder.query<{ data: unknown[]; meta: Record<string, unknown> }, QueryArg>({
-      query: (args) => ({ url: "/food-categories", method: "GET", params: buildParams(args) }),
-      transformResponse: (res: any) => ({ data: res?.data || [], meta: res?.meta || {} }),
+    getAllFoodsCategories: builder.query<
+      { data: unknown[]; meta: Record<string, unknown> },
+      QueryArg
+    >({
+      query: (args) => ({
+        url: "/food-categories",
+        method: "GET",
+        params: buildParams(args),
+      }),
+      transformResponse: (res: any) => {
+        const result = res?.data?.result ?? res?.data ?? [];
+        return {
+          data: Array.isArray(result) ? result : [],
+          meta: res?.meta || {},
+        };
+      },
       providesTags: [API_CACHE_TAGS.FOOD_CATEGORIES],
     }),
-    updateFoodCategory: builder.mutation<unknown, { id: string; data: Record<string, unknown> }>({
-      query: ({ id, data }) => ({ url: `/food-categories/${id}`, method: "PATCH", body: data }),
-      invalidatesTags: [API_CACHE_TAGS.FOOD_CATEGORIES],
+    updateFoodCategory: builder.mutation<unknown, { id: string; data: FormData }>({
+      query: ({ id, data }) => ({
+        url: `/food-categories/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      // Cache is updated optimistically via redux/featureApi/optimistic/foodCategory.
+      // No invalidation here — that would trigger a full refetch and race with the patch.
     }),
     deleteFoodCategory: builder.mutation<unknown, string>({
       query: (id) => ({ url: `/food-categories/${id}`, method: "DELETE" }),
-      invalidatesTags: [API_CACHE_TAGS.FOOD_CATEGORIES],
+      // Cache is updated optimistically via redux/featureApi/optimistic/foodCategory.
+      // No invalidation here — that would trigger a full refetch and race with the patch.
     }),
   }),
 });
@@ -38,6 +62,7 @@ const foodCategoryApi = baseApi.injectEndpoints({
 export const {
   useCreateFoodCategoryMutation,
   useGetAllFoodsCategoriesQuery,
+  useLazyGetAllFoodsCategoriesQuery,
   useGetSingleFoodCategoryQuery,
   useUpdateFoodCategoryMutation,
   useDeleteFoodCategoryMutation,

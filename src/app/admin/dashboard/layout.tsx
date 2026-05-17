@@ -15,7 +15,7 @@ export default function AdminDashboardLayout({
   return (
     <GlobalSearchProvider>
       <Container>
-        <div className="flex min-h-screen bg-zinc-50/60 dark:bg-zinc-950">
+        <div className="flex min-h-screen bg-theme">
           <DashboardSidebar brand="Admin" groups={ADMIN_NAV} variant="admin" />
           <div className="flex w-full min-w-0 flex-col">
             <DashboardTopbar title="Admin dashboard" />

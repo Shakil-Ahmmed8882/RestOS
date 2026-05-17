@@ -78,3 +78,16 @@ export type RootState = ReturnType<AppStore["getState"]>;
 export type AppDispatch = AppStore["dispatch"];
 
 export const setupStoreListeners = setupListeners;
+
+/**
+ * App-wide singleton store.
+ *
+ * Created once on module load so helpers outside the React tree
+ * (e.g. optimistic cache patches) can import `store` directly without
+ * threading dispatch/getState through every call site.
+ *
+ * The ReduxProvider mounts THIS instance, not a fresh one — so component
+ * dispatches and singleton-helper dispatches operate on the same store.
+ */
+export const store: AppStore = makeStore();
+export const persistor = makePersistor(store);

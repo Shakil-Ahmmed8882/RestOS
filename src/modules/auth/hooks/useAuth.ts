@@ -45,8 +45,7 @@ export function useAuth() {
   };
 
   const getDashboardUrl = (role: string): string => {
-    // return role === USER_ROLE.ADMIN ? "/admin/dashboard" : "/user/dashboard";
-    return role === USER_ROLE.ADMIN ? "/admin/dashboard" : "/";
+    return role === USER_ROLE.ADMIN ? "/admin/dashboard" : "/user/dashboard";
   };
 
   const handleAuthSuccess = (accessToken: string, refreshToken: string) => {

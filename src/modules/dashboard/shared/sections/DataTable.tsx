@@ -54,9 +54,8 @@ export function DataTable<TData, TValue>({
               </tr>
             ))}
           </thead>
-          <tbody>
-            
               <CustomSuspense isLoading={Boolean(isLoading)} fallback={<DataTableSkeleton columnConfig={fallbackConfig} rows={skeletonRows} />}>
+          <tbody>
               <ShowIf
                 condition={data.length > 0}
                 fallback={
@@ -86,8 +85,8 @@ export function DataTable<TData, TValue>({
                   </tr>
                 ))}
               </ShowIf>
-              </CustomSuspense>
           </tbody>
+              </CustomSuspense>
         </table>
       </div>
     </Card>

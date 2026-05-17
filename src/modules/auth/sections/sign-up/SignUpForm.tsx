@@ -10,7 +10,7 @@ import { useMultipageModalSelector } from "@/components/rest-os-ui/modal/multipa
 
 export function SignUpForm() {
   const { register, handleSubmit, errors, showPassword, setShowPassword, photoPreview, fileInputRef, handlePhotoChange, onSubmit, registerLoading } = useSignUp();
-  const { goTo, goBack } = useMultipageModalSelector();
+  const { goTo } = useMultipageModalSelector();
 
   return (
     <div className="w-full space-y-7 p-8 bg-theme rounded-2xl">
@@ -106,7 +106,7 @@ export function SignUpForm() {
           Already have an account?{" "}
           <button
             type="button"
-            onClick={() => goBack()}
+            onClick={() => goTo("sign-in", { transition: "slide-right" })}
             className="font-medium text-primary hover:underline"
           >
             Sign in
