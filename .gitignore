@@ -33,3 +33,4 @@ inpiration.js
 .vercel
 .env*.local
 .claude
+steps.ts

@@ -8,22 +8,27 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/modules/dashboard/shared/sections/DataTable";
-import { RoleSelector } from "@/modules/dashboard/admin/user/components/RoleSelector";
+// import { RoleSelector } from "@/modules/dashboard/admin/user/components/RoleSelector";
 import { MultipageModal } from "@/components/rest-os-ui/modal/multipage-modal/MultipageModal";
 import {
   useLazyGetAllUsersQuery,
   useDeleteUserMutation,
   useUpdateUserRoleStatusMutation,
 } from "@/redux/featureApi/userApi";
-import { UserAnalyticsSection } from "@/modules/dashboard/admin/user/sections/UserAnalyticsSection";
-import { AddUserForm } from "@/modules/dashboard/admin/user/sections/AddUserForm";
-import { AddUserSuccess } from "@/modules/dashboard/admin/user/sections/AddUserSuccess";
+// import { UserAnalyticsSection } from "@/modules/dashboard/admin/user/sections/UserAnalyticsSection";
+// import { AddUserForm } from "@/modules/dashboard/admin/user/sections/AddUserForm";
+// import { AddUserSuccess } from "@/modules/dashboard/admin/user/sections/AddUserSuccess";
 import {
   InfiniteScrollSentinel,
   useInfiniteScrollController,
   type FetchPage,
 } from "@/components/rest-os-ui/infinite-scroll";
 import { BaseSkeleton } from "@/components/rest-os-ui/placeholder/skeletons/BaseSkeleton";
+import { usePrefetchUser } from "@/modules/dashboard/admin/user/details/hooks/usePrefetchUser";
+import { UserAnalyticsSection } from "./UserAnalyticsSection";
+import { AddUserForm } from "./AddUserForm";
+import { AddUserSuccess } from "./AddUserSuccess";
+import { RoleSelector } from "../components/RoleSelector";
 
 const PAGE_SIZE = 10;
 
@@ -43,6 +48,7 @@ export function AllUsersSection() {
   const [deleteUser, { isLoading: deleting }] = useDeleteUserMutation();
   const [updateRoleStatus] = useUpdateUserRoleStatusMutation();
   const [optimisticRoles, setOptimisticRoles] = useState<Record<string, string>>({});
+  const { prefetchUser } = usePrefetchUser();
 
   const fetchUsersPage: FetchPage<UserRow> = useCallback(
     async (page) => {
@@ -125,6 +131,8 @@ export function AllUsersSection() {
         cell: ({ row }) => (
           <button
             onClick={() => handleViewUser(row.original._id)}
+            onMouseEnter={() => prefetchUser(row.original._id)}
+            onFocus={() => prefetchUser(row.original._id)}
             className="flex items-center gap-3 hover:opacity-80 transition-opacity w-full text-left"
           >
             <Avatar className="h-8 w-8">
@@ -169,6 +177,8 @@ export function AllUsersSection() {
               variant="ghost"
               size="icon"
               onClick={() => handleViewUser(row.original._id)}
+              onMouseEnter={() => prefetchUser(row.original._id)}
+              onFocus={() => prefetchUser(row.original._id)}
               title="View details"
               className="h-8 w-8 hover:bg-gray-100 dark:hover:bg-white/[0.08]"
             >
@@ -201,7 +211,7 @@ export function AllUsersSection() {
         ),
       },
     ],
-    [deleteUser, deleting, router, removeItem],
+    [deleteUser, deleting, router, removeItem, prefetchUser],
   );
 
   return (

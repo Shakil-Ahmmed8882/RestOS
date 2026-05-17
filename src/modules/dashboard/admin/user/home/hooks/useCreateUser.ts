@@ -4,15 +4,13 @@ import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import {
-  userCreateSchema,
-  type UserCreateInput,
-} from "@/modules/dashboard/admin/user/schemas/user-create.schema";
+
 import { useAdminCreateUserMutation } from "@/redux/featureApi/userApi";
 import {
   normalizeCreatedUser,
   type CreatedUserRow,
 } from "@/redux/featureApi/optimistic/user";
+import { UserCreateInput, userCreateSchema } from "../schemas/user-create.schema";
 
 export interface UseCreateUserCallbacks {
   /**

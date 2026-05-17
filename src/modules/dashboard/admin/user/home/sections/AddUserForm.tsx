@@ -5,11 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { ShowIf } from "@/components/common/ShowIf";
 import { AuthInput } from "@/modules/auth/components/AuthInput";
-import {
-  useCreateUser,
-  type UseCreateUserCallbacks,
-} from "@/modules/dashboard/admin/user/hooks/useCreateUser";
+
 import { useMultipageModalSelector } from "@/components/rest-os-ui/modal/multipage-modal/provider/MultipageModalContext";
+import { useCreateUser, UseCreateUserCallbacks } from "../hooks/useCreateUser";
 
 interface Props {
   /** Page id to navigate to after a successful create (inside MultipageModal). */

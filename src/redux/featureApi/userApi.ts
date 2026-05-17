@@ -15,7 +15,7 @@ const userApi = baseApi.injectEndpoints({
       query: (args) => ({ url: "/users", method: "GET", params: buildParams(args) }),
       providesTags: [API_CACHE_TAGS.USER_LIST],
     }),
-    getSingleUser: builder.query<unknown, string>({
+    getUserDetails: builder.query<unknown, string>({
       query: (id) => ({ url: `/users/${id}`, method: "GET" }),
       providesTags: [API_CACHE_TAGS.USER_PROFILE],
     }),
@@ -48,7 +48,7 @@ const userApi = baseApi.injectEndpoints({
 export const {
   useGetAllUsersQuery,
   useLazyGetAllUsersQuery,
-  useGetSingleUserQuery,
+  useGetUserDetailsQuery,
   useAdminCreateUserMutation,
   useDeleteUserMutation,
   useUpdateUserMutation,
