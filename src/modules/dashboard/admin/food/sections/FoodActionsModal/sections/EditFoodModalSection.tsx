@@ -1,19 +1,22 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { useGetSingleFoodQuery } from "@/redux/featureApi/foodApi";
+import {
+  useGetSingleFoodQuery,
+  useUpdateFoodMutation,
+} from "@/redux/featureApi/foodApi";
+import { applyUpdateFoodToCache } from "@/redux/featureApi/optimistic/food";
 import {
   foodCreateSchema,
   type FoodCreateInput,
 } from "@/modules/dashboard/admin/food/schemas/food-create.schema";
-import { useOptimisticUpdateFood } from "../hooks/useOptimisticUpdateFood";
 import { useFoodActionsSelector } from "../context/FoodActionsContext";
+import { FoodFormFields } from "./FoodFormFields";
 import type { FoodItem } from "@/modules/dashboard/admin/food/types/food.types";
 
 type Props = {
@@ -39,25 +42,19 @@ function EditFormSkeleton() {
 
 export function EditFoodModalSection(props: Props) {
   const { foodId } = props;
-  const { close } = useFoodActionsSelector();
+  const { close, mutators } = useFoodActionsSelector();
 
   const { data, isLoading } = useGetSingleFoodQuery(foodId);
   const food: FoodItem | undefined = data?.food ?? data;
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
 
-  const { run, isLoading: saving } = useOptimisticUpdateFood();
-
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<FoodCreateInput>({
+  const [updateFood, { isLoading: saving }] = useUpdateFoodMutation();
+  const form = useForm<FoodCreateInput>({
     resolver: zodResolver(foodCreateSchema),
   });
+  const { handleSubmit, setValue } = form;
 
   useEffect(() => {
     if (!food) return;
@@ -71,10 +68,7 @@ export function EditFoodModalSection(props: Props) {
     setImagePreview(food.foodImage ?? food.image ?? null);
   }, [food, setValue]);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    if (file.size > 5 * 1024 * 1024) return;
+  const onImageChange = (file: File) => {
     setImageFile(file);
     const reader = new FileReader();
     reader.onload = () => setImagePreview(reader.result as string);
@@ -82,112 +76,77 @@ export function EditFoodModalSection(props: Props) {
   };
 
   const onSubmit = async (values: FoodCreateInput) => {
-    const ok = await run({
-      foodId,
-      payload: { ...values },
-      file: imageFile,
-    });
-    if (ok) close();
+    const fd = new FormData();
+    fd.append("data", JSON.stringify(values));
+    if (imageFile) fd.append("file", imageFile);
+
+    try {
+      const response = await updateFood({ id: foodId, data: fd }).unwrap();
+      const row = applyUpdateFoodToCache(response);
+      // Fallback when the server envelope is unexpected: synthesise a row
+      // from current form values so the list still updates instantly.
+      const visibleRow = row ?? {
+        _id: foodId,
+        foodName: values.foodName,
+        foodCategory: values.foodCategory,
+        price: Number(values.price),
+        quantity: Number(values.quantity),
+        made_by: values.made_by,
+        food_origin: values.food_origin,
+        description: values.description,
+        foodImage: imagePreview ?? undefined,
+      };
+      mutators?.onUpdated?.(visibleRow);
+      toast.success("Food updated");
+      close();
+    } catch (e: any) {
+      toast.error(e?.data?.message ?? "Failed to update food");
+    }
   };
 
   if (isLoading || !food) {
     return (
-      <div className="w-full">
-        <h2 className="text-lg font-semibold mb-5">Edit food</h2>
+      <div className="w-full space-y-5">
+        <h2 className="text-2xl font-bold text-foreground">Edit food</h2>
         <EditFormSkeleton />
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="space-y-6 text-foreground"
+    >
       <div>
-        <h2 className="text-lg font-semibold text-foreground">Edit food</h2>
-        <p className="text-xs text-muted-foreground mt-0.5">
-          Changes appear instantly. Press save to confirm.
+        <h2 className="text-2xl font-bold text-foreground">Edit food</h2>
+        <p className="text-xs text-muted-foreground mt-1">
+          Changes apply instantly once saved.
         </p>
       </div>
 
-      {/* Image */}
-      <div
-        className="rounded-xl bg-zinc-50 dark:bg-white/[0.03] p-4 flex items-center gap-4 cursor-pointer hover:bg-zinc-100 dark:hover:bg-white/[0.05] transition-colors"
-        onClick={() => fileInputRef.current?.click()}
-      >
-        {imagePreview ? (
-          <img
-            src={imagePreview}
-            alt="Preview"
-            className="h-20 w-20 rounded-lg object-cover flex-shrink-0"
-          />
-        ) : (
-          <div className="h-20 w-20 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center flex-shrink-0">
-            <Icon
-              icon="solar:image-broken-linear"
-              className="h-7 w-7 text-muted-foreground/60"
-            />
-          </div>
-        )}
-        <div className="min-w-0">
-          <p className="text-sm font-medium text-foreground">Food image</p>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            Click to replace. JPG/PNG/WebP, max 5MB.
-          </p>
-        </div>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/jpeg,image/png,image/webp"
-          onChange={handleImageChange}
-          className="hidden"
-        />
-      </div>
+      <FoodFormFields
+        form={form}
+        imagePreview={imagePreview}
+        onImageChange={onImageChange}
+      />
 
-      {/* Fields */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Field label="Food name" error={errors.foodName?.message}>
-          <Input {...register("foodName")} placeholder="Margherita Pizza" />
-        </Field>
-        <Field label="Category" error={errors.foodCategory?.message}>
-          <Input {...register("foodCategory")} placeholder="Pizzas" />
-        </Field>
-        <Field label="Price" error={errors.price?.message}>
-          <Input {...register("price")} placeholder="12.50" />
-        </Field>
-        <Field label="Quantity" error={errors.quantity?.message}>
-          <Input {...register("quantity")} placeholder="20" />
-        </Field>
-        <Field label="Made by" error={errors.made_by?.message}>
-          <Input {...register("made_by")} placeholder="Chef name" />
-        </Field>
-        <Field label="Origin" error={errors.food_origin?.message}>
-          <Input {...register("food_origin")} placeholder="Italian" />
-        </Field>
-        <div className="sm:col-span-2">
-          <Field label="Description" error={errors.description?.message}>
-            <Textarea
-              {...register("description")}
-              rows={3}
-              placeholder="Brief description..."
-            />
-          </Field>
-        </div>
-      </div>
-
-      {/* Actions */}
-      <div className="flex justify-end gap-2 pt-2">
+      <div className="flex justify-end gap-2 pt-1">
         <Button
           type="button"
           variant="ghost"
           onClick={close}
           disabled={saving}
-          className="rounded-full"
+          size="lg"
+          className="rounded-full text-foreground hover:bg-zinc-100 dark:hover:bg-white/[0.06]"
         >
           Cancel
         </Button>
         <Button
           type="submit"
           disabled={saving}
-          className="rounded-full text-white min-w-[110px]"
+          size="lg"
+          className="rounded-full text-white min-w-[150px] px-6"
         >
           {saving ? (
             <span className="inline-flex items-center gap-2">
@@ -198,35 +157,13 @@ export function EditFoodModalSection(props: Props) {
               Saving
             </span>
           ) : (
-            "Save changes"
+            <span className="inline-flex items-center gap-2">
+              <Icon icon="solar:check-circle-bold" className="h-4 w-4" />
+              Save changes
+            </span>
           )}
         </Button>
       </div>
     </form>
-  );
-}
-
-function Field({
-  label,
-  error,
-  children,
-}: {
-  label: string;
-  error?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="space-y-1.5">
-      <label className="text-xs font-medium text-muted-foreground">
-        {label}
-      </label>
-      {children}
-      {error && (
-        <p className="flex items-center gap-1 text-[11px] text-red-500">
-          <Icon icon="solar:danger-circle-linear" className="h-3 w-3" />
-          {error}
-        </p>
-      )}
-    </div>
   );
 }

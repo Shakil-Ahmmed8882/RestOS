@@ -7,7 +7,7 @@ const foodApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createFood: builder.mutation<unknown, FormData>({
       query: (data) => ({ url: "/foods/create-food", method: "POST", body: data }),
-      invalidatesTags: [API_CACHE_TAGS.FOOD_LIST],
+      // Cache patched optimistically via redux/featureApi/optimistic/food.
     }),
     getTopSellingFoods: builder.query<{ data: unknown[]; meta: Record<string, unknown> }, void>({
       query: () => ({ url: "/foods/top-selling-food", method: "GET" }),
@@ -26,11 +26,13 @@ const foodApi = baseApi.injectEndpoints({
     }),
     updateFood: builder.mutation<unknown, { id: string; data: FormData }>({
       query: ({ id, data }) => ({ url: `/foods/${id}`, method: "PATCH", body: data }),
-      invalidatesTags: [API_CACHE_TAGS.FOOD_LIST, API_CACHE_TAGS.FOOD_DETAILS],
+      // Cache patched optimistically via redux/featureApi/optimistic/food.
+      // Only the food-details tag is invalidated so the detail page reflects fresh data.
+      invalidatesTags: [API_CACHE_TAGS.FOOD_DETAILS],
     }),
     deleteFood: builder.mutation<unknown, string>({
       query: (id) => ({ url: `/foods/${id}`, method: "DELETE" }),
-      invalidatesTags: [API_CACHE_TAGS.FOOD_LIST],
+      // Cache patched optimistically via redux/featureApi/optimistic/food.
     }),
     addFoodReview: builder.mutation<unknown, { foodId: string; rating: number; comment?: string }>({
       query: ({ foodId, rating, comment }) => ({

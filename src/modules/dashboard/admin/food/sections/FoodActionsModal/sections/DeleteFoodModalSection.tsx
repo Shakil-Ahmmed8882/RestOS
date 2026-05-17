@@ -1,8 +1,10 @@
 "use client";
 
 import { Icon } from "@iconify/react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { useOptimisticDeleteFood } from "../hooks/useOptimisticDeleteFood";
+import { useDeleteFoodMutation } from "@/redux/featureApi/foodApi";
+import { applyDeleteFoodToCache } from "@/redux/featureApi/optimistic/food";
 import { useFoodActionsSelector } from "../context/FoodActionsContext";
 
 type Props = {
@@ -12,61 +14,72 @@ type Props = {
 
 export function DeleteFoodModalSection(props: Props) {
   const { foodId, foodName } = props;
-  const { close } = useFoodActionsSelector();
-  const { run, isLoading: deleting } = useOptimisticDeleteFood();
+  const { close, mutators } = useFoodActionsSelector();
+  const [deleteFood, { isLoading: deleting }] = useDeleteFoodMutation();
 
   const handleDelete = async () => {
-    const ok = await run(foodId);
-    if (ok) close();
+    try {
+      await deleteFood(foodId).unwrap();
+      applyDeleteFoodToCache(foodId);
+      mutators?.onDeleted?.(foodId);
+      toast.success("Food deleted");
+      close();
+    } catch (e: any) {
+      toast.error(e?.data?.message ?? "Failed to delete food");
+    }
   };
 
   return (
-    <div className="space-y-5">
-      <div className="flex items-start gap-4">
-        <div className="h-12 w-12 rounded-full bg-red-500/10 flex items-center justify-center flex-shrink-0">
-          <Icon
-            icon="solar:trash-bin-trash-linear"
-            className="h-6 w-6 text-red-500"
-          />
+    <div className="space-y-6 text-foreground">
+      <div className="flex flex-col items-center text-center gap-4 pt-2">
+        <div className="relative">
+          <div className="absolute inset-0 rounded-full bg-red-500/15 blur-xl" />
+          <div className="relative h-16 w-16 rounded-full bg-red-500/10 flex items-center justify-center">
+            <Icon
+              icon="solar:shield-warning-bold-duotone"
+              className="h-8 w-8 text-red-500"
+            />
+          </div>
         </div>
-        <div className="flex-1 min-w-0">
-          <h2 className="text-lg font-semibold text-foreground">
+        <div className="space-y-1.5">
+          <h2 className="text-xl font-semibold text-foreground">
             Delete this food?
           </h2>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="text-sm text-muted-foreground max-w-[380px]">
             <span className="font-semibold text-foreground">{foodName}</span>{" "}
             will be permanently removed. This cannot be undone.
           </p>
         </div>
       </div>
 
-      <div className="flex justify-end gap-2 pt-2">
+      <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 pt-2">
         <Button
           type="button"
           variant="ghost"
           onClick={close}
           disabled={deleting}
-          className="rounded-full"
+          size="lg"
+          className="rounded-full text-foreground hover:bg-zinc-100 dark:hover:bg-white/[0.06]"
         >
           Cancel
         </Button>
         <Button
           type="button"
-          variant="destructive"
           onClick={handleDelete}
           disabled={deleting}
-          className="rounded-full min-w-[110px]"
+          size="lg"
+          className="rounded-full bg-red-500 hover:bg-red-600 text-white min-w-[180px] px-7 shadow-sm shadow-red-500/30"
         >
           {deleting ? (
             <span className="inline-flex items-center gap-2">
-              <Icon
-                icon="solar:refresh-linear"
-                className="h-4 w-4 animate-spin"
-              />
+              <Icon icon="solar:refresh-linear" className="h-4 w-4 animate-spin" />
               Deleting
             </span>
           ) : (
-            "Delete food"
+            <span className="inline-flex items-center gap-2">
+              <Icon icon="solar:trash-bin-trash-bold" className="h-4 w-4" />
+              Yes, delete it
+            </span>
           )}
         </Button>
       </div>

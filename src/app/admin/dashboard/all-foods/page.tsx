@@ -1,24 +1,5 @@
-
-
-import { Icon } from "@iconify/react";
-import { Button } from "@/components/ui/button";
-import { PageHeader } from "@/modules/dashboard/shared/sections/PageHeader";
-import { AllFoodsSection } from "@/modules/dashboard/admin/sections/AllFoodsSection";
+import { AllFoodsHomeLayout } from "@/modules/dashboard/admin/food/all-foods/AllFoodsHomeLayout";
 
 export default function Page() {
-  return (
-    <>
-      <PageHeader
-        title="All foods"
-        description="Manage menu items — edit, hide, or remove dishes."
-        action={
-          // <Button >
-          //     <Icon icon="solar:add-circle-linear" className="h-4 w-4" /> Add food
-          // </Button>
-          <></>
-        }
-      />
-      <AllFoodsSection />
-    </>
-  );
+  return <AllFoodsHomeLayout />;
 }
