@@ -24,7 +24,7 @@ export function CategoryCard(props: Props) {
   const { category, onEdit, onDelete } = props;
 
   return (
-    <div className="group relative rounded-2xl overflow-hidden bg-white dark:bg-zinc-900/60 shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition-all shadow-[0_8px_24px_-12px_rgba(0,0,0,0.15)] dark:shadow-[0_8px_24px_-12px_rgba(0,0,0,0.5)]">
+    <div className="group relative rounded-2xl bg-silk-with-hover overflow-hidden bg-white dark:bg-zinc-900/60 shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition-all shadow-[0_8px_24px_-12px_rgba(0,0,0,0.15)] dark:shadow-[0_8px_24px_-12px_rgba(0,0,0,0.5)]">
       <div className="relative w-full h-[200px] bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
         {category.image ? (
           <BaseImage

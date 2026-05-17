@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useDeleteFoodCategoryMutation } from "@/redux/featureApi/foodCategoryApi";
 import { applyDeleteCategoryToCache } from "@/redux/featureApi/optimistic/foodCategory";
 import { useCategoryActionsSelector } from "../context/CategoryActionsContext";
+import { BaseButton } from "@/components/rest-os-ui/buttons/BaseButton";
 
 export function DeleteCategoryModalSection() {
   const { target, close, mutators } = useCategoryActionsSelector();
@@ -30,11 +31,11 @@ export function DeleteCategoryModalSection() {
     <div className="space-y-6 text-foreground">
       <div className="flex flex-col items-center text-center gap-4 pt-2">
         <div className="relative">
-          <div className="absolute inset-0 rounded-full bg-red-500/15 blur-xl" />
-          <div className="relative h-16 w-16 rounded-full bg-red-500/10 flex items-center justify-center">
+          <div className="absolute inset-0 rounded-full bg-primary/15 blur-xl" />
+          <div className="relative h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
             <Icon
               icon="solar:shield-warning-bold-duotone"
-              className="h-8 w-8 text-red-500"
+              className="h-8 w-8 text-primary"
             />
           </div>
         </div>
@@ -51,38 +52,32 @@ export function DeleteCategoryModalSection() {
       </div>
 
       <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 pt-2">
-        <Button
+        <BaseButton
           type="button"
-          variant="ghost"
+          intent="primary-light"
           onClick={close}
           disabled={deleting}
           size="lg"
-          className="rounded-full text-foreground hover:bg-zinc-100 dark:hover:bg-white/[0.06]"
+          fullWidth
+          className="rounded-full bg-silk-with-hover text-foreground hover:bg-zinc-100 dark:hover:bg-white/[0.06]"
         >
           Cancel
-        </Button>
-        <Button
+        </BaseButton>
+        <BaseButton
+          fullWidth
           type="button"
           onClick={handleDelete}
           disabled={deleting}
           size="lg"
-          className="rounded-full bg-red-500 hover:bg-red-600 text-white min-w-[180px] px-7 shadow-sm shadow-red-500/30"
+          intent="primary"
+          isLoading={deleting}
+          className="rounded-full  text-white min-w-[180px] px-7 shadow-sm shadow-red-500/30"
         >
-          {deleting ? (
-            <span className="inline-flex items-center gap-2">
-              <Icon
-                icon="solar:refresh-linear"
-                className="h-4 w-4 animate-spin"
-              />
-              Deleting
-            </span>
-          ) : (
             <span className="inline-flex items-center gap-2">
               <Icon icon="solar:trash-bin-trash-bold" className="h-4 w-4" />
               Yes, delete it
             </span>
-          )}
-        </Button>
+        </BaseButton>
       </div>
     </div>
   );
