@@ -73,7 +73,7 @@ export function FoodsTableSection(props: Props) {
             onClick={openCreate}
             className="rounded-full text-white whitespace-nowrap"
           >
-            <Icon icon="solar:add-circle-linear" className="h-4 w-4 mr-1.5" />
+            <Icon icon="solar:add-circle-bold" className="h-5 w-5 mr-1.5" />
             Add food
           </Button>
         </div>

@@ -54,7 +54,7 @@ export function CategoryGridSection(props: Props) {
           onClick={openCreate}
           className="rounded-full text-white whitespace-nowrap"
         >
-          <Icon icon="solar:add-circle-linear" className="h-4 w-4 mr-1.5" />
+          <Icon icon="solar:add-circle-bold" className="h-5 w-5 mr-1.5" />
           Add category
         </Button>
       </div>
@@ -82,7 +82,7 @@ export function CategoryGridSection(props: Props) {
               onClick={openCreate}
               className="mt-5 rounded-full text-white"
             >
-              <Icon icon="solar:add-circle-linear" className="h-4 w-4 mr-1.5" />
+              <Icon icon="solar:add-circle-bold" className="h-5 w-5 mr-1.5" />
               Add category
             </Button>
           )}

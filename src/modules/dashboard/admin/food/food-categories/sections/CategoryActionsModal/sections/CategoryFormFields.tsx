@@ -2,8 +2,7 @@
 
 import { useRef } from "react";
 import { Icon } from "@iconify/react";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { BaseInput, BaseTextarea } from "@/components/rest-os-ui/forms";
 
 export type CategoryFormState = {
   name: string;
@@ -35,31 +34,26 @@ export function CategoryFormFields(props: Props) {
   return (
     <div className="space-y-5">
       <div
-        className="rounded-xl bg-zinc-50/80 dark:bg-white/[0.03] p-4 flex flex-col gap-4 cursor-pointer hover:bg-zinc-100/80 dark:hover:bg-white/[0.05] transition-colors"
+        className="rounded-xl bg-silk-with-hover p-4 flex flex-col gap-3 cursor-pointer transition-colors"
         onClick={() => fileInputRef.current?.click()}
       >
         {state.imagePreview ? (
           <img
             src={state.imagePreview}
             alt="Preview"
-            className="h-40 w-full rounded-lg object-cover object-top flex-shrink-0"
+            className="h-44 w-full rounded-lg object-cover object-top"
           />
         ) : (
-          <div className="h-20 w-20 rounded-lg bg-silk-with-hover flex flex-col items-center justify-center flex-shrink-0">
+          <div className="h-44 w-full rounded-lg bg-silk-with-hover flex flex-col items-center justify-center gap-2">
             <Icon
               icon="solar:cloud-upload-linear"
               className="h-7 w-7 text-zinc-400 dark:text-zinc-500"
             />
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              Click to upload — JPG/PNG/WebP, up to 10MB
+            </p>
           </div>
         )}
-        <div className="min-w-0">
-          <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-            Category image
-          </p>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
-            Click to upload. JPG/PNG/WebP, up to 10MB.
-          </p>
-        </div>
         <input
           ref={fileInputRef}
           type="file"
@@ -73,11 +67,10 @@ export function CategoryFormFields(props: Props) {
         <label className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
           Name
         </label>
-        <Input
+        <BaseInput
           value={state.name}
           onChange={(e) => onChange({ name: e.target.value })}
           placeholder="e.g. Italian"
-          className="text-zinc-900 border-none bg-silk-with-hover dark:text-zinc-100 placeholder:text-zinc-500 dark:placeholder:text-zinc-400"
         />
         {nameError && <p className="text-[11px] text-red-500">{nameError}</p>}
       </div>
@@ -86,12 +79,11 @@ export function CategoryFormFields(props: Props) {
         <label className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
           Description
         </label>
-        <Textarea
+        <BaseTextarea
           value={state.description}
           onChange={(e) => onChange({ description: e.target.value })}
           rows={3}
           placeholder="Short description for this category"
-          className="text-zinc-900 border-none bg-silk-with-hover dark:text-zinc-100"
         />
       </div>
     </div>

@@ -51,7 +51,7 @@ export function RevenueGrowthSection(props: Props) {
         </div>
         <div className="flex items-center gap-3 text-xs">
           <span className="inline-flex items-center gap-1.5 text-muted-foreground">
-            <span className="h-2 w-2 rounded-full bg-amber-400" />
+            <span className="h-2 w-2 rounded-full bg-primary" />
             Revenue
           </span>
           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-zinc-100 dark:bg-white/[0.06] text-foreground">

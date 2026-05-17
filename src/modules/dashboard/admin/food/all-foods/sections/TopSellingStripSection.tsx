@@ -82,7 +82,7 @@ export function TopSellingStripSection() {
               key={food._id}
               food={food}
               rank={idx + 1}
-              onClick={(f) => router.push(`/admin/dashboard/foods/${f._id}`)}
+              onClick={(f) => router.push(`/food-details/${f._id}`)}
             />
           ))}
         </DragScrollRow>
