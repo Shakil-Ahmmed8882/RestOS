@@ -8,16 +8,17 @@ type Props = {
 };
 
 /**
- * Inline SVG line chart with a soft area fill. No external chart lib
- * needed — this is decorative-but-honest: it renders the data points
- * we hand it. The parent owns aggregation.
+ * Inline SVG line + area chart, themed against the app's `primary` token
+ * so it tracks dark/light + future palette changes. Stroke + dots use
+ * `currentColor` (set by `text-primary` on the parent), and the area
+ * fill is derived via opacity layers.
  */
 export function RevenueSparkline(props: Props) {
   const { points, labels } = props;
 
   const view = useMemo(() => {
     if (points.length === 0) {
-      return { d: "", area: "", max: 0, min: 0, coords: [] };
+      return { d: "", area: "", coords: [] as Array<{ x: number; y: number }> };
     }
     const W = 600;
     const H = 180;
@@ -41,24 +42,16 @@ export function RevenueSparkline(props: Props) {
       coords.map((c) => `L ${c.x} ${c.y}`).join(" ") +
       ` L ${coords[coords.length - 1].x} ${H - PAD_Y} Z`;
 
-    return { d, area, max, min, coords };
+    return { d, area, coords };
   }, [points]);
 
   return (
-    <div className="w-full">
+    <div className="w-full text-primary">
       <svg
         viewBox="0 0 600 180"
         className="w-full h-44"
         preserveAspectRatio="none"
       >
-        <defs>
-          <linearGradient id="revArea" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="rgb(234 179 8)" stopOpacity="0.25" />
-            <stop offset="100%" stopColor="rgb(234 179 8)" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-
-        {/* horizontal grid */}
         {[0.25, 0.5, 0.75].map((t) => (
           <line
             key={t}
@@ -67,19 +60,25 @@ export function RevenueSparkline(props: Props) {
             y1={24 + (180 - 48) * t}
             y2={24 + (180 - 48) * t}
             stroke="currentColor"
-            strokeOpacity="0.06"
+            strokeOpacity="0.08"
             strokeDasharray="3 4"
           />
         ))}
 
         {view.area && (
           <>
+            <defs>
+              <linearGradient id="revArea" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="currentColor" stopOpacity="0.28" />
+                <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
+              </linearGradient>
+            </defs>
             <path d={view.area} fill="url(#revArea)" />
             <path
               d={view.d}
               fill="none"
-              stroke="rgb(234 179 8)"
-              strokeWidth={2}
+              stroke="currentColor"
+              strokeWidth={2.25}
               strokeLinecap="round"
               strokeLinejoin="round"
             />
@@ -88,8 +87,8 @@ export function RevenueSparkline(props: Props) {
                 key={i}
                 cx={c.x}
                 cy={c.y}
-                r={3}
-                fill="rgb(234 179 8)"
+                r={3.25}
+                fill="currentColor"
                 stroke="white"
                 strokeWidth={1.5}
                 className="dark:[stroke:rgb(24,24,27)]"
