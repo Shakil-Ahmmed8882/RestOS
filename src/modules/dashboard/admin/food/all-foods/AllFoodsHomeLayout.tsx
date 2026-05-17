@@ -8,7 +8,7 @@ import {
 import { useAdminFoods } from "./hooks/useAdminFoods";
 import { FoodStatsSection } from "./sections/FoodStatsSection";
 import { RevenueGrowthSection } from "./sections/RevenueGrowthSection";
-import { FoodsTableSection } from "./sections/FoodsTableSection";
+import { FoodsGridSection } from "./sections/FoodsGridSection";
 import { TopSellingStripSection } from "./sections/TopSellingStripSection";
 import type { FoodCacheRow } from "@/redux/featureApi/optimistic/food";
 import type { FoodItem } from "@/modules/dashboard/admin/food/types/food.types";
@@ -68,7 +68,7 @@ export function AllFoodsHomeLayout() {
         <TopSellingStripSection />
         <FoodStatsSection foods={foods.items} />
         <RevenueGrowthSection foods={foods.items} />
-        <FoodsTableSection foods={foods} />
+        <FoodsGridSection foods={foods} />
       </div>
       <FoodActionsModalLayout />
     </FoodActionsProvider>

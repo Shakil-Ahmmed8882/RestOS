@@ -1,6 +1,7 @@
 "use client";
 
 import { Icon } from "@iconify/react";
+import { BaseImage } from "@/components/rest-os-ui/images/BaseImage";
 import type { FoodItem } from "@/modules/dashboard/admin/food/types/food.types";
 
 type Props = {
@@ -22,30 +23,24 @@ export function TopSellingCard(props: Props) {
     <button
       type="button"
       onClick={() => onClick?.(food)}
-      className="group relative shrink-0 w-[220px] sm:w-[240px] rounded-2xl bg-white dark:bg-zinc-900/60 shadow-[0_1px_2px_rgba(0,0,0,0.04)] overflow-hidden text-left transition-all hover:shadow-[0_8px_24px_-12px_rgba(0,0,0,0.15)] dark:hover:shadow-[0_8px_24px_-12px_rgba(0,0,0,0.5)]"
+      className="group relative shrink-0 w-[220px] sm:w-[240px] rounded-2xl bg-white dark:bg-zinc-900/60 ring-1 ring-zinc-200/60 dark:ring-white/[0.04] shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden text-left transition-all hover:shadow-[0_8px_24px_-12px_rgba(0,0,0,0.18)] dark:hover:shadow-[0_8px_24px_-12px_rgba(0,0,0,0.6)]"
     >
-      <div className="relative h-[140px] bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
-        {image ? (
-          <img
-            src={image}
-            alt={name}
-            draggable={false}
-            className="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
-          />
-        ) : (
-          <div className="h-full w-full flex items-center justify-center">
-            <Icon
-              icon="solar:dish-linear"
-              className="h-9 w-9 text-muted-foreground/40"
-            />
-          </div>
-        )}
+      <div className="relative h-[140px] overflow-hidden">
+        <BaseImage
+          src={image}
+          alt={name}
+          className="h-full w-full"
+          imgClass="transition-transform duration-300 group-hover:scale-105"
+          sizes="240px"
+        />
+
         {typeof rank === "number" && (
-          <span className="absolute top-2 left-2 inline-flex items-center gap-1 rounded-full bg-primary/95 text-primary-foreground px-2 py-0.5 text-[10px] font-bold tracking-wide">
-            <Icon icon="solar:crown-bold" className="h-3 w-3" />#{rank}
+          <span className="absolute top-2 left-2 inline-flex items-center gap-1 rounded-full bg-primary px-2 py-0.5 text-[10px] font-bold tracking-wide !text-white">
+            <Icon icon="solar:crown-bold" className="h-3 w-3 !text-white" />
+            <span className="!text-white">#{rank}</span>
           </span>
         )}
-        <span className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-black/55 backdrop-blur px-2 py-0.5 text-[10px] font-semibold text-white">
+        <span className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-black/55 backdrop-blur px-2 py-0.5 text-[10px] font-semibold !text-white">
           <Icon icon="solar:star-bold" className="h-3 w-3 text-amber-300" />
           {rating.toFixed(1)}
         </span>

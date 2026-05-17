@@ -1,7 +1,8 @@
 "use client";
 
 import { Icon } from "@iconify/react";
-import { Button } from "@/components/ui/button";
+import { BaseButton } from "../../buttons/BaseButton";
+
 
 type Props = {
   /** Bold subject inserted into the title. e.g. "this food" */
@@ -72,38 +73,32 @@ export function ConfirmDestructiveSection(props: Props) {
       </div>
 
       <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 pt-2">
-        <Button
+        <BaseButton
           type="button"
-          variant="ghost"
+          intent="primary-light"
+          fullWidth
           onClick={onCancel}
           disabled={isLoading}
           size="lg"
-          className="rounded-full text-foreground hover:bg-zinc-100 dark:hover:bg-white/[0.06]"
+          className="rounded-full text-foreground bg-zinc-100 dark:bg-zinc-800"
         >
           Cancel
-        </Button>
-        <Button
+        </BaseButton>
+        <BaseButton
           type="button"
+          intent="primary"
+          fullWidth
           onClick={() => void onConfirm()}
           disabled={isLoading}
+          isLoading={isLoading}
           size="lg"
-          className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground min-w-[180px] px-7 shadow-sm shadow-primary/30"
+          className="rounded-full bg-primary hover:bg-primary/90 min-w-[180px] px-7 shadow-sm shadow-primary/30"
         >
-          {isLoading ? (
-            <span className="inline-flex items-center gap-2">
-              <Icon
-                icon="solar:refresh-linear"
-                className="h-4 w-4 animate-spin"
-              />
-              Deleting
-            </span>
-          ) : (
-            <span className="inline-flex items-center gap-2">
+          <span className="inline-flex items-center gap-2">
               <Icon icon="solar:trash-bin-trash-bold" className="h-4 w-4" />
               {confirmLabel}
             </span>
-          )}
-        </Button>
+        </BaseButton>
       </div>
     </div>
   );

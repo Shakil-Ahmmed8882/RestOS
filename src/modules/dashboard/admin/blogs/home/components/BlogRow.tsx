@@ -74,13 +74,13 @@ export function BlogRow(props: Props) {
         <Button
           variant="ghost"
           size="icon"
-          className="h-8 w-8 rounded-full hover:bg-red-50 dark:hover:bg-red-500/10"
+          className="h-8 w-8 rounded-full hover:bg-primary/10 text-primary"
           onClick={() => onDelete(blog)}
           title="Delete blog"
         >
           <Icon
             icon="solar:trash-bin-trash-linear"
-            className="h-4 w-4 text-red-500"
+            className="h-4 w-4"
           />
         </Button>
       </div>

@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button";
+import { BaseImage } from "@/components/rest-os-ui/images/BaseImage";
 import type { FoodItem } from "@/modules/dashboard/admin/food/types/food.types";
 
 type Props = {
@@ -39,22 +40,15 @@ export function FoodGridCard(props: Props) {
       <button
         type="button"
         onClick={() => router.push(`/food-details/${food._id}`)}
-        className="relative block w-full h-44 bg-zinc-100 dark:bg-zinc-800 overflow-hidden text-left"
+        className="relative block w-full h-44 overflow-hidden text-left"
       >
-        {image ? (
-          <img
-            src={image}
-            alt={name}
-            className="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
-          />
-        ) : (
-          <div className="h-full w-full flex items-center justify-center">
-            <Icon
-              icon="solar:dish-linear"
-              className="h-10 w-10 text-muted-foreground/40"
-            />
-          </div>
-        )}
+        <BaseImage
+          src={image}
+          alt={name}
+          className="h-full w-full"
+          imgClass="transition-transform duration-300 group-hover:scale-105"
+          sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+        />
 
         {/* Rating chip top-left */}
         <span className="absolute top-2 left-2 inline-flex items-center gap-1 rounded-full bg-black/55 backdrop-blur px-2 py-0.5 text-[10px] font-semibold text-white">
