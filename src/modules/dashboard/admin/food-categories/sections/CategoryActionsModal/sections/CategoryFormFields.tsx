@@ -45,7 +45,7 @@ export function CategoryFormFields(props: Props) {
             className="h-20 w-20 rounded-lg object-cover object-top flex-shrink-0"
           />
         ) : (
-          <div className="h-20 w-20 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center flex-shrink-0">
+          <div className="h-20 w-20 rounded-lg bg-silk-with-hover flex items-center justify-center flex-shrink-0">
             <Icon
               icon="solar:cloud-upload-linear"
               className="h-7 w-7 text-zinc-400 dark:text-zinc-500"
@@ -77,7 +77,7 @@ export function CategoryFormFields(props: Props) {
           value={state.name}
           onChange={(e) => onChange({ name: e.target.value })}
           placeholder="e.g. Italian"
-          className="text-zinc-900 dark:text-zinc-100"
+          className="text-zinc-900 border-none bg-silk-with-hover dark:text-zinc-100 placeholder:text-zinc-500 dark:placeholder:text-zinc-400"
         />
         {nameError && <p className="text-[11px] text-red-500">{nameError}</p>}
       </div>
@@ -91,7 +91,7 @@ export function CategoryFormFields(props: Props) {
           onChange={(e) => onChange({ description: e.target.value })}
           rows={3}
           placeholder="Short description for this category"
-          className="text-zinc-900 dark:text-zinc-100"
+          className="text-zinc-900 border-none bg-silk-with-hover dark:text-zinc-100"
         />
       </div>
     </div>

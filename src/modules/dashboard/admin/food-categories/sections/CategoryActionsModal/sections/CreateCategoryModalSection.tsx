@@ -57,10 +57,10 @@ export function CreateCategoryModalSection() {
   return (
     <div className="space-y-6 text-foreground">
       <div>
-        <h2 className="text-lg font-semibold text-foreground">
+        <h2 className="text-2xl font-bold text-foreground">
           New food category
         </h2>
-        <p className="text-xs text-muted-foreground mt-0.5">
+        <p className="text-xs text-muted-foreground mt-1">
           Group related dishes for easier browsing.
         </p>
       </div>
