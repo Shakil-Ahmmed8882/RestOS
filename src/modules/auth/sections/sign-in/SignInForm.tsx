@@ -28,8 +28,8 @@ const DEMO_ACCOUNTS = [
     icon: "solar:user-bold",
       // email: process.env.NEXT_PUBLIC_DEMO_USER_EMAIL,
       // password: process.env.NEXT_PUBLIC_DEMO_USER_PASSWORD,
-    email: "mina@gmail.com",
-    password: "mina1234*$#",
+    email: "ruje@mailinator.com",
+    password: "Pa$$w0rd!",
   },
 ] as const;
 
@@ -52,7 +52,7 @@ export function SignInForm() {
 
   const handleDemoSignIn = async (account: (typeof DEMO_ACCOUNTS)[number]) => {
     if (!account.email || !account.password) {
-      toast.error(`${account.label as any} demo credentials are not configured.`);
+      toast.error(`Demo credentials are not configured.`);
       return;
     }
 

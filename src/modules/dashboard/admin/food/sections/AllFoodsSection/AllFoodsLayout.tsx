@@ -12,20 +12,25 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { useGetAllFoodsQuery, useDeleteFoodMutation } from "@/redux/featureApi/foodApi";
+import { useGetAllFoodsQuery } from "@/redux/featureApi/foodApi";
 import { FoodSearchBar } from "./sections/FoodSearchBar";
 import { FoodGrid } from "./sections/FoodGrid";
 import { FoodGridSkeleton } from "@/modules/dashboard/admin/food/loading/placeholder/FoodGridSkeleton";
 import { AddFoodModal } from "@/modules/dashboard/admin/food/sections/AddFoodModal/AddFoodModal";
+import {
+  FoodActionsProvider,
+  FoodActionsModalLayout,
+  useFoodActionsSelector,
+} from "@/modules/dashboard/admin/food/sections/FoodActionsModal";
 import type { FoodItem } from "@/modules/dashboard/admin/food/types/food.types";
-import { toast } from "sonner";
 
-export function AllFoodsLayout() {
+function AllFoodsInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentPage = Number(searchParams.get("page")) || 1;
   const searchQuery = searchParams.get("search") || "";
   const [addFoodOpen, setAddFoodOpen] = useState(false);
+  const { openEdit, openDelete } = useFoodActionsSelector();
 
   const queryParams = {
     page: currentPage.toString(),
@@ -34,11 +39,15 @@ export function AllFoodsLayout() {
   };
 
   const { data, isLoading } = useGetAllFoodsQuery(queryParams);
-  const [deleteFood, { isLoading: deleting }] = useDeleteFoodMutation();
 
-  const foods: FoodItem[] = Array.isArray(data?.data) ? (data.data as FoodItem[]) : [];
-  const metadata = data?.meta || { total: foods.length, page: currentPage, limit: 12 };
-  const totalPages = Math.ceil(((metadata.total as number) || 0) / ((metadata.limit as number) || 12));
+  const foods: FoodItem[] = Array.isArray(data?.data)
+    ? (data.data as FoodItem[])
+    : [];
+  const metadata =
+    data?.meta || { total: foods.length, page: currentPage, limit: 12 };
+  const totalPages = Math.ceil(
+    ((metadata.total as number) || 0) / ((metadata.limit as number) || 12),
+  );
 
   const handleSearch = (query: string) => {
     const params = new URLSearchParams();
@@ -54,56 +63,56 @@ export function AllFoodsLayout() {
     router.push(`?${params.toString()}`);
   };
 
-  const handleDeleteFood = async (foodId: string, foodName: string) => {
-    const ok = window.confirm(`Delete ${foodName}?`);
-    if (!ok) return;
-
-    try {
-      await deleteFood(foodId).unwrap();
-      toast.success("Food deleted successfully");
-    } catch (e: any) {
-      toast.error(e?.data?.message ?? "Failed to delete food");
-    }
-  };
-
-  const handleEditFood = (foodId: string) => {
-    router.push(`/admin/dashboard/foods/${foodId}/edit`);
-  };
-
   return (
     <>
       <div className="space-y-6">
-        {/* Header and Search */}
         <div className="flex items-center justify-between gap-4">
           <div className="flex-1">
             <FoodSearchBar value={searchQuery} onChange={handleSearch} />
           </div>
-          <Button onClick={() => setAddFoodOpen(true)} className="rounded-full text-white whitespace-nowrap">
+          <Button
+            onClick={() => setAddFoodOpen(true)}
+            className="rounded-full text-white whitespace-nowrap"
+          >
             <Icon icon="solar:plus-circle-linear" className="h-5 w-5 mr-2" />
             Add Food
           </Button>
         </div>
 
-      {/* Foods Grid */}
-      {isLoading ? (
-        <FoodGridSkeleton />
-      ) : foods.length === 0 ? (
-        <div className="bg-white dark:bg-zinc-900/50 rounded-xl p-12 text-center">
-          <Icon icon="solar:bag-linear" className="h-16 w-16 mx-auto mb-3 opacity-40" />
-          <p className="text-muted-foreground">No foods found</p>
-          {searchQuery && <p className="text-sm text-muted-foreground mt-1">Try adjusting your search</p>}
-        </div>
-      ) : (
-        <FoodGrid
-          foods={foods}
-          onViewDetails={(foodId) => router.push(`/admin/dashboard/foods/${foodId}`)}
-          onEdit={handleEditFood}
-          onDelete={handleDeleteFood}
-          isDeleting={deleting}
-        />
-      )}
+        {isLoading ? (
+          <FoodGridSkeleton />
+        ) : foods.length === 0 ? (
+          <div className="bg-white dark:bg-zinc-900/50 rounded-xl p-12 text-center">
+            <Icon
+              icon="solar:bag-linear"
+              className="h-16 w-16 mx-auto mb-3 opacity-40"
+            />
+            <p className="text-muted-foreground">No foods found</p>
+            {searchQuery && (
+              <p className="text-sm text-muted-foreground mt-1">
+                Try adjusting your search
+              </p>
+            )}
+          </div>
+        ) : (
+          <FoodGrid
+            foods={foods}
+            onViewDetails={(foodId) =>
+              router.push(`/admin/dashboard/foods/${foodId}`)
+            }
+            onEdit={(foodId) => {
+              const food = foods.find((f) => f._id === foodId);
+              if (!food) return;
+              openEdit({
+                foodId,
+                foodName: food.foodName ?? food.name ?? "Untitled food",
+              });
+            }}
+            onDelete={(foodId, foodName) => openDelete({ foodId, foodName })}
+            isDeleting={false}
+          />
+        )}
 
-        {/* Pagination */}
         {totalPages > 1 && (
           <div className="mt-8 flex justify-center">
             <Pagination>
@@ -111,7 +120,11 @@ export function AllFoodsLayout() {
                 <PaginationItem>
                   <PaginationPrevious
                     onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
-                    className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                    className={
+                      currentPage === 1
+                        ? "pointer-events-none opacity-50"
+                        : "cursor-pointer"
+                    }
                   />
                 </PaginationItem>
 
@@ -142,8 +155,14 @@ export function AllFoodsLayout() {
 
                 <PaginationItem>
                   <PaginationNext
-                    onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
-                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                    onClick={() =>
+                      handlePageChange(Math.min(totalPages, currentPage + 1))
+                    }
+                    className={
+                      currentPage === totalPages
+                        ? "pointer-events-none opacity-50"
+                        : "cursor-pointer"
+                    }
                   />
                 </PaginationItem>
               </PaginationContent>
@@ -153,6 +172,15 @@ export function AllFoodsLayout() {
       </div>
 
       <AddFoodModal isOpen={addFoodOpen} onOpenChange={setAddFoodOpen} />
+      <FoodActionsModalLayout />
     </>
+  );
+}
+
+export function AllFoodsLayout() {
+  return (
+    <FoodActionsProvider>
+      <AllFoodsInner />
+    </FoodActionsProvider>
   );
 }

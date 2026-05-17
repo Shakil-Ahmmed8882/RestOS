@@ -13,7 +13,9 @@ export const usePrefetchUser = () => {
     (userId: string) => {
       if (!userId) return;
       dispatch(
-        userApi.endpoints.getSingleUser.initiate(userId, { forceRefetch: false }),
+        (userApi.endpoints as any).getUserDetails.initiate(userId, {
+          forceRefetch: false,
+        }),
       );
       router.prefetch(`/admin/dashboard/all-users/${userId}`);
     },

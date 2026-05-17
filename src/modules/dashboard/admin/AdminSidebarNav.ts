@@ -9,6 +9,7 @@ export const ADMIN_NAV: DashboardNavGroup[] = [
       { label: "Analytics", href: "/admin/dashboard/blog-analytics", icon: "solar:chart-square-bold-duotone" },
       { label: "All users", href: "/admin/dashboard/all-users", icon: "solar:users-group-rounded-linear" },
           { label: "All foods", href: "/admin/dashboard/all-foods", icon: "solar:dish-linear" },
+      { label: "All blogs", href: "/admin/dashboard/all-blogs", icon: "solar:document-text-linear" },
     ],
   },
   // {
