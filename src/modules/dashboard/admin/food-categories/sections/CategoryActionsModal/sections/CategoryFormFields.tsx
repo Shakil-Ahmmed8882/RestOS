@@ -35,17 +35,17 @@ export function CategoryFormFields(props: Props) {
   return (
     <div className="space-y-5">
       <div
-        className="rounded-xl bg-zinc-50/80 dark:bg-white/[0.03] p-4 flex items-center gap-4 cursor-pointer hover:bg-zinc-100/80 dark:hover:bg-white/[0.05] transition-colors"
+        className="rounded-xl bg-zinc-50/80 dark:bg-white/[0.03] p-4 flex flex-col gap-4 cursor-pointer hover:bg-zinc-100/80 dark:hover:bg-white/[0.05] transition-colors"
         onClick={() => fileInputRef.current?.click()}
       >
         {state.imagePreview ? (
           <img
             src={state.imagePreview}
             alt="Preview"
-            className="h-20 w-20 rounded-lg object-cover object-top flex-shrink-0"
+            className="h-40 w-full rounded-lg object-cover object-top flex-shrink-0"
           />
         ) : (
-          <div className="h-20 w-20 rounded-lg bg-silk-with-hover flex items-center justify-center flex-shrink-0">
+          <div className="h-20 w-20 rounded-lg bg-silk-with-hover flex flex-col items-center justify-center flex-shrink-0">
             <Icon
               icon="solar:cloud-upload-linear"
               className="h-7 w-7 text-zinc-400 dark:text-zinc-500"
