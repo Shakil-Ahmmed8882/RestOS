@@ -52,7 +52,7 @@ export function AllBlogsSection() {
         onSelect={setFilter}
       />
 
-      <PendingBlogsStripSection />
+      <PendingBlogsStripSection search={search} />
 
       <div className="mt-7">
         {showSkeleton && <BlogListSkeleton count={6} />}

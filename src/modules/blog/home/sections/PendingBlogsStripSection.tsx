@@ -6,6 +6,7 @@ import { useAppSelector } from "@/redux/hooks";
 import { DragScrollRow } from "@/components/rest-os-ui/scroll/DragScrollRow";
 import { BaseImage } from "@/components/rest-os-ui/images/BaseImage";
 import type { BlogItem } from "@/modules/blog/types/blog.types";
+import { ShowIf } from "@/components/common/ShowIf";
 
 /**
  * Shows the logged-in user's own pending submissions just below the
@@ -14,7 +15,7 @@ import type { BlogItem } from "@/modules/blog/types/blog.types";
  * The query filters by `user` (server rewrites to `author.user`) and
  * `status=pending`, so we never see other people's pending posts.
  */
-export function PendingBlogsStripSection() {
+export function PendingBlogsStripSection({search}: {search: string}) {
   const user = useAppSelector((s) => s?.auth?.user);
 
   const args = user?.id
@@ -36,6 +37,8 @@ export function PendingBlogsStripSection() {
   if (!isLoading && items.length === 0) return null;
 
   return (
+
+    <ShowIf condition={!search.trim()}>
     <section className="mt-6 rounded-2xl bg-silk-with-hover p-4 sm:p-5">
       <div className="flex items-center justify-between gap-3 flex-wrap mb-3">
         <div className="flex items-center gap-2">
@@ -75,6 +78,7 @@ export function PendingBlogsStripSection() {
         </DragScrollRow>
       )}
     </section>
+    </ShowIf>
   );
 }
 
