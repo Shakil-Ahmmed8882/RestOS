@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { Icon } from "@iconify/react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAddReplyToCommentMutation } from "@/redux/featureApi/replyApi";
 import { useRequireAuth } from "../hooks/useRequireAuth";
 import { useCommentsSelector } from "../context/CommentsContext";
+import type { BlogReply } from "@/modules/blog/types/blog.types";
 
 type Props = {
   commentId: string;
@@ -14,7 +16,7 @@ type Props = {
 
 export function ReplyComposer(props: Props) {
   const { commentId, onSubmitted } = props;
-  const { blogId } = useCommentsSelector();
+  const { blogId, user } = useCommentsSelector();
   const { requireAuth } = useRequireAuth();
   const [value, setValue] = useState("");
   const [addReply, { isLoading: submitting }] = useAddReplyToCommentMutation();
@@ -23,9 +25,33 @@ export function ReplyComposer(props: Props) {
     e.preventDefault();
     if (!requireAuth()) return;
     const text = value.trim();
-    if (!text) return;
+    if (!text || !user) return;
+
+    const tempId = `temp-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    const temp: BlogReply = {
+      _id: tempId,
+      _tempId: tempId,
+      _pending: true,
+      // The server stores the body on `comment`; we set both so reads
+      // via `reply.comment ?? reply.replyText` work in either order.
+      comment: text,
+      replyText: text,
+      user: {
+        _id: user?.id,
+        name: user?.name ?? "You",
+        photo: user?.photoURL ?? null,
+        role: user?.role,
+      },
+      createdAt: new Date().toISOString(),
+    };
+
     try {
-      await addReply({ commentId, replyText: text, blogId }).unwrap();
+      await addReply({
+        commentId,
+        blogId,
+        replyText: text,
+        _tempEntry: temp,
+      }).unwrap();
       setValue("");
       onSubmitted?.();
     } catch (err: any) {
@@ -34,12 +60,21 @@ export function ReplyComposer(props: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex items-center gap-2 mt-2">
+    <form
+      onSubmit={handleSubmit}
+      className="mt-2 flex items-start gap-2 rounded-2xl bg-silk-with-hover p-2"
+    >
+      <Avatar className="h-8 w-8 flex-shrink-0">
+        <AvatarImage src={user?.photoURL ?? undefined} alt={user?.name} />
+        <AvatarFallback className="bg-primary/10 text-primary text-[11px] font-semibold">
+          {user?.name?.[0]?.toUpperCase() ?? "?"}
+        </AvatarFallback>
+      </Avatar>
       <input
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="Write a reply…"
-        className="flex-1 h-9 px-3 rounded-full bg-silk-with-hover text-sm text-foreground placeholder:text-muted-foreground/70 border-0 outline-none focus:ring-0"
+        className="flex-1 h-9 px-3 rounded-full bg-background text-sm text-foreground placeholder:text-muted-foreground/70 border-0 outline-none focus:ring-0"
       />
       <button
         type="submit"

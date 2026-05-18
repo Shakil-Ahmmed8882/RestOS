@@ -12,6 +12,8 @@ import {
   useUpdateOrderMutation,
   useDeleteOrderMutation,
 } from "@/redux/featureApi/orderApi";
+import { DataBoundary } from "@/components/rest-os-ui/layouts/wrapper/DataBoundary";
+import { BaseSkeleton } from "@/components/rest-os-ui/placeholder/skeletons/BaseSkeleton";
 
 export type OrderStatus = "pending" | "preparing" | "delivered" | "cancelled";
 
@@ -31,9 +33,32 @@ const STATUS_VARIANT: Record<OrderStatus, "default" | "secondary" | "destructive
   cancelled: "destructive",
 };
 
+export function OrdersTableSkeleton() {
+  return (
+    <div className="space-y-2">
+      {Array.from({ length: 8 }).map((_, i) => (
+        <div
+          key={i}
+          className="flex items-center gap-4 rounded-xl bg-white dark:bg-zinc-900/60 px-4 py-3"
+        >
+          <BaseSkeleton className="h-3 w-16" />
+          <div className="flex-1 space-y-1.5">
+            <BaseSkeleton className="h-3.5 w-32" />
+            <BaseSkeleton className="h-3 w-40" />
+          </div>
+          <BaseSkeleton className="h-3 w-14" />
+          <BaseSkeleton className="h-5 w-20 rounded-full" />
+          <BaseSkeleton className="h-3 w-24" />
+          <BaseSkeleton className="h-8 w-24 rounded-md" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function OrdersSection({ filterStatus }: { filterStatus?: OrderStatus }) {
   const args = filterStatus ? [{ name: "status", value: filterStatus }] : undefined;
-  const { data, isLoading } = useGetAllOrdersQuery(args);
+  const { data, isLoading, isError, refetch } = useGetAllOrdersQuery(args);
   const [updateOrder] = useUpdateOrderMutation();
   const [deleteOrder] = useDeleteOrderMutation();
   const rows: OrderRow[] = (data as any)?.data ?? [];
@@ -115,5 +140,14 @@ export function OrdersSection({ filterStatus }: { filterStatus?: OrderStatus }) 
     [updateOrder, deleteOrder],
   );
 
-  return <DataTable columns={columns} data={rows} isLoading={isLoading} emptyMessage="No orders found." />;
+  return (
+    <DataBoundary
+      isLoading={isLoading}
+      isError={isError}
+      onReset={() => refetch()}
+      skeleton={<OrdersTableSkeleton />}
+    >
+      <DataTable columns={columns} data={rows} isLoading={false} emptyMessage="No orders found." />
+    </DataBoundary>
+  );
 }

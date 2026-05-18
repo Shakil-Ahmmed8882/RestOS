@@ -4,6 +4,7 @@ import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button";
 import { InfiniteScrollSentinel } from "@/components/rest-os-ui/infinite-scroll";
 import { BaseSkeleton } from "@/components/rest-os-ui/placeholder/skeletons/BaseSkeleton";
+import { SectionErrorBoundary } from "@/components/rest-os-ui/layouts/wrapper/SectionErrorBoundary";
 import type { useFoodCategories } from "../hooks/useFoodCategories";
 import { CategoryCard } from "../components/CategoryCard";
 import { CategorySearchBar } from "../components/CategorySearchBar";
@@ -18,6 +19,14 @@ type Props = {
 };
 
 export function CategoryGridSection(props: Props) {
+  return (
+    <SectionErrorBoundary onReset={() => props.categories.retry?.()}>
+      <CategoryGridSectionInner {...props} />
+    </SectionErrorBoundary>
+  );
+}
+
+function CategoryGridSectionInner(props: Props) {
   const { openCreate, openEdit, openDelete } = useCategoryActionsSelector();
   const {
     items,
@@ -109,15 +118,15 @@ export function CategoryGridSection(props: Props) {
       )}
 
       {status === "error" && (
-        <div className="rounded-xl bg-red-50 dark:bg-red-500/10 px-4 py-3 flex items-center justify-between">
-          <span className="text-xs text-red-600 dark:text-red-400">
+        <div className="rounded-xl bg-primary/5 px-4 py-3 flex items-center justify-between">
+          <span className="text-xs text-primary">
             {(error as any)?.data?.message ?? "Failed to load categories."}
           </span>
           <Button
             variant="ghost"
             size="sm"
             onClick={retry}
-            className="h-7 text-xs text-red-600 dark:text-red-400"
+            className="h-7 text-xs text-primary hover:bg-primary/10"
           >
             Retry
           </Button>

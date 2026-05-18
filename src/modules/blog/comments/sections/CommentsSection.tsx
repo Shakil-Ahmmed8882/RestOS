@@ -11,27 +11,27 @@ export function CommentsSection() {
   const { comments, isLoading } = useCommentsSelector();
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6 ">
       <CommentsHeader />
       <CommentComposer />
 
       {isLoading ? (
         <CommentsSkeleton count={4} />
       ) : comments.length === 0 ? (
-        <div className="rounded-2xl bg-silk-with-hover p-8 text-center">
+        <div className="rounded-2xl bg-silk-with-hover !p-14 text-center">
           <Icon
             icon="solar:chat-round-dots-linear"
-            className="h-10 w-10 mx-auto mb-2 text-muted-foreground/40"
+            className="h-12 w-12 mx-auto mb-3 text-muted-foreground/40"
           />
-          <p className="text-sm font-semibold text-foreground">
+          <p className="text-base font-semibold text-foreground">
             Be the first to comment
           </p>
-          <p className="text-xs text-muted-foreground mt-0.5">
+          <p className="text-sm text-muted-foreground mt-1">
             Share what you think about this post.
           </p>
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-5">
           {comments.map((c) =>
             c?._id ? <CommentItem key={c._id} comment={c} /> : null,
           )}

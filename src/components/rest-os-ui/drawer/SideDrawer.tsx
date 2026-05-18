@@ -75,7 +75,7 @@ export function SideDrawer(props: Props) {
             animate={{ x: 0 }}
             exit={{ x: initialX }}
             transition={{ type: "tween", duration: 0.25, ease: "easeOut" }}
-            className={`fixed top-0 ${sideClass} z-[999999] h-full w-full ${widthClass} bg-background dark:bg-zinc-950 shadow-[0_0_40px_rgba(0,0,0,0.25)] flex flex-col`}
+            className={`fixed top-0 ${sideClass} z-[999999] h-full w-full ${widthClass} bg-theme shadow-[0_0_40px_rgba(0,0,0,0.25)] flex flex-col`}
           >
             {(title || description) && (
               <header className="flex items-start justify-between gap-3 px-5 py-4 border-b border-zinc-100 dark:border-white/[0.06]">

@@ -28,7 +28,7 @@ export function BlogListCard(props: Props) {
   const title = blog?.title ?? "Untitled";
   const image = blog?.image;
   const category = blog?.category;
-  const excerpt = blog?.excerpt ?? blog?.content;
+  const excerpt = blog?.excerpt ?? blog?.description ?? blog?.content;
   const comments = blog?.commentsCount ?? 0;
 
   const handleCardClick = () => {
@@ -41,7 +41,7 @@ export function BlogListCard(props: Props) {
       <button
         type="button"
         onClick={handleCardClick}
-        className="relative block w-full h-44 sm:h-48 overflow-hidden text-left"
+        className="relative block w-full h-52 sm:h-56 overflow-hidden text-left"
       >
         <BaseImage
           src={image}
@@ -52,11 +52,11 @@ export function BlogListCard(props: Props) {
         />
       </button>
 
-      <div className="p-4 sm:p-5 space-y-3">
+      <div className="p-5 sm:p-6 space-y-3">
         <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
             {category && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 text-primary px-2.5 py-0.5 font-semibold">
+              <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 text-primary px-2.5 py-1 font-semibold">
                 <span className="h-1.5 w-1.5 rounded-full bg-primary" />
                 {category}
               </span>
@@ -71,9 +71,9 @@ export function BlogListCard(props: Props) {
               onOpenComments(blog);
             }}
             aria-label="Open comments"
-            className="inline-flex items-center gap-1 h-7 px-2.5 rounded-full text-[11px] font-medium text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+            className="inline-flex items-center gap-1 h-8 px-3 rounded-full text-xs font-semibold text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
           >
-            <Icon icon="solar:chat-round-linear" className="h-3.5 w-3.5" />
+            <Icon icon="solar:chat-round-linear" className="h-4 w-4" />
             {comments}
           </button>
         </div>
@@ -83,11 +83,11 @@ export function BlogListCard(props: Props) {
           onClick={handleCardClick}
           className="block text-left w-full"
         >
-          <h3 className="text-sm sm:text-base font-semibold text-foreground line-clamp-2 group-hover:text-primary transition-colors">
+          <h3 className="text-base sm:text-lg font-bold leading-snug text-foreground line-clamp-2 group-hover:text-primary transition-colors">
             {title}
           </h3>
           {excerpt && (
-            <p className="mt-2 text-xs text-muted-foreground line-clamp-2">
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground line-clamp-2">
               {excerpt}
             </p>
           )}
@@ -96,10 +96,10 @@ export function BlogListCard(props: Props) {
         <button
           type="button"
           onClick={handleCardClick}
-          className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
+          className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline"
         >
           Learn More
-          <Icon icon="solar:arrow-right-linear" className="h-3.5 w-3.5" />
+          <Icon icon="solar:arrow-right-linear" className="h-4 w-4" />
         </button>
       </div>
     </article>

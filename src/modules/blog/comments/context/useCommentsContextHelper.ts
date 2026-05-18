@@ -23,7 +23,9 @@ export const useCommentsContextHelper = (props: Props) => {
 
   const [sort, setSort] = useState<CommentsSort>("newest");
   const [replyOpenFor, setReplyOpenFor] = useState<string | null>(null);
-  const [expandedThreads, setExpandedThreads] = useState<Set<string>>(new Set());
+  const [expandedThreads, setExpandedThreads] = useState<Set<string>>(
+    new Set(),
+  );
 
   const [submitComment, { isLoading: submitting }] =
     useAddCommentOnBlogMutation();
@@ -55,31 +57,55 @@ export const useCommentsContextHelper = (props: Props) => {
     });
   }, []);
 
+  /**
+   * Submit a new comment optimistically. The temp doc carries:
+   *  - the authed user (so the avatar + name show instantly)
+   *  - a local blob URL for the picked image (revoked on swap)
+   *  - a _tempId / _pending flag the API layer uses to splice the
+   *    server-confirmed doc back in.
+   */
   const submitNewComment = useCallback(
-    async (text: string) => {
+    async (text: string, file?: File | null) => {
       const trimmed = text.trim();
       if (!trimmed || !user) return false;
-      const optimisticId = `optimistic-${Date.now()}`;
+      const tempId = `temp-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      const localImageUrl =
+        file && typeof window !== "undefined"
+          ? URL.createObjectURL(file)
+          : undefined;
       try {
         await submitComment({
           blog: blogId,
           comment: trimmed,
-          _optimisticEntry: {
-            _id: optimisticId,
+          file: file ?? undefined,
+          _tempEntry: {
+            _id: tempId,
+            _tempId: tempId,
+            _pending: true,
             comment: trimmed,
             blog: blogId,
             user: {
               _id: user?.id,
               name: user?.name ?? "You",
-              photo: user?.photoURL ?? undefined,
+              photo: user?.photoURL ?? null,
+              role: user?.role,
             },
+            image: localImageUrl ?? null,
+            imagePublicId: null,
             createdAt: new Date().toISOString(),
             replies: [],
-            _pending: true,
+            _localImageUrl: localImageUrl,
           },
         }).unwrap();
         return true;
       } catch {
+        if (localImageUrl) {
+          try {
+            URL.revokeObjectURL(localImageUrl);
+          } catch {
+            /* noop */
+          }
+        }
         return false;
       }
     },

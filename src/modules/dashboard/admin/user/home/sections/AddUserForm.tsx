@@ -39,9 +39,9 @@ export function AddUserForm({ successPageId = "add-user-success", callbacks }: P
   });
 
   return (
-    <div className="w-full bg-theme rounded-2xl overflow-hidden shadow-2xl border border-gray-100 dark:border-white/[0.06]">
+    <div className="w-full bg-theme rounded-2xl overflow-hidden  dark:border-white/[0.06]">
       {/* Header */}
-      <div className="relative flex flex-col items-center pt-10 pb-8 px-8 bg-gradient-to-b from-gray-50 to-white dark:from-white/[0.03] dark:to-transparent border-b border-gray-100 dark:border-white/[0.06]">
+      <div className="relative flex flex-col items-center pt-10  bg-gradient-to-b from-gray-50 to-white dark:from-white/[0.03] dark:to-transparent border-b border-gray-100 dark:border-white/[0.06]">
         <div className="relative mb-5">
           <div className="absolute inset-0 rounded-full bg-primary/10 blur-xl scale-150 opacity-60" />
           <div className="relative h-20 w-20 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 dark:from-primary/30 dark:to-primary/10 border-2 border-primary/20 dark:border-primary/30 flex items-center justify-center shadow-lg">

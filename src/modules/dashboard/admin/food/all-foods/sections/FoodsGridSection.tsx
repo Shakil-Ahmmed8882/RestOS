@@ -4,6 +4,7 @@ import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button";
 import { InfiniteScrollSentinel } from "@/components/rest-os-ui/infinite-scroll";
 import { BaseSkeleton } from "@/components/rest-os-ui/placeholder/skeletons/BaseSkeleton";
+import { SectionErrorBoundary } from "@/components/rest-os-ui/layouts/wrapper/SectionErrorBoundary";
 import { useFoodActionsSelector } from "@/modules/dashboard/admin/food/sections/FoodActionsModal";
 import { FoodGridCard } from "../components/FoodGridCard";
 import { FoodTableSearchBar } from "../components/FoodTableSearchBar";
@@ -19,6 +20,14 @@ type Props = {
 };
 
 export function FoodsGridSection(props: Props) {
+  return (
+    <SectionErrorBoundary onReset={() => props.foods.retry?.()}>
+      <FoodsGridSectionInner {...props} />
+    </SectionErrorBoundary>
+  );
+}
+
+function FoodsGridSectionInner(props: Props) {
   const { openCreate, openEdit, openDelete } = useFoodActionsSelector();
   const {
     items,

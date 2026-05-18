@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
-import { Icon } from "@iconify/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { MultipageModal } from "@/components/rest-os-ui/modal/multipage-modal/MultipageModal";
+import { ConfirmDestructiveSection } from "@/components/rest-os-ui/modal/confirm-destructive";
 import {
   useDeleteReplyOnCommentMutation,
   useUpdateReplyOnCommentMutation,
@@ -33,23 +34,34 @@ function authorOf(user: unknown): BlogAuthor {
     _id: u?._id,
     name: u?.name ?? "User",
     photo: u?.photo ?? null,
+    role: u?.role,
   };
+}
+
+function getUserId(user: unknown): string | undefined {
+  if (typeof user === "string") return user;
+  return (user as { _id?: string })?._id;
 }
 
 export function ReplyItem(props: Props) {
   const { reply, commentId } = props;
   const { blogId, user } = useCommentsSelector();
   const [editing, setEditing] = useState(false);
-  const [draft, setDraft] = useState(reply?.replyText ?? "");
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const initialText = reply?.comment ?? reply?.replyText ?? "";
+  const [draft, setDraft] = useState(initialText);
   const [updateReply, { isLoading: saving }] = useUpdateReplyOnCommentMutation();
   const [deleteReply, { isLoading: deleting }] = useDeleteReplyOnCommentMutation();
 
   if (!reply) return null;
 
   const author = authorOf(reply?.user);
-  const isOwner =
-    user?.id && typeof reply?.user === "object" && (reply?.user as any)?._id === user.id;
+  const isPending = Boolean(reply?._pending);
+  const isOwner = Boolean(
+    user?.id && getUserId(reply?.user) && getUserId(reply?.user) === user.id,
+  );
   const canModify = isOwner || user?.role === "ADMIN";
+  const busy = saving || deleting;
 
   const handleSave = async () => {
     const trimmed = draft.trim();
@@ -68,96 +80,117 @@ export function ReplyItem(props: Props) {
   };
 
   const handleDelete = async () => {
-    if (!window.confirm("Delete this reply?")) return;
     try {
-      await deleteReply({ replyId: reply._id, commentId }).unwrap();
+      await deleteReply({
+        replyId: reply._id,
+        commentId,
+        blogId,
+      }).unwrap();
+      setConfirmOpen(false);
     } catch (e: any) {
       toast.error(e?.data?.message ?? "Couldn't delete reply");
     }
   };
 
   return (
-    <div className="flex items-start gap-3 pt-3">
+    <div className={`flex items-start gap-2.5 ${isPending ? "opacity-75" : ""}`}>
       <Avatar className="h-8 w-8 flex-shrink-0">
         <AvatarImage src={author?.photo ?? undefined} alt={author?.name} />
-        <AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
+        <AvatarFallback className="bg-primary/10 text-primary text-[11px] font-semibold">
           {author?.name?.[0]?.toUpperCase() ?? "U"}
         </AvatarFallback>
       </Avatar>
 
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-sm font-semibold text-foreground">
-            {author?.name}
-          </span>
-          <span className="text-[11px] text-muted-foreground">
-            {fmtDate(reply?.createdAt)}
-          </span>
+        <div className="rounded-2xl bg-silk-with-hover px-3.5 py-2.5">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-sm font-semibold text-foreground">
+              {author?.name}
+            </span>
+          </div>
+
+          {editing ? (
+            <div className="mt-2 space-y-2">
+              <textarea
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                rows={2}
+                className="w-full rounded-xl bg-background text-sm text-foreground p-2.5 border-0 outline-none focus:ring-0 resize-none"
+              />
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleSave}
+                  disabled={saving}
+                  className="h-8 px-3 rounded-full bg-primary text-white text-xs font-semibold disabled:opacity-60"
+                >
+                  {saving ? "Saving…" : "Save"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditing(false);
+                    setDraft(initialText);
+                  }}
+                  className="h-8 px-3 rounded-full text-xs font-medium text-muted-foreground hover:bg-zinc-100 dark:hover:bg-white/[0.06]"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : (
+            <p className="mt-0.5 text-sm leading-relaxed text-foreground/90 whitespace-pre-wrap break-words">
+              {reply?.comment ?? reply?.replyText}
+            </p>
+          )}
         </div>
 
-        {editing ? (
-          <div className="mt-2 space-y-2">
-            <textarea
-              value={draft}
-              onChange={(e) => setDraft(e.target.value)}
-              rows={2}
-              className="w-full rounded-xl bg-silk-with-hover text-sm text-foreground p-3 border-0 outline-none focus:ring-0 resize-none"
-            />
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={handleSave}
-                disabled={saving}
-                className="h-8 px-3 rounded-full bg-primary text-white text-xs font-semibold disabled:opacity-60"
-              >
-                {saving ? "Saving…" : "Save"}
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setEditing(false);
-                  setDraft(reply?.replyText ?? "");
-                }}
-                className="h-8 px-3 rounded-full text-xs font-medium text-muted-foreground hover:bg-zinc-100 dark:hover:bg-white/[0.06]"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        ) : (
-          <p className="mt-1 text-sm text-foreground/90 whitespace-pre-wrap break-words">
-            {reply?.replyText}
-          </p>
-        )}
-
-        {canModify && !editing && (
-          <div className="flex items-center gap-3 mt-2 text-[11px] font-medium text-muted-foreground">
-            <button
-              type="button"
-              onClick={() => setEditing(true)}
-              className="hover:text-primary transition-colors"
-            >
-              Edit
-            </button>
-            <button
-              type="button"
-              onClick={handleDelete}
-              disabled={deleting}
-              className="hover:text-primary transition-colors"
-            >
-              {deleting ? "Deleting…" : "Delete"}
-            </button>
+        {!editing && (
+          <div className="flex items-center gap-3 mt-1 pl-3 text-[11px] text-muted-foreground">
+            <span>{fmtDate(reply?.createdAt)}</span>
+            {isPending ? (
+              <span className="font-semibold text-primary">Posting…</span>
+            ) : (
+              canModify && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => setEditing(true)}
+                    disabled={busy}
+                    className="font-semibold hover:text-primary transition-colors"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setConfirmOpen(true)}
+                    disabled={busy}
+                    className="font-semibold hover:text-primary transition-colors"
+                  >
+                    Delete
+                  </button>
+                </>
+              )
+            )}
           </div>
         )}
       </div>
 
-      <button
-        type="button"
-        aria-label="More"
-        className="h-7 w-7 rounded-full flex items-center justify-center text-muted-foreground/60 hover:bg-zinc-100 dark:hover:bg-white/[0.06]"
+      <MultipageModal
+        open={confirmOpen}
+        onOpenChange={(next) => !next && setConfirmOpen(false)}
+        initialPageId="confirm-reply-delete"
       >
-        <Icon icon="solar:menu-dots-bold" className="h-4 w-4" />
-      </button>
+        <MultipageModal.Page id="confirm-reply-delete" maxWidth="max-w-[460px]">
+          <ConfirmDestructiveSection
+            subject="this reply"
+            itemName={initialText.slice(0, 60) || "reply"}
+            isLoading={deleting}
+            onConfirm={handleDelete}
+            onCancel={() => setConfirmOpen(false)}
+          />
+        </MultipageModal.Page>
+      </MultipageModal>
     </div>
   );
 }

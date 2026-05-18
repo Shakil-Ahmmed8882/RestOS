@@ -16,10 +16,11 @@ export function useBlogHome() {
 
   const args = useMemo(() => {
     const params: Array<{ name: string; value: string }> = [];
+    params.push({ name: "status", value: "approved" });
     if (debounced.trim()) params.push({ name: "searchTerm", value: debounced.trim() });
     if (filter !== ALL_FILTER) params.push({ name: "category", value: filter });
     params.push({ name: "sort", value: "-createdAt" });
-    return params.length > 0 ? params : undefined;
+    return params;
   }, [debounced, filter]);
 
   const { data, isLoading, isFetching, error, refetch } =

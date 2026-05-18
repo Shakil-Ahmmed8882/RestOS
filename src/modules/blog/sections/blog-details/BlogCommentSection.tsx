@@ -79,22 +79,24 @@ export function BlogCommentSection({ blogId }: { blogId: string }) {
       >
         <ShowIf condition={comments.length > 0} fallback={<p className="text-sm text-muted-foreground">No comments yet — be the first.</p>}>
           <div className="space-y-3">
-            {comments.map((c) => (
+            {comments.map((c) => {
+              const cu = typeof c?.user === "object" ? c.user : null;
+              return (
               <Card key={c._id} className="space-y-2 p-4">
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src={c.user?.photo ?? undefined} alt={c.user?.name} />
-                      <AvatarFallback>{c.user?.name?.[0]?.toUpperCase() ?? "U"}</AvatarFallback>
+                      <AvatarImage src={cu?.photo ?? undefined} alt={cu?.name} />
+                      <AvatarFallback>{cu?.name?.[0]?.toUpperCase() ?? "U"}</AvatarFallback>
                     </Avatar>
                     <div>
-                      <p className="text-sm font-semibold">{c.user?.name ?? "User"}</p>
+                      <p className="text-sm font-semibold">{cu?.name ?? "User"}</p>
                       <p className="text-xs text-muted-foreground">
                         {c.createdAt ? new Date(c.createdAt).toLocaleString() : ""}
                       </p>
                     </div>
                   </div>
-                  {user?.email && c.user?.email === user.email ? (
+                  {user?.email && cu?.email === user.email ? (
                     <Button variant="ghost" size="icon" onClick={() => deleteComment({ id: c._id, blogId })}>
                       <Icon icon="solar:trash-bin-trash-linear" className="h-4 w-4 text-destructive" />
                     </Button>
@@ -102,7 +104,8 @@ export function BlogCommentSection({ blogId }: { blogId: string }) {
                 </div>
                 <p className={`text-sm ${c._pending ? "opacity-60" : ""}`}>{c.comment}</p>
               </Card>
-            ))}
+              );
+            })}
           </div>
         </ShowIf>
       </CustomSuspense>

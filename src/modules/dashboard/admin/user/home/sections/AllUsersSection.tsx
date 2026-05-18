@@ -24,6 +24,7 @@ import {
   type FetchPage,
 } from "@/components/rest-os-ui/infinite-scroll";
 import { BaseSkeleton } from "@/components/rest-os-ui/placeholder/skeletons/BaseSkeleton";
+import { SectionErrorBoundary } from "@/components/rest-os-ui/layouts/wrapper/SectionErrorBoundary";
 import { usePrefetchUser } from "@/modules/dashboard/admin/user/details/hooks/usePrefetchUser";
 import { UserAnalyticsSection } from "./UserAnalyticsSection";
 import { AddUserForm } from "./AddUserForm";
@@ -42,6 +43,14 @@ interface UserRow {
 }
 
 export function AllUsersSection() {
+  return (
+    <SectionErrorBoundary>
+      <AllUsersSectionInner />
+    </SectionErrorBoundary>
+  );
+}
+
+function AllUsersSectionInner() {
   const router = useRouter();
   const [addUserOpen, setAddUserOpen] = useState(false);
   const [triggerGetUsers] = useLazyGetAllUsersQuery();

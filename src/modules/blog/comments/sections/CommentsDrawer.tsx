@@ -21,6 +21,7 @@ export function CommentsDrawer(props: Props) {
       title="Comments"
       description={blogTitle}
       widthClass="max-w-lg"
+      
     >
       {blogId && (
         <CommentsProvider blogId={blogId}>

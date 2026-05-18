@@ -4,6 +4,7 @@ import { FoodSearchBar } from "@/modules/food/sections/food-list/FoodSearchBar";
 import { FoodSidebar } from "@/modules/food/sections/food-list/FoodSidebar";
 import { FoodGrid } from "@/modules/food/sections/food-list/FoodGrid";
 import { FoodPromoSection } from "@/modules/food/sections/FoodPromoSection";
+import { FoodBlogCtaSection } from "@/modules/food/sections/FoodBlogCtaSection";
 
 export function FoodHomeLayout() {
   return (
@@ -19,6 +20,7 @@ export function FoodHomeLayout() {
               <div className="flex-1 min-w-0">
                 <div className="space-y-6 py-6">
                   <FoodPromoSection />
+                  <FoodBlogCtaSection />
                   <FoodGrid />
                 </div>
               </div>

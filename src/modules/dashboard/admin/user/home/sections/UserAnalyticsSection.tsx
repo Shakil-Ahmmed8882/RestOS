@@ -3,6 +3,8 @@
 import { Icon } from "@iconify/react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetAllUsersQuery } from "@/redux/featureApi/userApi";
+import { DataBoundary } from "@/components/rest-os-ui/layouts/wrapper/DataBoundary";
+import { BaseSkeleton } from "@/components/rest-os-ui/placeholder/skeletons/BaseSkeleton";
 
 type UserData = {
   _id: string;
@@ -11,8 +13,41 @@ type UserData = {
   createdAt?: string;
 };
 
+function UserAnalyticsSkeleton() {
+  return (
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 mb-6">
+      {Array.from({ length: 4 }).map((_, i) => (
+        <div
+          key={i}
+          className="rounded-xl bg-white dark:bg-zinc-900/50 px-4 py-3 flex items-center gap-3"
+        >
+          <BaseSkeleton className="h-10 w-10 shrink-0 rounded-lg" />
+          <div className="min-w-0 flex-1 space-y-1.5">
+            <BaseSkeleton className="h-2.5 w-16" />
+            <BaseSkeleton className="h-5 w-12" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function UserAnalyticsSection() {
-  const { data: response, isLoading } = useGetAllUsersQuery(undefined);
+  const { data: response, isLoading, isError, refetch } = useGetAllUsersQuery(undefined);
+  return (
+    <DataBoundary
+      isLoading={isLoading}
+      isError={isError}
+      onReset={() => refetch()}
+      skeleton={<UserAnalyticsSkeleton />}
+    >
+      <UserAnalyticsContent response={response} />
+    </DataBoundary>
+  );
+}
+
+function UserAnalyticsContent({ response }: { response: unknown }) {
+  const isLoading = false;
   const users: UserData[] = Array.isArray((response as any)?.data)
     ? (response as any)?.data
     : (response as any)?.data?.result ?? [];

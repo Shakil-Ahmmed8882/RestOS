@@ -14,10 +14,12 @@ type Props = {
   onView: (blogId: string) => void;
   onEdit: (blog: TBlog) => void;
   onDelete: (blog: TBlog) => void;
+  onApprove?: (blog: TBlog) => void;
+  isApproving?: boolean;
 };
 
 export function BlogRow(props: Props) {
-  const { blog, onView, onEdit, onDelete } = props;
+  const { blog, onView, onEdit, onDelete, onApprove, isApproving } = props;
 
   if (!blog) return null;
 
@@ -29,6 +31,7 @@ export function BlogRow(props: Props) {
         year: "numeric",
       })
     : "—";
+  const isPending = blog?.status === "pending";
 
   return (
     <div className="group flex items-center gap-4 p-3 rounded-xl bg-zinc-50/60 dark:bg-white/[0.02] hover:bg-zinc-100/70 dark:hover:bg-white/[0.04] transition-colors">
@@ -60,6 +63,25 @@ export function BlogRow(props: Props) {
       </div>
 
       <div className="flex items-center gap-1">
+        {isPending && onApprove && (
+          <button
+            type="button"
+            onClick={() => onApprove(blog)}
+            disabled={isApproving}
+            className="h-8 px-3 rounded-full bg-primary text-white text-xs font-semibold inline-flex items-center gap-1.5 hover:bg-primary/90 disabled:opacity-60 shadow-sm shadow-primary/30"
+            title="Approve blog"
+          >
+            <Icon
+              icon={
+                isApproving
+                  ? "solar:refresh-linear"
+                  : "solar:check-circle-bold"
+              }
+              className={`h-3.5 w-3.5 ${isApproving ? "animate-spin" : ""}`}
+            />
+            Approve
+          </button>
+        )}
         <Button
           variant="ghost"
           size="icon"
