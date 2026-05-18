@@ -12,6 +12,7 @@ import {
 } from "@/redux/featureApi/commentApi";
 import { useCommentsSelector } from "../context/CommentsContext";
 import { useRequireAuth } from "../hooks/useRequireAuth";
+import { useIsOwner } from "../hooks/useOwnership";
 import { ReplyComposer } from "./ReplyComposer";
 import { ReplyItem } from "./ReplyItem";
 import type { BlogAuthor, BlogComment } from "@/modules/blog/types/blog.types";
@@ -44,22 +45,21 @@ function authorOf(user: unknown): BlogAuthor {
   };
 }
 
-function getUserId(user: unknown): string | undefined {
-  if (typeof user === "string") return user;
-  return (user as { _id?: string })?._id;
-}
 
 export function CommentItem(props: Props) {
   const { comment } = props;
   const {
     blogId,
-    user,
     replyOpenFor,
     toggleReplyOpen,
     expandedThreads,
     toggleThread,
   } = useCommentsSelector();
   const { requireAuth } = useRequireAuth();
+
+  // Strict owner-only check — admins do NOT get Edit/Delete on the
+  // public comments UI. Moderation belongs in the dashboard.
+  const isOwner = useIsOwner(comment?.user);
 
   const [editing, setEditing] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -92,13 +92,10 @@ export function CommentItem(props: Props) {
   const replies = (comment?.replies ?? []).filter(Boolean);
   const isReplyOpen = replyOpenFor === comment._id;
   const isExpanded = expandedThreads.has(comment._id);
-  const commentUserId = getUserId(comment?.user);
-  const isOwner = Boolean(
-    user?.id && commentUserId && commentUserId === user.id,
-  );
-  // Edit is owner-only (matches server). Delete can be owner OR ADMIN.
+  // Both actions require strict ownership. The server still lets admins
+  // delete, but the UI only surfaces that for the author.
   const canEdit = isOwner;
-  const canDelete = isOwner || user?.role === "ADMIN";
+  const canDelete = isOwner;
   const isPending = Boolean(comment?._pending);
   const busy = saving || deleting;
 

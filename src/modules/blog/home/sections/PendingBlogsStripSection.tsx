@@ -39,7 +39,7 @@ export function PendingBlogsStripSection({search}: {search: string}) {
   return (
 
     <ShowIf condition={!search.trim()}>
-    <section className="mt-6 rounded-2xl bg-silk-with-hover p-4 sm:p-5">
+    <section className="mt-6 rounded-2xl bg-primary/5 dark:bg-[#121212] p-4 sm:p-5">
       <div className="flex items-center justify-between gap-3 flex-wrap mb-3">
         <div className="flex items-center gap-2">
           <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-primary">
@@ -84,13 +84,13 @@ export function PendingBlogsStripSection({search}: {search: string}) {
 
 function PendingCard({ blog }: { blog: BlogItem }) {
   return (
-    <div className="group relative shrink-0 w-[260px] sm:w-[300px] rounded-2xl bg-background ring-1 ring-zinc-200/60 dark:ring-white/[0.04] shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden">
+    <div className="group relative shrink-0 w-[260px] sm:w-[300px] rounded-2xl bg-theme ring-1 ring-zinc-200/60 dark:ring-white/[0.04] shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden">
       <div className="relative h-[110px] overflow-hidden">
         <BaseImage
           src={blog?.image}
           alt={blog?.title}
           className="h-full w-full"
-          imgClass="transition-transform duration-300 group-hover:scale-105"
+          imgClass="transition-transform duration-300 group-hover:scale-105 object-cover !object-top"
           sizes="300px"
         />
         <span className="absolute top-2 left-2 inline-flex items-center gap-1 rounded-full bg-primary px-2 py-0.5 text-[10px] font-bold tracking-wide !text-white">

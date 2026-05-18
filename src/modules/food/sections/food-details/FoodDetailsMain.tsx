@@ -37,7 +37,7 @@ export function FoodDetailsMain({ id }: { id: string }) {
       id: food._id,
       name: food.foodName,
       price: food.price,
-      image: food.foodImage,
+      image: food?.foodImage,
       quantity: qty,
     }));
     toast.success(`Added ${qty} × ${food.foodName} to cart`);

@@ -12,7 +12,7 @@ export function FoodCard({ food }: { food: FoodItem }) {
   const [isFavorite, setIsFavorite] = useState(false);
 
   const displayName = food.name || food.foodName || "Untitled Dish";
-  const displayImage = food.image || food.foodImage || DEFAULT_FOOD_IMAGE;
+  const displayImage = food.image || food?.foodImage || DEFAULT_FOOD_IMAGE;
   const displayRating = food.averageRating || food.rating || 0;
 
   const handleFavorite = (e: React.MouseEvent) => {

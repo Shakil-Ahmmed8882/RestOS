@@ -15,7 +15,7 @@ export function RelatedFoodsGrid(props: Props) {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {foods.map((food) => {
         const foodName = food.foodName || food.name;
-        const foodImage = food.foodImage || food.image;
+        const foodImage = food?.foodImage || food.image;
         const rating = food.averageRating || food.rating || 0;
 
         return (
