@@ -15,23 +15,23 @@ import type { FoodItem } from "@/modules/dashboard/admin/food/types/food.types";
 
 function asFoodItem(row: FoodCacheRow): FoodItem {
   return {
-    _id: row._id,
-    foodName: row.foodName,
-    name: row.name,
-    foodImage: row.foodImage,
-    image: row.image,
-    foodCategory: row.foodCategory,
-    category: row.category,
-    price: row.price ?? 0,
-    quantity: row.quantity,
-    orders: row.orders,
-    preparationTime: row.preparationTime,
-    averageRating: row.averageRating,
-    description: row.description,
-    made_by: row.made_by,
-    food_origin: row.food_origin,
-    createdAt: row.createdAt,
-    updatedAt: row.updatedAt,
+    _id: row?._id,
+    foodName: row?.foodName,
+    name: row?.name,
+    foodImage: row?.foodImage,
+    image: row?.image,
+    foodCategory: row?.foodCategory,
+    category: row?.category,
+    price: row?.price ?? 0,
+    quantity: row?.quantity,
+    orders: row?.orders,
+    preparationTime: row?.preparationTime,
+    averageRating: row?.averageRating,
+    description: row?.description,
+    made_by: row?.made_by,
+    food_origin: row?.food_origin,
+    createdAt: row?.createdAt,
+    updatedAt: row?.updatedAt,
   };
 }
 
@@ -45,7 +45,7 @@ export function AllFoodsHomeLayout() {
   );
   const onUpdated = useCallback(
     (row: FoodCacheRow) =>
-      replaceItem((f) => f._id === row._id, asFoodItem(row)),
+      replaceItem((f) => f._id === row?._id, asFoodItem(row)),
     [replaceItem],
   );
   const onDeleted = useCallback(

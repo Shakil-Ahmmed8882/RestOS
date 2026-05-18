@@ -5,19 +5,21 @@ import { BaseImage } from "@/components/rest-os-ui/images/BaseImage";
 import type { FoodItem } from "@/modules/dashboard/admin/food/types/food.types";
 
 type Props = {
-  food: FoodItem;
+  food: FoodItem | null | undefined;
   rank?: number;
   onClick?: (food: FoodItem) => void;
 };
 
 export function TopSellingCard(props: Props) {
   const { food, rank, onClick } = props;
-  const name = food.foodName ?? food.name ?? "Untitled dish";
-  const image = food.foodImage ?? food.image;
-  const category = food.foodCategory ?? food.category;
-  const rating = food.averageRating ?? 0;
-  const orders = food.orders ?? 0;
-  const price = food.price ?? 0;
+  if (!food) return null;
+
+  const name = food?.foodName ?? food?.name ?? "Untitled dish";
+  const image = food?.foodImage ?? food?.image;
+  const category = food?.foodCategory ?? food?.category;
+  const rating = food?.averageRating ?? 0;
+  const orders = food?.orders ?? 0;
+  const price = food?.price ?? 0;
 
   return (
     <button

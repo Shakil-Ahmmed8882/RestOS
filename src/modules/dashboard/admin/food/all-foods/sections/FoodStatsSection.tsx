@@ -8,7 +8,7 @@ const fmtCurrency = (n: number) =>
   `$${n.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
 
 type Props = {
-  foods: FoodItem[];
+  foods: ReadonlyArray<FoodItem | null | undefined> | null | undefined;
 };
 
 export function FoodStatsSection(props: Props) {

@@ -78,19 +78,29 @@ export function AllBlogsSection() {
         </div>
       ) : (
         <div className="rounded-2xl bg-white dark:bg-zinc-900/60 p-3 sm:p-4 space-y-2 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
-          {blogs.map((blog) => (
-            <BlogRow
-              key={blog._id}
-              blog={blog}
-              onView={(id) => router.push(`/blogs/${id}`)}
-              onEdit={(b) =>
-                openEdit({ blogId: b._id, blogTitle: b.title ?? "Untitled" })
-              }
-              onDelete={(b) =>
-                openDelete({ blogId: b._id, blogTitle: b.title ?? "Untitled" })
-              }
-            />
-          ))}
+          {blogs.map((blog) =>
+            blog?._id ? (
+              <BlogRow
+                key={blog._id}
+                blog={blog}
+                onView={(id) => router.push(`/blogs/${id}`)}
+                onEdit={(b) =>
+                  b?._id &&
+                  openEdit({
+                    blogId: b._id,
+                    blogTitle: b?.title ?? "Untitled",
+                  })
+                }
+                onDelete={(b) =>
+                  b?._id &&
+                  openDelete({
+                    blogId: b._id,
+                    blogTitle: b?.title ?? "Untitled",
+                  })
+                }
+              />
+            ) : null,
+          )}
         </div>
       )}
 

@@ -7,7 +7,7 @@ import { BaseImage } from "@/components/rest-os-ui/images/BaseImage";
 import type { FoodItem } from "@/modules/dashboard/admin/food/types/food.types";
 
 type Props = {
-  food: FoodItem;
+  food: FoodItem | null | undefined;
   onEdit: (food: FoodItem) => void;
   onDelete: (food: FoodItem) => void;
 };
@@ -26,20 +26,22 @@ export function FoodGridCard(props: Props) {
   const { food, onEdit, onDelete } = props;
   const router = useRouter();
 
-  const name = food.foodName ?? food.name ?? "Untitled dish";
-  const image = food.foodImage ?? food.image;
-  const category = food.foodCategory ?? food.category;
-  const description = food.description;
-  const price = food.price ?? 0;
-  const rating = food.averageRating ?? 0;
-  const orders = food.orders ?? 0;
+  if (!food) return null;
+
+  const name = food?.foodName ?? food?.name ?? "Untitled dish";
+  const image = food?.foodImage ?? food?.image;
+  const category = food?.foodCategory ?? food?.category;
+  const description = food?.description;
+  const price = food?.price ?? 0;
+  const rating = food?.averageRating ?? 0;
+  const orders = food?.orders ?? 0;
 
   return (
     <div className="group relative rounded-2xl overflow-hidden bg-white dark:bg-zinc-900/60 ring-1 ring-zinc-200/60 dark:ring-white/[0.04] shadow-[0_1px_3px_rgba(0,0,0,0.05)] transition-all hover:shadow-[0_8px_24px_-12px_rgba(0,0,0,0.18)] dark:hover:shadow-[0_8px_24px_-12px_rgba(0,0,0,0.6)]">
       {/* Image block */}
       <button
         type="button"
-        onClick={() => router.push(`/food-details/${food._id}`)}
+        onClick={() => router.push(`/food-details/${food?._id}`)}
         className="relative block w-full h-44 overflow-hidden text-left"
       >
         <BaseImage
@@ -88,7 +90,7 @@ export function FoodGridCard(props: Props) {
       {/* Body */}
       <button
         type="button"
-        onClick={() => router.push(`/food-details/${food._id}`)}
+        onClick={() => router.push(`/food-details/${food?._id}`)}
         className="block w-full p-4 space-y-2 text-left"
       >
         <div className="flex items-start justify-between gap-2">

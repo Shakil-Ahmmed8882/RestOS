@@ -39,17 +39,21 @@ export function FoodsGridSection(props: Props) {
   const isEmpty =
     !showInitialSkeleton && status !== "loading" && items.length === 0;
 
-  const handleEdit = (food: FoodItem) =>
+  const handleEdit = (food: FoodItem) => {
+    if (!food?._id) return;
     openEdit({
       foodId: food._id,
-      foodName: food.foodName ?? food.name ?? "Untitled",
+      foodName: food?.foodName ?? food?.name ?? "Untitled",
     });
+  };
 
-  const handleDelete = (food: FoodItem) =>
+  const handleDelete = (food: FoodItem) => {
+    if (!food?._id) return;
     openDelete({
       foodId: food._id,
-      foodName: food.foodName ?? food.name ?? "Untitled",
+      foodName: food?.foodName ?? food?.name ?? "Untitled",
     });
+  };
 
   return (
     <div className="space-y-5">
@@ -98,14 +102,16 @@ export function FoodsGridSection(props: Props) {
 
       {!showInitialSkeleton && items.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
-          {items.map((food) => (
-            <FoodGridCard
-              key={food._id}
-              food={food}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-            />
-          ))}
+          {items.map((food) =>
+            food?._id ? (
+              <FoodGridCard
+                key={food._id}
+                food={food}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
+            ) : null,
+          )}
           {isLoadingMore &&
             Array.from({ length: 4 }).map((_, i) => (
               <FoodGridCardSkeleton key={`more-${i}`} />

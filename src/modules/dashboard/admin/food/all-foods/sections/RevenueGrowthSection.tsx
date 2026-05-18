@@ -8,7 +8,7 @@ import type { FoodItem } from "@/modules/dashboard/admin/food/types/food.types";
 const MONTHS = ["Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"];
 
 type Props = {
-  foods: FoodItem[];
+  foods: ReadonlyArray<FoodItem | null | undefined> | null | undefined;
 };
 
 export function RevenueGrowthSection(props: Props) {
@@ -19,11 +19,12 @@ export function RevenueGrowthSection(props: Props) {
     // and sum revenue per bucket. With sparse data this yields a
     // monotonically rising line — which is honest given we're showing
     // cumulative growth.
-    if (foods.length === 0) return MONTHS.map(() => 0);
-    const sorted = [...foods].sort(
+    const safe = (foods ?? []).filter((f): f is FoodItem => Boolean(f));
+    if (safe.length === 0) return MONTHS.map(() => 0);
+    const sorted = [...safe].sort(
       (a, b) =>
-        new Date(a.createdAt ?? 0).getTime() -
-        new Date(b.createdAt ?? 0).getTime(),
+        new Date(a?.createdAt ?? 0).getTime() -
+        new Date(b?.createdAt ?? 0).getTime(),
     );
     const buckets = MONTHS.map(() => 0);
     sorted.forEach((f, i) => {
@@ -31,7 +32,7 @@ export function RevenueGrowthSection(props: Props) {
         MONTHS.length - 1,
         Math.floor((i / sorted.length) * MONTHS.length),
       );
-      buckets[bucket] += (f.orders ?? 0) * (f.price ?? 0);
+      buckets[bucket] += (f?.orders ?? 0) * (f?.price ?? 0);
     });
     // make cumulative
     let acc = 0;

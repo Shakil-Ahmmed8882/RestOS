@@ -26,7 +26,7 @@ export function TopSellingStripSection() {
       : [];
 
   const totalRevenue = foods.reduce(
-    (sum, f) => sum + (f.orders ?? 0) * (f.price ?? 0),
+    (sum, f) => sum + (f?.orders ?? 0) * (f?.price ?? 0),
     0,
   );
 
@@ -77,14 +77,16 @@ export function TopSellingStripSection() {
         </div>
       ) : (
         <DragScrollRow>
-          {foods.map((food, idx) => (
-            <TopSellingCard
-              key={food._id}
-              food={food}
-              rank={idx + 1}
-              onClick={(f) => router.push(`/food-details/${f._id}`)}
-            />
-          ))}
+          {foods.map((food, idx) =>
+            food?._id ? (
+              <TopSellingCard
+                key={food._id}
+                food={food}
+                rank={idx + 1}
+                onClick={(f) => f?._id && router.push(`/food-details/${f._id}`)}
+              />
+            ) : null,
+          )}
         </DragScrollRow>
       )}
     </div>

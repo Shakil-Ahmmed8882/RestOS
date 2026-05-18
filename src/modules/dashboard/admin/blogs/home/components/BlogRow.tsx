@@ -10,7 +10,7 @@ import {
 } from "@/modules/dashboard/admin/blogs/types";
 
 type Props = {
-  blog: TBlog;
+  blog: TBlog | null | undefined;
   onView: (blogId: string) => void;
   onEdit: (blog: TBlog) => void;
   onDelete: (blog: TBlog) => void;
@@ -18,8 +18,11 @@ type Props = {
 
 export function BlogRow(props: Props) {
   const { blog, onView, onEdit, onDelete } = props;
-  const author = getAuthorName(blog.author);
-  const created = blog.createdAt
+
+  if (!blog) return null;
+
+  const author = getAuthorName(blog?.author);
+  const created = blog?.createdAt
     ? new Date(blog.createdAt).toLocaleDateString("en-US", {
         month: "short",
         day: "numeric",
@@ -30,7 +33,11 @@ export function BlogRow(props: Props) {
   return (
     <div className="group flex items-center gap-4 p-3 rounded-xl bg-zinc-50/60 dark:bg-white/[0.02] hover:bg-zinc-100/70 dark:hover:bg-white/[0.04] transition-colors">
       <Avatar className="h-14 w-14 rounded-lg flex-shrink-0">
-        <AvatarImage src={blog.image} alt={blog.title} className="object-cover" />
+        <AvatarImage
+          src={blog?.image}
+          alt={blog?.title}
+          className="object-cover"
+        />
         <AvatarFallback className="rounded-lg bg-zinc-100 dark:bg-zinc-800">
           <Icon
             icon="solar:document-text-linear"
@@ -41,15 +48,15 @@ export function BlogRow(props: Props) {
 
       <div className="flex-1 min-w-0">
         <p className="text-sm font-semibold text-foreground truncate">
-          {blog.title}
+          {blog?.title ?? "Untitled"}
         </p>
         <p className="text-xs text-muted-foreground truncate">
-          {blog.category ?? "—"} • by {author} • {created}
+          {blog?.category ?? "—"} • by {author} • {created}
         </p>
       </div>
 
       <div className="hidden md:block">
-        <BlogStatusPill status={blog.status} />
+        <BlogStatusPill status={blog?.status} />
       </div>
 
       <div className="flex items-center gap-1">
@@ -57,7 +64,7 @@ export function BlogRow(props: Props) {
           variant="ghost"
           size="icon"
           className="h-8 w-8 rounded-full hover:bg-zinc-100 dark:hover:bg-white/[0.06]"
-          onClick={() => onView(blog._id)}
+          onClick={() => blog?._id && onView(blog._id)}
           title="View blog"
         >
           <Icon icon="solar:eye-linear" className="h-4 w-4" />
@@ -78,10 +85,7 @@ export function BlogRow(props: Props) {
           onClick={() => onDelete(blog)}
           title="Delete blog"
         >
-          <Icon
-            icon="solar:trash-bin-trash-linear"
-            className="h-4 w-4"
-          />
+          <Icon icon="solar:trash-bin-trash-linear" className="h-4 w-4" />
         </Button>
       </div>
     </div>

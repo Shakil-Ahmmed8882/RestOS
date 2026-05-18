@@ -20,13 +20,18 @@ const sumDelta = (recent: number, older: number) => {
 /**
  * Derive headline metrics from the loaded foods.
  *
- * Intentional approach: we don't fake numbers, we project from what
- * we already have in the cache. If a real analytics endpoint lands
- * later, swap this hook out without touching the section.
+ * Every field access is optional-chained: the server can return rows
+ * with missing or null fields, and we never want a render to crash.
  */
-export function useFoodStats(items: FoodItem[]): Stats {
+export function useFoodStats(
+  items: ReadonlyArray<FoodItem | null | undefined> | null | undefined,
+): Stats {
   return useMemo(() => {
-    if (items.length === 0) {
+    const safeItems = (items ?? []).filter(
+      (f): f is FoodItem => Boolean(f),
+    );
+
+    if (safeItems.length === 0) {
       return {
         totalOrders: 0,
         activeDishes: 0,
@@ -37,32 +42,26 @@ export function useFoodStats(items: FoodItem[]): Stats {
       };
     }
 
-    // Split by createdAt: newer half vs older half — yields a "growth" delta
-    // without a separate analytics call.
-    const sorted = [...items].sort(
+    const sorted = [...safeItems].sort(
       (a, b) =>
-        new Date(b.createdAt ?? 0).getTime() -
-        new Date(a.createdAt ?? 0).getTime(),
+        new Date(b?.createdAt ?? 0).getTime() -
+        new Date(a?.createdAt ?? 0).getTime(),
     );
     const half = Math.max(1, Math.floor(sorted.length / 2));
     const recent = sorted.slice(0, half);
     const older = sorted.slice(half);
 
     const sumOrders = (arr: FoodItem[]) =>
-      arr.reduce((s, f) => s + (f.orders ?? 0), 0);
+      arr.reduce((s, f) => s + (f?.orders ?? 0), 0);
     const sumRevenue = (arr: FoodItem[]) =>
-      arr.reduce((s, f) => s + (f.orders ?? 0) * (f.price ?? 0), 0);
+      arr.reduce((s, f) => s + (f?.orders ?? 0) * (f?.price ?? 0), 0);
     const countActive = (arr: FoodItem[]) =>
-      arr.filter((f) => f.isAvailable !== false).length;
-
-    const totalOrders = sumOrders(items);
-    const revenue = sumRevenue(items);
-    const activeDishes = countActive(items);
+      arr.filter((f) => f?.isAvailable !== false).length;
 
     return {
-      totalOrders,
-      activeDishes,
-      revenue,
+      totalOrders: sumOrders(safeItems),
+      activeDishes: countActive(safeItems),
+      revenue: sumRevenue(safeItems),
       totalDelta: sumDelta(sumOrders(recent), sumOrders(older)),
       activeDelta: sumDelta(countActive(recent), countActive(older)),
       revenueDelta: sumDelta(sumRevenue(recent), sumRevenue(older)),

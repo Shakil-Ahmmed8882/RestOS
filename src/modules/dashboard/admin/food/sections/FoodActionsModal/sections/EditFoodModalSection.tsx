@@ -45,7 +45,10 @@ export function EditFoodModalSection(props: Props) {
   const { close, mutators } = useFoodActionsSelector();
 
   const { data, isLoading } = useGetSingleFoodQuery(foodId);
-  const food: FoodItem | undefined = data?.food ?? data;
+  // `getSingleFood` returns either `{ food, relatedFoods, message }` or a
+  // pre-unwrapped FoodItem depending on transformResponse cascade. Guard
+  // every access with optional chaining.
+  const food: FoodItem | undefined = (data as any)?.food ?? (data as any);
 
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -58,14 +61,14 @@ export function EditFoodModalSection(props: Props) {
 
   useEffect(() => {
     if (!food) return;
-    setValue("foodName", food.foodName ?? food.name ?? "");
-    setValue("foodCategory", food.foodCategory ?? food.category ?? "");
-    setValue("price", String(food.price ?? ""));
-    setValue("quantity", String(food.quantity ?? ""));
-    setValue("made_by", food.made_by ?? "");
-    setValue("food_origin", food.food_origin ?? "");
-    setValue("description", food.description ?? "");
-    setImagePreview(food.foodImage ?? food.image ?? null);
+    setValue("foodName", food?.foodName ?? food?.name ?? "");
+    setValue("foodCategory", food?.foodCategory ?? food?.category ?? "");
+    setValue("price", String(food?.price ?? ""));
+    setValue("quantity", String(food?.quantity ?? ""));
+    setValue("made_by", food?.made_by ?? "");
+    setValue("food_origin", food?.food_origin ?? "");
+    setValue("description", food?.description ?? "");
+    setImagePreview(food?.foodImage ?? food?.image ?? null);
   }, [food, setValue]);
 
   const onImageChange = (file: File) => {

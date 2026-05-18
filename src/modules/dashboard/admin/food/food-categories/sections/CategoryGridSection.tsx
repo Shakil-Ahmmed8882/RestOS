@@ -91,14 +91,16 @@ export function CategoryGridSection(props: Props) {
 
       {!showInitialSkeleton && items.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
-          {items.map((c) => (
-            <CategoryCard
-              key={c._id}
-              category={c}
-              onEdit={openEdit}
-              onDelete={openDelete}
-            />
-          ))}
+          {items.map((c) =>
+            c?._id ? (
+              <CategoryCard
+                key={c._id}
+                category={c}
+                onEdit={openEdit}
+                onDelete={openDelete}
+              />
+            ) : null,
+          )}
           {isLoadingMore &&
             Array.from({ length: 3 }).map((_, i) => (
               <CategoryCardSkeleton key={`more-${i}`} />
