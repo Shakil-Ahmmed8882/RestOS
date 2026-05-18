@@ -27,6 +27,7 @@
     "@tanstack/react-table": "^8.20.5",
     "axios": "^1.7.7",
     "class-variance-authority": "^0.7.1",
+    "claude": "^0.1.1",
     "clsx": "^2.1.1",
     "firebase": "^10.13.0",
     "framer-motion": "^11.18.2",

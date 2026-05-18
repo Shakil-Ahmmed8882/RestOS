@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft } from "lucide-react";
@@ -13,6 +13,7 @@ import type { MultipageModalPageProps } from "./types";
 import { pageVariants } from "./utils/animateVariants";
 import { getActivePage } from "./utils/getActivePage";
 import { useEscapeHandler } from "../../utils/events/useEscapeHelper";
+import { pushEscapeOwner } from "../../utils/events/escapeStack";
 
 type RootProps = {
 	open?: boolean;
@@ -37,6 +38,14 @@ function Root(props: RootProps) {
 	// ── Scroll lock ──
 	useScrollLock(isOpen);
 	useEscapeHandler(isOpen, canGoBack, goBack, close);
+
+	// Claim ESC priority while open — any outer overlay that uses
+	// `subscribeEscapeStack` will skip its own ESC handler, so closing
+	// this modal doesn't also close the underlying drawer / page.
+	useEffect(() => {
+		if (!isOpen) return;
+		return pushEscapeOwner();
+	}, [isOpen]);
 
 	// ── Find the active page among children ──
 	const activePage = getActivePage(children, currentPageId);

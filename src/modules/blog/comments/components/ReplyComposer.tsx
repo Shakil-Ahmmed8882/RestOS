@@ -45,6 +45,9 @@ export function ReplyComposer(props: Props) {
       createdAt: new Date().toISOString(),
     };
 
+    // Clear input immediately — optimistic row already shows in the
+    // thread. Restore the draft if the server rejects.
+    setValue("");
     try {
       await addReply({
         commentId,
@@ -52,9 +55,9 @@ export function ReplyComposer(props: Props) {
         replyText: text,
         _tempEntry: temp,
       }).unwrap();
-      setValue("");
       onSubmitted?.();
     } catch (err: any) {
+      setValue(text);
       toast.error(err?.data?.message ?? "Couldn't post reply");
     }
   };

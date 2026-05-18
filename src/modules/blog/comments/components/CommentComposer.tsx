@@ -76,12 +76,26 @@ export function CommentComposer(props: Props) {
     e.preventDefault();
     if (!requireAuth()) return;
     if (!value.trim() && !file) return;
-    const ok = await submitNewComment(value, file);
-    if (ok) {
-      setValue("");
-      setFile(null);
-      setPreview(null);
-    } else {
+
+    // Snapshot so we can restore on failure.
+    const snapshotValue = value;
+    const snapshotFile = file;
+    const snapshotPreview = preview;
+
+    // Clear immediately — the optimistic row already shows in the list
+    // through commentApi.onQueryStarted, so the composer should be empty
+    // the moment the user hits Post.
+    setValue("");
+    setFile(null);
+    setPreview(null);
+
+    const ok = await submitNewComment(snapshotValue, snapshotFile);
+    if (!ok) {
+      // Rollback: restore the draft so the user can retry without
+      // losing what they typed.
+      setValue(snapshotValue);
+      setFile(snapshotFile);
+      setPreview(snapshotPreview);
       toast.error("Couldn't post your comment. Try again.");
     }
   };

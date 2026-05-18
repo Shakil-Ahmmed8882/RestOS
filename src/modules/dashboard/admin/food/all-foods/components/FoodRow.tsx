@@ -36,7 +36,7 @@ function timeAgo(iso?: string): string {
 export function FoodRow(props: Props) {
   const { food, onEdit, onDelete } = props;
   const name = food.foodName ?? food.name ?? "Untitled dish";
-  const image = food.foodImage ?? food.image;
+  const image = food?.foodImage ?? food.image;
   const category = food.foodCategory ?? food.category;
   const status = (food.status ?? "available").toLowerCase();
   const statusCls = STATUS_PILL[status] ?? STATUS_PILL.available;

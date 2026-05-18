@@ -55,8 +55,8 @@ export function EditFoodForm(props: Props) {
       setValue("made_by", food.made_by || "");
       setValue("food_origin", food.food_origin || "");
 
-      if (food.foodImage || food.image) {
-        setImagePreview(food.foodImage || food.image || null);
+      if (food?.foodImage || food.image) {
+        setImagePreview(food?.foodImage || food.image || null);
       }
     }
   }, [food, setValue, setImagePreview]);

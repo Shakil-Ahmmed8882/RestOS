@@ -107,7 +107,7 @@ function FoodDetailContent({
   };
 
   const foodName = food.foodName || food.name;
-  const foodImage = food.foodImage || food.image;
+  const foodImage = food?.foodImage || food.image;
   const rating = food.averageRating || food.rating || 0;
 
   return (

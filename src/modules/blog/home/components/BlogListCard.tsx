@@ -71,9 +71,14 @@ export function BlogListCard(props: Props) {
               onOpenComments(blog);
             }}
             aria-label="Open comments"
-            className="inline-flex items-center gap-1 h-8 px-3 rounded-full text-xs font-semibold text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+            className="group/comments inline-flex items-center gap-1.5 h-8 px-3 rounded-full text-xs font-semibold text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
           >
-            <Icon icon="solar:chat-round-linear" className="h-4 w-4" />
+            <span className="relative inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover/comments:bg-primary group-hover/comments:text-white">
+              <Icon
+                icon="solar:chat-round-dots-bold"
+                className="h-3.5 w-3.5"
+              />
+            </span>
             {comments}
           </button>
         </div>

@@ -23,7 +23,6 @@ import type {
   AnalyticsMatrix,
   RecentOrder,
   RecentUser,
-  TopFood,
 } from "../types/analytics.types";
 import { cn } from "@/lib/utils";
 
@@ -75,7 +74,8 @@ function fmt$(n: number) {
     maximumFractionDigits: 0,
   }).format(n);
 }
-function fmtDate(s: string) {
+function fmtDate(s?: string) {
+  if (!s) return "—";
   return new Date(s).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
@@ -188,65 +188,6 @@ function StatCard({
   );
 }
 
-// ─── ring progress (SVG) ───────────────────────────────────────────────────────
-function Ring({
-  pct,
-  color,
-  label,
-  sub,
-}: {
-  pct: number;
-  color: string;
-  label: string;
-  sub: string;
-}) {
-  const r = 38,
-    circ = 2 * Math.PI * r;
-  const offset = circ * (1 - Math.min(pct, 100) / 100);
-  return (
-    <div className="flex flex-col items-center gap-2">
-      <div className="relative h-24 w-24">
-        <svg width="96" height="96" viewBox="0 0 96 96">
-          <circle
-            cx="48"
-            cy="48"
-            r={r}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="9"
-            className="text-muted/60"
-          />
-          <circle
-            cx="48"
-            cy="48"
-            r={r}
-            fill="none"
-            stroke={color}
-            strokeWidth="9"
-            strokeDasharray={`${circ}`}
-            strokeDashoffset={offset}
-            strokeLinecap="round"
-            transform="rotate(-90 48 48)"
-            style={{ transition: "stroke-dashoffset 0.9s ease" }}
-          />
-        </svg>
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span
-            className="text-[15px] font-extrabold tabular-nums leading-none"
-            style={{ color }}
-          >
-            {Math.round(pct)}%
-          </span>
-        </div>
-      </div>
-      <div className="text-center">
-        <p className="text-[13px] font-semibold">{label}</p>
-        <p className="text-[11px] text-muted-foreground">{sub}</p>
-      </div>
-    </div>
-  );
-}
-
 // ─── charts ────────────────────────────────────────────────────────────────────
 function EngagementLine({
   m,
@@ -352,7 +293,7 @@ function StatusBars({ m, loading }: { m?: AnalyticsMatrix; loading: boolean }) {
         ))}
       </div>
     );
-  const total = (m?.ordersByStatus ?? []).reduce((s, x) => s + x.revenue, 0);
+  const total = (m?.ordersByStatus ?? []).reduce((s, x) => s + (x?.revenue ?? 0), 0);
   if (!total && !m?.ordersByStatus?.length)
     return (
       <p className="py-6 text-center text-sm text-muted-foreground">
@@ -442,8 +383,8 @@ function RecentOrders({
         <div key={o._id}>
           <div className="flex items-center gap-2.5 rounded-lg px-2 py-2 transition-colors hover:bg-muted/40">
             <BaseImage
-              src={o.food.foodImage}
-              alt={o.food.foodName}
+              src={o?.food?.foodImage}
+              alt={o?.food?.foodName}
               width={40}
               height={40}
               containerClassName="h-9 w-9 shrink-0 rounded-lg"
@@ -451,15 +392,15 @@ function RecentOrders({
             />
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-medium">
-                {o.food.foodName}
+                {o?.food?.foodName}
               </p>
               <p className="truncate text-xs text-muted-foreground">
-                {o.user.name} · {fmtDate(o.createdAt)}
+                {o?.user?.name ?? "—"} · {o?.createdAt ? fmtDate(o.createdAt) : "—"}
               </p>
             </div>
             <div className="shrink-0 flex flex-col items-end gap-0.5">
               <span className="text-sm font-semibold tabular-nums">
-                ${o.totalPrice.toFixed(2)}
+                ${(o?.totalPrice ?? 0).toFixed(2)}
               </span>
               <Badge
                 variant="secondary"
@@ -544,65 +485,6 @@ function RecentUsers({
   );
 }
 
-// ─── top foods ─────────────────────────────────────────────────────────────────
-function TopFoods({ foods, loading }: { foods?: TopFood[]; loading: boolean }) {
-  if (loading)
-    return (
-      <div className="space-y-2.5">
-        {[1, 2, 3].map((i) => (
-          <div key={i} className="flex items-center gap-3">
-            <Skeleton className="h-10 w-10 rounded-xl shrink-0" />
-            <div className="flex-1 space-y-1.5">
-              <Skeleton className="h-3.5 w-36" />
-              <Skeleton className="h-3 w-24" />
-            </div>
-            <Skeleton className="h-4 w-14" />
-          </div>
-        ))}
-      </div>
-    );
-  if (!foods?.length)
-    return (
-      <p className="py-8 text-center text-sm text-muted-foreground">
-        No food data
-      </p>
-    );
-  return (
-    <div className="space-y-1">
-      {foods.map((f, i) => (
-        <div key={f._id}>
-          <div className="flex items-center gap-2.5 rounded-lg px-2 py-2 transition-colors hover:bg-muted/40">
-            <BaseImage
-              src={f.foodImage}
-              alt={f.foodName}
-              width={40}
-              height={40}
-              containerClassName="h-9 w-9 shrink-0 rounded-lg"
-              className="object-cover"
-            />
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium">{f.foodName}</p>
-              <p className="truncate text-xs capitalize text-muted-foreground">
-                {f.foodCategory}
-              </p>
-            </div>
-            <div className="shrink-0 text-right">
-              <p
-                className="text-sm font-semibold tabular-nums"
-                style={{ color: PRIMARY }}
-              >
-                ${f.price.toFixed(2)}
-              </p>
-              <p className="text-xs text-muted-foreground">{f.orders} orders</p>
-            </div>
-          </div>
-          {i < foods.length - 1 && <Separator className="opacity-50" />}
-        </div>
-      ))}
-    </div>
-  );
-}
-
 // ─── activity pulse ────────────────────────────────────────────────────────────
 function ActivityPulse({
   m,
@@ -669,16 +551,42 @@ function ActivityPulse({
 
 // ─── page ──────────────────────────────────────────────────────────────────────
 export function AdminOverviewSection() {
-  const { data: res, isLoading, isError, refetch } = useGetAnalyticsMatrixQuery();
+  const { data: res, isLoading, isFetching, isError, refetch } = useGetAnalyticsMatrixQuery();
+  const showSkeleton = isLoading || (isFetching && !res);
   return (
     <DataBoundary
-      isLoading={isLoading}
-      isError={isError}
+      isLoading={showSkeleton}
+      isError={isError && !isFetching}
       onReset={() => refetch()}
       skeleton={<AdminOverviewSkeleton />}
+      errorFallback={
+        <OverviewErrorFallback onRetry={refetch} />
+      }
     >
       <AdminOverviewContent res={res} />
     </DataBoundary>
+  );
+}
+
+function OverviewErrorFallback({ onRetry }: { onRetry: () => void }) {
+  return (
+    <div className="flex min-h-[180px] flex-col items-center justify-center gap-3 rounded-2xl bg-zinc-50 dark:bg-zinc-900/50 px-6 py-8 text-center ring-1 ring-zinc-200/60 dark:ring-white/[0.04]">
+      <div className="grid h-11 w-11 place-items-center rounded-full bg-zinc-100 dark:bg-zinc-800">
+        <Icon icon="solar:shield-warning-bold-duotone" className="h-6 w-6 text-muted-foreground" />
+      </div>
+      <div className="space-y-1">
+        <p className="text-sm font-semibold text-foreground">Couldn't load dashboard</p>
+        <p className="text-xs text-muted-foreground">Check your connection and try again.</p>
+      </div>
+      <button
+        type="button"
+        onClick={onRetry}
+        className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3.5 py-1.5 text-xs font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+      >
+        <Icon icon="solar:refresh-linear" className="h-3.5 w-3.5" />
+        Try again
+      </button>
+    </div>
   );
 }
 
@@ -699,12 +607,6 @@ function AdminOverviewContent({
     m?.ordersByStatus?.find((s) => s.status === "confirmed")?.count ?? 0;
   const pendingCnt =
     m?.ordersByStatus?.find((s) => s.status === "pending")?.count ?? 0;
-  const confirmedPct = totalStatus > 0 ? (confirmedCnt / totalStatus) * 100 : 0;
-  const userCnt = m?.usersByRole?.find((r) => r.role === "USER")?.count ?? 0;
-  const userPct = m?.totalUsers ? (userCnt / m.totalUsers) * 100 : 0;
-  const foodPct = m?.totalFoods
-    ? ((m.availableFoods ?? 0) / m.totalFoods) * 100
-    : 0;
   const totalEng = (m?.engagementByType ?? []).reduce((s, e) => s + e.count, 0);
 
   return (

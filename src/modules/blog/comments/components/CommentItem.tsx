@@ -12,6 +12,7 @@ import {
 } from "@/redux/featureApi/commentApi";
 import { useCommentsSelector } from "../context/CommentsContext";
 import { useRequireAuth } from "../hooks/useRequireAuth";
+import { useIsOwner } from "../hooks/useOwnership";
 import { ReplyComposer } from "./ReplyComposer";
 import { ReplyItem } from "./ReplyItem";
 import type { BlogAuthor, BlogComment } from "@/modules/blog/types/blog.types";
@@ -44,22 +45,21 @@ function authorOf(user: unknown): BlogAuthor {
   };
 }
 
-function getUserId(user: unknown): string | undefined {
-  if (typeof user === "string") return user;
-  return (user as { _id?: string })?._id;
-}
 
 export function CommentItem(props: Props) {
   const { comment } = props;
   const {
     blogId,
-    user,
     replyOpenFor,
     toggleReplyOpen,
     expandedThreads,
     toggleThread,
   } = useCommentsSelector();
   const { requireAuth } = useRequireAuth();
+
+  // Strict owner-only check — admins do NOT get Edit/Delete on the
+  // public comments UI. Moderation belongs in the dashboard.
+  const isOwner = useIsOwner(comment?.user);
 
   const [editing, setEditing] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -92,10 +92,10 @@ export function CommentItem(props: Props) {
   const replies = (comment?.replies ?? []).filter(Boolean);
   const isReplyOpen = replyOpenFor === comment._id;
   const isExpanded = expandedThreads.has(comment._id);
-  const isOwner = Boolean(
-    user?.id && getUserId(comment?.user) && getUserId(comment?.user) === user.id,
-  );
-  const canModify = isOwner || user?.role === "ADMIN";
+  // Both actions require strict ownership. The server still lets admins
+  // delete, but the UI only surfaces that for the author.
+  const canEdit = isOwner;
+  const canDelete = isOwner;
   const isPending = Boolean(comment?._pending);
   const busy = saving || deleting;
 
@@ -325,25 +325,25 @@ export function CommentItem(props: Props) {
                 >
                   Reply
                 </button>
-                {canModify && (
-                  <>
-                    <button
-                      type="button"
-                      onClick={() => setEditing(true)}
-                      disabled={busy}
-                      className="font-semibold hover:text-primary transition-colors"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setConfirmOpen(true)}
-                      disabled={busy}
-                      className="font-semibold hover:text-primary transition-colors"
-                    >
-                      Delete
-                    </button>
-                  </>
+                {canEdit && (
+                  <button
+                    type="button"
+                    onClick={() => setEditing(true)}
+                    disabled={busy}
+                    className="font-semibold hover:text-primary transition-colors"
+                  >
+                    Edit
+                  </button>
+                )}
+                {canDelete && (
+                  <button
+                    type="button"
+                    onClick={() => setConfirmOpen(true)}
+                    disabled={busy}
+                    className="font-semibold hover:text-primary transition-colors"
+                  >
+                    Delete
+                  </button>
                 )}
               </>
             )}

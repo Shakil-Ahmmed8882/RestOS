@@ -39,7 +39,7 @@ export function RelatedFoodCard({ food }: { food: FoodItem }) {
       id: food._id,
       name: food.foodName,
       price: food.price,
-      image: food.foodImage,
+      image: food?.foodImage,
       quantity: 1,
     }));
     toast.success(`${food.foodName} added to cart`);

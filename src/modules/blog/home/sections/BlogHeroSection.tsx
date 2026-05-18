@@ -25,10 +25,7 @@ export function BlogHeroSection() {
       </div>
 
       <div className="relative max-w-3xl mx-auto px-4 sm:px-6 py-16 sm:py-20 text-center">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-silk-with-hover px-3 py-1 text-[11px] font-semibold text-primary">
-          <Icon icon="solar:notebook-bookmark-bold" className="h-3.5 w-3.5" />
-          Blog
-        </span>
+        
         <h1 className="mt-5 text-4xl sm:text-5xl font-bold tracking-tight text-foreground">
           Insight and Updates
         </h1>

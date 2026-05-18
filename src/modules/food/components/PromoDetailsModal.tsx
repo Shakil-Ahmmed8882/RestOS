@@ -30,7 +30,7 @@ interface PromoDetailsModalProps {
 
 export function PromoDetailsModal({ type, data }: PromoDetailsModalProps) {
   return (
-    <div className="space-y-4 bg-gradient-to-br from-primary/5 via-background to-primary/5 dark:from-primary/10 dark:via-background dark:to-primary/10 p-5 rounded-2xl">
+    <div className="space-y-4 bg-gradient-to-br from-primary/5 via-background to-primary/5 dark:from-primary/10 dark:via-background dark:to-primary/10 rounded-2xl">
       {type === "restaurant" ? (
         <>
           <BaseImage

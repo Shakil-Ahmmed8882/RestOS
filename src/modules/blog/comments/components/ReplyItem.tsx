@@ -10,6 +10,7 @@ import {
   useUpdateReplyOnCommentMutation,
 } from "@/redux/featureApi/replyApi";
 import { useCommentsSelector } from "../context/CommentsContext";
+import { useIsOwner } from "../hooks/useOwnership";
 import type { BlogReply, BlogAuthor } from "@/modules/blog/types/blog.types";
 
 type Props = {
@@ -38,14 +39,10 @@ function authorOf(user: unknown): BlogAuthor {
   };
 }
 
-function getUserId(user: unknown): string | undefined {
-  if (typeof user === "string") return user;
-  return (user as { _id?: string })?._id;
-}
-
 export function ReplyItem(props: Props) {
   const { reply, commentId } = props;
-  const { blogId, user } = useCommentsSelector();
+  const { blogId } = useCommentsSelector();
+  const isOwner = useIsOwner(reply?.user);
   const [editing, setEditing] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const initialText = reply?.comment ?? reply?.replyText ?? "";
@@ -57,10 +54,9 @@ export function ReplyItem(props: Props) {
 
   const author = authorOf(reply?.user);
   const isPending = Boolean(reply?._pending);
-  const isOwner = Boolean(
-    user?.id && getUserId(reply?.user) && getUserId(reply?.user) === user.id,
-  );
-  const canModify = isOwner || user?.role === "ADMIN";
+  // Strict owner-only — admins do not get Edit/Delete on the public UI.
+  const canEdit = isOwner;
+  const canDelete = isOwner;
   const busy = saving || deleting;
 
   const handleSave = async () => {
@@ -151,8 +147,8 @@ export function ReplyItem(props: Props) {
             {isPending ? (
               <span className="font-semibold text-primary">Posting…</span>
             ) : (
-              canModify && (
-                <>
+              <>
+                {canEdit && (
                   <button
                     type="button"
                     onClick={() => setEditing(true)}
@@ -161,6 +157,8 @@ export function ReplyItem(props: Props) {
                   >
                     Edit
                   </button>
+                )}
+                {canDelete && (
                   <button
                     type="button"
                     onClick={() => setConfirmOpen(true)}
@@ -169,8 +167,8 @@ export function ReplyItem(props: Props) {
                   >
                     Delete
                   </button>
-                </>
-              )
+                )}
+              </>
             )}
           </div>
         )}

@@ -10,7 +10,7 @@ type Props = {
 export function FoodCard(props: Props) {
   const { food, onViewDetails } = props;
   const foodName = food.foodName || food.name || "Unknown";
-  const foodImage = food.foodImage || food.image;
+  const foodImage = food?.foodImage || food.image;
   const rating = food.averageRating || food.rating || 0;
   const orderCount = food.orders || 0;
 
