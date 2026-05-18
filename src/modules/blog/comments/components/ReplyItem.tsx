@@ -57,10 +57,11 @@ export function ReplyItem(props: Props) {
 
   const author = authorOf(reply?.user);
   const isPending = Boolean(reply?._pending);
-  const isOwner = Boolean(
-    user?.id && getUserId(reply?.user) && getUserId(reply?.user) === user.id,
-  );
-  const canModify = isOwner || user?.role === "ADMIN";
+  const replyUserId = getUserId(reply?.user);
+  const isOwner = Boolean(user?.id && replyUserId && replyUserId === user.id);
+  // Edit owner-only; Delete owner OR ADMIN.
+  const canEdit = isOwner;
+  const canDelete = isOwner || user?.role === "ADMIN";
   const busy = saving || deleting;
 
   const handleSave = async () => {
@@ -151,8 +152,8 @@ export function ReplyItem(props: Props) {
             {isPending ? (
               <span className="font-semibold text-primary">Posting…</span>
             ) : (
-              canModify && (
-                <>
+              <>
+                {canEdit && (
                   <button
                     type="button"
                     onClick={() => setEditing(true)}
@@ -161,6 +162,8 @@ export function ReplyItem(props: Props) {
                   >
                     Edit
                   </button>
+                )}
+                {canDelete && (
                   <button
                     type="button"
                     onClick={() => setConfirmOpen(true)}
@@ -169,8 +172,8 @@ export function ReplyItem(props: Props) {
                   >
                     Delete
                   </button>
-                </>
-              )
+                )}
+              </>
             )}
           </div>
         )}

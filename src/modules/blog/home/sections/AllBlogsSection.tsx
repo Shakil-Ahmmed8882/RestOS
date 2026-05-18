@@ -7,6 +7,7 @@ import { BlogFilterBar } from "../components/BlogFilterBar";
 import { BlogListCard } from "../components/BlogListCard";
 import { BlogListSkeleton } from "../loading/placeholder/BlogListSkeleton";
 import { useBlogHome } from "../hooks/useBlogHome";
+import { PendingBlogsStripSection } from "./PendingBlogsStripSection";
 import type { BlogItem } from "@/modules/blog/types/blog.types";
 
 export function AllBlogsSection() {
@@ -50,6 +51,8 @@ export function AllBlogsSection() {
         active={filter}
         onSelect={setFilter}
       />
+
+      <PendingBlogsStripSection />
 
       <div className="mt-7">
         {showSkeleton && <BlogListSkeleton count={6} />}

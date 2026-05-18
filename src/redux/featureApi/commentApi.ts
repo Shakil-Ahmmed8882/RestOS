@@ -1,6 +1,64 @@
 import { baseApi } from "@/redux/featureApi/baseApi";
 import { API_CACHE_TAGS } from "@/cache/API_CACHE_KEY";
+import { store } from "@/redux/store";
+import blogApi from "@/redux/featureApi/blogApi";
 import type { BlogComment } from "@/modules/blog/types/blog.types";
+
+/**
+ * Bump the commentsCount on every cached blog list entry containing
+ * the matching blog id. Returns an undo function for rollback.
+ *
+ * Lives here because the comment mutation is the source of truth for
+ * count changes — the blog list cache is just a derived view.
+ */
+function bumpBlogCommentsCount(blogId: string, delta: 1 | -1): () => void {
+  const undoFns: Array<() => void> = [];
+  try {
+    const state = store.getState();
+    const argsList = blogApi.util.selectCachedArgsForQuery(
+      state,
+      "getAllBlogs",
+    );
+    argsList.forEach((args) => {
+      try {
+        const patch = store.dispatch(
+          blogApi.util.updateQueryData("getAllBlogs", args, (draft: any) => {
+            const list = Array.isArray(draft?.data) ? draft.data : null;
+            if (!list) return;
+            const blog = list.find((b: any) => b?._id === blogId);
+            if (!blog) return;
+            const current =
+              typeof blog.commentsCount === "number" ? blog.commentsCount : 0;
+            blog.commentsCount = Math.max(0, current + delta);
+          }),
+        );
+        undoFns.push(() => patch.undo());
+      } catch {
+        /* skip this cache entry */
+      }
+    });
+  } catch {
+    /* noop */
+  }
+
+  // Detail page may also display the count — patch that too.
+  try {
+    const patch = store.dispatch(
+      blogApi.util.updateQueryData("getSingleBlog", blogId, (draft: any) => {
+        const target = draft?.data ?? draft;
+        if (!target || typeof target !== "object") return;
+        const current =
+          typeof target.commentsCount === "number" ? target.commentsCount : 0;
+        target.commentsCount = Math.max(0, current + delta);
+      }),
+    );
+    undoFns.push(() => patch.undo());
+  } catch {
+    /* noop */
+  }
+
+  return () => undoFns.forEach((fn) => fn());
+}
 
 /**
  * Comment endpoints — supports optional image upload per the API contract
@@ -105,6 +163,9 @@ const commentApi = baseApi.injectEndpoints({
             },
           ),
         );
+        // Bump count on every cached blog list / detail view so the
+        // surrounding UI updates without a refetch.
+        const undoCount = bumpBlogCommentsCount(blog, 1);
         try {
           const { data } = await queryFulfilled;
           const serverDoc: BlogComment | undefined =
@@ -141,6 +202,7 @@ const commentApi = baseApi.injectEndpoints({
           }
         } catch {
           patch.undo();
+          undoCount();
         }
       },
       invalidatesTags: [API_CACHE_TAGS.ANALYTICS_BLOG],
@@ -205,10 +267,12 @@ const commentApi = baseApi.injectEndpoints({
             },
           ),
         );
+        const undoCount = bumpBlogCommentsCount(blogId, -1);
         try {
           await queryFulfilled;
         } catch {
           patch.undo();
+          undoCount();
         }
       },
       invalidatesTags: [API_CACHE_TAGS.ANALYTICS_BLOG],

@@ -92,10 +92,13 @@ export function CommentItem(props: Props) {
   const replies = (comment?.replies ?? []).filter(Boolean);
   const isReplyOpen = replyOpenFor === comment._id;
   const isExpanded = expandedThreads.has(comment._id);
+  const commentUserId = getUserId(comment?.user);
   const isOwner = Boolean(
-    user?.id && getUserId(comment?.user) && getUserId(comment?.user) === user.id,
+    user?.id && commentUserId && commentUserId === user.id,
   );
-  const canModify = isOwner || user?.role === "ADMIN";
+  // Edit is owner-only (matches server). Delete can be owner OR ADMIN.
+  const canEdit = isOwner;
+  const canDelete = isOwner || user?.role === "ADMIN";
   const isPending = Boolean(comment?._pending);
   const busy = saving || deleting;
 
@@ -325,25 +328,25 @@ export function CommentItem(props: Props) {
                 >
                   Reply
                 </button>
-                {canModify && (
-                  <>
-                    <button
-                      type="button"
-                      onClick={() => setEditing(true)}
-                      disabled={busy}
-                      className="font-semibold hover:text-primary transition-colors"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setConfirmOpen(true)}
-                      disabled={busy}
-                      className="font-semibold hover:text-primary transition-colors"
-                    >
-                      Delete
-                    </button>
-                  </>
+                {canEdit && (
+                  <button
+                    type="button"
+                    onClick={() => setEditing(true)}
+                    disabled={busy}
+                    className="font-semibold hover:text-primary transition-colors"
+                  >
+                    Edit
+                  </button>
+                )}
+                {canDelete && (
+                  <button
+                    type="button"
+                    onClick={() => setConfirmOpen(true)}
+                    disabled={busy}
+                    className="font-semibold hover:text-primary transition-colors"
+                  >
+                    Delete
+                  </button>
                 )}
               </>
             )}
