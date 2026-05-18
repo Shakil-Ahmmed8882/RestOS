@@ -1,5 +1,6 @@
+import { AllUsersSection } from "@/modules/dashboard/admin/user/home/sections/AllUsersSection";
 import { PageHeader } from "@/modules/dashboard/shared/sections/PageHeader";
-import { AllUsersSection } from "@/modules/dashboard/admin/user/sections/AllUsersSection";
+
 
 export default function Page() {
   return (

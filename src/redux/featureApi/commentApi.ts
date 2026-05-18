@@ -1,79 +1,209 @@
 import { baseApi } from "@/redux/featureApi/baseApi";
 import { API_CACHE_TAGS } from "@/cache/API_CACHE_KEY";
+import type { BlogComment } from "@/modules/blog/types/blog.types";
+
+/**
+ * Comment endpoints — supports optional image upload per the API contract
+ * in src/modules/blog/docs/comment-image-upload.md (§4).
+ *
+ * Optimistic flow: callers pass a `_tempEntry` carrying the doc shape we
+ * want to render immediately (populated user from the auth slice, local
+ * image preview URL, etc.). `onQueryStarted` inserts it at the top, then
+ * splices it out for the server-confirmed row on resolve.
+ */
+
+type CreateCommentArgs = {
+  blog: string;
+  comment: string;
+  file?: File | null;
+  _tempEntry?: BlogComment;
+};
+
+type UpdateCommentArgs = {
+  id: string;
+  blogId: string;
+  comment?: string;
+  file?: File | null;
+  removeImage?: boolean;
+};
+
+type DeleteCommentArgs = {
+  id: string;
+  blogId: string;
+};
+
+/**
+ * Build the request body for create/update.
+ *
+ * - Multipart when there's a file: a single `file` field plus a single
+ *   `data` field containing the JSON-stringified payload. The server's
+ *   `parseBody` middleware unpacks `data` onto `req.body` before zod.
+ * - Plain JSON when there's no file. Update also uses JSON for the
+ *   `removeImage: true` flow (no upload).
+ */
+const buildCreateBody = (args: CreateCommentArgs) => {
+  if (args.file) {
+    const fd = new FormData();
+    fd.append("file", args.file);
+    fd.append(
+      "data",
+      JSON.stringify({ blog: args.blog, comment: args.comment }),
+    );
+    return fd;
+  }
+  return { blog: args.blog, comment: args.comment };
+};
+
+const buildUpdateBody = (args: UpdateCommentArgs) => {
+  if (args.file) {
+    const fd = new FormData();
+    fd.append("file", args.file);
+    fd.append(
+      "data",
+      JSON.stringify({
+        ...(args.comment !== undefined && { comment: args.comment }),
+      }),
+    );
+    return fd;
+  }
+  const json: Record<string, unknown> = {};
+  if (args.comment !== undefined) json.comment = args.comment;
+  if (args.removeImage) json.removeImage = true;
+  return json;
+};
 
 const commentApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAllCommentsOnSingleBlog: builder.query<any[], string>({
+    getAllCommentsOnSingleBlog: builder.query<BlogComment[], string>({
       query: (id) => ({ url: `/comments/${id}`, method: "GET" }),
-      transformResponse: (res: any) => res?.data ?? [],
+      transformResponse: (res: any) =>
+        Array.isArray(res?.data) ? (res.data as BlogComment[]) : [],
       providesTags: [API_CACHE_TAGS.COMMENT_LIST],
     }),
-    addCommentOnBlog: builder.mutation<
-      any,
-      { blog: string; comment: string; _optimisticEntry?: any }
-    >({
-      query: ({ blog, comment }) => ({
-        url: "/comments",
+
+    addCommentOnBlog: builder.mutation<any, CreateCommentArgs>({
+      query: (args) => ({
+        url: "/comments/",
         method: "POST",
-        body: { blog, comment },
+        body: buildCreateBody(args),
       }),
-      async onQueryStarted({ blog, _optimisticEntry }, { dispatch, queryFulfilled }) {
-        if (!_optimisticEntry) {
+      async onQueryStarted(
+        { blog, _tempEntry },
+        { dispatch, queryFulfilled },
+      ) {
+        if (!_tempEntry) {
           await queryFulfilled.catch(() => undefined);
           return;
         }
-        const patchResult = dispatch(
-          commentApi.util.updateQueryData("getAllCommentsOnSingleBlog", blog, (draft) => {
-            draft.unshift(_optimisticEntry);
-          }),
+        const tempId = _tempEntry._tempId ?? _tempEntry._id;
+        const patch = dispatch(
+          commentApi.util.updateQueryData(
+            "getAllCommentsOnSingleBlog",
+            blog,
+            (draft) => {
+              draft.unshift(_tempEntry);
+            },
+          ),
         );
         try {
           const { data } = await queryFulfilled;
+          const serverDoc: BlogComment | undefined =
+            data?.data && !Array.isArray(data.data)
+              ? (data.data as BlogComment)
+              : Array.isArray(data?.data)
+                ? (data.data[0] as BlogComment)
+                : undefined;
+
           dispatch(
-            commentApi.util.updateQueryData("getAllCommentsOnSingleBlog", blog, (draft) => {
-              const idx = draft.findIndex((c: any) => c._id === _optimisticEntry._id);
-              if (idx !== -1 && data?.data?.[0]) draft.splice(idx, 1, data.data[0]);
-              else if (idx !== -1) draft[idx] = { ...draft[idx], _pending: false };
-            }),
+            commentApi.util.updateQueryData(
+              "getAllCommentsOnSingleBlog",
+              blog,
+              (draft) => {
+                const idx = draft.findIndex(
+                  (c) => c?._tempId === tempId || c?._id === tempId,
+                );
+                if (idx === -1) return;
+                if (serverDoc?._id) {
+                  draft[idx] = { ...serverDoc };
+                } else {
+                  draft[idx] = { ...draft[idx], _pending: false };
+                }
+              },
+            ),
           );
-        } catch {
-          patchResult.undo();
-        }
-      },
-      invalidatesTags: [API_CACHE_TAGS.ANALYTICS_BLOG],
-    }),
-    updateCommentOnBlog: builder.mutation<
-      any,
-      { id: string; comment: string; blogId: string }
-    >({
-      query: ({ id, comment }) => ({
-        url: `/comments/${id}`,
-        method: "PATCH",
-        body: { comment },
-      }),
-      async onQueryStarted({ id, comment, blogId }, { dispatch, queryFulfilled }) {
-        const patch = dispatch(
-          commentApi.util.updateQueryData("getAllCommentsOnSingleBlog", blogId, (draft) => {
-            const c = draft.find((x: any) => x._id === id);
-            if (c) c.comment = comment;
-          }),
-        );
-        try {
-          await queryFulfilled;
+
+          if (_tempEntry?._localImageUrl) {
+            try {
+              URL.revokeObjectURL(_tempEntry._localImageUrl);
+            } catch {
+              /* noop */
+            }
+          }
         } catch {
           patch.undo();
         }
       },
       invalidatesTags: [API_CACHE_TAGS.ANALYTICS_BLOG],
     }),
-    deleteCommentOnBlog: builder.mutation<any, { id: string; blogId: string }>({
+
+    updateCommentOnBlog: builder.mutation<any, UpdateCommentArgs>({
+      query: (args) => ({
+        url: `/comments/${args.id}`,
+        method: "PATCH",
+        body: buildUpdateBody(args),
+      }),
+      async onQueryStarted(
+        { id, blogId, comment, removeImage },
+        { dispatch, queryFulfilled },
+      ) {
+        const patch = dispatch(
+          commentApi.util.updateQueryData(
+            "getAllCommentsOnSingleBlog",
+            blogId,
+            (draft) => {
+              const c = draft.find((x) => x?._id === id);
+              if (!c) return;
+              if (comment !== undefined) c.comment = comment;
+              if (removeImage) {
+                c.image = null;
+                c.imagePublicId = null;
+              }
+            },
+          ),
+        );
+        try {
+          const { data } = await queryFulfilled;
+          const serverDoc: BlogComment | undefined = data?.data;
+          if (!serverDoc?._id) return;
+          dispatch(
+            commentApi.util.updateQueryData(
+              "getAllCommentsOnSingleBlog",
+              blogId,
+              (draft) => {
+                const idx = draft.findIndex((x) => x?._id === id);
+                if (idx !== -1) draft[idx] = { ...draft[idx], ...serverDoc };
+              },
+            ),
+          );
+        } catch {
+          patch.undo();
+        }
+      },
+      invalidatesTags: [API_CACHE_TAGS.ANALYTICS_BLOG],
+    }),
+
+    deleteCommentOnBlog: builder.mutation<any, DeleteCommentArgs>({
       query: ({ id }) => ({ url: `/comments/${id}`, method: "DELETE" }),
       async onQueryStarted({ id, blogId }, { dispatch, queryFulfilled }) {
         const patch = dispatch(
-          commentApi.util.updateQueryData("getAllCommentsOnSingleBlog", blogId, (draft) => {
-            const idx = draft.findIndex((c: any) => c._id === id);
-            if (idx !== -1) draft.splice(idx, 1);
-          }),
+          commentApi.util.updateQueryData(
+            "getAllCommentsOnSingleBlog",
+            blogId,
+            (draft) => {
+              const idx = draft.findIndex((c) => c?._id === id);
+              if (idx !== -1) draft.splice(idx, 1);
+            },
+          ),
         );
         try {
           await queryFulfilled;

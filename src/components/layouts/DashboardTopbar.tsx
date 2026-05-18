@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { clearCredentials } from "@/redux/slices/authSlice";
+import { SearchTriggerButton } from "@/modules/shared/global-search";
 
 
 export function DashboardTopbar({ title }: { title?: string }) {
@@ -36,7 +37,13 @@ export function DashboardTopbar({ title }: { title?: string }) {
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center justify-between gap-4 border-b border-gray-200 dark:border-gray-800 bg-background/80 px-6 backdrop-blur">
       <h1 className="text-lg font-semibold tracking-tight">{title ?? "Dashboard"}</h1>
+      <div className="flex flex-1 justify-center px-4">
+        <SearchTriggerButton variant="pill" />
+      </div>
       <div className="flex items-center gap-2">
+        <span className="md:hidden">
+          <SearchTriggerButton variant="icon" />
+        </span>
         {mounted && (
           <Button variant="ghost" size="icon" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label="Toggle theme">
             <Icon icon={theme === "dark" ? "solar:sun-linear" : "solar:moon-linear"} className="h-5 w-5" />

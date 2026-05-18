@@ -8,6 +8,7 @@ import {
   DataTableSkeleton,
   type SkeletonColumnConfig,
 } from "@/modules/dashboard/shared/components/DataTableSkeleton";
+import { CustomSuspense } from "@/components/common/CustomSuspense";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -53,13 +54,8 @@ export function DataTable<TData, TValue>({
               </tr>
             ))}
           </thead>
+              <CustomSuspense isLoading={Boolean(isLoading)} fallback={<DataTableSkeleton columnConfig={fallbackConfig} rows={skeletonRows} />}>
           <tbody>
-            <ShowIf
-              condition={!isLoading}
-              fallback={
-                <DataTableSkeleton columnConfig={fallbackConfig} rows={skeletonRows} />
-              }
-            >
               <ShowIf
                 condition={data.length > 0}
                 fallback={
@@ -89,8 +85,8 @@ export function DataTable<TData, TValue>({
                   </tr>
                 ))}
               </ShowIf>
-            </ShowIf>
           </tbody>
+              </CustomSuspense>
         </table>
       </div>
     </Card>

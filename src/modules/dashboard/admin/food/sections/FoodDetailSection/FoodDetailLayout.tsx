@@ -10,34 +10,79 @@ import { AddReviewForm } from "./sections/AddReviewForm";
 import { ReviewsList } from "./sections/ReviewsList";
 import { RelatedFoodsGrid } from "./sections/RelatedFoodsGrid";
 import { toast } from "sonner";
+import { DataBoundary } from "@/components/rest-os-ui/layouts/wrapper/DataBoundary";
+import { BaseSkeleton } from "@/components/rest-os-ui/placeholder/skeletons/BaseSkeleton";
 import type { FoodDetailResponse, FoodItem } from "@/modules/dashboard/admin/food/types/food.types";
 
 type Props = {
   foodId: string;
 };
 
-export function FoodDetailLayout(props: Props) {
-  const { foodId } = props;
-  const router = useRouter();
-  const [deleteFood, { isLoading: deleting }] = useDeleteFoodMutation();
-  const { data, isLoading } = useGetSingleFoodQuery(foodId);
-
-  const foodDetail = data as FoodDetailResponse;
-  const food = foodDetail?.food;
-  const relatedFoods = foodDetail?.relatedFoods || [];
-  const reviews = food?.reviews || [];
-
-  if (isLoading) {
-    return (
-      <div className="space-y-6">
-        <div className="animate-pulse">
-          <div className="h-80 bg-gray-200 dark:bg-zinc-800 rounded-xl mb-6" />
-          <div className="h-12 bg-gray-200 dark:bg-zinc-800 rounded-lg mb-4 w-1/2" />
-          <div className="h-20 bg-gray-200 dark:bg-zinc-800 rounded-lg" />
+function FoodDetailSkeleton() {
+  return (
+    <div className="space-y-8">
+      <BaseSkeleton className="h-9 w-20 rounded-md" />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-6">
+          <BaseSkeleton className="h-80 w-full rounded-xl" />
+          <div className="space-y-3">
+            <div className="flex items-start justify-between gap-4">
+              <div className="space-y-2 flex-1">
+                <BaseSkeleton className="h-8 w-2/3" />
+                <BaseSkeleton className="h-4 w-1/3" />
+              </div>
+              <div className="text-right space-y-2">
+                <BaseSkeleton className="h-8 w-20" />
+                <BaseSkeleton className="h-5 w-24 rounded-full" />
+              </div>
+            </div>
+            <BaseSkeleton className="h-4 w-3/4" />
+            <BaseSkeleton className="h-4 w-2/3" />
+            <div className="grid grid-cols-2 gap-4 pt-4">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <BaseSkeleton key={i} className="h-16 w-full rounded-lg" />
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="space-y-3">
+          <BaseSkeleton className="h-11 w-full rounded-md" />
+          <BaseSkeleton className="h-11 w-full rounded-md" />
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
+
+export function FoodDetailLayout(props: Props) {
+  const { foodId } = props;
+  const { data, isLoading, isError, refetch } = useGetSingleFoodQuery(foodId);
+  return (
+    <DataBoundary
+      isLoading={isLoading}
+      isError={isError}
+      onReset={() => refetch()}
+      skeleton={<FoodDetailSkeleton />}
+    >
+      <FoodDetailContent foodId={foodId} data={data} />
+    </DataBoundary>
+  );
+}
+
+function FoodDetailContent({
+  foodId,
+  data,
+}: {
+  foodId: string;
+  data: unknown;
+}) {
+  const router = useRouter();
+  const [deleteFood, { isLoading: deleting }] = useDeleteFoodMutation();
+
+  const foodDetail = data as FoodDetailResponse | undefined;
+  const food = foodDetail?.food;
+  const relatedFoods = foodDetail?.relatedFoods ?? [];
+  const reviews = food?.reviews ?? [];
 
   if (!food) {
     return (

@@ -1,6 +1,12 @@
-import { BlogDetailsSection } from "@/modules/blog/sections/blog-details/BlogDetailsSection";
+import { BlogDetailsHomeLayout } from "@/modules/blog/details/BlogDetailsHomeLayout";
 
-export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+export const metadata = { title: "Article — RestOS" };
+
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
-  return <BlogDetailsSection id={id} />;
+  return <BlogDetailsHomeLayout blogId={id} />;
 }

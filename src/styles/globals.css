@@ -24,6 +24,9 @@
   .bg-theme {
     @apply bg-white dark:bg-[#0f0f0f]
   }
+  .bg-silk-with-hover {
+    @apply bg-zinc-50/80 dark:bg-white/[0.03] p-4  hover:bg-zinc-100/80 dark:hover:bg-white/[0.05] transition-colors; 
+  }
   .scrollbar-hidden::-webkit-scrollbar {
     display: none;
   }

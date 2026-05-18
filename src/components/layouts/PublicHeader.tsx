@@ -170,7 +170,7 @@ export function PublicHeader() {
                   </p>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                {/* <DropdownMenuItem className="cursor-pointer" onClick={() => router.push(dashboardHref)}>
+                <DropdownMenuItem className="cursor-pointer" onClick={() => router.push(dashboardHref)}>
                   <Icon icon="solar:widget-linear" className="mr-2 h-4 w-4" />{" "}
                   Dashboard
                 </DropdownMenuItem>
@@ -179,7 +179,7 @@ export function PublicHeader() {
                 >
                   <Icon icon="solar:user-linear" className="mr-2 h-4 w-4" />{" "}
                   Profile
-                </DropdownMenuItem> */}
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
                   <Icon icon="solar:logout-2-linear" className="mr-2 h-4 w-4" />{" "}

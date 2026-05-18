@@ -33,3 +33,9 @@ inpiration.js
 .vercel
 .env*.local
 .claude
+.claude/
+CLAUDE.md
+CLAUDE.local.md
+ui-system-instructions.md
+src/ui-system-instructions.md
+steps.ts

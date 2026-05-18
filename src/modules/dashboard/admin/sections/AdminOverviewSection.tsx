@@ -9,6 +9,8 @@ import { BaseImage } from "@/components/common/BaseImage";
 import { useGetAnalyticsMatrixQuery } from "@/redux/featureApi/analyticsApi";
 import { DonutBreakdownChartLayout } from "@/components/rest-os-ui/charts/donut-breakdown-chart/DonutBreakdownChartLayout";
 import { LineChartLayout } from "@/components/rest-os-ui/charts/line-chart/LineChartLayout";
+import { DataBoundary } from "@/components/rest-os-ui/layouts/wrapper/DataBoundary";
+import { AdminOverviewSkeleton } from "./AdminOverviewSkeleton";
 import type {
   DonutSlice,
   SliceStyleMap,
@@ -667,7 +669,25 @@ function ActivityPulse({
 
 // ─── page ──────────────────────────────────────────────────────────────────────
 export function AdminOverviewSection() {
-  const { data: res, isLoading: loading } = useGetAnalyticsMatrixQuery();
+  const { data: res, isLoading, isError, refetch } = useGetAnalyticsMatrixQuery();
+  return (
+    <DataBoundary
+      isLoading={isLoading}
+      isError={isError}
+      onReset={() => refetch()}
+      skeleton={<AdminOverviewSkeleton />}
+    >
+      <AdminOverviewContent res={res} />
+    </DataBoundary>
+  );
+}
+
+function AdminOverviewContent({
+  res,
+}: {
+  res: ReturnType<typeof useGetAnalyticsMatrixQuery>["data"];
+}) {
+  const loading = false;
   const m = res?.data;
 
   // derived

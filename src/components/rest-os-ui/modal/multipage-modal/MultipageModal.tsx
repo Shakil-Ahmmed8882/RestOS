@@ -83,7 +83,8 @@ function Root(props: RootProps) {
 									exit="exit"
 									tabIndex={-1}
 									// className={`${className} relative w-full rounded-2xl px-9 pt-12 pb-6 bg-background dark:bg-slate-900 shadow-2xl dark:shadow-primary/20 pointer-events-auto my-auto outline-none border border-border dark:border-slate-800 ${activePage.props.maxWidth ?? "max-w-[750px]"}`}
-									className={`${className} relative w-full rounded-2xl p-7 bg-background  pointer-events-auto my-auto outline-none   ${activePage.props.maxWidth ?? "max-w-[750px]"}`}
+									className={`${className} bg-theme relative w-full rounded-2xl p-7 bg-background  pointer-events-auto my-auto outline-none   ${activePage.props.maxWidth ?? "max-w-[750px]"}`}
+									
 									onClick={(e: React.MouseEvent) => e.stopPropagation()}
 								>
 									{/* Back button — visible when there is history */}
