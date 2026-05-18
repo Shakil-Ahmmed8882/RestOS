@@ -26,6 +26,7 @@ export type ProfileUser = {
   preferredMealTimes?: string[];
   paymentMethods?: string[];
   createdAt?: string;
+  updatedAt?: string;
 };
 
 export type ProfileStats = {

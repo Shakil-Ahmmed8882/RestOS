@@ -30,7 +30,7 @@ const EMPTY_COPY: Record<ProfileTabKey, { title: string; message: string; icon: 
   },
   saved: {
     title: "Nothing saved",
-    message: "Tap the bookmark icon on any blog to save it here.",
+    message: "Tap the bookmark on any blog to save it here.",
     icon: "solar:bookmark-linear",
   },
   orders: {
@@ -49,21 +49,23 @@ export function ProfileTabContent(props: Props) {
   const { tab } = props;
   const [page, setPage] = useState(1);
 
-  // Reset pagination when the tab changes — important since this component
-  // is keyed on `tab` by the parent so each switch starts at page 1.
-  const { items, meta, isLoading, isFetching } = useMyTabContent({ tab, page, limit: PAGE_SIZE });
+  const { items, meta, isLoading, isFetching } = useMyTabContent({
+    tab,
+    page,
+    limit: PAGE_SIZE,
+  });
 
-  if (isLoading) return <ProfileGridSkeleton count={PAGE_SIZE} />;
+  if (isLoading) return <ProfileGridSkeleton count={PAGE_SIZE} variant={gridVariantFor(tab)} />;
 
   if (!items.length) {
     const copy = EMPTY_COPY[tab];
     return (
-      <div className="rounded-2xl bg-silk-with-hover px-6 py-14 text-center">
-        <span className="inline-flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary mb-3">
-          <Icon icon={copy.icon} className="size-6" />
+      <div className="rounded-xl bg-silk-with-hover px-6 py-10 text-center">
+        <span className="inline-flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary mb-2.5">
+          <Icon icon={copy.icon} className="size-5" />
         </span>
-        <h3 className="text-base font-semibold text-foreground">{copy.title}</h3>
-        <p className="text-sm text-muted-foreground mt-1 max-w-sm mx-auto">{copy.message}</p>
+        <h3 className="text-sm font-semibold text-foreground">{copy.title}</h3>
+        <p className="text-xs text-muted-foreground mt-0.5 max-w-sm mx-auto">{copy.message}</p>
       </div>
     );
   }
@@ -73,22 +75,22 @@ export function ProfileTabContent(props: Props) {
   const canNext = page < totalPages;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <TabGrid tab={tab} items={items} />
 
       <ShowIf condition={totalPages > 1}>
-        <div className="flex items-center justify-between pt-2">
+        <div className="flex items-center justify-between pt-1">
           <p className="text-xs text-muted-foreground">
             Page <span className="font-semibold text-foreground">{page}</span> of {totalPages}
             <ShowIf condition={isFetching}>
               <span className="ml-2 text-muted-foreground/70">Updating…</span>
             </ShowIf>
           </p>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             <BaseButton
               intent="ghost"
               size="sm"
-              className="rounded-full size-9 px-0"
+              className="rounded-full size-8 px-0"
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={!canPrev || isFetching}
               aria-label="Previous page"
@@ -98,7 +100,7 @@ export function ProfileTabContent(props: Props) {
             <BaseButton
               intent="ghost"
               size="sm"
-              className="rounded-full size-9 px-0"
+              className="rounded-full size-8 px-0"
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={!canNext || isFetching}
               aria-label="Next page"
@@ -112,10 +114,14 @@ export function ProfileTabContent(props: Props) {
   );
 }
 
+function gridVariantFor(tab: ProfileTabKey): "tiles" | "rows" {
+  return tab === "blogs" || tab === "saved" ? "tiles" : "rows";
+}
+
 function TabGrid({ tab, items }: { tab: ProfileTabKey; items: unknown[] }) {
   if (tab === "blogs") {
     return (
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-2.5">
         {(items as BlogItem[]).map((b) => (
           <BlogTabCard key={b?._id} blog={b} />
         ))}
@@ -124,7 +130,7 @@ function TabGrid({ tab, items }: { tab: ProfileTabKey; items: unknown[] }) {
   }
   if (tab === "saved") {
     return (
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-2.5">
         {(items as SavedItem[]).map((s) => (
           <SavedTabCard key={s?._id} item={s} />
         ))}
@@ -133,7 +139,7 @@ function TabGrid({ tab, items }: { tab: ProfileTabKey; items: unknown[] }) {
   }
   if (tab === "orders") {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
         {(items as OrderItem[]).map((o) => (
           <OrderTabCard key={o?._id} order={o} />
         ))}
@@ -141,7 +147,7 @@ function TabGrid({ tab, items }: { tab: ProfileTabKey; items: unknown[] }) {
     );
   }
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5">
       {(items as CommentItem[]).map((c) => (
         <CommentTabCard key={c?._id} item={c} />
       ))}

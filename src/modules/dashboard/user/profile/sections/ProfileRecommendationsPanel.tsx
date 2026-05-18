@@ -14,9 +14,9 @@ export function ProfileRecommendationsPanel(props: Props) {
   const items = (recommendations ?? []).slice(0, 4);
 
   return (
-    <section className="rounded-2xl bg-white dark:bg-zinc-900/60 ring-1 ring-zinc-200/60 dark:ring-white/[0.04] p-5">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-sm font-semibold tracking-tight text-foreground">Suggested for you</h2>
+    <section className="rounded-2xl bg-white dark:bg-zinc-900/60 ring-1 ring-zinc-200/60 dark:ring-white/[0.04] p-4">
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-sm font-semibold tracking-tight text-foreground">Suggested</h2>
         <ShowIf condition={items.length > 0}>
           <button
             type="button"
@@ -28,41 +28,43 @@ export function ProfileRecommendationsPanel(props: Props) {
       </div>
 
       <ShowIf condition={items.length === 0}>
-        <div className="rounded-xl bg-silk-with-hover py-6 px-4 text-center">
+        <div className="rounded-xl bg-silk-with-hover py-4 px-3 text-center">
           <Icon
             icon="solar:users-group-rounded-linear"
-            className="size-6 mx-auto text-muted-foreground mb-1.5"
+            className="size-4 mx-auto text-muted-foreground mb-1"
           />
-          <p className="text-sm font-medium text-foreground">No suggestions yet</p>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            Engage with blogs to discover new people
-          </p>
+          <p className="text-xs font-medium text-foreground/80">No suggestions yet</p>
         </div>
       </ShowIf>
 
       <ShowIf condition={items.length > 0}>
-        <div className="grid grid-cols-2 gap-2.5">
+        <ul className="flex flex-col gap-1.5">
           {items.map((rec) => (
-            <RecommendationCard key={rec?._id} rec={rec} />
+            <RecommendationRow key={rec?._id} rec={rec} />
           ))}
-        </div>
+        </ul>
       </ShowIf>
     </section>
   );
 }
 
-function RecommendationCard({ rec }: { rec: ProfileRecommendation }) {
+function RecommendationRow({ rec }: { rec: ProfileRecommendation }) {
   if (!rec?._id) return null;
   return (
-    <div className="rounded-xl bg-silk-with-hover px-3 py-3 flex flex-col items-center text-center gap-1.5 hover:bg-primary/5 transition-colors cursor-pointer">
-      <BaseAvatar src={rec?.photo} name={rec?.name} size="md" />
-      <p className="text-xs font-medium text-foreground truncate w-full">{rec?.name ?? "User"}</p>
+    <li className="flex items-center gap-2.5 rounded-lg px-2 py-1.5 hover:bg-silk-with-hover transition-colors cursor-pointer">
+      <BaseAvatar src={rec?.photo} name={rec?.name} size="sm" />
+      <div className="flex-1 min-w-0">
+        <p className="text-xs font-semibold text-foreground truncate">{rec?.name ?? "User"}</p>
+        <ShowIf condition={!!rec?.bio}>
+          <p className="text-[11px] text-muted-foreground truncate">{rec?.bio}</p>
+        </ShowIf>
+      </div>
       <button
         type="button"
-        className="text-[11px] font-semibold text-primary mt-0.5 hover:text-primary/80 transition-colors"
+        className="text-[11px] font-semibold text-primary px-2 py-1 rounded-full hover:bg-primary/10 transition-colors shrink-0"
       >
         Follow
       </button>
-    </div>
+    </li>
   );
 }
