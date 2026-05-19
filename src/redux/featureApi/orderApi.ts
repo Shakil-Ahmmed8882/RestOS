@@ -54,6 +54,61 @@ export interface OrderListResponse {
   };
 }
 
+// ── /orders/me endpoints ─────────────────────────────────────────────────────
+
+export interface MyOrder {
+  _id: string;
+  food: { _id: string; name?: string; image?: string; price?: number } | null;
+  foodName: string;
+  price: number;
+  totalPrice: number;
+  quantity: number;
+  status: "pending" | "confirmed" | "canceled";
+  paymentStatus: "pending" | "completed" | "failed" | "cancelled";
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MyOrdersQuery {
+  status?: "pending" | "confirmed" | "canceled";
+  paymentStatus?: "pending" | "completed" | "failed" | "cancelled";
+  searchTerm?: string;
+  page?: number;
+  limit?: number;
+  sort?: string;
+  minPrice?: number;
+  maxPrice?: number;
+}
+
+export interface MyOrdersResponse {
+  success: boolean;
+  message?: string;
+  meta: { page: number; limit: number; total: number; totalPage: number };
+  data: MyOrder[];
+}
+
+export interface MyOrdersSummaryData {
+  totalOrderCount: number;
+  totalOrderPrice: number;
+  totalPurchaseCount: number;
+  totalPurchasePrice: number;
+  byStatus: {
+    pending:   { count: number; totalPrice: number };
+    confirmed: { count: number; totalPrice: number };
+    canceled:  { count: number; totalPrice: number };
+  };
+}
+
+export interface MyOrdersSummaryResponse {
+  success: boolean;
+  data: MyOrdersSummaryData;
+}
+
+export interface CancelPendingResponse {
+  success: boolean;
+  data: { cancelled: number };
+}
+
 const orderApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllOrders: builder.query<OrderListResponse, QueryArg>({
@@ -84,6 +139,28 @@ const orderApi = baseApi.injectEndpoints({
       query: (id) => ({ url: `/orders/${id}`, method: "DELETE" }),
       invalidatesTags: [API_CACHE_TAGS.ORDER_LIST],
     }),
+    getMyOrders: builder.query<MyOrdersResponse, MyOrdersQuery>({
+      query: (q) => {
+        const params = new URLSearchParams();
+        Object.entries(q).forEach(([k, v]) => {
+          if (v !== undefined && v !== "" && v !== null) params.set(k, String(v));
+        });
+        return { url: `/orders/me?${params.toString()}`, method: "GET" };
+      },
+      providesTags: [API_CACHE_TAGS.ORDER_LIST, API_CACHE_TAGS.ORDER_PENDING],
+    }),
+    getMyOrdersSummary: builder.query<MyOrdersSummaryResponse, void>({
+      query: () => ({ url: "/orders/me/summary", method: "GET" }),
+      providesTags: [API_CACHE_TAGS.ORDER_SUMMARY],
+    }),
+    cancelMyPendingOrders: builder.mutation<CancelPendingResponse, void>({
+      query: () => ({ url: "/orders/me/pending", method: "DELETE" }),
+      invalidatesTags: [
+        API_CACHE_TAGS.ORDER_LIST,
+        API_CACHE_TAGS.ORDER_PENDING,
+        API_CACHE_TAGS.ORDER_SUMMARY,
+      ],
+    }),
   }),
 });
 
@@ -93,6 +170,9 @@ export const {
   useCreateOrderMutation,
   useUpdateOrderMutation,
   useDeleteOrderMutation,
+  useGetMyOrdersQuery,
+  useGetMyOrdersSummaryQuery,
+  useCancelMyPendingOrdersMutation,
 } = orderApi;
 
 // Fetches pending orders for a specific user. Passes user + status as query
