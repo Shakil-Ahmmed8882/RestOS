@@ -20,6 +20,8 @@ export function usePurchasedList() {
   const limit = 10;
 
   const historyQuery = useGetPaymentHistoryQuery({ page, limit });
+  // Summary query is isolated — its failure must not crash the whole page.
+  // Skip entirely when userId is absent to avoid a 400 "Invalid ID" from server.
   const summaryQuery = useGetAllOrderSummaryQuery(
     { userId: user?.id ?? "" },
     { skip: !user?.id },
@@ -66,6 +68,8 @@ export function usePurchasedList() {
     page,
     setPage,
     isLoading: historyQuery.isLoading,
+    // Summary errors are deliberately excluded — a failed summary must not
+    // trigger DataBoundary's error boundary and hide the full purchases list.
     isError: historyQuery.isError,
     refetch: historyQuery.refetch,
     isSummaryLoading: summaryQuery.isLoading,

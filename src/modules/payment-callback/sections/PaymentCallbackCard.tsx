@@ -37,8 +37,8 @@ const COPY: Record<PaymentCallbackVariant, CopyConfig> = {
   failed: {
     icon: "solar:shield-warning-bold-duotone",
     iconClass: "text-primary",
-    title: "Payment didn’t go through",
-    description: "Your card or wallet rejected the charge. You can try again with the same order.",
+    title: "Payment didn't go through",
+    description: "Your card or wallet rejected the charge. You can retry with the same orders.",
     primaryCta: { label: "Retry payment", href: "#retry" },
     secondaryCta: { label: "Back to cart", href: "/cart" },
   },
@@ -46,33 +46,36 @@ const COPY: Record<PaymentCallbackVariant, CopyConfig> = {
     icon: "solar:close-circle-bold-duotone",
     iconClass: "text-primary",
     title: "Payment cancelled",
-    description: "No charge was made. Your cart is still here whenever you’re ready.",
+    description: "No charge was made. Your cart is still here whenever you're ready.",
     primaryCta: { label: "Back to cart", href: "/cart" },
     secondaryCta: { label: "Retry payment", href: "#retry" },
   },
 };
 
-type Props = {
-  variant: PaymentCallbackVariant;
-};
+type Props = { variant: PaymentCallbackVariant };
 
 export function PaymentCallbackCard(props: Props) {
   const { variant } = props;
-  const search = useSearchParams();
-  const router = useRouter();
+  const search   = useSearchParams();
+  const router   = useRouter();
   const dispatch = useAppDispatch();
   const [initiatePayment, { isLoading: retrying }] = useInitiatePaymentMutation();
-  const [pendingOrderId, setPendingOrderId] = useState<string | null>(null);
+
+  // Read the stored order IDs that were placed before the gateway redirect.
+  const [pendingOrderIds, setPendingOrderIds] = useState<string[]>([]);
 
   const transactionId = search.get("transactionId");
   const copy = useMemo(() => COPY[variant], [variant]);
 
-  // SUCCESS: clear cart and invalidate the lists that depend on the new payment.
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const stored = sessionStorage.getItem(CHECKOUT_STORAGE_KEYS.pendingOrderId);
-    setPendingOrderId(stored);
 
+    const raw = sessionStorage.getItem(CHECKOUT_STORAGE_KEYS.pendingOrderIds);
+    if (raw) {
+      try { setPendingOrderIds(JSON.parse(raw)); } catch { /* ignore */ }
+    }
+
+    // SUCCESS — clear cart and invalidate all payment/order caches.
     if (variant === "success") {
       dispatch(clearCart());
       dispatch(
@@ -83,22 +86,27 @@ export function PaymentCallbackCard(props: Props) {
           API_CACHE_TAGS.ORDER_SUMMARY,
         ]),
       );
-      sessionStorage.removeItem(CHECKOUT_STORAGE_KEYS.pendingOrderId);
-      sessionStorage.removeItem(CHECKOUT_STORAGE_KEYS.pendingTxnId);
       sessionStorage.removeItem(CHECKOUT_STORAGE_KEYS.pendingOrderIds);
+      sessionStorage.removeItem(CHECKOUT_STORAGE_KEYS.pendingTxnId);
+      sessionStorage.removeItem(CHECKOUT_STORAGE_KEYS.pendingTotal);
     }
   }, [variant, dispatch]);
 
+  // Retry sends all original orderIds in one session — same as the first attempt.
   const retry = async () => {
-    if (!pendingOrderId) {
-      toast.error("We can’t find the order to retry. Please add items to your cart again.");
+    if (pendingOrderIds.length === 0) {
+      toast.error("Can't find the original orders. Please add items to your cart again.");
       router.push("/cart");
       return;
     }
     try {
-      const res = await initiatePayment({ orderId: pendingOrderId }).unwrap();
+      const body = pendingOrderIds.length === 1
+        ? { orderId: pendingOrderIds[0] }
+        : { orderIds: pendingOrderIds };
+
+      const res = await initiatePayment(body).unwrap();
       const url = res?.data?.paymentUrl;
-      if (!url) throw new Error("Gateway didn’t return a redirect URL.");
+      if (!url) throw new Error("Gateway didn't return a redirect URL.");
       window.location.href = url;
     } catch (err) {
       const message =
@@ -117,7 +125,7 @@ export function PaymentCallbackCard(props: Props) {
           variant={primary ? "default" : "ghost"}
           size="lg"
           onClick={retry}
-          disabled={retrying || !pendingOrderId}
+          disabled={retrying || pendingOrderIds.length === 0}
           className="w-full"
         >
           {retrying ? "Restarting payment…" : cta.label}

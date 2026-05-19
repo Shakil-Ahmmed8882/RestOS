@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { usePlaceOrderAndPay } from "@/modules/checkout/hooks/usePlaceOrderAndPay";
 import { CheckoutLineItems } from "@/modules/checkout/sections/CheckoutLineItems";
 import { CheckoutSummaryCard } from "@/modules/checkout/sections/CheckoutSummaryCard";
+import { AlreadyOrderedModal } from "@/modules/checkout/sections/AlreadyOrderedModal";
 
 export function ReviewAndPaySection() {
   const checkout = usePlaceOrderAndPay();
@@ -16,10 +17,18 @@ export function ReviewAndPaySection() {
   }
 
   return (
-    <section className="grid gap-6 lg:grid-cols-[1fr_360px]">
-      <CheckoutLineItems checkout={checkout} />
-      <CheckoutSummaryCard checkout={checkout} />
-    </section>
+    <>
+      <section className="grid gap-6 lg:grid-cols-[1fr_360px]">
+        <CheckoutLineItems checkout={checkout} />
+        <CheckoutSummaryCard checkout={checkout} />
+      </section>
+
+      <AlreadyOrderedModal
+        open={checkout.showDuplicateModal}
+        onOpenChange={(open) => { if (!open) checkout.closeDuplicateModal(); }}
+        cartItems={checkout.items}
+      />
+    </>
   );
 }
 

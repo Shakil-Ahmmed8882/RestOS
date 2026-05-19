@@ -22,12 +22,14 @@ export function PurchasesStatsRow(props: Props) {
   const { purchases } = props;
   const { summary, counts } = purchases;
 
+  const summaryReady = !purchases.isSummaryLoading;
+
   const stats: Stat[] = [
     {
       icon: "solar:wallet-money-bold-duotone",
       label: "Lifetime spent",
-      value: `৳${formatBdt(summary.totalPurchasePrice)}`,
-      hint: `${summary.totalPurchaseCount} confirmed`,
+      value: summaryReady ? `৳${formatBdt(summary.totalPurchasePrice)}` : "—",
+      hint: summaryReady ? `${summary.totalPurchaseCount} confirmed` : undefined,
     },
     {
       icon: "solar:bag-check-bold-duotone",
@@ -44,8 +46,8 @@ export function PurchasesStatsRow(props: Props) {
     {
       icon: "solar:cart-large-2-bold-duotone",
       label: "Orders placed",
-      value: String(summary.totalOrderCount),
-      hint: `৳${formatBdt(summary.totalOrderPrice)} total`,
+      value: summaryReady ? String(summary.totalOrderCount) : "—",
+      hint: summaryReady ? `৳${formatBdt(summary.totalOrderPrice)} total` : undefined,
     },
   ];
 

@@ -27,8 +27,8 @@ export interface CreateOrderRequest {
 
 export interface OrderDoc {
   _id: string;
-  food: string;
-  user: string;
+  food: string | { _id: string; foodName?: string; price?: number; foodImage?: string } | null;
+  user: string | { _id?: string; name?: string; email?: string } | null;
   foodName?: string;
   status?: "pending" | "confirmed" | "cancelled" | string;
   paymentStatus?: "pending" | "completed" | "failed" | string;
@@ -45,9 +45,18 @@ export interface CreateOrderResponse {
   data: OrderDoc[][] | OrderDoc[];
 }
 
+export interface OrderListResponse {
+  success: boolean;
+  message?: string;
+  data: {
+    meta: { total: number; page: number; limit: number };
+    result: OrderDoc[];
+  };
+}
+
 const orderApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAllOrders: builder.query<unknown, QueryArg>({
+    getAllOrders: builder.query<OrderListResponse, QueryArg>({
       query: (args) => ({ url: "/orders", method: "GET", params: buildParams(args) }),
       providesTags: [API_CACHE_TAGS.ORDER_LIST],
     }),
@@ -85,4 +94,26 @@ export const {
   useUpdateOrderMutation,
   useDeleteOrderMutation,
 } = orderApi;
+
+// Derives user-specific pending orders from the list endpoint (server has no
+// user-scoped endpoint yet). Called with a large limit so we capture all
+// pending lines, then the caller filters by userId client-side.
+export function useUserPendingOrders(userId: string | undefined) {
+  const result = useGetAllOrdersQuery(
+    [{ name: "status", value: "pending" }, { name: "limit", value: "50" }],
+    { skip: !userId },
+  );
+
+  const pendingOrders: OrderDoc[] = (result.data?.data?.result ?? []).filter(
+    (order) => {
+      const orderUserId =
+        typeof order?.user === "object" && order.user !== null
+          ? (order.user as { _id?: string })?._id
+          : (order?.user as string | undefined);
+      return orderUserId === userId;
+    },
+  );
+
+  return { ...result, pendingOrders };
+}
 export default orderApi;

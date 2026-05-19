@@ -1,15 +1,20 @@
 import { baseApi } from "@/redux/featureApi/baseApi";
 import { API_CACHE_TAGS } from "@/cache/API_CACHE_KEY";
 
-export interface InitiatePaymentRequest {
-  orderId: string;
-}
+// Backend accepts either a single orderId or an array of orderIds.
+// When orderIds[] is sent, the server creates ONE SSLCommerz session that
+// sums all order totals — the user pays once for the whole cart.
+export type InitiatePaymentRequest =
+  | { orderId: string }
+  | { orderIds: string[] };
 
 export interface InitiatePaymentResponseData {
   success: boolean;
   paymentUrl?: string;
   transactionId?: string;
   sessionkey?: string;
+  orderIds?: string[];
+  totalAmount?: number;
 }
 
 export interface InitiatePaymentResponse {
@@ -24,6 +29,7 @@ export interface PaymentOrderRef {
   _id: string;
   foodName?: string;
   status?: string;
+  paymentStatus?: string;
   totalPrice?: number;
 }
 

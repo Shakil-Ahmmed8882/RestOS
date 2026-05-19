@@ -11,33 +11,30 @@ import {
 } from "@/redux/featureApi/orderApi";
 import { useInitiatePaymentMutation } from "@/redux/featureApi/paymentApi";
 
-// STATE: client-side pointers for the SSLCommerz round-trip. The success/fail
-// pages read these to know which order the user just paid for and whether
-// extra orders are still awaiting payment.
-const PENDING_ORDER_ID = "checkout.pendingOrderId";
 const PENDING_ORDER_IDS = "checkout.pendingOrderIds";
-const PENDING_TXN_ID = "checkout.pendingTxnId";
+const PENDING_TXN_ID    = "checkout.pendingTxnId";
+const PENDING_TOTAL     = "checkout.pendingTotal";
 
-// Flattens the doubly-nested response shape into a flat Order[].
-// The backend silently drops duplicate / out-of-stock lines, so the returned
-// length may be < cartItems.length.
+// Flattens the doubly-nested response shape the backend returns:
+//   data: [[OrderDoc], [OrderDoc], ...]  →  OrderDoc[]
 function flattenOrders(response: CreateOrderResponse): OrderDoc[] {
   const data = response?.data ?? [];
   if (!Array.isArray(data)) return [];
-  return (data as unknown[]).flat().filter((o): o is OrderDoc => {
-    return !!o && typeof o === "object" && "_id" in (o as Record<string, unknown>);
-  });
+  return (data as unknown[]).flat().filter((o): o is OrderDoc =>
+    !!o && typeof o === "object" && "_id" in (o as Record<string, unknown>),
+  );
 }
 
 export function usePlaceOrderAndPay() {
-  const router = useRouter();
+  const router   = useRouter();
   const dispatch = useAppDispatch();
-  const items = useAppSelector((s) => s.cart.items);
-  const user = useAppSelector((s) => s.auth.user);
+  const items    = useAppSelector((s) => s.cart.items);
+  const user     = useAppSelector((s) => s.auth.user);
 
-  const [createOrder, createOrderState] = useCreateOrderMutation();
+  const [createOrder,    createOrderState]    = useCreateOrderMutation();
   const [initiatePayment, initiatePaymentState] = useInitiatePaymentMutation();
   const [phase, setPhase] = useState<"idle" | "placing" | "redirecting">("idle");
+  const [showDuplicateModal, setShowDuplicateModal] = useState(false);
 
   const isLoading =
     createOrderState.isLoading || initiatePaymentState.isLoading || phase !== "idle";
@@ -59,60 +56,55 @@ export function usePlaceOrderAndPay() {
     setPhase("placing");
 
     try {
-      // STEP 1 — POST /orders/create-order with the strict cartItems contract.
-      const payload = {
+      // STEP 1 — create one Order doc per cart line
+      const response = await createOrder({
         cartItems: items.map((it) => ({
-          food: it.id,
-          user: user.id,
-          foodName: it.name,
-          quantity: it.quantity,
-          price: it.price,
+          food:       it.id,
+          user:       user.id,
+          foodName:   it.name,
+          quantity:   it.quantity,
+          price:      it.price,
           totalPrice: Number((it.price * it.quantity).toFixed(2)),
         })),
-      };
+      }).unwrap();
 
-      const response = await createOrder(payload).unwrap();
       const orders = flattenOrders(response);
 
+      // Backend silently drops duplicate / out-of-stock lines — open the
+      // AlreadyOrderedModal instead of crashing.
       if (orders.length === 0) {
-        throw new Error(
-          "No items could be ordered. They may be out of stock or already in an open order.",
-        );
+        toast.dismiss(toastId);
+        setPhase("idle");
+        setShowDuplicateModal(true);
+        return;
       }
 
-      // Surface the silent-skip backend gap to the user.
       if (orders.length < items.length) {
         toast.warning(
-          `${items.length - orders.length} item(s) couldn't be ordered — they may be out of stock.`,
+          `${items.length - orders.length} item(s) couldn't be ordered — already in an open order or out of stock.`,
         );
       }
 
-      // STEP 2 — pay for the first order. Other orders linger as
-      // "pending payment" and the user can finish them from the purchases page.
-      const primary = orders[0];
-      sessionStorage.setItem(PENDING_ORDER_ID, primary._id);
-      sessionStorage.setItem(
-        PENDING_ORDER_IDS,
-        JSON.stringify(orders.map((o) => o._id)),
-      );
+      // STEP 2 — one SSLCommerz session for all orders (backend sums totals)
+      const orderIds = orders.map((o) => o._id);
+      sessionStorage.setItem(PENDING_ORDER_IDS, JSON.stringify(orderIds));
 
       setPhase("redirecting");
       toast.loading("Redirecting to secure payment…", { id: toastId });
 
-      const initiateResponse = await initiatePayment({ orderId: primary._id }).unwrap();
-      const paymentUrl = initiateResponse?.data?.paymentUrl;
+      const initiateResponse = await initiatePayment({ orderIds }).unwrap();
+      const paymentUrl    = initiateResponse?.data?.paymentUrl;
       const transactionId = initiateResponse?.data?.transactionId;
+      const totalAmount   = initiateResponse?.data?.totalAmount;
 
       if (!paymentUrl) {
         throw new Error("Payment gateway did not return a redirect URL.");
       }
 
-      if (transactionId) {
-        sessionStorage.setItem(PENDING_TXN_ID, transactionId);
-      }
+      if (transactionId) sessionStorage.setItem(PENDING_TXN_ID, transactionId);
+      if (totalAmount)   sessionStorage.setItem(PENDING_TOTAL,   String(totalAmount));
 
-      // STEP 3 — full-page redirect. Cart is intentionally NOT cleared here;
-      // the success page clears it after the gateway confirms payment.
+      // STEP 3 — full-page redirect. Cart cleared ONLY on the success page.
       window.location.href = paymentUrl;
     } catch (err) {
       setPhase("idle");
@@ -132,11 +124,13 @@ export function usePlaceOrderAndPay() {
     phase,
     run,
     dispatch,
+    showDuplicateModal,
+    closeDuplicateModal: () => setShowDuplicateModal(false),
   };
 }
 
 export const CHECKOUT_STORAGE_KEYS = {
-  pendingOrderId: PENDING_ORDER_ID,
   pendingOrderIds: PENDING_ORDER_IDS,
-  pendingTxnId: PENDING_TXN_ID,
+  pendingTxnId:    PENDING_TXN_ID,
+  pendingTotal:    PENDING_TOTAL,
 } as const;
