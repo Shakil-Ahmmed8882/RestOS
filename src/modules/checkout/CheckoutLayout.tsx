@@ -1,11 +1,18 @@
 import { Container } from "@/components/layouts/Container";
-import { CheckoutForm } from "@/modules/checkout/sections/CheckoutForm";
+import { ReviewAndPaySection } from "@/modules/checkout/sections/ReviewAndPaySection";
 
 export function CheckoutLayout() {
   return (
     <Container className="py-10">
-      <h1 className="mb-8 text-3xl font-bold tracking-tight">Checkout</h1>
-      <CheckoutForm />
+      <div className="mx-auto max-w-5xl">
+        <header className="mb-8">
+          <h1 className="text-3xl font-bold tracking-tight">Review & pay</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Confirm your items — you’ll complete payment on our secure gateway.
+          </p>
+        </header>
+        <ReviewAndPaySection />
+      </div>
     </Container>
   );
 }

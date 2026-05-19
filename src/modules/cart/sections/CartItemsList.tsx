@@ -14,7 +14,7 @@ export function CartItemsList() {
   return (
     <div className="space-y-3">
       {items.map((item) => (
-        <Card key={item.id} className="flex items-center gap-4 p-4">
+        <Card key={item.id} className="flex items-center !border-none  bg-silk-with-hover gap-4 p-4">
           <BaseImage
             src={item.image ?? null}
             alt={item.name}

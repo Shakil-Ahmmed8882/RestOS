@@ -14,7 +14,7 @@ export function SavedTabCard(props: Props) {
 
   return (
     <Link
-      href={`/blogs/${blog._id}`}
+      href={`/blog/${blog._id}`}
       className="group relative aspect-square rounded-xl overflow-hidden bg-silk-with-hover block"
     >
       <BaseImage src={blog?.image} alt={blog?.title ?? "Saved"} imgClass="!w-full !h-full" />
