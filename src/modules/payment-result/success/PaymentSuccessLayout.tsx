@@ -41,6 +41,7 @@ export function PaymentSuccessLayout() {
       baseApi.util.invalidateTags([
         API_CACHE_TAGS.PAYMENT_HISTORY,
         API_CACHE_TAGS.ORDER_LIST,
+        API_CACHE_TAGS.ORDER_PENDING,
         API_CACHE_TAGS.ORDER_PURCHASED,
         API_CACHE_TAGS.ORDER_SUMMARY,
       ]),
