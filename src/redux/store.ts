@@ -21,6 +21,7 @@ import "@/redux/featureApi/userApi";
 import "@/redux/featureApi/foodApi";
 import "@/redux/featureApi/foodCategoryApi";
 import "@/redux/featureApi/orderApi";
+import "@/redux/featureApi/paymentApi";
 import "@/redux/featureApi/blogApi";
 import "@/redux/featureApi/commentApi";
 import "@/redux/featureApi/replyApi";

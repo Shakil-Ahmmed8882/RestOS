@@ -9,23 +9,63 @@ const buildParams = (args: QueryArg) => {
   return params;
 };
 
+// Mirrors backend `orderValidations.createOrderZodSchema` — field names are
+// non-negotiable. The server wraps the response as data: [[Order], [Order], ...]
+// (one inner array per cart line) so the hook caller flattens it.
+export interface CreateOrderCartItem {
+  food: string;
+  user: string;
+  foodName: string;
+  quantity: number;
+  price: number;
+  totalPrice: number;
+}
+
+export interface CreateOrderRequest {
+  cartItems: CreateOrderCartItem[];
+}
+
+export interface OrderDoc {
+  _id: string;
+  food: string;
+  user: string;
+  foodName?: string;
+  status?: "pending" | "confirmed" | "cancelled" | string;
+  paymentStatus?: "pending" | "completed" | "failed" | string;
+  totalPrice?: number;
+  quantity?: number;
+  createdAt?: string;
+}
+
+export interface CreateOrderResponse {
+  statusCode?: number;
+  success: boolean;
+  message?: string;
+  // Server returns a nested array — one inner array per submitted cart line.
+  data: OrderDoc[][] | OrderDoc[];
+}
+
 const orderApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAllOrders: builder.query<any, QueryArg>({
+    getAllOrders: builder.query<unknown, QueryArg>({
       query: (args) => ({ url: "/orders", method: "GET", params: buildParams(args) }),
       providesTags: [API_CACHE_TAGS.ORDER_LIST],
     }),
-    getAllOrderSummary: builder.query<any, { userId: string; args?: QueryArg }>({
+    getAllOrderSummary: builder.query<unknown, { userId: string; args?: QueryArg }>({
       query: ({ userId, args }) => ({
         url: `/orders/summary/${userId}`,
         method: "GET",
         params: buildParams(args),
       }),
-      providesTags: [API_CACHE_TAGS.ORDER_LIST],
+      providesTags: [API_CACHE_TAGS.ORDER_SUMMARY],
     }),
-    createOrder: builder.mutation<unknown, Record<string, unknown>>({
+    createOrder: builder.mutation<CreateOrderResponse, CreateOrderRequest>({
       query: (data) => ({ url: "/orders/create-order", method: "POST", body: data }),
-      invalidatesTags: [API_CACHE_TAGS.ORDER_LIST, API_CACHE_TAGS.ORDER_PURCHASED],
+      invalidatesTags: [
+        API_CACHE_TAGS.ORDER_LIST,
+        API_CACHE_TAGS.ORDER_PURCHASED,
+        API_CACHE_TAGS.ORDER_SUMMARY,
+      ],
     }),
     updateOrder: builder.mutation<unknown, { id: string; data: Record<string, unknown> }>({
       query: ({ id, data }) => ({ url: `/orders/${id}`, method: "PATCH", body: data }),
