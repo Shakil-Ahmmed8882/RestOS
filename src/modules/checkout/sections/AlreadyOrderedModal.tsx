@@ -5,6 +5,7 @@ import { Icon } from "@iconify/react";
 import { MultipageModal } from "@/components/rest-os-ui/modal/multipage-modal/MultipageModal";
 import { useMultipageModalSelector } from "@/components/rest-os-ui/modal/multipage-modal/provider/MultipageModalContext";
 import { ShowIf } from "@/components/common/ShowIf";
+import { CustomSuspense } from "@/components/common/CustomSuspense";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BaseImage } from "@/components/common/BaseImage";
@@ -227,41 +228,42 @@ function PendingOrdersPage(props: PendingOrdersPageProps) {
         </div>
       </div>
 
-      {/* Loading skeletons */}
-      <ShowIf condition={isLoading}>
-        <div className="space-y-2">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="flex items-center gap-3 rounded-xl px-3 py-3">
-              <Skeleton className="h-11 w-11 rounded-xl" />
-              <div className="flex-1 space-y-1.5">
-                <Skeleton className="h-3.5 w-36" />
-                <Skeleton className="h-3 w-20" />
+      <CustomSuspense
+        isLoading={isLoading}
+        fallback={
+          <div className="space-y-2">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-3 rounded-xl px-3 py-3">
+                <Skeleton className="h-11 w-11 rounded-xl" />
+                <div className="flex-1 space-y-1.5">
+                  <Skeleton className="h-3.5 w-36" />
+                  <Skeleton className="h-3 w-20" />
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </ShowIf>
-
-      {/* Empty state */}
-      <ShowIf condition={!isLoading && pendingOrders.length === 0}>
-        <div className="flex flex-col items-center gap-3 rounded-2xl bg-zinc-50 py-10 text-center dark:bg-zinc-800/40">
-          <Icon icon="solar:inbox-linear" className="h-10 w-10 text-muted-foreground/60" />
-          <div>
-            <p className="text-sm font-semibold text-foreground">No pending orders found</p>
-            <p className="mt-0.5 text-xs text-muted-foreground">
-              All your orders may already be paid or cancelled.
-            </p>
+            ))}
           </div>
-          <Button size="sm" variant="ghost" asChild>
-            <Link href="/user/dashboard/purchasedList" onClick={() => close()}>
-              View all purchases
-            </Link>
-          </Button>
-        </div>
-      </ShowIf>
+        }
+      >
+        {/* Empty state */}
+        <ShowIf condition={pendingOrders.length === 0}>
+          <div className="flex flex-col items-center gap-3 rounded-2xl bg-zinc-50 py-10 text-center dark:bg-zinc-800/40">
+            <Icon icon="solar:inbox-linear" className="h-10 w-10 text-muted-foreground/60" />
+            <div>
+              <p className="text-sm font-semibold text-foreground">No pending orders found</p>
+              <p className="mt-0.5 text-xs text-muted-foreground">
+                All your orders may already be paid or cancelled.
+              </p>
+            </div>
+            <Button size="sm" variant="ghost" asChild>
+              <Link href="/user/dashboard/purchasedList" onClick={() => close()}>
+                View all purchases
+              </Link>
+            </Button>
+          </div>
+        </ShowIf>
 
-      {/* Pending orders list + single Pay all button */}
-      <ShowIf condition={!isLoading && pendingOrders.length > 0}>
+        {/* Pending orders list + single Pay all button */}
+        <ShowIf condition={pendingOrders.length > 0}>
         <ul className="space-y-2">
           {pendingOrders.map((order) => {
             if (!order?._id) return null;
@@ -326,7 +328,8 @@ function PendingOrdersPage(props: PendingOrdersPageProps) {
             <Icon icon="solar:arrow-right-linear" className="ml-1.5 h-3.5 w-3.5" />
           </Link>
         </Button>
-      </ShowIf>
+        </ShowIf>
+      </CustomSuspense>
     </div>
   );
 }
