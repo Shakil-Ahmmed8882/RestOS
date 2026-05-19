@@ -58,7 +58,7 @@ const orderApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllOrders: builder.query<OrderListResponse, QueryArg>({
       query: (args) => ({ url: "/orders", method: "GET", params: buildParams(args) }),
-      providesTags: [API_CACHE_TAGS.ORDER_LIST],
+      providesTags: [API_CACHE_TAGS.ORDER_LIST, API_CACHE_TAGS.ORDER_PENDING],
     }),
     getAllOrderSummary: builder.query<unknown, { userId: string; args?: QueryArg }>({
       query: ({ userId, args }) => ({
@@ -95,12 +95,19 @@ export const {
   useDeleteOrderMutation,
 } = orderApi;
 
-// Derives user-specific pending orders from the list endpoint (server has no
-// user-scoped endpoint yet). Called with a large limit so we capture all
-// pending lines, then the caller filters by userId client-side.
+// Fetches pending orders for a specific user. Passes user + status as query
+// params so the backend can filter server-side (avoids needing admin access
+// to read all orders). Falls back to client-side userId filter as a safety net
+// in case the backend returns more rows than expected.
 export function useUserPendingOrders(userId: string | undefined) {
   const result = useGetAllOrdersQuery(
-    [{ name: "status", value: "pending" }, { name: "limit", value: "50" }],
+    userId
+      ? [
+          { name: "status", value: "pending" },
+          { name: "user",   value: userId },
+          { name: "limit",  value: "50" },
+        ]
+      : undefined,
     { skip: !userId },
   );
 
@@ -110,7 +117,7 @@ export function useUserPendingOrders(userId: string | undefined) {
         typeof order?.user === "object" && order.user !== null
           ? (order.user as { _id?: string })?._id
           : (order?.user as string | undefined);
-      return orderUserId === userId;
+      return !orderUserId || orderUserId === userId;
     },
   );
 

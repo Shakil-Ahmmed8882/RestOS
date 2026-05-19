@@ -23,6 +23,11 @@ type Props = {
 export function AlreadyOrderedModal(props: Props) {
   const { open, onOpenChange, cartItems } = props;
 
+  // Fetch pending orders as soon as the modal mounts so Page 2 is already
+  // loaded when the user navigates to it, and Page 1 can reflect real state.
+  const user = useAppSelector((s) => s.auth.user);
+  const { pendingOrders, isLoading } = useUserPendingOrders(open ? user?.id : undefined);
+
   return (
     <MultipageModal
       open={open}
@@ -30,11 +35,18 @@ export function AlreadyOrderedModal(props: Props) {
       initialPageId="already-ordered"
     >
       <MultipageModal.Page id="already-ordered" maxWidth="max-w-[520px]">
-        <AlreadyOrderedPage cartItems={cartItems} />
+        <AlreadyOrderedPage
+          cartItems={cartItems}
+          pendingOrders={pendingOrders}
+          isLoadingPending={isLoading}
+        />
       </MultipageModal.Page>
 
       <MultipageModal.Page id="pending-payments" backTitle="Back" maxWidth="max-w-[520px]">
-        <PendingOrdersPage />
+        <PendingOrdersPage
+          pendingOrders={pendingOrders}
+          isLoading={isLoading}
+        />
       </MultipageModal.Page>
     </MultipageModal>
   );
@@ -42,11 +54,17 @@ export function AlreadyOrderedModal(props: Props) {
 
 // ── Page 1: Already ordered ─────────────────────────────────────────────────
 
-type AlreadyOrderedPageProps = { cartItems: CartItem[] };
+type AlreadyOrderedPageProps = {
+  cartItems: CartItem[];
+  pendingOrders: OrderDoc[];
+  isLoadingPending: boolean;
+};
 
 function AlreadyOrderedPage(props: AlreadyOrderedPageProps) {
-  const { cartItems } = props;
+  const { cartItems, pendingOrders, isLoadingPending } = props;
   const { goTo, close } = useMultipageModalSelector();
+
+  const hasPendingOrders = pendingOrders.length > 0;
 
   return (
     <div className="space-y-5">
@@ -59,8 +77,10 @@ function AlreadyOrderedPage(props: AlreadyOrderedPageProps) {
             Already ordered
           </h2>
           <p className="mt-0.5 text-sm text-muted-foreground">
-            These items are already in an open order awaiting payment. Resume
-            paying for them below, or visit your purchases page.
+            These items are already in an open order awaiting payment.{" "}
+            {hasPendingOrders
+              ? "Resume paying for them below, or visit your purchases page."
+              : "Visit your purchases page to manage them."}
           </p>
         </div>
       </div>
@@ -97,22 +117,49 @@ function AlreadyOrderedPage(props: AlreadyOrderedPageProps) {
       </ShowIf>
 
       <div className="space-y-2 pt-1">
-        <Button className="w-full" onClick={() => goTo("pending-payments")}>
-          <Icon icon="solar:play-circle-bold-duotone" className="mr-2 h-4 w-4" />
-          Resume pending payments
-        </Button>
-        <Button variant="ghost" className="w-full" asChild>
-          <Link href="/user/dashboard/purchasedList" onClick={() => close()}>
-            <Icon icon="solar:arrow-right-up-linear" className="mr-2 h-4 w-4" />
-            Go to purchases page
-          </Link>
-        </Button>
+        {/* Only show "Resume" if pending orders exist or are still loading */}
+        <ShowIf
+          condition={isLoadingPending || hasPendingOrders}
+          fallback={
+            <Button variant="ghost" className="w-full" asChild>
+              <Link href="/user/dashboard/purchasedList" onClick={() => close()}>
+                <Icon icon="solar:arrow-right-up-linear" className="mr-2 h-4 w-4" />
+                Go to purchases page
+              </Link>
+            </Button>
+          }
+        >
+          <Button
+            className="w-full"
+            disabled={isLoadingPending}
+            onClick={() => goTo("pending-payments")}
+          >
+            <ShowIf
+              condition={isLoadingPending}
+              fallback={
+                <>
+                  <Icon icon="solar:play-circle-bold-duotone" className="mr-2 h-4 w-4" />
+                  Resume pending payments
+                </>
+              }
+            >
+              <Icon icon="svg-spinners:ring-resize" className="mr-2 h-4 w-4" />
+              Checking orders…
+            </ShowIf>
+          </Button>
+          <Button variant="ghost" className="w-full" asChild>
+            <Link href="/user/dashboard/purchasedList" onClick={() => close()}>
+              <Icon icon="solar:arrow-right-up-linear" className="mr-2 h-4 w-4" />
+              Go to purchases page
+            </Link>
+          </Button>
+        </ShowIf>
       </div>
     </div>
   );
 }
 
-// ── Page 2: Pending orders from GET /orders filtered by current user ─────────
+// ── Page 2: Pending orders list ──────────────────────────────────────────────
 
 function resolveFoodName(order: OrderDoc): string {
   if (order?.food && typeof order.food === "object") {
@@ -128,14 +175,16 @@ function resolveFoodImage(order: OrderDoc): string | null {
   return null;
 }
 
-function PendingOrdersPage() {
+type PendingOrdersPageProps = {
+  pendingOrders: OrderDoc[];
+  isLoading: boolean;
+};
+
+function PendingOrdersPage(props: PendingOrdersPageProps) {
+  const { pendingOrders, isLoading } = props;
   const { close } = useMultipageModalSelector();
-  const user = useAppSelector((s) => s.auth.user);
-  const { pendingOrders, isLoading } = useUserPendingOrders(user?.id);
   const [initiatePayment, { isLoading: paying }] = useInitiatePaymentMutation();
 
-  // Pay ALL pending orders in one SSLCommerz session (backend sums totals).
-  // Falls back to single orderId if only one order exists.
   const resumeAll = async () => {
     const ids = pendingOrders.map((o) => o._id).filter(Boolean);
     if (ids.length === 0) return;
@@ -246,7 +295,6 @@ function PendingOrdersPage() {
           })}
         </ul>
 
-        {/* Total + single CTA — pays all orders in one SSLCommerz session */}
         <div className="rounded-2xl bg-zinc-50 p-4 dark:bg-zinc-800/40">
           <div className="flex items-center justify-between mb-3 text-sm">
             <span className="text-muted-foreground">
