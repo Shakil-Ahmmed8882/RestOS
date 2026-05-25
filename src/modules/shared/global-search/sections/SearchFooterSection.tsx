@@ -26,10 +26,11 @@ export function SearchFooterSection() {
           Select
         </span>
       </div>
-      {status === "results" && (
+      {(status === "results" || status === "latest") && total > 0 && (
         <span className="inline-flex items-center gap-1.5">
           <Icon icon="solar:check-circle-linear" className="h-3.5 w-3.5" />
-          {total} result{total === 1 ? "" : "s"}
+          {total} {status === "latest" ? "item" : "result"}
+          {total === 1 ? "" : "s"}
         </span>
       )}
     </div>
