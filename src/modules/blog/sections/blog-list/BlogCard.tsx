@@ -6,12 +6,13 @@ import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { BaseImage } from "@/components/common/BaseImage";
+import { SaveButton } from "@/modules/saves";
 import type { BlogItem } from "@/modules/blog/types/blog.types";
 
 export function BlogCard({ blog }: { blog: BlogItem }) {
   return (
     <Card className="group overflow-hidden">
-      {/* <Link href={`/blog/${blog._id}`} className="block"> */}
+      <div className="relative">
         <BaseImage
           src={blog.image ?? null}
           alt={blog.title}
@@ -20,7 +21,10 @@ export function BlogCard({ blog }: { blog: BlogItem }) {
           containerClassName="aspect-[16/10] w-full"
           className="transition group-hover:scale-105"
         />
-      {/* </Link> */}
+        <div className="absolute right-3 top-3 opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100">
+          <SaveButton type="blog" itemId={blog._id} variant="icon" size="sm" />
+        </div>
+      </div>
       <div className="space-y-3 p-5">
         {blog.category ? <Badge variant="secondary">{blog.category}</Badge> : null}
         <Link href={`/blog/${blog._id}`} className="block">
