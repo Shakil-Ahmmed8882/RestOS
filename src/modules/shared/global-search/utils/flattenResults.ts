@@ -30,7 +30,7 @@ export const flattenSearchResults = (
         title: b.title ?? "Untitled blog",
         subtitle: b.category ?? b.author?.name,
         image: b.image,
-        href: `/blogs/${b._id}`,
+        href: `/blog/${b._id}`,
       });
     });
   }
@@ -45,7 +45,7 @@ export const flattenSearchResults = (
         title,
         subtitle: f.foodCategory ?? f.description,
         image: f.foodImage ?? f.image,
-        href: `/foods/${f._id}`,
+        href: `/food-details/${f._id}`,
       });
     });
   }
@@ -60,7 +60,7 @@ export const flattenSearchResults = (
         title,
         subtitle: "Food category",
         image: c.image,
-        href: `/foods?foodCategory=${encodeURIComponent(title)}`,
+        href: `/food?foodCategory=${encodeURIComponent(title)}`,
       });
     });
   }
