@@ -8,6 +8,8 @@ import { flattenSearchResults, groupCount } from "../utils/flattenResults";
 import { useRecentSearches } from "../hooks/useRecentSearches";
 import type { TFlattenedRow, TSearchGroup } from "../types";
 
+const PAGE_SIZE = 6;
+
 export const useGlobalSearchContextHelper = () => {
   const router = useRouter();
 
@@ -19,25 +21,80 @@ export const useGlobalSearchContextHelper = () => {
   const debouncedTerm = useDebounce(term, 300);
   const shouldFetch = debouncedTerm.trim().length >= 2;
 
+  // ── Pagination ──────────────────────────────────────────────
+  // page is the highest page index requested so far. Each page's
+  // result is cached independently by RTK Query via its arg.
+  const [page, setPage] = useState(1);
+  const [pages, setPages] = useState<TSearchGroup[][]>([]);
+  const [hasMore, setHasMore] = useState(true);
+
+  // Reset accumulator whenever the search term changes
+  useEffect(() => {
+    setPage(1);
+    setPages([]);
+    setHasMore(true);
+  }, [debouncedTerm]);
+
   const queryArgs = useMemo(
     () =>
       shouldFetch
         ? [
             { name: "searchTerm", value: debouncedTerm.trim() },
-            { name: "page", value: "1" },
-            { name: "limit", value: "6" },
+            { name: "page", value: String(page) },
+            { name: "limit", value: String(PAGE_SIZE) },
           ]
         : undefined,
-    [shouldFetch, debouncedTerm],
+    [shouldFetch, debouncedTerm, page],
   );
 
   const { data, isFetching, error } = useGetAllSearchResultsQuery(queryArgs, {
     skip: !shouldFetch,
   });
 
-  const groups = (data?.data ?? []) as TSearchGroup[];
-  const rows = useMemo(() => flattenSearchResults(groups), [groups]);
-  const counts = useMemo(() => groupCount(groups), [groups]);
+  // Append the latest page to the accumulator (idempotently — guard by length)
+  useEffect(() => {
+    if (!shouldFetch || !data) return;
+    const groups = ((data as any)?.data ?? []) as TSearchGroup[];
+    const pageRows = flattenSearchResults(groups);
+
+    setPages((prev) => {
+      // Already absorbed this page index? skip.
+      if (prev.length >= page) return prev;
+      const next = [...prev];
+      next[page - 1] = groups;
+      return next;
+    });
+
+    if (pageRows.length === 0) setHasMore(false);
+  }, [data, shouldFetch, page]);
+
+  // Flatten all accumulated pages into a single row list
+  const rows = useMemo(() => {
+    const all: TFlattenedRow[] = [];
+    pages.forEach((groups) => {
+      all.push(...flattenSearchResults(groups));
+    });
+    return all;
+  }, [pages]);
+
+  // Counts from the union of every page's groups
+  const counts = useMemo(() => {
+    const acc = { blogs: 0, foods: 0, foodCategories: 0 };
+    pages.forEach((groups) => {
+      const c = groupCount(groups);
+      acc.blogs += c.blogs;
+      acc.foods += c.foods;
+      acc.foodCategories += c.foodCategories;
+    });
+    return acc;
+  }, [pages]);
+
+  const loadMore = useCallback(() => {
+    if (!shouldFetch || isFetching || !hasMore) return;
+    // Only advance once the current page has been absorbed
+    if (pages.length < page) return;
+    setPage((p) => p + 1);
+  }, [shouldFetch, isFetching, hasMore, pages.length, page]);
 
   const { recents, pushTerm, clearAll } = useRecentSearches();
 
@@ -120,6 +177,7 @@ export const useGlobalSearchContextHelper = () => {
     recents,
     highlight,
     isFetching,
+    hasMore,
     status,
     inputRef,
     // actions
@@ -132,5 +190,6 @@ export const useGlobalSearchContextHelper = () => {
     selectRecent,
     clearRecents: clearAll,
     onInputKeyDown,
+    loadMore,
   };
 };
