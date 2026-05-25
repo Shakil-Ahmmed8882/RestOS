@@ -21,6 +21,10 @@ import { SignInForm } from "@/modules/auth/sections/sign-in/SignInForm";
 import { SignUpForm } from "@/modules/auth/sections/sign-up/SignUpForm";
 import { ForgotPasswordForm } from "@/modules/auth/sections/forgot-password/ForgotPasswordForm";
 import { CreateBlogModalSection } from "@/modules/blog/create/sections/CreateBlogModalSection";
+import {
+  GlobalSearchProvider,
+  GlobalSearchLayout,
+} from "@/modules/shared/global-search";
 
 // Auth + cross-feature pages defined once — passed to getActivePage for matching
 const AUTH_PAGES = (
@@ -110,15 +114,18 @@ export function PublicLayoutWrapper({ children }: { children: ReactNode }) {
 
   return (
     <MultipageModalProvider value={controller}>
-      <Container>
-        <div className="flex min-h-screen flex-col bg-theme text-foreground ">
-          <PublicHeader />
-          <main className="flex-1">{children}</main>
-          <PublicFooter />
-        </div>
-      </Container>
-      {/* Portal lives inside provider — shares the same controller via context */}
-      <AuthModalPortal />
+      <GlobalSearchProvider>
+        <Container>
+          <div className="flex min-h-screen flex-col bg-theme text-foreground ">
+            <PublicHeader />
+            <main className="flex-1">{children}</main>
+            <PublicFooter />
+          </div>
+        </Container>
+        {/* Portal lives inside provider — shares the same controller via context */}
+        <AuthModalPortal />
+        <GlobalSearchLayout />
+      </GlobalSearchProvider>
     </MultipageModalProvider>
   );
 }
