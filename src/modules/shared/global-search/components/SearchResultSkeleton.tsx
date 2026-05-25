@@ -10,18 +10,17 @@ export function SearchResultSkeleton(props: Props) {
   const { count = 4 } = props;
 
   return (
-    <div className="space-y-2 px-2">
+    <div className="grid grid-cols-2 gap-3">
       {Array.from({ length: count }).map((_, idx) => (
         <div
           key={idx}
-          className="flex items-center gap-3 px-3 py-2.5 rounded-xl"
+          className="rounded-2xl overflow-hidden bg-silk-with-hover"
         >
-          <BaseSkeleton className="h-14 w-14 rounded-xl flex-shrink-0" />
-          <div className="flex-1 min-w-0 space-y-2">
-            <BaseSkeleton className="h-3.5 w-[60%] rounded-md" />
-            <BaseSkeleton className="h-3 w-[40%] rounded-md" />
+          <BaseSkeleton className="w-full aspect-[16/10] rounded-none" />
+          <div className="px-3 py-2.5 space-y-2">
+            <BaseSkeleton className="h-3.5 w-[70%] rounded-md" />
+            <BaseSkeleton className="h-3 w-[45%] rounded-md" />
           </div>
-          <BaseSkeleton className="h-5 w-14 rounded-full flex-shrink-0" />
         </div>
       ))}
     </div>
