@@ -112,6 +112,13 @@ export function SaveButton({
 
   const label = isSaved ? "Unsave" : "Save";
   const iconName = isSaved ? "solar:bookmark-bold" : "solar:bookmark-linear";
+  // On management surfaces (saved dashboard), the visible text reads "Unsave"
+  // because that's the action a click performs from a saved listing.
+  // Elsewhere "Saved" reads as a status the user just achieved.
+  const savedTextLabel = confirmOnUnsave ? "Unsave" : "Saved";
+  const savedTextIcon = confirmOnUnsave
+    ? "solar:bookmark-cross-bold-duotone"
+    : "solar:bookmark-bold";
 
   const confirmModal = confirmOnUnsave ? (
     <MultipageModal
@@ -190,8 +197,8 @@ export function SaveButton({
             className,
           )}
         >
-          <Icon icon={iconName} className={s.icon} />
-          <span>{isSaved ? "Saved" : "Save"}</span>
+          <Icon icon={isSaved ? savedTextIcon : iconName} className={s.icon} />
+          <span>{isSaved ? savedTextLabel : "Save"}</span>
         </button>
         {confirmModal}
       </>
@@ -216,8 +223,8 @@ export function SaveButton({
           className,
         )}
       >
-        <Icon icon={iconName} className={s.icon} />
-        <span>{isSaved ? "Saved" : "Save"}</span>
+        <Icon icon={isSaved ? savedTextIcon : iconName} className={s.icon} />
+        <span>{isSaved ? savedTextLabel : "Save"}</span>
       </button>
       {confirmModal}
     </>
