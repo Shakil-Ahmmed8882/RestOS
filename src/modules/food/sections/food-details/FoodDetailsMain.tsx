@@ -12,12 +12,12 @@ import { useAppDispatch } from "@/redux/hooks";
 import { addToCart } from "@/redux/slices/cartSlice";
 import { useAuthGuard } from "@/modules/food/components/AuthGuard";
 import { FoodDetailsSkeleton } from "@/components/rest-os-ui/placeholder/skeletons/FoodDetailsSkeleton";
+import { SaveButton } from "@/modules/saves";
 
 export function FoodDetailsMain({ id }: { id: string }) {
   const { data, isLoading } = useGetSingleFoodQuery(id);
   const food = data?.food;
   const [qty, setQty] = useState(1);
-  const [isFavorite, setIsFavorite] = useState(false);
   const dispatch = useAppDispatch();
   const { requireAuth } = useAuthGuard();
 
@@ -43,13 +43,6 @@ export function FoodDetailsMain({ id }: { id: string }) {
     toast.success(`Added ${qty} × ${food.foodName} to cart`);
   };
 
-  const handleFavorite = () => {
-    if (!requireAuth()) return;
-    setIsFavorite(!isFavorite);
-    toast.success(isFavorite ? "Removed from favorites" : "Added to favorites");
-  };
-
-
   return (
     <CustomSuspense isLoading={isLoading} fallback={<FoodDetailsSkeleton />}>
       {food ? (
@@ -64,15 +57,9 @@ export function FoodDetailsMain({ id }: { id: string }) {
               containerClassName="aspect-square w-full rounded-2xl"
               className="object-cover"
             />
-            <button
-              onClick={handleFavorite}
-              className="absolute right-4 top-4 flex h-12 w-12 items-center justify-center rounded-full bg-background/80 backdrop-blur-sm shadow-lg transition-transform hover:scale-110 active:scale-95"
-            >
-              <Icon
-                icon={isFavorite ? "solar:heart-bold" : "solar:heart-linear"}
-                className={`h-6 w-6 ${isFavorite ? "text-red-500" : "text-foreground"}`}
-              />
-            </button>
+            <div className="absolute right-4 top-4">
+              <SaveButton type="food" itemId={food._id} variant="icon" size="lg" />
+            </div>
           </div>
 
           {/* Details Section */}
@@ -238,16 +225,13 @@ export function FoodDetailsMain({ id }: { id: string }) {
                   <Icon icon="solar:bag-3-linear" className="mr-2 h-5 w-5" />
                   Add to Cart
                 </Button>
-                <Button
+                <SaveButton
+                  type="food"
+                  itemId={food._id}
+                  variant="default"
                   size="lg"
-                  variant="outline"
-                  onClick={handleFavorite}
-                >
-                  <Icon
-                    icon={isFavorite ? "solar:heart-bold" : "solar:heart-linear"}
-                    className={isFavorite ? "text-red-500" : ""}
-                  />
-                </Button>
+                  className="h-11 w-full justify-center"
+                />
               </div>
             </div>
           </div>
