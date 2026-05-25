@@ -34,16 +34,10 @@ export function SavedGrid({ saves }: Props) {
             : "Tap the bookmark on any dish to add it here.",
         };
 
-  const isBackgroundFetch = saves.isFetching && !showSkeleton;
-
   return (
     <div className="space-y-5">
       <NoResultFoundWrapper data={rows} title={empty.title} description={empty.description}>
-        <div
-          className={`grid grid-cols-1 gap-4 transition-opacity duration-200 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${
-            isBackgroundFetch ? "opacity-70" : "opacity-100"
-          }`}
-        >
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {rows.map((row) => {
             if (!row?._id) return null;
             if (row.resourceDeleted || !row.resource) {
