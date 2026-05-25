@@ -19,7 +19,11 @@ export const useGlobalSearchContextHelper = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const debouncedTerm = useDebounce(term, 300);
-  const shouldFetch = debouncedTerm.trim().length >= 2;
+  // Always fetch — empty searchTerm returns the latest items per the API contract.
+  // This powers the "popular/latest" initial state.
+  const shouldFetch = true;
+  const trimmedTerm = debouncedTerm.trim();
+  const isSearching = trimmedTerm.length >= 2;
 
   // ── Pagination ──────────────────────────────────────────────
   // page is the highest page index requested so far. Each page's
@@ -28,32 +32,27 @@ export const useGlobalSearchContextHelper = () => {
   const [pages, setPages] = useState<TSearchGroup[][]>([]);
   const [hasMore, setHasMore] = useState(true);
 
-  // Reset accumulator whenever the search term changes
+  // Reset accumulator whenever the search term changes (empty term still fetches latest)
   useEffect(() => {
     setPage(1);
     setPages([]);
     setHasMore(true);
-  }, [debouncedTerm]);
+  }, [trimmedTerm]);
 
   const queryArgs = useMemo(
-    () =>
-      shouldFetch
-        ? [
-            { name: "searchTerm", value: debouncedTerm.trim() },
-            { name: "page", value: String(page) },
-            { name: "limit", value: String(PAGE_SIZE) },
-          ]
-        : undefined,
-    [shouldFetch, debouncedTerm, page],
+    () => [
+      { name: "searchTerm", value: trimmedTerm },
+      { name: "page", value: String(page) },
+      { name: "limit", value: String(PAGE_SIZE) },
+    ],
+    [trimmedTerm, page],
   );
 
-  const { data, isFetching, error } = useGetAllSearchResultsQuery(queryArgs, {
-    skip: !shouldFetch,
-  });
+  const { data, isFetching, error } = useGetAllSearchResultsQuery(queryArgs);
 
   // Append the latest page to the accumulator (idempotently — guard by length)
   useEffect(() => {
-    if (!shouldFetch || !data) return;
+    if (!data) return;
     const groups = ((data as any)?.data ?? []) as TSearchGroup[];
     const pageRows = flattenSearchResults(groups);
 
@@ -90,11 +89,11 @@ export const useGlobalSearchContextHelper = () => {
   }, [pages]);
 
   const loadMore = useCallback(() => {
-    if (!shouldFetch || isFetching || !hasMore) return;
+    if (isFetching || !hasMore) return;
     // Only advance once the current page has been absorbed
     if (pages.length < page) return;
     setPage((p) => p + 1);
-  }, [shouldFetch, isFetching, hasMore, pages.length, page]);
+  }, [isFetching, hasMore, pages.length, page]);
 
   const { recents, pushTerm, clearAll } = useRecentSearches();
 
@@ -156,11 +155,16 @@ export const useGlobalSearchContextHelper = () => {
     [rows, highlight, selectRow],
   );
 
-  const status: "idle" | "searching" | "results" | "no-results" | "error" =
-    !shouldFetch
-      ? "idle"
-      : error
-        ? "error"
+  // "latest" — no search term, showing the most-recent items per the API contract.
+  // "searching" — term is set but no rows yet.
+  // "results" — term is set and we have rows.
+  // "no-results" — term is set and the fetch returned zero.
+  // "error" — request failed.
+  const status: "latest" | "searching" | "results" | "no-results" | "error" =
+    error
+      ? "error"
+      : !isSearching
+        ? "latest"
         : isFetching && rows.length === 0
           ? "searching"
           : rows.length === 0
