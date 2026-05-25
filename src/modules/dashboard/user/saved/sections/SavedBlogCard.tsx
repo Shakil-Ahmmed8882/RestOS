@@ -3,14 +3,12 @@
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { BaseImage } from "@/components/rest-os-ui/images/BaseImage";
-import { ShowIf } from "@/components/common/ShowIf";
-import { useUnsave } from "@/modules/dashboard/user/saved/hooks/useUnsave";
+import { SaveButton } from "@/modules/saves";
 import type { SaveRow, SavedBlogResource } from "@/modules/dashboard/user/saved/types";
 
 type Props = { row: SaveRow };
 
 export function SavedBlogCard({ row }: Props) {
-  const unsave = useUnsave();
   if (!row) return null;
 
   const b = row.resource as SavedBlogResource | null;
@@ -52,25 +50,14 @@ export function SavedBlogCard({ row }: Props) {
             </span>
           </div>
 
-          <button
-            type="button"
-            onClick={() => unsave.remove("blog", row.itemId)}
-            disabled={unsave.isLoading}
-            className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium text-primary transition-colors hover:bg-primary/10 disabled:opacity-60"
-            aria-label="Remove from saved"
-          >
-            <ShowIf
-              condition={unsave.isLoading}
-              fallback={
-                <>
-                  <Icon icon="solar:bookmark-bold" className="h-3.5 w-3.5" />
-                  Saved
-                </>
-              }
-            >
-              <Icon icon="svg-spinners:ring-resize" className="h-3.5 w-3.5" />
-            </ShowIf>
-          </button>
+          <SaveButton
+            type="blog"
+            itemId={row.itemId}
+            variant="ghost"
+            size="sm"
+            confirmOnUnsave
+            itemName={b?.title ?? row.name}
+          />
         </div>
       </div>
     </article>

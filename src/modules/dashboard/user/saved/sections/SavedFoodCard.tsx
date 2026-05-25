@@ -3,8 +3,7 @@
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { BaseImage } from "@/components/rest-os-ui/images/BaseImage";
-import { ShowIf } from "@/components/common/ShowIf";
-import { useUnsave } from "@/modules/dashboard/user/saved/hooks/useUnsave";
+import { SaveButton } from "@/modules/saves";
 import type { SaveRow, SavedFoodResource } from "@/modules/dashboard/user/saved/types";
 
 type Props = { row: SaveRow };
@@ -17,7 +16,6 @@ const fmtBDT = (n: number) =>
   }).format(Number(n ?? 0));
 
 export function SavedFoodCard({ row }: Props) {
-  const unsave = useUnsave();
   if (!row) return null;
 
   const f = row.resource as SavedFoodResource | null;
@@ -68,25 +66,14 @@ export function SavedFoodCard({ row }: Props) {
             )}
           </div>
 
-          <button
-            type="button"
-            onClick={() => unsave.remove("food", row.itemId)}
-            disabled={unsave.isLoading}
-            className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium text-primary transition-colors hover:bg-primary/10 disabled:opacity-60"
-            aria-label="Remove from saved"
-          >
-            <ShowIf
-              condition={unsave.isLoading}
-              fallback={
-                <>
-                  <Icon icon="solar:bookmark-bold" className="h-3.5 w-3.5" />
-                  Saved
-                </>
-              }
-            >
-              <Icon icon="svg-spinners:ring-resize" className="h-3.5 w-3.5" />
-            </ShowIf>
-          </button>
+          <SaveButton
+            type="food"
+            itemId={row.itemId}
+            variant="ghost"
+            size="sm"
+            confirmOnUnsave
+            itemName={f?.foodName ?? row.name}
+          />
         </div>
       </div>
     </article>
