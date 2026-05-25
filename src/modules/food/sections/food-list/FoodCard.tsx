@@ -1,29 +1,20 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { BaseImage } from "@/components/common/BaseImage";
+import { SaveButton } from "@/modules/saves";
 import type { FoodItem } from "@/modules/food/types/food.types";
 
 const DEFAULT_FOOD_IMAGE = "https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=600&h=400&fit=crop";
 
 export function FoodCard({ food }: { food: FoodItem }) {
-  const [isFavorite, setIsFavorite] = useState(false);
-
   const displayName = food.name || food.foodName || "Untitled Dish";
   const displayImage = food.image || food?.foodImage || DEFAULT_FOOD_IMAGE;
   const displayRating = food.averageRating || food.rating || 0;
 
-  const handleFavorite = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsFavorite(!isFavorite);
-  };
-
   return (
     <div className="group relative flex flex-col gap-3">
-      {/* Image Container */}
       <Link href={`/food-details/${food._id}`} className="relative block overflow-hidden rounded-3xl">
         <BaseImage
           src={displayImage}
@@ -32,18 +23,10 @@ export function FoodCard({ food }: { food: FoodItem }) {
           containerClassName="h-40 w-full rounded-3xl"
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        
-        {/* Favorite Button */}
-        <button
-          onClick={handleFavorite}
-          className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-card shadow-sm transition-transform active:scale-90 dark:bg-card"
-        >
-          <Icon
-            icon={isFavorite ? "solar:heart-bold" : "solar:heart-linear"}
-            className={`h-5 w-5 ${isFavorite ? "text-red-500" : "text-foreground"}`}
-          />
-        </button>
       </Link>
+      <div className="absolute right-4 top-4 z-10 opacity-0 transition-opacity duration-200 group-hover:opacity-100 focus-within:opacity-100">
+        <SaveButton type="food" itemId={food._id} variant="icon" size="md" />
+      </div>
 
       {/* Content */}
       <div className="flex flex-col px-1">
