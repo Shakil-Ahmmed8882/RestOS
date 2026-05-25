@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { Icon } from "@iconify/react";
 import { BaseImage } from "@/components/rest-os-ui/images/BaseImage";
+import { SaveButton } from "@/modules/saves";
 import type { BlogItem } from "@/modules/blog/types/blog.types";
 
 type Props = {
@@ -38,19 +39,26 @@ export function BlogListCard(props: Props) {
 
   return (
     <article className="group relative rounded-2xl overflow-hidden bg-white dark:bg-zinc-900/60 ring-1 ring-zinc-200/60 dark:ring-white/[0.04] shadow-[0_1px_3px_rgba(0,0,0,0.05)] transition-all hover:shadow-[0_8px_24px_-12px_rgba(0,0,0,0.18)] dark:hover:shadow-[0_8px_24px_-12px_rgba(0,0,0,0.6)]">
-      <button
-        type="button"
-        onClick={handleCardClick}
-        className="relative block w-full h-52 sm:h-56 overflow-hidden text-left"
-      >
-        <BaseImage
-          src={image}
-          alt={title}
-          className="h-full w-full"
-          imgClass="transition-transform duration-300 group-hover:scale-105"
-          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-        />
-      </button>
+      <div className="relative">
+        <button
+          type="button"
+          onClick={handleCardClick}
+          className="relative block w-full h-52 sm:h-56 overflow-hidden text-left"
+        >
+          <BaseImage
+            src={image}
+            alt={title}
+            className="h-full w-full"
+            imgClass="transition-transform duration-300 group-hover:scale-105"
+            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+          />
+        </button>
+        {blog?._id ? (
+          <div className="absolute right-3 top-3 z-10">
+            <SaveButton type="blog" itemId={blog._id} variant="icon" size="md" />
+          </div>
+        ) : null}
+      </div>
 
       <div className="p-5 sm:p-6 space-y-3">
         <div className="flex items-center justify-between gap-2">

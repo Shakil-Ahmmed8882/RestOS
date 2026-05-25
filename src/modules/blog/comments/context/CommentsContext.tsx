@@ -29,6 +29,7 @@ export const useCommentsSelector = () => ({
   toggleReplyOpen: useContextSelector(Context, "BlogComments", (s) => s.toggleReplyOpen),
   expandedThreads: useContextSelector(Context, "BlogComments", (s) => s.expandedThreads),
   toggleThread: useContextSelector(Context, "BlogComments", (s) => s.toggleThread),
+  expandThread: useContextSelector(Context, "BlogComments", (s) => s.expandThread),
   submitNewComment: useContextSelector(Context, "BlogComments", (s) => s.submitNewComment),
   submitting: useContextSelector(Context, "BlogComments", (s) => s.submitting),
 });

@@ -21,6 +21,8 @@ export const useGlobalSearchSelector = () => ({
   recents: useContextSelector(Context, "GlobalSearch", (s) => s.recents),
   highlight: useContextSelector(Context, "GlobalSearch", (s) => s.highlight),
   status: useContextSelector(Context, "GlobalSearch", (s) => s.status),
+  isFetching: useContextSelector(Context, "GlobalSearch", (s) => s.isFetching),
+  hasMore: useContextSelector(Context, "GlobalSearch", (s) => s.hasMore),
   inputRef: useContextSelector(Context, "GlobalSearch", (s) => s.inputRef),
   open: useContextSelector(Context, "GlobalSearch", (s) => s.open),
   close: useContextSelector(Context, "GlobalSearch", (s) => s.close),
@@ -30,4 +32,5 @@ export const useGlobalSearchSelector = () => ({
   selectRecent: useContextSelector(Context, "GlobalSearch", (s) => s.selectRecent),
   clearRecents: useContextSelector(Context, "GlobalSearch", (s) => s.clearRecents),
   onInputKeyDown: useContextSelector(Context, "GlobalSearch", (s) => s.onInputKeyDown),
+  loadMore: useContextSelector(Context, "GlobalSearch", (s) => s.loadMore),
 });

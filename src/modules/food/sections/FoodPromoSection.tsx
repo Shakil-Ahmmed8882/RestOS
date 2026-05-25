@@ -336,53 +336,7 @@ export function FoodPromoSection() {
         </div>
       </div>
 
-      {/* Cuisines Section */}
-      <div className="w-full ">
-        <div>
-          <h2 className="text-2xl font-bold text-foreground mb-6">Cuisines</h2>
-
-          <div className="relative">
-            <div
-              ref={cuisineRef}
-              className="flex gap-4 overflow-x-hidden scrollbar-thin scroll-smooth pb-2"
-            >
-              {CUISINES.map((cuisine) => (
-                <button
-                  key={cuisine.id}
-                  className={`flex-shrink-0 w-28 flex flex-col items-center justify-center gap-2 rounded-2xl p-4 bg-gradient-to-br ${cuisine.bgColor} hover:shadow-lg transition-all active:scale-95`}
-                >
-                  <span className="text-4xl">{cuisine.icon}</span>
-                  <span className="text-sm font-semibold text-gray-900 dark:text-gray-100 text-center">
-                    {cuisine.name}
-                  </span>
-                </button>
-              ))}
-            </div>
-
-            {/* Navigation Arrows */}
-            <button
-              onClick={() => scroll(cuisineRef, "left")}
-              className="bg-white absolute -left-4 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-card dark:bg-card shadow-lg hover:shadow-xl transition-shadow dark:hover:shadow-primary/50"
-              aria-label="Scroll left"
-            >
-              <Icon
-                icon="solar:arrow-left-linear"
-                className="h-5 w-5 text-primary"
-              />
-            </button>
-            <button
-              onClick={() => scroll(cuisineRef, "right")}
-              className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-card dark:bg-card shadow-lg hover:shadow-xl transition-shadow dark:hover:shadow-primary/50"
-              aria-label="Scroll right"
-            >
-              <Icon
-                icon="solar:arrow-right-linear"
-                className="h-5 w-5 text-primary"
-              />
-            </button>
-          </div>
-        </div>
-      </div>
+    
 
       {/* Your Daily Deals Section */}
       <div className="w-full ">

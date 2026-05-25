@@ -24,6 +24,7 @@ import { USER_ROLE } from "@/constants/roles";
 import { signOutFirebase } from "@/modules/auth/services/firebase-auth.service";
 import { cn } from "@/lib/utils";
 import { useMultipageModalSelector } from "@/components/rest-os-ui/modal/multipage-modal/provider/MultipageModalContext";
+import { SearchTriggerButton } from "@/modules/shared/global-search";
 
 const NAV = [
   { label: "Home", href: "/" },
@@ -89,11 +90,7 @@ export function PublicHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Button asChild variant="ghost" size="icon" aria-label="Search">
-            <Link href="/menu">
-              <Icon icon="solar:magnifer-linear" className="h-5 w-5" />
-            </Link>
-          </Button>
+          <SearchTriggerButton variant="icon" />
           <Button
             asChild
             variant="ghost"

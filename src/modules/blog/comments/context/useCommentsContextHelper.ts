@@ -57,6 +57,15 @@ export const useCommentsContextHelper = (props: Props) => {
     });
   }, []);
 
+  const expandThread = useCallback((commentId: string) => {
+    setExpandedThreads((prev) => {
+      if (prev.has(commentId)) return prev;
+      const next = new Set(prev);
+      next.add(commentId);
+      return next;
+    });
+  }, []);
+
   /**
    * Submit a new comment optimistically. The temp doc carries:
    *  - the authed user (so the avatar + name show instantly)
@@ -126,6 +135,7 @@ export const useCommentsContextHelper = (props: Props) => {
     toggleReplyOpen,
     expandedThreads,
     toggleThread,
+    expandThread,
     submitNewComment,
     submitting,
   };

@@ -1,8 +1,11 @@
 "use client";
 
+import { useEffect } from "react";
 import { Icon } from "@iconify/react";
 import { useGlobalSearchSelector } from "../context/GlobalSearchContext";
 import { SearchResultRow } from "../components/SearchResultRow";
+import { SearchResultSkeleton } from "../components/SearchResultSkeleton";
+import { useIntersection } from "@/components/rest-os-ui/infinite-scroll/hooks/useIntersection";
 import type { TFlattenedRow, TSearchSource } from "../types";
 
 const GROUP_TITLE: Record<TSearchSource, string> = {
@@ -12,28 +15,44 @@ const GROUP_TITLE: Record<TSearchSource, string> = {
 };
 
 function groupRows(rows: TFlattenedRow[]) {
-  const blogs = rows.filter((r) => r.source === "blogs");
-  const foods = rows.filter((r) => r.source === "foods");
-  const categories = rows.filter((r) => r.source === "foodCategories");
+  const blogs = rows.filter((r) => r?.source === "blogs");
+  const foods = rows.filter((r) => r?.source === "foods");
+  const categories = rows.filter((r) => r?.source === "foodCategories");
   return [
-    { source: "blogs" as const, rows: blogs },
     { source: "foods" as const, rows: foods },
+    { source: "blogs" as const, rows: blogs },
     { source: "foodCategories" as const, rows: categories },
   ].filter((g) => g.rows.length > 0);
 }
 
 export function SearchResultsSection() {
-  const { rows, highlight, setHighlight, selectRow, status } =
-    useGlobalSearchSelector();
+  const {
+    rows,
+    selectRow,
+    status,
+    isFetching,
+    hasMore,
+    loadMore,
+  } = useGlobalSearchSelector();
 
-  if (status === "searching") {
+  // Sentinel for infinite scroll inside the modal's scroll container
+  const { ref: sentinelRef, isIntersecting } = useIntersection<HTMLDivElement>(
+    { rootMargin: "240px" },
+    (status === "results" || status === "latest") && hasMore && !isFetching,
+  );
+
+  useEffect(() => {
+    if (isIntersecting) loadMore();
+  }, [isIntersecting, loadMore]);
+
+  // ── Loading: first page in flight ──────────────────────────────────────────
+  if (status === "searching" || (status === "latest" && rows.length === 0 && isFetching)) {
     return (
-      <div className="px-5 py-12 flex flex-col items-center gap-3">
-        <Icon
-          icon="solar:magnifer-linear"
-          className="h-8 w-8 text-muted-foreground/40 animate-pulse"
-        />
-        <p className="text-sm text-muted-foreground">Searching...</p>
+      <div className="px-4 py-4 max-h-[60vh] overflow-y-auto">
+        <p className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">
+          {status === "searching" ? "Searching..." : "Discover"}
+        </p>
+        <SearchResultSkeleton count={4} />
       </div>
     );
   }
@@ -41,12 +60,9 @@ export function SearchResultsSection() {
   if (status === "error") {
     return (
       <div className="px-5 py-12 flex flex-col items-center gap-3">
-        <Icon
-          icon="solar:danger-circle-linear"
-          className="h-8 w-8 text-red-500/70"
-        />
+        <Icon icon="solar:danger-circle-linear" className="h-8 w-8 text-primary/70" />
         <p className="text-sm text-muted-foreground">
-          Search failed. Try again.
+          Something went wrong. Try again.
         </p>
       </div>
     );
@@ -72,29 +88,51 @@ export function SearchResultsSection() {
   }
 
   const groups = groupRows(rows);
-  let flatIndex = 0;
+  const headerLabel = status === "latest" ? "Discover" : "Results";
 
   return (
-    <div className="px-2 py-2 space-y-2 max-h-[60vh] overflow-y-auto">
+    <div className="max-h-[60vh] overflow-y-auto px-4 py-4 space-y-5">
+      {status === "latest" && groups.length > 0 && (
+        <p className="px-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">
+          {headerLabel}
+        </p>
+      )}
+
       {groups.map((group) => (
-        <div key={group.source} className="space-y-0.5">
-          <p className="px-3 pt-2 pb-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">
-            {GROUP_TITLE[group.source]}
-          </p>
-          {group.rows.map((row) => {
-            const currentIndex = flatIndex++;
-            return (
+        <div key={group.source} className="space-y-2">
+          <div className="flex items-center justify-between px-1">
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">
+              {GROUP_TITLE[group.source]}
+            </p>
+            <span className="text-[10px] text-muted-foreground/60">
+              {group.rows.length}
+            </span>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            {group.rows.map((row) => (
               <SearchResultRow
-                key={row.key}
+                key={row?.key}
                 row={row}
-                isActive={highlight === currentIndex}
                 onSelect={selectRow}
-                onHover={() => setHighlight(currentIndex)}
               />
-            );
-          })}
+            ))}
+          </div>
         </div>
       ))}
+
+      {/* Infinite-scroll rebound skeleton + sentinel */}
+      {hasMore && (
+        <div className="space-y-2">
+          {isFetching && <SearchResultSkeleton count={2} />}
+          <div ref={sentinelRef} className="h-1" aria-hidden="true" />
+        </div>
+      )}
+
+      {!hasMore && rows.length > 0 && (
+        <p className="text-center text-[11px] text-muted-foreground/60 py-2">
+          End of results
+        </p>
+      )}
     </div>
   );
 }

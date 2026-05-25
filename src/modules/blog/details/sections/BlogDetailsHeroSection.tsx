@@ -1,13 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import { Icon } from "@iconify/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BaseImage } from "@/components/rest-os-ui/images/BaseImage";
+import { SaveButton } from "@/modules/saves";
+import { MultipageModal } from "@/components/rest-os-ui/modal/multipage-modal/MultipageModal";
+import { ShareSection } from "@/components/rest-os-ui/modal/share";
 import type { BlogItem, BlogAuthor } from "@/modules/blog/types/blog.types";
 
 type Props = {
   blog: BlogItem;
-  onShare?: () => void;
 };
 
 function authorOf(input: unknown): BlogAuthor {
@@ -39,7 +42,8 @@ function fmtDate(iso?: string) {
 }
 
 export function BlogDetailsHeroSection(props: Props) {
-  const { blog, onShare } = props;
+  const { blog } = props;
+  const [shareOpen, setShareOpen] = useState(false);
 
   if (!blog) return null;
 
@@ -85,14 +89,24 @@ export function BlogDetailsHeroSection(props: Props) {
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={onShare}
-          className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-full bg-silk-with-hover text-xs font-medium text-foreground hover:text-primary transition-colors"
-        >
-          <Icon icon="solar:share-linear" className="h-3.5 w-3.5" />
-          Share
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setShareOpen(true)}
+            className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-full bg-silk-with-hover text-xs font-medium text-foreground hover:text-primary transition-colors"
+          >
+            <Icon icon="solar:share-linear" className="h-3.5 w-3.5" />
+            Share
+          </button>
+          <SaveButton
+            type="blog"
+            itemId={blog._id}
+            variant="ghost"
+            size="sm"
+            itemName={blog?.title}
+            className="h-9 px-3.5 rounded-full bg-silk-with-hover"
+          />
+        </div>
       </div>
 
       {image && (
@@ -105,6 +119,19 @@ export function BlogDetailsHeroSection(props: Props) {
           />
         </div>
       )}
+
+      <MultipageModal
+        open={shareOpen}
+        onOpenChange={(next) => !next && setShareOpen(false)}
+        initialPageId="share-blog"
+      >
+        <MultipageModal.Page id="share-blog" maxWidth="max-w-[560px]">
+          <ShareSection
+            title={blog?.title}
+            onClose={() => setShareOpen(false)}
+          />
+        </MultipageModal.Page>
+      </MultipageModal>
 
       {tags.length > 0 && (
         <div className="flex items-center gap-2 flex-wrap">
