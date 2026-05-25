@@ -54,7 +54,7 @@ export function ModalWrapper({ open, setOpen, children }: Props) {
 							exit={{ opacity: 0, scale: 0.98, y: 10 }}
 							transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
 							/* pointer-events-auto allows interaction with the modal itself */
-							className="relative w-full max-w-[610px] rounded-2xl bg-white shadow-2xl pointer-events-auto my-auto"
+							className="relative w-full max-w-[610px] rounded-2xl bg-white shadow-2xl shadow-black/10 dark:bg-zinc-900 dark:shadow-black/60 pointer-events-auto my-auto"
 							onClick={(e: React.MouseEvent) => e.stopPropagation()}
 						>
 							{children}

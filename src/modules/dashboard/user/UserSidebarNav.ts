@@ -19,7 +19,7 @@ export const USER_NAV: DashboardNavGroup[] = [
     title: "Content",
     items: [
       { label: "My blogs", href: "/user/dashboard/my-blogs", icon: "solar:document-text-linear" },
-      { label: "Saved blogs", href: "/user/dashboard/saved-blogs", icon: "solar:bookmark-linear" },
+      { label: "Saved", href: "/user/dashboard/saved", icon: "solar:bookmark-linear" },
     ],
   },
   {

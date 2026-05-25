@@ -16,7 +16,7 @@ type Props = {
 
 export function ReplyComposer(props: Props) {
   const { commentId, onSubmitted } = props;
-  const { blogId, user } = useCommentsSelector();
+  const { blogId, user, expandThread } = useCommentsSelector();
   const { requireAuth } = useRequireAuth();
   const [value, setValue] = useState("");
   const [addReply, { isLoading: submitting }] = useAddReplyToCommentMutation();
@@ -48,6 +48,9 @@ export function ReplyComposer(props: Props) {
     // Clear input immediately — optimistic row already shows in the
     // thread. Restore the draft if the server rejects.
     setValue("");
+    // Auto-expand so the user sees their reply land at the top instead
+    // of staying hidden behind a collapsed "See replies" toggle.
+    expandThread(commentId);
     try {
       await addReply({
         commentId,

@@ -13,11 +13,14 @@ import { addToCart } from "@/redux/slices/cartSlice";
 import { useAuthGuard } from "@/modules/food/components/AuthGuard";
 import { FoodDetailsSkeleton } from "@/components/rest-os-ui/placeholder/skeletons/FoodDetailsSkeleton";
 import { SaveButton } from "@/modules/saves";
+import { MultipageModal } from "@/components/rest-os-ui/modal/multipage-modal/MultipageModal";
+import { ShareSection } from "@/components/rest-os-ui/modal/share";
 
 export function FoodDetailsMain({ id }: { id: string }) {
   const { data, isLoading } = useGetSingleFoodQuery(id);
   const food = data?.food;
   const [qty, setQty] = useState(1);
+  const [shareOpen, setShareOpen] = useState(false);
   const dispatch = useAppDispatch();
   const { requireAuth } = useAuthGuard();
 
@@ -76,7 +79,18 @@ export function FoodDetailsMain({ id }: { id: string }) {
                   </Badge>
                 )}
               </div>
-              <h1 className="text-3xl md:text-4xl font-bold tracking-tight">{displayName}</h1>
+              <div className="flex items-start justify-between gap-3">
+                <h1 className="text-3xl md:text-4xl font-bold tracking-tight">{displayName}</h1>
+                <button
+                  type="button"
+                  onClick={() => setShareOpen(true)}
+                  className="shrink-0 inline-flex items-center gap-1.5 h-9 px-3.5 rounded-full bg-silk-with-hover text-xs font-medium text-foreground hover:text-primary transition-colors"
+                  aria-label="Share this dish"
+                >
+                  <Icon icon="solar:share-linear" className="h-3.5 w-3.5" />
+                  Share
+                </button>
+              </div>
             </div>
 
             {/* Rating and Meta Info */}
@@ -235,6 +249,19 @@ export function FoodDetailsMain({ id }: { id: string }) {
               </div>
             </div>
           </div>
+
+          <MultipageModal
+            open={shareOpen}
+            onOpenChange={(next) => !next && setShareOpen(false)}
+            initialPageId="share-food"
+          >
+            <MultipageModal.Page id="share-food" maxWidth="max-w-[560px]">
+              <ShareSection
+                title={displayName}
+                onClose={() => setShareOpen(false)}
+              />
+            </MultipageModal.Page>
+          </MultipageModal>
         </div>
       ) : (
         <div className="rounded-lg bg-muted p-8 text-center">

@@ -5,43 +5,88 @@ import blogApi from "@/redux/featureApi/blogApi";
 import type { BlogComment } from "@/modules/blog/types/blog.types";
 
 /**
- * Bump the commentsCount on every cached blog list entry containing
- * the matching blog id. Returns an undo function for rollback.
+ * Bump the commentsCount on every cached blog list / detail / saved-feed
+ * entry that contains the matching blog id. Returns an undo function.
  *
- * Lives here because the comment mutation is the source of truth for
- * count changes — the blog list cache is just a derived view.
+ * Why this is verbose: RTK Query holds separate cache entries per (endpoint,
+ * serialized-args) tuple. The same blog row can appear in many cache entries
+ * at once (filtered list, search list, saved feed, detail page). We patch
+ * every entry that contains it so the surrounding UI updates with no refetch.
+ *
+ * Walks the raw queries map directly instead of selectCachedArgsForQuery to
+ * also catch entries cached by other slices (e.g. saveApi) whose row shape
+ * is a blog. Anything we can't patch is silently skipped.
  */
-function bumpBlogCommentsCount(blogId: string, delta: 1 | -1): () => void {
+function patchBlogCountEverywhere(
+  blogId: string,
+  delta: 1 | -1,
+): () => void {
   const undoFns: Array<() => void> = [];
+
+  const tryPatch = (api: any, endpointName: string, args: unknown) => {
+    try {
+      const patch = store.dispatch(
+        api.util.updateQueryData(endpointName, args, (draft: any) => {
+          // Unwrap common envelope shapes: {data: [...]}, {data: {data:[...]}}, [...]
+          const candidates: any[] = [];
+          if (Array.isArray(draft)) candidates.push(draft);
+          if (Array.isArray(draft?.data)) candidates.push(draft.data);
+          if (Array.isArray(draft?.data?.data)) candidates.push(draft.data.data);
+          if (Array.isArray(draft?.data?.result)) candidates.push(draft.data.result);
+
+          let bumped = false;
+          for (const list of candidates) {
+            const target = list.find(
+              (row: any) => row && (row._id === blogId || row.id === blogId),
+            );
+            if (target) {
+              const current =
+                typeof target.commentsCount === "number" ? target.commentsCount : 0;
+              target.commentsCount = Math.max(0, current + delta);
+              bumped = true;
+            }
+          }
+
+          // Detail-shape: single blog object on `draft.data` or `draft` itself.
+          if (!bumped) {
+            const single = draft?.data ?? draft;
+            if (single && typeof single === "object" && (single._id === blogId || single.id === blogId)) {
+              const current =
+                typeof single.commentsCount === "number" ? single.commentsCount : 0;
+              single.commentsCount = Math.max(0, current + delta);
+            }
+          }
+        }),
+      );
+      undoFns.push(() => patch.undo());
+    } catch {
+      /* skip this entry */
+    }
+  };
+
   try {
-    const state = store.getState();
-    const argsList = blogApi.util.selectCachedArgsForQuery(
-      state,
-      "getAllBlogs",
-    );
-    argsList.forEach((args) => {
-      try {
-        const patch = store.dispatch(
-          blogApi.util.updateQueryData("getAllBlogs", args, (draft: any) => {
-            const list = Array.isArray(draft?.data) ? draft.data : null;
-            if (!list) return;
-            const blog = list.find((b: any) => b?._id === blogId);
-            if (!blog) return;
-            const current =
-              typeof blog.commentsCount === "number" ? blog.commentsCount : 0;
-            blog.commentsCount = Math.max(0, current + delta);
-          }),
-        );
-        undoFns.push(() => patch.undo());
-      } catch {
-        /* skip this cache entry */
-      }
-    });
+    const state: any = store.getState();
+    const queries = state?.[baseApi.reducerPath]?.queries ?? {};
+    for (const cacheKey of Object.keys(queries)) {
+      const entry = queries[cacheKey];
+      if (!entry?.endpointName) continue;
+      // Only walk *list-shaped* or blog-detail-shaped endpoints. Comment
+      // and reply endpoints have their own count derivation and shouldn't
+      // be touched here.
+      const name: string = entry.endpointName;
+      const isBlogEndpoint =
+        name === "getAllBlogs" ||
+        name === "getSingleBlog" ||
+        name.toLowerCase().includes("blog") ||
+        name.toLowerCase().includes("saved");
+      if (!isBlogEndpoint) continue;
+      tryPatch(baseApi, name, entry.originalArgs);
+    }
   } catch {
     /* noop */
   }
 
-  // Detail page may also display the count — patch that too.
+  // Always also try the canonical blog detail entry by id (cheap, idempotent).
   try {
     const patch = store.dispatch(
       blogApi.util.updateQueryData("getSingleBlog", blogId, (draft: any) => {
@@ -59,6 +104,9 @@ function bumpBlogCommentsCount(blogId: string, delta: 1 | -1): () => void {
 
   return () => undoFns.forEach((fn) => fn());
 }
+
+// Back-compat alias for any callers still importing the old name.
+const bumpBlogCommentsCount = patchBlogCountEverywhere;
 
 /**
  * Comment endpoints — supports optional image upload per the API contract

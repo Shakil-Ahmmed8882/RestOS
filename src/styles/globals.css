@@ -24,7 +24,7 @@
   .bg-theme {
     @apply bg-white dark:bg-[#0f0f0f]
   }
-  .bg-silk-with-hover {
+ h{
     @apply bg-zinc-50/80 dark:bg-white/[0.03] p-4  hover:bg-zinc-100/80 dark:hover:bg-white/[0.05] transition-colors; 
   }
   .scrollbar-hidden::-webkit-scrollbar {
@@ -63,7 +63,7 @@
     --popover: #fff;
     --popover-foreground: #1a1a1a;
     --primary: 336 100% 63%;
-    --primary-foreground: #fff;
+    --primary-foreground: 0 0% 100%;
     --secondary: #ffe4ef;
     --secondary-foreground: #1a1a1a;
     --muted: #f7f6d3;
@@ -99,7 +99,7 @@
     --popover: #2d2d2d;
     --popover-foreground: #f5f5f5;
     --primary: 336 100% 68%;
-    --primary-foreground: #1a1a1a;
+    --primary-foreground: 0 0% 100%;
     --secondary: #3d2a35;
     --secondary-foreground: #f5f5f5;
     --muted: #3a3a2a;
@@ -138,5 +138,21 @@
   }
   html {
     @apply font-sans;
+  }
+
+  /* Recharts: force axis tick + legend text to follow the theme so dark
+     mode doesn't render them as near-black SVG fill. */
+  .recharts-cartesian-axis-tick-value,
+  .recharts-polar-angle-axis-tick-value,
+  .recharts-polar-radius-axis-tick-value,
+  .recharts-text {
+    fill: hsl(var(--muted-foreground));
+  }
+  .recharts-legend-item-text {
+    color: hsl(var(--foreground)) !important;
+  }
+  .recharts-cartesian-axis-line,
+  .recharts-cartesian-axis-tick-line {
+    stroke: hsl(var(--border));
   }
 }

@@ -52,9 +52,8 @@ export function CommentItem(props: Props) {
     blogId,
     replyOpenFor,
     toggleReplyOpen,
-    expandedThreads,
-    toggleThread,
   } = useCommentsSelector();
+  const [showAllReplies, setShowAllReplies] = useState(false);
   const { requireAuth } = useRequireAuth();
 
   // Strict owner-only check — admins do NOT get Edit/Delete on the
@@ -89,9 +88,26 @@ export function CommentItem(props: Props) {
   if (!comment) return null;
 
   const author = authorOf(comment?.user);
-  const replies = (comment?.replies ?? []).filter(Boolean);
+  // Newest-first so optimistic top-inserts land at the top visually,
+  // and pending rows are always visible above the "See more" fold.
+  const replies = [...(comment?.replies ?? [])]
+    .filter(Boolean)
+    .sort((a, b) => {
+      // Always pin pending replies to the very top.
+      if (a?._pending && !b?._pending) return -1;
+      if (!a?._pending && b?._pending) return 1;
+      return (
+        new Date(b?.createdAt ?? 0).getTime() -
+        new Date(a?.createdAt ?? 0).getTime()
+      );
+    });
   const isReplyOpen = replyOpenFor === comment._id;
-  const isExpanded = expandedThreads.has(comment._id);
+  const REPLIES_VISIBLE_BY_DEFAULT = 2;
+  const hasOverflow = replies.length > REPLIES_VISIBLE_BY_DEFAULT;
+  const visibleReplies = showAllReplies
+    ? replies
+    : replies.slice(0, REPLIES_VISIBLE_BY_DEFAULT);
+  const hiddenReplyCount = replies.length - visibleReplies.length;
   // Both actions require strict ownership. The server still lets admins
   // delete, but the UI only surfaces that for the author.
   const canEdit = isOwner;
@@ -351,37 +367,64 @@ export function CommentItem(props: Props) {
         )}
 
         {isReplyOpen && !editing && (
-          <ReplyComposer
-            commentId={comment._id}
-            onSubmitted={() => toggleReplyOpen(comment._id)}
-          />
+          // Keep the composer open after submit so the user can fire off
+          // multiple replies in a row — no `onSubmitted` close handler.
+          <ReplyComposer commentId={comment._id} />
         )}
 
         {replies.length > 0 && (
-          <button
-            type="button"
-            onClick={() => toggleThread(comment._id)}
-            className="mt-2 inline-flex items-center gap-1 text-[12px] font-semibold text-primary hover:underline"
+          <div
+            // Facebook-style branch:
+            //   • a single soft vertical TRUNK aligned to the parent avatar's
+            //     center column (avatar is h-10/w-10 → center at 20px = left-5)
+            //   • each reply gets its own L-curve elbow that branches off the
+            //     trunk at the reply avatar's center, on the same vertical
+            //   • trunk fades into transparent at the bottom of the last reply
+            //     so it doesn't dangle past the content
+            className="relative mt-3 pl-8 sm:pl-9 before:pointer-events-none before:absolute before:left-5 before:top-0 before:bottom-6 before:w-px before:bg-zinc-300/60 dark:before:bg-white/[0.08]"
           >
-            <Icon
-              icon={
-                isExpanded
-                  ? "solar:alt-arrow-up-linear"
-                  : "solar:alt-arrow-down-linear"
-              }
-              className="h-3.5 w-3.5"
-            />
-            {isExpanded ? "Hide" : "See"} {replies.length}{" "}
-            {replies.length === 1 ? "reply" : "replies"}
-          </button>
-        )}
+            <ul
+              id={`replies-${comment._id}`}
+              className="space-y-3"
+              role="list"
+              aria-label={`${replies.length} ${replies.length === 1 ? "reply" : "replies"}`}
+            >
+              {visibleReplies.map((r) =>
+                r?._id ? (
+                  <li
+                    key={r._id}
+                    // L-curve elbow: a small rounded-corner box that meets the
+                    // trunk on its right edge and curves down+right toward the
+                    // reply avatar. Positioned at top-4 so it lines up with
+                    // the reply avatar's vertical center (h-8 avatar → 16px).
+                    className="relative before:pointer-events-none before:absolute before:left-[-12px] before:sm:left-[-16px] before:top-0 before:h-4 before:w-3 before:sm:w-4 before:rounded-bl-xl before:border-b before:border-l before:border-zinc-300/60 dark:before:border-white/[0.08] animate-in fade-in slide-in-from-top-1 duration-200"
+                  >
+                    <ReplyItem reply={r} commentId={comment._id} />
+                  </li>
+                ) : null,
+              )}
+            </ul>
 
-        {isExpanded && replies.length > 0 && (
-          <div className="mt-2 ml-3 pl-4 border-l-2 border-zinc-200/60 dark:border-white/[0.06] space-y-3">
-            {replies.map((r) =>
-              r?._id ? (
-                <ReplyItem key={r._id} reply={r} commentId={comment._id} />
-              ) : null,
+            {hasOverflow && (
+              <button
+                type="button"
+                onClick={() => setShowAllReplies((v) => !v)}
+                aria-expanded={showAllReplies}
+                aria-controls={`replies-${comment._id}`}
+                className="mt-2 inline-flex items-center gap-1.5 text-[12px] font-semibold text-muted-foreground hover:text-primary transition-colors"
+              >
+                <Icon
+                  icon={
+                    showAllReplies
+                      ? "solar:alt-arrow-up-linear"
+                      : "solar:alt-arrow-down-linear"
+                  }
+                  className="h-3.5 w-3.5"
+                />
+                {showAllReplies
+                  ? "Hide replies"
+                  : `View ${hiddenReplyCount} more ${hiddenReplyCount === 1 ? "reply" : "replies"}`}
+              </button>
             )}
           </div>
         )}

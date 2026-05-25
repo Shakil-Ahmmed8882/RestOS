@@ -59,7 +59,10 @@ const replyApi = baseApi.injectEndpoints({
               const c = draft.find((x) => x?._id === commentId);
               if (!c) return;
               if (!Array.isArray(c.replies)) c.replies = [];
-              c.replies.push(_tempEntry);
+              // Insert at the top so the user sees their reply land
+              // immediately instead of scrolling. Server-confirmed swap
+              // below preserves this position via the _tempId lookup.
+              c.replies.unshift(_tempEntry);
             },
           ),
         );
@@ -75,10 +78,40 @@ const replyApi = baseApi.injectEndpoints({
               (draft: BlogComment[]) => {
                 const idx = draft.findIndex((x) => x?._id === commentId);
                 if (idx === -1) return;
+                const c = draft[idx];
                 if (serverComment?._id) {
-                  draft[idx] = { ...serverComment };
+                  // Find the freshly-added reply on the server doc — assume
+                  // the one missing from our current cached replies (by id)
+                  // is the new one. Fallback: last reply in the server list.
+                  const localIds = new Set(
+                    (c.replies ?? [])
+                      .map((r) => r?._id)
+                      .filter((v): v is string => Boolean(v) && !v.startsWith("temp-")),
+                  );
+                  const serverReplies = serverComment.replies ?? [];
+                  const newReply =
+                    serverReplies.find((r) => r?._id && !localIds.has(r._id)) ??
+                    serverReplies[serverReplies.length - 1];
+
+                  // Swap the temp reply in place — preserves the top position.
+                  if (newReply) {
+                    c.replies = (c.replies ?? []).map((r) =>
+                      r?._tempId === tempId || r?._id === tempId
+                        ? { ...newReply, _pending: false }
+                        : r,
+                    );
+                  } else {
+                    c.replies = (c.replies ?? []).map((r) =>
+                      r?._tempId === tempId || r?._id === tempId
+                        ? { ...r, _pending: false }
+                        : r,
+                    );
+                  }
+                  // Refresh any other fields on the parent comment (e.g.
+                  // updatedAt) without clobbering reply order.
+                  const { replies: _ignored, ...rest } = serverComment;
+                  Object.assign(c, rest);
                 } else {
-                  const c = draft[idx];
                   c.replies = (c.replies ?? []).map((r) =>
                     r?._tempId === tempId || r?._id === tempId
                       ? { ...r, _pending: false }
