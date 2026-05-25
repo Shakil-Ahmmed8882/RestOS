@@ -161,17 +161,21 @@ export function SaveButton({
           aria-label={label}
           title={label}
           className={cn(
-            "inline-flex items-center justify-center rounded-full backdrop-blur-md shadow-md",
-            "ring-1 ring-white/15 transition-all duration-200",
-            "active:scale-90 disabled:opacity-60 text-white",
+            "inline-flex items-center justify-center rounded-full backdrop-blur-md transition-all duration-200",
+            "active:scale-90 disabled:opacity-60",
             isSaved
-              ? "bg-primary ring-primary/40 hover:bg-primary/90"
-              : "bg-black/55 hover:bg-black/70",
+              ? "bg-primary text-white shadow-md ring-1 ring-primary/40 hover:bg-primary/90"
+              : [
+                  // Light theme: solid white chip, dark icon, soft shadow.
+                  "bg-white text-zinc-900 shadow-[0_2px_8px_rgba(0,0,0,0.12)] ring-1 ring-zinc-200/80 hover:bg-zinc-50",
+                  // Dark theme: keep the existing dark-translucent chip with white icon.
+                  "dark:bg-black/55 dark:text-white dark:shadow-md dark:ring-white/15 dark:hover:bg-black/70",
+                ],
             s.box,
             className,
           )}
         >
-          <Icon icon={iconName} className={cn(s.icon, "text-white")} />
+          <Icon icon={iconName} className={s.icon} />
         </button>
         {confirmModal}
       </>
