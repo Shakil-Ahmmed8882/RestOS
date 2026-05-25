@@ -24,7 +24,7 @@ export function FoodCard({ food }: { food: FoodItem }) {
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </Link>
-      <div className="absolute right-4 top-4 z-10 opacity-0 transition-opacity duration-200 group-hover:opacity-100 focus-within:opacity-100">
+      <div className="absolute right-4 top-4 z-10">
         <SaveButton type="food" itemId={food._id} variant="icon" size="md" />
       </div>
 

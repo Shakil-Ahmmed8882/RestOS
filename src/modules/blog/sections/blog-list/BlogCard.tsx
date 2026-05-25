@@ -21,7 +21,7 @@ export function BlogCard({ blog }: { blog: BlogItem }) {
           containerClassName="aspect-[16/10] w-full"
           className="transition group-hover:scale-105"
         />
-        <div className="absolute right-3 top-3 opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100">
+        <div className="absolute right-3 top-3">
           <SaveButton type="blog" itemId={blog._id} variant="icon" size="sm" />
         </div>
       </div>
