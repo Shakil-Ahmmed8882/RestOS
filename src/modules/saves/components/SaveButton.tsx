@@ -89,10 +89,12 @@ export function SaveButton({
         aria-label={label}
         title={label}
         className={cn(
-          "inline-flex items-center justify-center rounded-full bg-card/90 backdrop-blur-sm shadow-sm",
-          "transition-transform active:scale-90 disabled:opacity-60",
-          "hover:bg-card",
-          isSaved && "text-primary",
+          "inline-flex items-center justify-center rounded-full backdrop-blur-md shadow-md",
+          "ring-1 ring-white/15 transition-all duration-200",
+          "active:scale-90 disabled:opacity-60",
+          isSaved
+            ? "bg-primary text-primary-foreground ring-primary/40 hover:bg-primary/90"
+            : "bg-black/55 text-white hover:bg-black/70",
           s.box,
           className,
         )}
