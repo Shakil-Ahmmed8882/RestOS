@@ -12,9 +12,16 @@ type Props = {
   setOpen: (open: boolean) => void;
 };
 
+const PHASE_LABEL: Record<"idle" | "placing" | "opening" | "redirecting", string> = {
+  idle:        "Continue to payment",
+  placing:     "Placing your order…",
+  opening:     "Opening secure payment…",
+  redirecting: "Redirecting to SSLCommerz…",
+};
+
 export function PaymentDemoModal({ open, setOpen }: Props) {
   const checkout = usePlaceOrderAndPay();
-  const { items, isLoading, run } = checkout;
+  const { items, isLoading, run, phase } = checkout;
 
   const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
   const deliveryFee = subtotal > 0 ? 2.99 : 0;
@@ -44,6 +51,7 @@ export function PaymentDemoModal({ open, setOpen }: Props) {
             </p>
           </div>
           <button
+            type="button"
             onClick={close}
             disabled={isLoading}
             className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:bg-zinc-100 disabled:opacity-50 dark:hover:bg-zinc-800/60"
@@ -121,11 +129,12 @@ export function PaymentDemoModal({ open, setOpen }: Props) {
               onClick={run}
               disabled={isLoading || items.length === 0}
               className="rounded-full px-5"
+              aria-live="polite"
             >
               {isLoading ? (
                 <>
                   <Icon icon="solar:refresh-bold" className="mr-1.5 h-4 w-4 animate-spin" />
-                  Redirecting…
+                  {PHASE_LABEL[phase]}
                 </>
               ) : (
                 <>
