@@ -12,14 +12,23 @@ const SORT_MAP: Record<string, string> = {
   "price-desc": "-price",
   rating: "-averageRating",
   fastest: "preparationTime",
-  distance: "distance",
 };
+
+function buildFilterKey(params: Record<string, string>): string {
+  const { page: _p, ...rest } = params;
+  return Object.keys(rest)
+    .sort()
+    .map((k) => `${k}=${rest[k]}`)
+    .join("&");
+}
 
 export function useFoods() {
   const { filters } = useFoodFilter();
   const debouncedSearch = useDebounce(filters.search, 300);
+  const debouncedMinPrice = useDebounce(filters.minPrice, 300);
+  const debouncedMaxPrice = useDebounce(filters.maxPrice, 300);
   const accumulatedRef = useRef<FoodItem[]>([]);
-  const prevFiltersRef = useRef({ search: debouncedSearch, category: filters.category, sort: filters.sort });
+  const prevKeyRef = useRef<string>("");
 
   const queryArgs = useMemo(() => {
     const params: Record<string, string> = {
@@ -29,23 +38,49 @@ export function useFoods() {
     };
     if (debouncedSearch?.trim()) params.searchTerm = debouncedSearch.trim();
     if (filters.category && filters.category !== "all") params.foodCategory = filters.category;
+    if (filters.cuisine && filters.cuisine !== "all") params.cuisine = filters.cuisine;
+    if (debouncedMinPrice !== null && debouncedMinPrice !== undefined)
+      params.minPrice = String(debouncedMinPrice);
+    if (debouncedMaxPrice !== null && debouncedMaxPrice !== undefined)
+      params.maxPrice = String(debouncedMaxPrice);
     if (filters.minRating) params.minRating = String(filters.minRating);
-    if (filters.isVegetarian) params.isVegetarian = "true";
+    if (filters.maxPrepTime) params.maxPrepTime = String(filters.maxPrepTime);
+    if (filters.isVeg) params.isVeg = "true";
+    if (filters.isSpicy) params.isSpicy = "true";
+    if (filters.isGlutenFree) params.isGlutenFree = "true";
+    if (filters.inStock) params.inStock = "true";
+    if (filters.hasDiscount) params.hasDiscount = "true";
+    if (filters.bestseller) params.bestseller = "true";
     return params;
-  }, [filters.page, filters.limit, filters.sort, filters.category, filters.minRating, filters.isVegetarian, debouncedSearch]);
+  }, [
+    filters.page,
+    filters.limit,
+    filters.sort,
+    filters.category,
+    filters.cuisine,
+    filters.minRating,
+    filters.maxPrepTime,
+    filters.isVeg,
+    filters.isSpicy,
+    filters.isGlutenFree,
+    filters.inStock,
+    filters.hasDiscount,
+    filters.bestseller,
+    debouncedSearch,
+    debouncedMinPrice,
+    debouncedMaxPrice,
+  ]);
 
   const query = useGetAllFoodsQuery(queryArgs);
   const { data } = query;
 
   const accumulate = useCallback(() => {
-    const filterChanged =
-      prevFiltersRef.current.search !== debouncedSearch ||
-      prevFiltersRef.current.category !== filters.category ||
-      prevFiltersRef.current.sort !== filters.sort;
+    const key = buildFilterKey(queryArgs);
+    const filterChanged = prevKeyRef.current !== key;
 
     if (filterChanged) {
       accumulatedRef.current = [];
-      prevFiltersRef.current = { search: debouncedSearch, category: filters.category, sort: filters.sort };
+      prevKeyRef.current = key;
     }
 
     const currentPageData = (data?.data as FoodItem[]) ?? [];
@@ -56,7 +91,7 @@ export function useFoods() {
     }
 
     return accumulatedRef.current;
-  }, [data?.data, filters.page, debouncedSearch, filters.category, filters.sort]);
+  }, [data?.data, filters.page, queryArgs]);
 
   return { ...query, accumulate };
 }
