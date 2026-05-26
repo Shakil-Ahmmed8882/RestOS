@@ -46,6 +46,30 @@ const foodApi = baseApi.injectEndpoints({
       query: () => ({ url: "/food-categories", method: "GET" }),
       transformResponse: (res: any) => ({ data: res?.data || [] }),
     }),
+    getFoodFilterOptions: builder.query<
+      {
+        categories: string[];
+        cuisines: string[];
+        tags: string[];
+        price: { min: number; max: number };
+        dietary: string[];
+        availability: string[];
+      },
+      void
+    >({
+      query: () => ({ url: "/foods/filter-options", method: "GET" }),
+      transformResponse: (res: any) => ({
+        categories: res?.data?.categories ?? [],
+        cuisines: res?.data?.cuisines ?? [],
+        tags: res?.data?.tags ?? [],
+        price: {
+          min: res?.data?.price?.min ?? 0,
+          max: res?.data?.price?.max ?? 0,
+        },
+        dietary: res?.data?.dietary ?? [],
+        availability: res?.data?.availability ?? [],
+      }),
+    }),
   }),
 });
 
@@ -58,5 +82,6 @@ export const {
   useDeleteFoodMutation,
   useAddFoodReviewMutation,
   useGetFoodCategoriesQuery,
+  useGetFoodFilterOptionsQuery,
 } = foodApi;
 export default foodApi;
