@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import {
+import orderApi, {
   useCreateOrderMutation,
   type CreateOrderResponse,
   type OrderDoc,
+  type OrderListResponse,
 } from "@/redux/featureApi/orderApi";
 import { useInitiatePaymentMutation } from "@/redux/featureApi/paymentApi";
 
@@ -33,8 +34,8 @@ export function usePlaceOrderAndPay() {
 
   const [createOrder,    createOrderState]    = useCreateOrderMutation();
   const [initiatePayment, initiatePaymentState] = useInitiatePaymentMutation();
-  const [phase, setPhase] = useState<"idle" | "placing" | "redirecting">("idle");
-  const [showDuplicateModal, setShowDuplicateModal] = useState(false);
+  const [phase, setPhase] = useState<"idle" | "placing" | "opening" | "redirecting">("idle");
+  const inFlight = useRef(false);
 
   const isLoading =
     createOrderState.isLoading || initiatePaymentState.isLoading || phase !== "idle";
@@ -42,6 +43,7 @@ export function usePlaceOrderAndPay() {
   const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
 
   const run = async () => {
+    if (inFlight.current) return;
     if (!user?.id) {
       toast.error("Please sign in to continue checkout.");
       router.push("/auth/login");
@@ -52,6 +54,7 @@ export function usePlaceOrderAndPay() {
       return;
     }
 
+    inFlight.current = true;
     const toastId = toast.loading("Placing your order…");
     setPhase("placing");
 
@@ -68,29 +71,49 @@ export function usePlaceOrderAndPay() {
         })),
       }).unwrap();
 
-      const orders = flattenOrders(response);
+      let orders = flattenOrders(response);
 
-      // Backend silently drops duplicate / out-of-stock lines — open the
-      // AlreadyOrderedModal instead of crashing.
+      // Backend silently drops duplicate / out-of-stock lines. If everything
+      // got dropped, the user already has those orders sitting in "pending".
+      // Look them up and continue to SSLCommerz with them — same end result,
+      // no dead-end UI.
       if (orders.length === 0) {
-        toast.dismiss(toastId);
-        setPhase("idle");
-        setShowDuplicateModal(true);
-        return;
-      }
+        toast.loading("Resuming your pending orders…", { id: toastId });
+        const pendingResult = await dispatch(
+          orderApi.endpoints.getAllOrders.initiate([
+            { name: "status", value: "pending" },
+            { name: "user",   value: user.id },
+            { name: "limit",  value: "50" },
+          ]),
+        ).unwrap() as OrderListResponse;
 
-      if (orders.length < items.length) {
+        const pending = pendingResult?.data?.result ?? [];
+        const cartFoodIds = new Set(items.map((it) => it.id));
+        orders = pending.filter((o) => {
+          const foodId =
+            typeof o?.food === "object" && o?.food !== null
+              ? (o.food as { _id?: string })?._id
+              : (o?.food as string | undefined);
+          return !!o?._id && (!foodId || cartFoodIds.has(foodId));
+        });
+
+        if (orders.length === 0) {
+          throw new Error(
+            "These items are already ordered, but no pending order could be found to pay for. Visit your purchases page to check status.",
+          );
+        }
+      } else if (orders.length < items.length) {
         toast.warning(
-          `${items.length - orders.length} item(s) couldn't be ordered — already in an open order or out of stock.`,
+          `${items.length - orders.length} item(s) were already in an open order — paying for everything together.`,
         );
       }
 
       // STEP 2 — one SSLCommerz session for all orders (backend sums totals)
-      const orderIds = orders.map((o) => o._id);
+      const orderIds = orders.map((o) => o._id).filter(Boolean);
       sessionStorage.setItem(PENDING_ORDER_IDS, JSON.stringify(orderIds));
 
-      setPhase("redirecting");
-      toast.loading("Redirecting to secure payment…", { id: toastId });
+      setPhase("opening");
+      toast.loading("Opening secure payment…", { id: toastId });
 
       const initiateResponse = await initiatePayment({ orderIds }).unwrap();
       const paymentUrl    = initiateResponse?.data?.paymentUrl;
@@ -104,9 +127,15 @@ export function usePlaceOrderAndPay() {
       if (transactionId) sessionStorage.setItem(PENDING_TXN_ID, transactionId);
       if (totalAmount)   sessionStorage.setItem(PENDING_TOTAL,   String(totalAmount));
 
+      setPhase("redirecting");
+      toast.loading("Redirecting to SSLCommerz…", { id: toastId });
+
       // STEP 3 — full-page redirect. Cart cleared ONLY on the success page.
-      window.location.href = paymentUrl;
+      // setTimeout lets React paint the "Redirecting…" frame before the page
+      // tears down, so the user sees the final status, not a frozen UI.
+      setTimeout(() => { window.location.href = paymentUrl; }, 50);
     } catch (err) {
+      inFlight.current = false;
       setPhase("idle");
       const message =
         (err as { data?: { message?: string }; message?: string })?.data?.message ??
@@ -124,8 +153,11 @@ export function usePlaceOrderAndPay() {
     phase,
     run,
     dispatch,
-    showDuplicateModal,
-    closeDuplicateModal: () => setShowDuplicateModal(false),
+    // Legacy flags kept for `ReviewAndPaySection` (the /checkout route).
+    // The new cart-side `PaymentDemoModal` does not use them — duplicate
+    // orders are now resumed inline by `run()` itself.
+    showDuplicateModal: false as boolean,
+    closeDuplicateModal: () => {},
   };
 }
 
