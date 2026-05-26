@@ -30,14 +30,39 @@ export interface FoodItem {
   }>;
 }
 
+export type FoodSortValue =
+  | "newest"
+  | "price-asc"
+  | "price-desc"
+  | "rating"
+  | "fastest";
+
 export interface FoodFilterState {
   search: string;
   category: string;
-  sort: "price-asc" | "price-desc" | "rating" | "newest" | "fastest" | "distance";
+  cuisine: string;
+  sort: FoodSortValue;
   page: number;
   limit: number;
-  minRating?: number | null;
-  isVegetarian?: boolean;
+  minPrice: number | null;
+  maxPrice: number | null;
+  minRating: number | null;
+  maxPrepTime: number | null;
+  isVeg: boolean;
+  isSpicy: boolean;
+  isGlutenFree: boolean;
+  inStock: boolean;
+  hasDiscount: boolean;
+  bestseller: boolean;
+}
+
+export interface FoodFilterOptions {
+  categories: string[];
+  cuisines: string[];
+  tags: string[];
+  price: { min: number; max: number };
+  dietary: string[];
+  availability: string[];
 }
 
 
