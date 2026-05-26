@@ -1,199 +1,346 @@
 "use client";
 
-import {  useRef, useState } from "react";
-
+import { useEffect, useMemo, useState } from "react";
 import { Icon } from "@iconify/react";
 import { useFoodFilter } from "@/modules/food/providers/FoodFilterProvider";
-import { useGetAllFoodsCategoriesQuery } from "@/redux/featureApi/foodCategoryApi";
+import { useGetFoodFilterOptionsQuery } from "@/redux/featureApi/foodApi";
+import { BaseSelect } from "@/components/rest-os-ui/forms";
 
 const SORT_OPTIONS = [
-  { label: "Relevance", value: "newest", icon: "solar:sort-linear" },
-  { label: "Fastest delivery", value: "fastest", icon: "solar:bolt-linear" },
-  { label: "Distance", value: "distance", icon: "solar:map-linear" },
+  { label: "Newest", value: "newest", icon: "solar:clock-circle-linear" },
+  { label: "Price: Low → High", value: "price-asc", icon: "solar:sort-from-bottom-to-top-linear" },
+  { label: "Price: High → Low", value: "price-desc", icon: "solar:sort-from-top-to-bottom-linear" },
   { label: "Top rated", value: "rating", icon: "solar:star-bold" },
+  { label: "Fastest prep", value: "fastest", icon: "solar:bolt-linear" },
 ] as const;
 
-const QUICK_FILTERS = [
-  { label: "Ratings 4+", value: "rating-4", icon: "solar:star-linear" },
-  { label: "Super restaurant", value: "super", icon: "solar:shield-check-linear" },
+const DIETARY = [
+  { key: "isVeg", label: "Vegetarian", icon: "solar:leaf-linear" },
+  { key: "isSpicy", label: "Spicy", icon: "solar:fire-linear" },
+  { key: "isGlutenFree", label: "Gluten-free", icon: "solar:wheat-linear" },
 ] as const;
 
-const DIETARY_FILTERS = [
-  { label: "Vegetarian", value: "vegetarian", icon: "solar:leaf-linear" },
-  { label: "Gluten-free", value: "glutenfree", icon: "solar:wheat-linear" },
-  { label: "Spicy", value: "spicy", icon: "solar:fire-linear" },
+const AVAILABILITY = [
+  { key: "inStock", label: "In stock", icon: "solar:box-linear" },
+  { key: "hasDiscount", label: "Has discount", icon: "solar:tag-price-linear" },
+  { key: "bestseller", label: "Bestseller", icon: "solar:medal-star-linear" },
 ] as const;
 
-const OFFERS = [
-  { label: "Deals & Offers", value: "deals", icon: "solar:gift-linear" },
-  { label: "Free delivery", value: "free-delivery", icon: "solar:car-linear" },
-  { label: "Bestsellers", value: "bestseller", icon: "solar:star-bold" },
-] as const;
+const RATING_STEPS = [4.5, 4, 3.5, 3] as const;
 
-export function FoodSidebar() {
-  const { filters, setSort, setCategory, reset} = useFoodFilter();
-  const { data } = useGetAllFoodsCategoriesQuery(undefined);
-  const sidebarRef = useRef<HTMLDivElement>(null);
-  const categories = (data?.data as { _id: string; name: string }[]) ?? [];
+/**
+ * Renders the inner panel — used by both the desktop aside and the
+ * mobile drawer.
+ */
+export function FoodSidebarContent({ onApply }: { onApply?: () => void }) {
+  const {
+    filters,
+    setSort,
+    setCategory,
+    setCuisine,
+    setPriceRange,
+    setMinRating,
+    toggleDietary,
+    toggleAvailability,
+    reset,
+    hasActive,
+  } = useFoodFilter();
 
-  const hasActiveFilters = filters.search || filters.category !== "all" || filters.sort !== "newest";
+  const { data: options } = useGetFoodFilterOptionsQuery();
+  const categories = options?.categories ?? [];
+  const cuisines = options?.cuisines ?? [];
+  const priceBounds = useMemo(
+    () => ({
+      min: options?.price?.min ?? 0,
+      max: options?.price?.max ?? 1000,
+    }),
+    [options?.price?.min, options?.price?.max],
+  );
+
+  const [minPriceLocal, setMinPriceLocal] = useState<string>("");
+  const [maxPriceLocal, setMaxPriceLocal] = useState<string>("");
+
+  useEffect(() => {
+    setMinPriceLocal(filters.minPrice === null ? "" : String(filters.minPrice));
+    setMaxPriceLocal(filters.maxPrice === null ? "" : String(filters.maxPrice));
+  }, [filters.minPrice, filters.maxPrice]);
+
+  const commitPrice = () => {
+    const min = minPriceLocal === "" ? null : Number(minPriceLocal);
+    const max = maxPriceLocal === "" ? null : Number(maxPriceLocal);
+    setPriceRange(
+      Number.isFinite(min as number) ? min : null,
+      Number.isFinite(max as number) ? max : null,
+    );
+  };
 
   return (
-    <aside
-      ref={sidebarRef}
-      className="w-72 flex-shrink-0 border-r border-gray-200 dark:border-gray-800 bg-background dark:bg-background"
-    >
-      <div className="h-screen overflow-y-auto p-4">
-        <div className="space-y-4">
-          {/* Sort Section Header with Reset Button */}
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-bold text-foreground">SORT BY</h3>
-            {hasActiveFilters && (
-              <button
-                onClick={reset}
-                className="text-xs font-medium text-primary hover:text-primary/80"
+    <div className="space-y-5">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <h3 className="text-sm font-bold text-foreground tracking-wide">Filters</h3>
+        {hasActive && (
+          <button
+            onClick={() => {
+              reset();
+              onApply?.();
+            }}
+            className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:text-primary/80"
+          >
+            <Icon icon="solar:restart-linear" className="h-3.5 w-3.5" />
+            Reset
+          </button>
+        )}
+      </div>
+
+      {/* Sort */}
+      <Section title="Sort by" icon="solar:sort-vertical-linear">
+        <div className="space-y-1">
+          {SORT_OPTIONS.map((opt) => {
+            const active = filters.sort === opt.value;
+            return (
+              <label
+                key={opt.value}
+                className={`flex cursor-pointer items-center gap-2 rounded-lg px-2.5 py-2 transition-colors ${
+                  active
+                    ? "bg-primary/10 text-primary"
+                    : "hover:bg-silk-with-hover text-foreground"
+                }`}
               >
-                Reset
-              </button>
-            )}
-          </div>
-            <div className="space-y-2">
-              {SORT_OPTIONS.map((option) => (
-                <label key={option.value} className="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 hover:bg-secondary/30 dark:hover:bg-secondary/20">
-                  <input
-                    type="radio"
-                    name="sort"
-                    value={option.value}
-                    checked={filters.sort === option.value}
-                    onChange={(e) => setSort(e.target.value as never)}
-                    className="h-4 w-4 accent-primary"
-                  />
-                  <Icon icon={option.icon} className="h-3.5 w-3.5 text-muted-foreground" />
-                  <span className="text-xs text-foreground">{option.label}</span>
-                </label>
-              ))}
-            </div>
-
-          <div className="border-t border-gray-200 dark:border-gray-800" />
-
-          {/* Quick Filters Section */}
-          {/* <div>
-            <h3 className="mb-2 text-xs font-bold text-foreground uppercase">QUICK FILTERS</h3>
-            <div className="space-y-1.5">
-              {QUICK_FILTERS.map((filter) => (
-                <label key={filter.value} className="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 hover:bg-secondary/30 dark:hover:bg-secondary/20">
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 rounded accent-primary"
-                  />
-                  <Icon icon={filter.icon} className="h-3.5 w-3.5 text-muted-foreground" />
-                  <span className="text-xs text-foreground">{filter.label}</span>
-                </label>
-              ))}
-            </div>
-          </div> */}
-
-          <div className="border-t border-gray-200 dark:border-gray-800" />
-
-          {/* Dietary Preferences */}
-          {/* <div>
-            <h3 className="mb-2 text-xs font-bold text-foreground uppercase">DIETARY</h3>
-            <div className="space-y-1.5">
-              {DIETARY_FILTERS.map((filter) => (
-                <label key={filter.value} className="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 hover:bg-secondary/30 dark:hover:bg-secondary/20">
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 rounded accent-primary"
-                  />
-                  <Icon icon={filter.icon} className="h-3.5 w-3.5 text-muted-foreground" />
-                  <span className="text-xs text-foreground">{filter.label}</span>
-                </label>
-              ))}
-            </div>
-          </div> */}
-
-          <div className="border-t border-gray-200 dark:border-gray-800" />
-
-          {/* Offers Section */}
-          {/* <div>
-            <h3 className="mb-2 text-xs font-bold text-foreground uppercase">OFFERS</h3>
-            <div className="space-y-1.5">
-              {OFFERS.map((offer) => (
-                <label key={offer.value} className="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 hover:bg-secondary/30 dark:hover:bg-secondary/20">
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 rounded accent-primary"
-                  />
-                  <Icon icon={offer.icon} className="h-3.5 w-3.5 text-muted-foreground" />
-                  <span className="text-xs text-foreground">{offer.label}</span>
-                </label>
-              ))}
-            </div>
-          </div> */}
-
-          <div className="border-t border-gray-200 dark:border-gray-800" />
-
-          {/* Cuisines Section */}
-          {/* <div>
-            <h3 className="mb-2 text-xs font-bold text-foreground uppercase">CUISINES</h3>
-            <div className="space-y-1.5">
-              {categories.map((cat) => (
-                <label
-                  key={cat._id}
-                  className="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 hover:bg-secondary/30 dark:hover:bg-secondary/20"
-                >
-                  <input
-                    type="checkbox"
-                    checked={filters.category === cat.name}
-                    onChange={() => setCategory(cat.name)}
-                    className="h-4 w-4 rounded accent-primary"
-                  />
-                  <span className="text-xs text-foreground">{cat.name}</span>
-                </label>
-              ))}
-            </div>
-          </div> */}
-
-          <div className="border-t border-gray-200 dark:border-gray-800" />
-
-          {/* Price Range */}
-          {/* <div>
-            <h3 className="mb-2 text-xs font-bold text-foreground uppercase">PRICE RANGE</h3>
-            <div className="space-y-2">
-              <div className="flex gap-2">
                 <input
-                  type="number"
-                  placeholder="Min"
-                  className="w-full rounded border border-gray-200 dark:border-gray-800 bg-background px-2 py-1.5 text-xs text-foreground placeholder:text-muted-foreground dark:bg-background"
+                  type="radio"
+                  name="sort"
+                  value={opt.value}
+                  checked={active}
+                  onChange={() => setSort(opt.value)}
+                  className="h-3.5 w-3.5 accent-primary"
                 />
-                <input
-                  type="number"
-                  placeholder="Max"
-                  className="w-full rounded border border-gray-200 dark:border-gray-800 bg-background px-2 py-1.5 text-xs text-foreground placeholder:text-muted-foreground dark:bg-background"
+                <Icon
+                  icon={opt.icon}
+                  className={`h-3.5 w-3.5 ${active ? "text-primary" : "text-muted-foreground"}`}
                 />
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                {["Under ₹100", "₹100-300", "₹300-600", "Over ₹600"].map((range) => (
-                  <label key={range} className="flex cursor-pointer items-center gap-2 rounded px-2 py-1 hover:bg-secondary/30 dark:hover:bg-secondary/20 text-xs">
-                    <input type="checkbox" className="h-3 w-3 rounded accent-primary" />
-                    <span className="text-foreground">{range}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-          </div> */}
-
-          {/* Reset Button at Bottom */}
-          {/* {hasActiveFilters && (
-            <button
-              onClick={reset}
-              className="w-full rounded border border-gray-200 px-3 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 mt-4"
-            >
-              <Icon icon="solar:restart-linear" className="h-4 w-4" />
-              Reset Filters
-            </button>
-          )} */}
+                <span className="text-xs font-medium">{opt.label}</span>
+              </label>
+            );
+          })}
         </div>
+      </Section>
+
+      {/* Category — every available category is visible as a read-only chip.
+          Tapping a chip applies it as a filter; nothing here mutates the
+          category records themselves. */}
+      {categories.length > 0 && (
+        <Section title="Category" icon="solar:hamburger-menu-linear">
+          <div className="flex flex-wrap gap-1.5">
+            <CategoryChip
+              label="All"
+              icon="solar:widget-linear"
+              active={filters.category === "all"}
+              onClick={() => setCategory("all")}
+            />
+            {categories.map((name) => (
+              <CategoryChip
+                key={name}
+                label={name}
+                icon="solar:hamburger-menu-linear"
+                active={filters.category === name}
+                onClick={() => setCategory(name)}
+              />
+            ))}
+          </div>
+        </Section>
+      )}
+
+      {/* Cuisine */}
+      {cuisines.length > 0 && (
+        <Section title="Cuisine" icon="solar:plate-linear">
+          <BaseSelect
+            value={filters.cuisine}
+            onChange={setCuisine}
+            options={[
+              { value: "all", label: "All cuisines", icon: "solar:globus-linear" },
+              ...cuisines.map((c) => ({
+                value: c,
+                label: c,
+                icon: "solar:plate-linear",
+              })),
+            ]}
+            placeholder="Select cuisine"
+          />
+        </Section>
+      )}
+
+      {/* Price */}
+      <Section title="Price range" icon="solar:tag-price-linear">
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <input
+              type="number"
+              inputMode="numeric"
+              min={priceBounds.min}
+              max={priceBounds.max}
+              placeholder={`Min ${priceBounds.min}`}
+              value={minPriceLocal}
+              onChange={(e) => setMinPriceLocal(e.target.value)}
+              onBlur={commitPrice}
+              onKeyDown={(e) => e.key === "Enter" && commitPrice()}
+              className="w-full h-10 px-3 rounded-xl bg-silk-with-hover text-sm text-foreground outline-none border-0 focus:ring-0"
+            />
+            <span className="text-xs text-muted-foreground">to</span>
+            <input
+              type="number"
+              inputMode="numeric"
+              min={priceBounds.min}
+              max={priceBounds.max}
+              placeholder={`Max ${priceBounds.max}`}
+              value={maxPriceLocal}
+              onChange={(e) => setMaxPriceLocal(e.target.value)}
+              onBlur={commitPrice}
+              onKeyDown={(e) => e.key === "Enter" && commitPrice()}
+              className="w-full h-10 px-3 rounded-xl bg-silk-with-hover text-sm text-foreground outline-none border-0 focus:ring-0"
+            />
+          </div>
+          {priceBounds.max > 0 && (
+            <p className="text-[11px] text-muted-foreground">
+              Range: ৳{priceBounds.min} – ৳{priceBounds.max}
+            </p>
+          )}
+        </div>
+      </Section>
+
+      {/* Dietary */}
+      <Section title="Dietary" icon="solar:leaf-linear">
+        <div className="grid grid-cols-2 gap-1.5">
+          {DIETARY.map((d) => {
+            const active = !!filters[d.key];
+            return (
+              <button
+                key={d.key}
+                type="button"
+                onClick={() => toggleDietary(d.key, !active)}
+                className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-xs font-semibold transition-colors ${
+                  active
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-silk-with-hover text-foreground"
+                }`}
+              >
+                <Icon icon={d.icon} className="h-3.5 w-3.5" />
+                {d.label}
+              </button>
+            );
+          })}
+        </div>
+      </Section>
+
+      {/* Availability & Offers */}
+      <Section title="Availability & offers" icon="solar:box-linear">
+        <div className="flex flex-wrap gap-1.5">
+          {AVAILABILITY.map((a) => {
+            const active = !!filters[a.key];
+            return (
+              <button
+                key={a.key}
+                type="button"
+                onClick={() => toggleAvailability(a.key, !active)}
+                className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-xs font-semibold transition-colors ${
+                  active
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-silk-with-hover text-foreground"
+                }`}
+              >
+                <Icon icon={a.icon} className="h-3.5 w-3.5" />
+                {a.label}
+              </button>
+            );
+          })}
+        </div>
+      </Section>
+
+      {/* Rating */}
+      <Section title="Minimum rating" icon="solar:star-bold">
+        <div className="flex flex-wrap gap-1.5">
+          {RATING_STEPS.map((r) => {
+            const active = filters.minRating === r;
+            return (
+              <button
+                key={r}
+                type="button"
+                onClick={() => setMinRating(active ? null : r)}
+                className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1.5 text-xs font-semibold transition-colors ${
+                  active
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-silk-with-hover text-foreground"
+                }`}
+              >
+                <Icon icon="solar:star-bold" className="h-3.5 w-3.5" />
+                {r}+
+              </button>
+            );
+          })}
+        </div>
+      </Section>
+
+    </div>
+  );
+}
+
+type CategoryChipProps = {
+  label: string;
+  icon: string;
+  active: boolean;
+  onClick: () => void;
+};
+
+function CategoryChip(props: CategoryChipProps) {
+  const { label, icon, active, onClick } = props;
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-xs font-semibold transition-colors ${
+        active
+          ? "bg-primary text-primary-foreground"
+          : "bg-silk-with-hover text-foreground"
+      }`}
+    >
+      <Icon icon={icon} className="h-3.5 w-3.5" />
+      <span className="max-w-[10rem] truncate">{label}</span>
+    </button>
+  );
+}
+
+function Section({
+  title,
+  icon,
+  children,
+}: {
+  title: string;
+  icon: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center gap-1.5">
+        <Icon icon={icon} className="h-3.5 w-3.5 text-muted-foreground" />
+        <h4 className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+          {title}
+        </h4>
+      </div>
+      {children}
+    </div>
+  );
+}
+
+/**
+ * Desktop sidebar — rendered as a sticky aside in the layout.
+ * On medium/small devices the parent layout swaps this for a drawer
+ * trigger, so the aside is only mounted at the lg breakpoint and up.
+ */
+export function FoodSidebar() {
+  return (
+    <aside className="w-72 flex-shrink-0 bg-background dark:bg-background">
+      <div className="max-h-[calc(100vh-7rem)] overflow-y-auto pr-2 pb-6 scrollbar-thin">
+        <FoodSidebarContent />
       </div>
     </aside>
   );
