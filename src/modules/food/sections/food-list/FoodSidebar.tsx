@@ -232,29 +232,6 @@ export function FoodSidebarContent({ onApply }: { onApply?: () => void }) {
         </div>
       </Section>
 
-      {/* Availability & Offers */}
-      <Section title="Availability & offers" icon="solar:box-linear">
-        <div className="flex flex-wrap gap-1.5">
-          {AVAILABILITY.map((a) => {
-            const active = !!filters[a.key];
-            return (
-              <button
-                key={a.key}
-                type="button"
-                onClick={() => toggleAvailability(a.key, !active)}
-                className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-xs font-semibold transition-colors ${
-                  active
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-silk-with-hover text-foreground"
-                }`}
-              >
-                <Icon icon={a.icon} className="h-3.5 w-3.5" />
-                {a.label}
-              </button>
-            );
-          })}
-        </div>
-      </Section>
 
       {/* Rating */}
       <Section title="Minimum rating" icon="solar:star-bold">
