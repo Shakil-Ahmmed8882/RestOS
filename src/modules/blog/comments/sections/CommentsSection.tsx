@@ -51,10 +51,10 @@ export function CommentsSection() {
       {isLoading ? (
         <CommentsSkeleton count={4} />
       ) : comments.length === 0 ? (
-        <div className="rounded-2xl bg-silk-with-hover !p-14 text-center">
+        <div className="rounded-2xl bg-silk !p-14 text-center">
           <Icon
             icon="solar:chat-round-dots-linear"
-            className="h-12 w-12 mx-auto mb-3 text-muted-foreground/40"
+            className="h-12 w-12 mx-auto mb-3 text-primary/40"
           />
           <p className="text-base font-semibold text-foreground">
             Be the first to comment
@@ -64,7 +64,7 @@ export function CommentsSection() {
           </p>
         </div>
       ) : (
-        <div className="space-y-5">
+        <div className="space-y-4">
           {visibleComments.map((c) =>
             c?._id ? <CommentItem key={c._id} comment={c} /> : null,
           )}
