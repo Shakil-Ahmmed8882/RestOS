@@ -103,7 +103,7 @@ export function CommentComposer(props: Props) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-2xl bg-silk-with-hover p-3 sm:p-4 space-y-3"
+      className="rounded-2xl bg-silk p-3 sm:p-4 space-y-3"
     >
       <div className="flex items-start gap-3">
         <Avatar className="h-10 w-10 flex-shrink-0">
@@ -129,11 +129,11 @@ export function CommentComposer(props: Props) {
       </div>
 
       {preview && (
-        <div className="relative w-full max-w-[360px] ml-13">
+        <div className="relative w-full max-w-[300px] ml-[52px] overflow-hidden rounded-2xl ring-1 ring-zinc-200/60 dark:ring-white/[0.06]">
           <img
             src={preview}
             alt="attachment preview"
-            className="w-full max-h-[280px] object-cover rounded-xl"
+            className="block w-full max-h-[280px] object-cover"
           />
           <button
             type="button"
@@ -146,11 +146,11 @@ export function CommentComposer(props: Props) {
         </div>
       )}
 
-      <div className="flex items-center justify-between gap-2 pl-13">
+      <div className="flex items-center justify-between gap-2 pl-[52px]">
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
-          className="inline-flex items-center gap-1.5 h-9 px-3 rounded-full text-xs font-medium text-foreground border-primary bg-primary/5 dark:bg-primary/20  border hover:bg-zinc-200 dark:hover:bg-white/[0.06] transition-colors"
+          className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-full text-xs font-medium text-primary bg-primary/10 hover:bg-primary/15 transition-colors"
           title="Attach image"
         >
           <Icon icon="solar:gallery-add-linear" className="h-4 w-4" />

@@ -68,7 +68,7 @@ export function ReplyComposer(props: Props) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="mt-2 flex items-start gap-2 rounded-2xl bg-silk-with-hover p-2"
+      className="mt-2 flex items-center gap-2"
     >
       <Avatar className="h-8 w-8 flex-shrink-0">
         <AvatarImage src={user?.photoURL ?? undefined} alt={user?.name} />
@@ -80,7 +80,7 @@ export function ReplyComposer(props: Props) {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="Write a reply…"
-        className="flex-1 h-9 px-3 rounded-full bg-background text-sm text-foreground placeholder:text-muted-foreground/70 border-0 outline-none focus:ring-0"
+        className="flex-1 h-9 px-3.5 rounded-full bg-silk text-[13px] text-foreground placeholder:text-muted-foreground/70 border-0 outline-none focus:ring-0"
       />
       <button
         type="submit"
