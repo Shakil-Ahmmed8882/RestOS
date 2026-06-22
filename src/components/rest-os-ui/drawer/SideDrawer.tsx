@@ -17,6 +17,8 @@ type Props = {
   widthClass?: string;
   /** Right or left side. Default: right. */
   side?: "right" | "left";
+  /** Optional extra controls rendered in the header, left of the close button. */
+  headerActions?: ReactNode;
 };
 
 /**
@@ -36,6 +38,7 @@ export function SideDrawer(props: Props) {
     children,
     widthClass = "max-w-md",
     side = "right",
+    headerActions,
   } = props;
 
   useScrollLock(open);
@@ -107,7 +110,7 @@ export function SideDrawer(props: Props) {
             transition={{ type: "tween", duration: 0.25, ease: "easeOut" }}
             className={`fixed top-0 ${sideClass} z-[999999] h-full w-full ${widthClass} bg-theme shadow-[0_0_40px_rgba(0,0,0,0.25)] flex flex-col`}
           >
-            {(title || description) && (
+            {(title || description || headerActions) && (
               <header className="flex items-start justify-between gap-3 px-5 py-4 border-b border-zinc-100 dark:border-white/[0.06]">
                 <div className="min-w-0">
                   {title && (
@@ -121,14 +124,17 @@ export function SideDrawer(props: Props) {
                     </p>
                   )}
                 </div>
-                <button
-                  type="button"
-                  onClick={() => onOpenChange(false)}
-                  aria-label="Close"
-                  className="h-8 w-8 rounded-full flex items-center justify-center text-muted-foreground hover:bg-zinc-100 dark:hover:bg-white/[0.06]"
-                >
-                  <Icon icon="solar:close-circle-linear" className="h-5 w-5" />
-                </button>
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  {headerActions}
+                  <button
+                    type="button"
+                    onClick={() => onOpenChange(false)}
+                    aria-label="Close"
+                    className="h-8 w-8 rounded-full flex items-center justify-center text-muted-foreground hover:bg-zinc-100 dark:hover:bg-white/[0.06]"
+                  >
+                    <Icon icon="solar:close-circle-linear" className="h-5 w-5" />
+                  </button>
+                </div>
               </header>
             )}
 
