@@ -24,6 +24,17 @@
   .bg-theme {
     @apply bg-white dark:bg-[#0f0f0f]
   }
+
+  /* Silky surface token — soft zinc tint that lifts on hover. The single
+     shared "card / bubble / input" fill used across the app (comments,
+     inputs, chips, list rows). No border in any mode; separation comes
+     purely from the tint. Light: faint warm-zinc; Dark: faint white-on-dark. */
+  .bg-silk {
+    @apply bg-zinc-100/80 dark:bg-white/[0.04];
+  }
+  .bg-silk-with-hover {
+    @apply bg-zinc-100/80 hover:bg-zinc-200/70 dark:bg-white/[0.04] dark:hover:bg-white/[0.07] transition-colors;
+  }
  h{
     @apply bg-zinc-50/80 dark:bg-white/[0.03] p-4  hover:bg-zinc-100/80 dark:hover:bg-white/[0.05] transition-colors; 
   }
