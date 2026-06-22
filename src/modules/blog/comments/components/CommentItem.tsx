@@ -221,20 +221,26 @@ export function CommentItem(props: Props) {
       </Avatar>
 
       <div className="flex-1 min-w-0">
-        <div className="rounded-2xl bg-silk-with-hover px-4 py-3">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-[15px] font-semibold text-foreground">
-              {author?.name}
-            </span>
-          </div>
+        <div
+          className={`max-w-full rounded-2xl rounded-tl-md px-3.5 py-2 align-top ${
+            editing ? "block bg-transparent px-0 py-0" : "inline-block bg-silk"
+          }`}
+        >
+          {!editing && (
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-[13px] font-semibold leading-tight text-foreground hover:underline cursor-pointer">
+                {author?.name}
+              </span>
+            </div>
+          )}
 
           {editing ? (
-            <div className="mt-2 space-y-3">
+            <div className="space-y-3">
               <textarea
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
                 rows={3}
-                className="w-full rounded-xl bg-background text-[15px] text-foreground p-3 border-0 outline-none focus:ring-0 resize-none"
+                className="w-full rounded-xl bg-silk text-[14px] leading-snug text-foreground p-3 border-0 outline-none focus:ring-0 resize-none"
               />
 
               {editImageSrc && (
@@ -303,7 +309,7 @@ export function CommentItem(props: Props) {
               </div>
             </div>
           ) : (
-            <p className="mt-1 text-[15px] leading-relaxed text-foreground/90 whitespace-pre-wrap break-words">
+            <p className="mt-0.5 text-[14px] leading-snug text-foreground whitespace-pre-wrap break-words">
               {comment?.comment}
             </p>
           )}
@@ -314,21 +320,20 @@ export function CommentItem(props: Props) {
             href={comment.image}
             target="_blank"
             rel="noopener noreferrer"
-            className="relative inline-block mt-2 max-w-[360px] group/img"
+            className="relative inline-block mt-1.5 max-w-[300px] overflow-hidden rounded-2xl ring-1 ring-zinc-200/60 dark:ring-white/[0.06] group/img"
           >
             <img
               src={comment.image}
               alt="comment attachment"
               loading="lazy"
-              className="rounded-2xl max-h-[360px] object-cover cursor-zoom-in transition-transform group-hover/img:scale-[1.01]"
+              className="block w-full max-h-[320px] object-cover cursor-zoom-in transition-transform duration-200 group-hover/img:scale-[1.02]"
             />
           </a>
         )}
 
-        {/* Action row */}
+        {/* Action row — Facebook style: bold mini-links, then a dot, then the time */}
         {!editing && (
-          <div className="flex items-center gap-4 mt-1.5 pl-3 text-[12px] text-muted-foreground">
-            <span>{fmtDate(comment?.createdAt)}</span>
+          <div className="flex items-center gap-3 mt-1 pl-3.5 text-[12px] text-muted-foreground">
             {isPending ? (
               <span className="font-semibold text-primary">Posting…</span>
             ) : (
@@ -336,7 +341,7 @@ export function CommentItem(props: Props) {
                 <button
                   type="button"
                   onClick={handleReplyClick}
-                  className="font-semibold hover:text-primary transition-colors"
+                  className="font-semibold text-foreground/70 hover:text-primary transition-colors"
                   disabled={busy}
                 >
                   Reply
@@ -346,7 +351,7 @@ export function CommentItem(props: Props) {
                     type="button"
                     onClick={() => setEditing(true)}
                     disabled={busy}
-                    className="font-semibold hover:text-primary transition-colors"
+                    className="font-semibold text-foreground/70 hover:text-primary transition-colors"
                   >
                     Edit
                   </button>
@@ -356,11 +361,15 @@ export function CommentItem(props: Props) {
                     type="button"
                     onClick={() => setConfirmOpen(true)}
                     disabled={busy}
-                    className="font-semibold hover:text-primary transition-colors"
+                    className="font-semibold text-foreground/70 hover:text-primary transition-colors"
                   >
                     Delete
                   </button>
                 )}
+                <span className="text-muted-foreground/50" aria-hidden>·</span>
+                <span className="text-muted-foreground/80">
+                  {fmtDate(comment?.createdAt)}
+                </span>
               </>
             )}
           </div>
@@ -381,11 +390,11 @@ export function CommentItem(props: Props) {
             //     trunk at the reply avatar's center, on the same vertical
             //   • trunk fades into transparent at the bottom of the last reply
             //     so it doesn't dangle past the content
-            className="relative mt-3 pl-8 sm:pl-9 before:pointer-events-none before:absolute before:left-5 before:top-0 before:bottom-6 before:w-px before:bg-zinc-300/60 dark:before:bg-white/[0.08]"
+            className="relative mt-2 pl-8 sm:pl-9 before:pointer-events-none before:absolute before:left-5 before:top-0 before:bottom-7 before:w-px before:bg-zinc-300/70 dark:before:bg-white/[0.10]"
           >
             <ul
               id={`replies-${comment._id}`}
-              className="space-y-3"
+              className="space-y-2.5"
               role="list"
               aria-label={`${replies.length} ${replies.length === 1 ? "reply" : "replies"}`}
             >
@@ -397,7 +406,7 @@ export function CommentItem(props: Props) {
                     // trunk on its right edge and curves down+right toward the
                     // reply avatar. Positioned at top-4 so it lines up with
                     // the reply avatar's vertical center (h-8 avatar → 16px).
-                    className="relative before:pointer-events-none before:absolute before:left-[-12px] before:sm:left-[-16px] before:top-0 before:h-4 before:w-3 before:sm:w-4 before:rounded-bl-xl before:border-b before:border-l before:border-zinc-300/60 dark:before:border-white/[0.08] animate-in fade-in slide-in-from-top-1 duration-200"
+                    className="relative before:pointer-events-none before:absolute before:left-[-12px] before:sm:left-[-16px] before:top-0 before:h-4 before:w-3 before:sm:w-4 before:rounded-bl-2xl before:border-b before:border-l before:border-zinc-300/70 dark:before:border-white/[0.10] animate-in fade-in slide-in-from-top-1 duration-200"
                   >
                     <ReplyItem reply={r} commentId={comment._id} />
                   </li>
@@ -411,7 +420,7 @@ export function CommentItem(props: Props) {
                 onClick={() => setShowAllReplies((v) => !v)}
                 aria-expanded={showAllReplies}
                 aria-controls={`replies-${comment._id}`}
-                className="mt-2 inline-flex items-center gap-1.5 text-[12px] font-semibold text-muted-foreground hover:text-primary transition-colors"
+                className="mt-2 inline-flex items-center gap-1.5 text-[13px] font-semibold text-foreground/70 hover:text-primary transition-colors"
               >
                 <Icon
                   icon={

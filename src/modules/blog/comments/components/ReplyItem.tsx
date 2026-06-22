@@ -98,20 +98,26 @@ export function ReplyItem(props: Props) {
       </Avatar>
 
       <div className="flex-1 min-w-0">
-        <div className="rounded-2xl bg-silk-with-hover px-3.5 py-2.5">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-sm font-semibold text-foreground">
-              {author?.name}
-            </span>
-          </div>
+        <div
+          className={`max-w-full rounded-2xl rounded-tl-md px-3 py-1.5 align-top ${
+            editing ? "block bg-transparent px-0 py-0" : "inline-block bg-silk"
+          }`}
+        >
+          {!editing && (
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-[12.5px] font-semibold leading-tight text-foreground hover:underline cursor-pointer">
+                {author?.name}
+              </span>
+            </div>
+          )}
 
           {editing ? (
-            <div className="mt-2 space-y-2">
+            <div className="space-y-2">
               <textarea
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
                 rows={2}
-                className="w-full rounded-xl bg-background text-sm text-foreground p-2.5 border-0 outline-none focus:ring-0 resize-none"
+                className="w-full rounded-xl bg-silk text-[13px] leading-snug text-foreground p-2.5 border-0 outline-none focus:ring-0 resize-none"
               />
               <div className="flex items-center gap-2">
                 <button
@@ -135,15 +141,14 @@ export function ReplyItem(props: Props) {
               </div>
             </div>
           ) : (
-            <p className="mt-0.5 text-sm leading-relaxed text-foreground/90 whitespace-pre-wrap break-words">
+            <p className="mt-0.5 text-[13px] leading-snug text-foreground whitespace-pre-wrap break-words">
               {reply?.comment ?? reply?.replyText}
             </p>
           )}
         </div>
 
         {!editing && (
-          <div className="flex items-center gap-3 mt-1 pl-3 text-[11px] text-muted-foreground">
-            <span>{fmtDate(reply?.createdAt)}</span>
+          <div className="flex items-center gap-2.5 mt-0.5 pl-3 text-[11px] text-muted-foreground">
             {isPending ? (
               <span className="font-semibold text-primary">Posting…</span>
             ) : (
@@ -153,7 +158,7 @@ export function ReplyItem(props: Props) {
                     type="button"
                     onClick={() => setEditing(true)}
                     disabled={busy}
-                    className="font-semibold hover:text-primary transition-colors"
+                    className="font-semibold text-foreground/70 hover:text-primary transition-colors"
                   >
                     Edit
                   </button>
@@ -163,11 +168,17 @@ export function ReplyItem(props: Props) {
                     type="button"
                     onClick={() => setConfirmOpen(true)}
                     disabled={busy}
-                    className="font-semibold hover:text-primary transition-colors"
+                    className="font-semibold text-foreground/70 hover:text-primary transition-colors"
                   >
                     Delete
                   </button>
                 )}
+                {(canEdit || canDelete) && (
+                  <span className="text-muted-foreground/50" aria-hidden>·</span>
+                )}
+                <span className="text-muted-foreground/80">
+                  {fmtDate(reply?.createdAt)}
+                </span>
               </>
             )}
           </div>
